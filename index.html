@@ -239,6 +239,34 @@
     .toggle-row{transition:none;}
     .agebanner{transition:none;}
   }
+
+  /* ---- Evidence tier legend ------------------------------------------------
+     The 317/81/26/2 split IS the credibility argument, and it was previously
+     only inferable from marker colours. It is visible by default, above the
+     map, because it frames everything below it. */
+  .tier-legend{background:var(--paper);border:1px solid var(--line);border-left:2px solid var(--amber);
+    border-radius:3px;padding:14px 18px;margin:0 0 12px;}
+  .tier-title{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;
+    text-transform:uppercase;letter-spacing:.16em;color:var(--parchment-dimmer);
+    margin:0 0 10px;border:0;padding:0;}
+  .tier-chips{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;margin:0 0 10px;padding:0;}
+  .tier-chip{display:flex;align-items:baseline;gap:7px;font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;color:var(--parchment-dim);}
+  .tier-dot{width:9px;height:9px;border-radius:50%;flex:none;
+    border:1px solid rgba(0,0,0,.45);transform:translateY(1px);}
+  .tier-n{font-size:15px;font-weight:600;color:var(--parchment);letter-spacing:.02em;}
+  .tier-point{font-size:12.8px;line-height:1.55;color:var(--parchment-dim);margin:0;
+    max-width:82ch;}
+  .tier-point strong{color:var(--amber-bright);font-weight:600;}
+  .tier-point em{color:var(--parchment);font-style:italic;}
+
+  @media (max-width: 760px){
+    .tier-legend{padding:13px 14px;}
+    .tier-chips{gap:7px 16px;}
+    .tier-chip{font-size:11px;}
+    .tier-n{font-size:14px;}
+    .tier-point{font-size:12.2px;}
+  }
 </style>
 </head>
 <body>
@@ -281,6 +309,19 @@
   <div class="sheet-scrim" id="layerScrim" hidden></div>
 
 
+
+  <!-- Visible by default. The static numbers below are the true counts; the
+       script recomputes them from ANCHORS on load so they cannot drift. -->
+  <section class="tier-legend" aria-labelledby="tierLegendTitle">
+    <h2 class="tier-title" id="tierLegendTitle">Evidence tier &mdash; every one of the 426 anchors carries one</h2>
+    <ul class="tier-chips" id="tierChips">
+      <li class="tier-chip"><span class="tier-dot" style="background:#e5a75f"></span><span class="tier-n">317</span> Well-supported</li>
+      <li class="tier-chip"><span class="tier-dot" style="background:#d1725a"></span><span class="tier-n">81</span> Contested / disputed</li>
+      <li class="tier-chip"><span class="tier-dot" style="background:#b6abe0"></span><span class="tier-n">26</span> Pre-<em>sapiens</em> hominin</li>
+      <li class="tier-chip"><span class="tier-dot" style="background:#8f897a"></span><span class="tier-n">2</span> No verified evidence</li>
+    </ul>
+    <p class="tier-point" id="tierPoint">Roughly <strong>19%</strong> of this map is flagged contested &mdash; and that is the point, not a defect. The aim is to show <em>how well each claim is supported</em>, not to assert what happened. A contested anchor is drawn as prominently as a solid one, in a different colour, so you can see the shape of the disagreement instead of having it quietly resolved for you.</p>
+  </section>
   <div class="searchbar">
     <label class="sr-only" for="anchorSearch">Search anchors by name or site</label>
     <div class="searchfield">
@@ -1973,6 +2014,50 @@ window.addEventListener('resize', function(){
 window.addEventListener('orientationchange', function(){
   setTimeout(function(){ map.invalidateSize(); }, 320);
 });
+
+// ===================== EVIDENCE TIER LEGEND =====================
+// The counts are written into the HTML so they survive a script failure, but
+// they are recomputed here from ANCHORS on every load. A hand-maintained
+// number on a credibility claim would be the one number most embarrassing to
+// get wrong, so it is derived rather than typed.
+(function buildTierLegend(){
+  const chips = document.getElementById('tierChips');
+  const point = document.getElementById('tierPoint');
+  const title = document.getElementById('tierLegendTitle');
+  if(!chips || !point) return;
+
+  const counts = {solid:0, contested:0, nonsapiens:0, hoax:0};
+  ANCHORS.forEach(function(a){
+    if(counts[a.status] === undefined) counts[a.status] = 0;
+    counts[a.status]++;
+  });
+  const total = ANCHORS.length;
+
+  // Same order and wording as the tier constants the markers already use.
+  const NAME = {
+    solid:      'Well-supported',
+    contested:  'Contested / disputed',
+    nonsapiens: 'Pre-<em>sapiens</em> hominin',
+    hoax:       'No verified evidence'
+  };
+  chips.innerHTML = ['solid','contested','nonsapiens','hoax'].map(function(k){
+    return '<li class="tier-chip">'
+      + '<span class="tier-dot" style="background:' + TIER_COLOR[k] + '"></span>'
+      + '<span class="tier-n">' + counts[k] + '</span> ' + NAME[k]
+      + '</li>';
+  }).join('');
+
+  if(title){
+    title.innerHTML = 'Evidence tier &mdash; every one of the ' + total + ' anchors carries one';
+  }
+  const pct = Math.round((counts.contested / total) * 100);
+  point.innerHTML =
+      'Roughly <strong>' + pct + '%</strong> of this map is flagged contested &mdash; and that is '
+    + 'the point, not a defect. The aim is to show <em>how well each claim is supported</em>, not '
+    + 'to assert what happened. A contested anchor is drawn as prominently as a solid one, in a '
+    + 'different colour, so you can see the shape of the disagreement instead of having it quietly '
+    + 'resolved for you.';
+})();
 applyPresapiens();
 
 // A deep link is applied AFTER applyPresapiens(), so the scrubber floor is
