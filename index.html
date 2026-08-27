@@ -144,6 +144,101 @@
   .pop-copy:hover{border-color:var(--amber-bright);color:var(--amber-bright);}
   .pop-copy.copied{border-color:var(--sahara);color:var(--sahara-bright);}
   .pop-copy.failed{border-color:var(--rust);color:var(--rust);}
+
+  /* ==================== MOBILE ============================================
+     Phone-first audience, and the file had no @media query at all. The two
+     things that actually break below ~700px are the 15 stacked checkboxes and
+     the scrubber, so those get the work: the toggles become a bottom sheet,
+     and every control grows to a real touch target. */
+
+  /* Hidden on desktop; the sheet chrome only exists on small screens. */
+  .layers-btn{display:none;}
+  .sheet-head{display:none;}
+  .sheet-scrim{display:none;}
+
+  @media (max-width: 760px){
+    .wrap{padding:18px 14px 44px;}
+    header{margin-bottom:14px;padding-bottom:14px;}
+    h1{font-size:1.45rem;}
+    .sub{font-size:.9rem;}
+    .protoflag{font-size:10px;line-height:1.5;}
+    #map{height:min(62vh,440px);}
+    .hud{padding:12px 13px 14px;}
+    .searchbar{margin-bottom:10px;}
+
+    /* The 15 checkboxes become a sheet you pull up, not a wall you scroll past. */
+    .layers-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;
+      width:100%;margin:12px 0;padding:12px 14px;min-height:44px;cursor:pointer;
+      font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;
+      letter-spacing:.14em;color:var(--parchment-dim);
+      background:var(--paper);border:1px solid var(--line);border-radius:3px;}
+    .layers-btn::after{content:'\25B2';font-size:8px;color:var(--parchment-dimmer);}
+    .layers-btn[aria-expanded="true"]::after{content:'\25BC';}
+    .layers-btn:hover{border-color:var(--amber-bright);color:var(--amber-bright);}
+
+    .toggle-row{position:fixed;left:0;right:0;bottom:0;z-index:2000;
+      display:block;margin:0;padding:0 16px calc(18px + env(safe-area-inset-bottom));
+      max-height:76vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+      background:var(--paper);border-top:1px solid var(--line);
+      border-radius:12px 12px 0 0;box-shadow:0 -14px 40px rgba(0,0,0,.6);
+      transform:translateY(101%);transition:transform .26s ease;
+      visibility:hidden;}
+    .toggle-row.open{transform:translateY(0);visibility:visible;}
+    .sheet-head{display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:1;margin:0 -16px 6px;padding:14px 16px 10px;
+      background:var(--paper);border-bottom:1px solid var(--line);}
+    .sheet-title{font-family:'IBM Plex Mono',monospace;font-size:11px;
+      text-transform:uppercase;letter-spacing:.16em;color:var(--parchment);}
+    .sheet-close{background:none;border:0;color:var(--parchment-dim);cursor:pointer;
+      font-size:16px;line-height:1;padding:8px;margin:-8px -8px -8px 0;}
+    .sheet-close:hover{color:var(--amber-bright);}
+    /* Full-width rows, each a 44px target — not a wrapped flex line. */
+    .toggle-row .toggle-item{display:flex;width:100%;min-height:44px;
+      padding:4px 0;font-size:12.5px;line-height:1.35;
+      border-bottom:1px solid rgba(61,79,107,.35);}
+    .toggle-row .toggle-item:last-child{border-bottom:0;padding-top:12px;}
+    .toggle-row .toggle-item input{width:19px;height:19px;flex:none;}
+    .sheet-scrim{display:block;position:fixed;inset:0;z-index:1999;
+      background:rgba(6,10,18,.6);border:0;}
+    .sheet-scrim[hidden]{display:none;}
+
+    /* Scrubber: 15px thumb is not a touch target. */
+    input[type=range]{height:8px;}
+    input[type=range]::-webkit-slider-thumb{width:26px;height:26px;}
+    input[type=range]::-moz-range-thumb{width:26px;height:26px;}
+    .scrubrow{padding:6px 0;}
+    .resettick{width:5px;margin-left:-2px;}
+    /* Fifteen era labels at 8px is unreadable on a phone, and the year and era
+       readout directly above says the same thing far more legibly. */
+    .ticks{display:none;}
+    .controls{gap:8px;margin-top:12px;}
+    .ctrl-btn{flex:1;min-height:44px;font-size:11px;}
+    .yrbig{font-size:1.05rem;}
+    .eralabel{font-size:13px;}
+    .legend-row{gap:9px 14px;font-size:10px;}
+    h2.sec{font-size:1.05rem;margin-top:24px;}
+    .panel{padding:13px 15px;}
+    .panel p{font-size:12.5px;}
+    /* A popup on a 390px screen must not exceed the screen. */
+    .leaflet-popup-content-wrapper{max-height:52vh;overflow-y:auto;}
+    .search-results{max-height:min(46vh,300px);}
+  }
+
+  @media (max-width: 430px){
+    .wrap{padding:14px 11px 40px;}
+    h1{font-size:1.28rem;}
+    .eyebrow{font-size:10px;letter-spacing:.12em;}
+    #map{height:min(58vh,380px);}
+    .agename{font-size:1.7rem;}
+    .agesub{font-size:10px;}
+    .tier-legend{padding:12px 13px;}
+  }
+
+  /* Respect a stated preference for less motion. */
+  @media (prefers-reduced-motion: reduce){
+    .toggle-row{transition:none;}
+    .agebanner{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -156,7 +251,16 @@
     <div class="protoflag">COMPLETE BUILD — the entire researched dataset is now on one scrubbable timeline: 69 dated anchors across all four evidence tiers, 92 researched migration routes — including the Siberian spine that carries the Ancient North Eurasian line to the Arctic — drawing progressively across their own real date windows, 14 gold leader walk-back lines, and 6 African corridor connectors linking the origin nodes so the story no longer starts abruptly with the southern migration. The timeline reaches back 1.4 million years, so the contested Gibraltar hominin claims and the pre-<em>sapiens</em> Luzon evidence sit at real dated positions rather than floating outside it. Scrub or hit Play below.</div>
   </header>
 
-  <div class="toggle-row">
+  <!-- On a phone the 15 toggles below become a bottom sheet behind this
+       button. On a desktop the button is hidden and the row is just a row. -->
+  <button type="button" class="layers-btn" id="layersBtn"
+          aria-expanded="false" aria-controls="layerPanel">Layers</button>
+
+  <div class="toggle-row" id="layerPanel">
+    <div class="sheet-head">
+      <span class="sheet-title" id="layerPanelTitle">Layers</span>
+      <button type="button" class="sheet-close" id="layersClose" aria-label="Close layers">&#10005;</button>
+    </div>
     <label class="toggle-item"><input type="checkbox" id="toggleRoutes" checked> Migration routes</label>
     <label class="toggle-item"><input type="checkbox" id="toggleGhosts" checked> Ghost branches &amp; reconvergence</label>
     <label class="toggle-item"><input type="checkbox" id="toggleCorridor" checked> Green Sahara corridor</label>
@@ -174,6 +278,7 @@
     <label class="toggle-item"><input type="checkbox" id="toggleCamera" checked> Camera pulls back as the world opens</label>
     <span class="toggle-item" style="color:var(--parchment-dimmer)">The camera only ever zooms out and never pans. Pause to move the map yourself — the fog eases back while paused so you can read what is underneath.</span>
   </div>
+  <div class="sheet-scrim" id="layerScrim" hidden></div>
 
 
   <div class="searchbar">
@@ -1806,6 +1911,67 @@ window.addEventListener('popstate', function(){
   } finally {
     urlApplying = false;
   }
+});
+
+// ===================== LAYER SHEET (small screens) =====================
+// Desktop keeps the plain row. Below 760px the same markup becomes a bottom
+// sheet, so the map is not pushed off the screen by 15 checkboxes.
+const layersBtn   = document.getElementById('layersBtn');
+const layersClose = document.getElementById('layersClose');
+const layerPanel  = document.getElementById('layerPanel');
+const layerScrim  = document.getElementById('layerScrim');
+const MOBILE_Q    = window.matchMedia('(max-width: 760px)');
+
+// The button carries the count, so you can see how much is switched on
+// without opening the sheet.
+function updateLayerCount(){
+  const boxes = layerPanel.querySelectorAll('input[type=checkbox]');
+  let on = 0;
+  boxes.forEach(function(b){ if(b.checked) on++; });
+  layersBtn.textContent = 'Layers · ' + on + ' of ' + boxes.length + ' on';
+}
+
+let sheetOpen = false;
+function setSheet(open){
+  sheetOpen = open;
+  layerPanel.classList.toggle('open', open);
+  layerScrim.hidden = !open;
+  layersBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  // Stop the page scrolling underneath the sheet.
+  document.body.style.overflow = open ? 'hidden' : '';
+  if(open){
+    const first = layerPanel.querySelector('input[type=checkbox]');
+    if(first) first.focus();
+  } else if(MOBILE_Q.matches){
+    layersBtn.focus();
+  }
+}
+layersBtn.addEventListener('click', function(){ setSheet(!sheetOpen); });
+layersClose.addEventListener('click', function(){ setSheet(false); });
+layerScrim.addEventListener('click', function(){ setSheet(false); });
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && sheetOpen) setSheet(false);
+});
+// Rotating to landscape or widening past the breakpoint must not leave the
+// page locked behind an invisible scrim.
+function syncSheetToViewport(){
+  if(!MOBILE_Q.matches && sheetOpen) setSheet(false);
+}
+if(MOBILE_Q.addEventListener) MOBILE_Q.addEventListener('change', syncSheetToViewport);
+else if(MOBILE_Q.addListener) MOBILE_Q.addListener(syncSheetToViewport);
+window.addEventListener('resize', syncSheetToViewport);
+
+layerPanel.addEventListener('change', updateLayerCount);
+updateLayerCount();
+
+// Leaflet caches the container size. A phone rotating, or the sheet closing,
+// changes it — without this the map keeps drawing at the old dimensions.
+window.addEventListener('resize', function(){
+  clearTimeout(window.__lwResize);
+  window.__lwResize = setTimeout(function(){ map.invalidateSize(); }, 180);
+});
+window.addEventListener('orientationchange', function(){
+  setTimeout(function(){ map.invalidateSize(); }, 320);
 });
 applyPresapiens();
 
