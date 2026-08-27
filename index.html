@@ -281,7 +281,7 @@
     <div class="eyebrow">Full dataset build · Evolution of <code>the_long_walk.html</code> · Companion to Correction #6</div>
     <h1>The Long Walk, interactive: <em>network, ghosts &amp; reconvergence</em></h1>
     <div class="sub">A real, pannable, zoomable map — not the fixed schematic — scrubbing through deep time. This build demonstrates three new mechanics in one place: a pulsing Green Sahara corridor that grows and shrinks with the actual humid-period record, African origin nodes that appear on their own dated evidence instead of one fixed pin, and "ghost branches" — lineages that fade to grey and vanish to a faint marker when they die out, with a new bright marker lighting the same ground later when someone else arrives.</div>
-    <div class="protoflag">COMPLETE BUILD — the entire researched dataset is now on one scrubbable timeline: 69 dated anchors across all four evidence tiers, 92 researched migration routes — including the Siberian spine that carries the Ancient North Eurasian line to the Arctic — drawing progressively across their own real date windows, 14 gold leader walk-back lines, and 6 African corridor connectors linking the origin nodes so the story no longer starts abruptly with the southern migration. The timeline reaches back 1.4 million years, so the contested Gibraltar hominin claims and the pre-<em>sapiens</em> Luzon evidence sit at real dated positions rather than floating outside it. Scrub or hit Play below.</div>
+    <div class="protoflag">COMPLETE BUILD — the entire researched dataset is now on one scrubbable timeline: <span data-count="anchors">426</span> dated anchors across all <span data-count="tiersWord">four</span> evidence tiers, <span data-count="routes">106</span> researched migration routes — including the Siberian spine that carries the Ancient North Eurasian line to the Arctic — drawing progressively across their own real date windows, <span data-count="walkbacks">15</span> gold leader walk-back lines, and <span data-count="connectors">6</span> African corridor connectors linking the origin nodes so the story no longer starts abruptly with the southern migration. The timeline reaches back <span data-count="oldestSpan">1.8 million</span> years, so the contested Gibraltar hominin claims and the pre-<em>sapiens</em> Luzon evidence sit at real dated positions rather than floating outside it. Scrub or hit Play below.</div>
   </header>
 
   <!-- On a phone the 15 toggles below become a bottom sheet behind this
@@ -298,10 +298,10 @@
     <label class="toggle-item"><input type="checkbox" id="toggleGhosts" checked> Ghost branches &amp; reconvergence</label>
     <label class="toggle-item"><input type="checkbox" id="toggleCorridor" checked> Green Sahara corridor</label>
     <label class="toggle-item"><input type="checkbox" id="toggleNodes" checked> Origin nodes</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleAnchors" checked> Researched anchors (56)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleLeaders" checked> Leader pins &amp; walk-backs (13)</label>
+    <label class="toggle-item"><input type="checkbox" id="toggleAnchors" checked> Researched anchors (<span data-count="nonLeaderAnchors">393</span>)</label>
+    <label class="toggle-item"><input type="checkbox" id="toggleLeaders" checked> Leader pins &amp; walk-backs (<span data-count="leaders">33</span> + <span data-count="walkbacks">15</span>)</label>
     <label class="toggle-item"><input type="checkbox" id="toggleConnectors" checked> African corridors</label>
-    <label class="toggle-item"><input type="checkbox" id="togglePresapiens"> Pre-<em>sapiens</em> tier (Orce, Victoria Cave, Luzon)</label>
+    <label class="toggle-item"><input type="checkbox" id="togglePresapiens"> Pre-<em>sapiens</em> tier (<span data-count="presapiensGated">10</span> anchors before <span data-count="presapiensFloor">350,000</span> ya)</label>
     <label class="toggle-item"><input type="checkbox" id="toggleFog" checked> Fog of war (closes again where a line dies out)</label>
     <label class="toggle-item"><input type="checkbox" id="toggleIce" checked> Ice sheets &amp; drowning coastlines</label>
     <label class="toggle-item"><input type="checkbox" id="toggleDiffusion" checked> Technology diffusion (the thing moves, not the people)</label>
@@ -392,8 +392,8 @@
   <h2 class="sec">What this prototype is actually showing</h2>
   <div class="panel">
     <p><span class="lead">The Sahara corridor pulses instead of sitting on the map as a static line, because it wasn't a static line.</span> A 2023 <em>Nature Communications</em> paleoclimate reconstruction counts 20 North African Humid Periods over the past 800,000 years, recurring roughly every 20,000–40,000 years. This prototype animates that on/off cycle directly, keyed to the specific dates already established in this project's own Correction 3 research: broadly viable 246,000–96,000 ya, with two final documented closing pulses around 78,000 and 67,000 ya before the corridor shuts for good. Scrub slowly through that range and watch the ring grow and shrink with each cycle, rather than reading it as one bridge crossed once.</p>
-    <p><span class="lead">The four origin nodes replace the single fixed Rift Valley pin from the old schematic build,</span> each keyed to its own dated evidence: Jebel Irhoud, Morocco (~315,000 ya); the Rift/Horn, Ethiopia (~250,000 ya, this project's own long-running anchor); the Kalahari/Makgadikgadi, Botswana (~200,000 ya, the Chan et al. 2019 claim — shown <strong>CONTESTED</strong>, per Correction #6, not as a settled single origin); and the Ituri Forest, DRC (~170,000 ya). None of the four is "the" start. The Khoisan lineage's first split (~135,000 ya) appears as a persisting branch — it never ghosts, because it's a living population today — and a brief pulse around ~100,000 ya marks the merger that forms the ancestors of eastern and western African populations (Ragsdale et al. 2023).</p>
-    <p><span class="lead">Three ghost/reconvergence chains show the same visual grammar Shawn asked for, in two honest variants.</span> <strong>Same exact ground:</strong> Jebel Faya's older occupation layer (~125,000–100,000 ya) fades to a ghost and leaves a faint marker — then the identical coordinates light back up around 65,000 ya when the Southern Route's successful pulse actually arrives. Dorset culture in the eastern Arctic does the same at the same coordinates around 1300 CE, replaced by Thule with "virtually no evidence of genetic or cultural interaction" between them — same spot, unrelated population. <strong>Same broader ground, not the same point:</strong> Tianyuan man's own lineage near Beijing (~40,000 ya) is a genuine dead end — nobody alive today descends from him — and fades to a ghost accordingly; the marker that lights up later, around 9,000 ya, sits nearby in the Yellow River valley and represents the Neolithic farmers whose ancestry actually became dominant across China. That's a different population arriving in the same region generations later, not the same line returning — worth keeping that distinction honest on-air rather than letting "reconvergence" imply a bloodline reunion it isn't.</p>
+    <p><span class="lead">The <span data-count="nodesWord">four</span> origin nodes replace the single fixed Rift Valley pin from the old schematic build,</span> each keyed to its own dated evidence: Jebel Irhoud, Morocco (~315,000 ya); the Rift/Horn, Ethiopia (~250,000 ya, this project's own long-running anchor); the Kalahari/Makgadikgadi, Botswana (~200,000 ya, the Chan et al. 2019 claim — shown <strong>CONTESTED</strong>, per Correction #6, not as a settled single origin); and the Ituri Forest, DRC (~170,000 ya). None of the four is "the" start. The Khoisan lineage's first split (~135,000 ya) appears as a persisting branch — it never ghosts, because it's a living population today — and a brief pulse around ~100,000 ya marks the merger that forms the ancestors of eastern and western African populations (Ragsdale et al. 2023).</p>
+    <p><span class="lead"><span data-count="ghostChainsWordCap">Three</span> ghost/reconvergence chains show the same visual grammar Shawn asked for, in two honest variants.</span> <strong>Same exact ground:</strong> Jebel Faya's older occupation layer (~125,000–100,000 ya) fades to a ghost and leaves a faint marker — then the identical coordinates light back up around 65,000 ya when the Southern Route's successful pulse actually arrives. Dorset culture in the eastern Arctic does the same at the same coordinates around 1300 CE, replaced by Thule with "virtually no evidence of genetic or cultural interaction" between them — same spot, unrelated population. <strong>Same broader ground, not the same point:</strong> Tianyuan man's own lineage near Beijing (~40,000 ya) is a genuine dead end — nobody alive today descends from him — and fades to a ghost accordingly; the marker that lights up later, around 9,000 ya, sits nearby in the Yellow River valley and represents the Neolithic farmers whose ancestry actually became dominant across China. That's a different population arriving in the same region generations later, not the same line returning — worth keeping that distinction honest on-air rather than letting "reconvergence" imply a bloodline reunion it isn't.</p>
     <p><span class="lead">Known limitation, stated plainly:</span> the routes now carry the full researched multi-stage paths from <code>human_spread_map_2.html</code>, but the dedicated Kelp Highway, Southern Road and African Migrations maps still hold detail this one doesn't — landmark-level stops, then-and-now tables, and per-route discussion. This map answers "when, and in what order"; those answer "where, exactly, and what's there now." Route date windows are drawn from the project's own sourced research; where a window is genuinely disputed the underlying anchor carries the CONTESTED tag, but the line itself does not yet visually distinguish a contested window from a settled one. That's the next honest improvement to make here.</p>
   </div>
 
@@ -2071,6 +2071,71 @@ window.addEventListener('orientationchange', function(){
     + 'to assert what happened. A contested anchor is drawn as prominently as a solid one, in a '
     + 'different colour, so you can see the shape of the disagreement instead of having it quietly '
     + 'resolved for you.';
+})();
+
+// ===================== COMPUTED COUNTS IN THE PROSE =====================
+// The introductory copy used to carry typed counts — "69 dated anchors",
+// "92 researched migration routes", "14 gold leader walk-back lines" — written
+// for an early build and never updated as the dataset grew. By the time the
+// tier legend below started computing its numbers from ANCHORS, the prose
+// above it was contradicting it directly.
+//
+// A typed count and a computed count will always diverge eventually, so every
+// number in the prose is now derived here and injected into a
+// [data-count] span. The literals left in the HTML are the correct values and
+// serve only as a fallback if this script fails; nothing is maintained by hand.
+//
+// NOTE ON THE PRE-SAPIENS TOGGLE, because two different numbers are defensible:
+// the nonsapiens STATUS tier holds 26 anchors, but the toggle does not gate
+// that tier — it gates anchors older than SAPIENS_FLOOR, which is 10 anchors,
+// only 7 of which are nonsapiens (the other 3 are contested). The remaining 19
+// nonsapiens anchors are younger than the floor and show without the toggle.
+// The label therefore states what the control actually does.
+(function injectComputedCounts(){
+  const WORDS = ['zero','one','two','three','four','five','six','seven',
+                 'eight','nine','ten','eleven','twelve'];
+  const word = function(n){ return WORDS[n] || String(n); };
+  const cap  = function(s){ return s.charAt(0).toUpperCase() + s.slice(1); };
+
+  // "1,800,000 years" reads better as "1.8 million"; keep it exact below that.
+  const span = function(years){
+    if(years >= 1e6){
+      const m = (years / 1e6).toFixed(1).replace(/\.0$/, '');
+      return m + ' million';
+    }
+    return years.toLocaleString();
+  };
+
+  const leaders = ANCHORS.filter(function(a){ return a.leader === true; }).length;
+  const oldest  = ANCHORS.reduce(function(m, a){ return a.appear > m ? a.appear : m; }, 0);
+  // The scrubber's own floor and the oldest anchor should agree; take the
+  // deeper of the two so the claim is true whichever one moves.
+  const reach   = Math.max(oldest, AGES.length ? AGES[0].from : 0);
+  const tiers   = {};
+  ANCHORS.forEach(function(a){ tiers[a.status] = true; });
+
+  const COUNTS = {
+    anchors:            ANCHORS.length,
+    nonLeaderAnchors:   ANCHORS.length - leaders,   // what toggleAnchors gates
+    leaders:            leaders,                    // toggleLeaders, with the walk-backs
+    routes:             ROUTES.length,
+    walkbacks:          WALKBACKS.length,
+    connectors:         CONNECTORS.length,
+    tiersWord:          word(Object.keys(tiers).length),
+    nodesWord:          word(NODES.length),
+    ghostChainsWordCap: cap(word(GHOSTS.length)),
+    presapiensGated:    ANCHORS.filter(function(a){ return a.appear > SAPIENS_FLOOR; }).length,
+    presapiensFloor:    SAPIENS_FLOOR.toLocaleString(),
+    oldestSpan:         span(reach)
+  };
+
+  const nodes = document.querySelectorAll('[data-count]');
+  for(let i = 0; i < nodes.length; i++){
+    const k = nodes[i].getAttribute('data-count');
+    if(Object.prototype.hasOwnProperty.call(COUNTS, k)){
+      nodes[i].textContent = COUNTS[k];   // textContent, never innerHTML
+    }
+  }
 })();
 applyPresapiens();
 
