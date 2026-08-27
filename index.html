@@ -132,6 +132,18 @@
     color:var(--parchment-dimmer);border-bottom:1px solid rgba(61,79,107,.45);}
   .search-empty{padding:14px 12px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
     color:var(--parchment-dim);}
+
+  /* ---- Cite-this-anchor button, inside the popup --------------------------
+     The map is meant to travel in a video description or a reply. That only
+     works if a single anchor has an address, so every popup carries one. */
+  .pop-copy{margin-top:10px;width:100%;font-family:'IBM Plex Mono',monospace;
+    font-size:10px;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;
+    background:transparent;color:var(--parchment-dim);
+    border:1px solid var(--line);border-radius:2px;padding:6px 8px;
+    transition:border-color .15s ease,color .15s ease;}
+  .pop-copy:hover{border-color:var(--amber-bright);color:var(--amber-bright);}
+  .pop-copy.copied{border-color:var(--sahara);color:var(--sahara-bright);}
+  .pop-copy.failed{border-color:var(--rust);color:var(--rust);}
 </style>
 </head>
 <body>
@@ -579,7 +591,10 @@ const anchorMarkers = {};
 ANCHORS.forEach(a=>{
   const color = a.leader ? '#d4af37' : TIER_COLOR[a.status];
   const m = L.circleMarker([a.lat,a.lon], {radius:0, color:'#0e1420', weight:1.2, fillColor:color, fillOpacity:0, opacity:0}).addTo(map);
-  m.bindPopup(`<p class="pop-title">${a.leader?'\u2605 ':''}${a.label}</p><p class="pop-age">${a.age} \u00b7 ${TIER_LABEL[a.status]}</p><p class="pop-note">${a.note}</p>`);
+  m.bindPopup(`<p class="pop-title">${a.leader?'\u2605 ':''}${a.label}</p><p class="pop-age">${a.age} \u00b7 ${TIER_LABEL[a.status]}</p><p class="pop-note">${a.note}</p><button type="button" class="pop-copy" data-copy-anchor="${a.id}">Copy link to this anchor</button>`);
+  // Tag the marker so popupopen can tell an ANCHOR popup from the node,
+  // ghost, diffusion and territory popups that share the same map.
+  m._anchorId = a.id;
   anchorMarkers[a.id] = m;
 });
 
@@ -1617,7 +1632,186 @@ document.addEventListener('click', function(e){
 // The placeholder carries the real count, so it cannot drift from the data.
 searchInput.placeholder = 'Search ' + ANCHORS.length + ' anchors — name or site';
 
+
+// ===================== URL STATE / DEEP LINKS =====================
+// This map is meant to be cited — in a video description, in a reply, in a
+// footnote. That requires an anchor to have an ADDRESS, so:
+//
+//   ?a=cn10   opens focused on Yinxu, timeline already at its date
+//   ?t=64400  opens at a moment in time, no anchor
+//
+// Opening an anchor pushes history (Back returns to where you were); dragging
+// the scrubber only replaces it, because a scrub is a continuous gesture and
+// would otherwise bury the previous page under hundreds of entries.
+function baseUrl(){
+  return location.href.split('#')[0].split('?')[0];
+}
+function anchorLink(id){ return baseUrl() + '?a=' + encodeURIComponent(id); }
+
+let urlAnchor = null;               // anchor id currently reflected in the URL
+let urlTimer  = null;
+// Set while we are APPLYING a URL rather than reacting to a user gesture.
+// Without it, restoring a back/forward entry re-opens a popup, which writes
+// the URL again, which pushes a fresh entry — you could never walk backwards.
+let urlApplying = false;
+
+function writeUrl(push){
+  if(urlApplying) return;
+  let q;
+  if(urlAnchor){
+    q = '?a=' + encodeURIComponent(urlAnchor);
+  } else {
+    q = '?t=' + Math.round(yearsAgoFromSlider(+scrub.value));
+  }
+  const next = baseUrl() + q;
+  if(next === location.href) return;
+  try{
+    if(push) history.pushState({a:urlAnchor}, '', next);
+    else     history.replaceState({a:urlAnchor}, '', next);
+  }catch(err){
+    // file:// forbids history writes in some browsers. The map still works;
+    // it just cannot advertise its own address there.
+  }
+}
+// Scrubbing fires continuously, and during playback it fires every frame.
+// Coalesce, and stay silent while playing — nobody cites a moving timeline.
+function queueUrlUpdate(){
+  if(playing) return;
+  if(urlTimer) clearTimeout(urlTimer);
+  urlTimer = setTimeout(function(){ urlTimer = null; writeUrl(false); }, 350);
+}
+
+// Any anchor popup — opened from search, from a deep link, or by clicking the
+// marker directly — puts that anchor in the URL. Closing it hands the URL back
+// to the timeline.
+map.on('popupopen', function(e){
+  const src = e.popup && e.popup._source;
+  if(src && src._anchorId){
+    urlAnchor = src._anchorId;
+    writeUrl(true);
+  }
+});
+// Opening anchor B closes anchor A's popup first. Rewriting the URL on that
+// close would overwrite A's history entry a moment before B pushes its own,
+// so you could never step back through the anchors you actually visited.
+// Defer one tick and bail if another anchor has already claimed the URL.
+map.on('popupclose', function(e){
+  const src = e.popup && e.popup._source;
+  if(src && src._anchorId && urlAnchor === src._anchorId){
+    const closingId = src._anchorId;
+    setTimeout(function(){
+      if(urlAnchor !== closingId) return;   // B took over — the URL is its problem
+      urlAnchor = null;
+      writeUrl(false);
+    }, 0);
+  }
+});
+scrub.addEventListener('input', function(){ urlAnchor = null; queueUrlUpdate(); });
+
+// ---- Copy link to this anchor ---------------------------------------------
+// clipboard.writeText needs a secure context; it is missing on file:// and on
+// plain http. Fall back to execCommand, and if even that is refused, select
+// the URL so the reader can copy it by hand rather than losing it.
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text);
+  }
+  return new Promise(function(resolve, reject){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try{ ok = document.execCommand('copy'); }catch(err){ ok = false; }
+    document.body.removeChild(ta);
+    ok ? resolve() : reject(new Error('copy refused'));
+  });
+}
+document.addEventListener('click', function(e){
+  const btn = e.target.closest && e.target.closest('.pop-copy');
+  if(!btn) return;
+  e.preventDefault();
+  const id = btn.getAttribute('data-copy-anchor');
+  const url = anchorLink(id);
+  btn.classList.remove('copied', 'failed');   // a fast second click starts clean
+  const restore = function(){
+    btn.textContent = 'Copy link to this anchor';
+    btn.classList.remove('copied', 'failed');
+  };
+  copyText(url).then(function(){
+    btn.textContent = 'Link copied';
+    btn.classList.add('copied');
+    setTimeout(restore, 1800);
+  }).catch(function(){
+    // Last resort: show the address so it can be copied manually.
+    btn.textContent = url;
+    btn.classList.add('failed');
+    setTimeout(restore, 6000);
+  });
+});
+
+// ---- Reading state back out of the URL ------------------------------------
+function readUrlState(){
+  // Accept ?a=/?t= and the #a=/#t= hash form, so a link survives being pasted
+  // through tools that mangle one or the other.
+  const src = location.search && location.search.length > 1
+    ? location.search.slice(1) : location.hash.replace(/^#/, '');
+  const p = new URLSearchParams(src);
+  return { a: p.get('a'), t: p.get('t') };
+}
+// An unknown or malformed id is ignored rather than treated as an error: a
+// truncated link should still open the map, just without a focus.
+function applyUrlState(){
+  const s = readUrlState();
+  urlApplying = true;
+  try{
+    if(s.a && ANCHOR_BY_ID[s.a]){
+      urlAnchor = s.a;
+      focusAnchor(s.a, {animate:false});
+      return true;
+    }
+    if(s.t !== null && s.t !== '' && isFinite(+s.t)){
+      urlAnchor = null;
+      pause();
+      const v = Math.max(+scrub.min || 0, Math.min(SLIDER_MAX, sliderAtYears(+s.t)));
+      scrub.value = v;
+      render(v);
+      return true;
+    }
+    return false;
+  } finally {
+    urlApplying = false;
+  }
+}
+// Back/forward should move the map, not just the address bar.
+window.addEventListener('popstate', function(){
+  const s = readUrlState();
+  urlApplying = true;
+  try{
+    if(s.a && ANCHOR_BY_ID[s.a]){
+      urlAnchor = s.a;
+      focusAnchor(s.a, {animate:false});
+    } else {
+      urlAnchor = null;
+      map.closePopup();
+      if(s.t && isFinite(+s.t)){
+        const v = Math.max(+scrub.min || 0, Math.min(SLIDER_MAX, sliderAtYears(+s.t)));
+        scrub.value = v;
+        render(v);
+      }
+    }
+  } finally {
+    urlApplying = false;
+  }
+});
 applyPresapiens();
+
+// A deep link is applied AFTER applyPresapiens(), so the scrubber floor is
+// already correct by the time the link sets the timeline.
+if(!applyUrlState()) writeUrl(false);
 } catch(e) {
   // The old message always blamed the network, which sent us hunting a
   // connectivity problem when the actual cause was a missing polygon ring.
