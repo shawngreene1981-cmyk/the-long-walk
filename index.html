@@ -1930,17 +1930,44 @@ function sliderAtYearsExact(target){
 scrub.addEventListener('input', ()=>{ markUserDriven(); pause(); render(+scrub.value); });
 
 const DURATION = 92000;
+// THE PLAYHEAD IS KEPT HERE, NOT IN THE SLIDER, AND THAT IS THE WHOLE POINT.
+//
+// <input type="range"> has no step attribute, so its step is 1: assigning
+// 105.28 to it stores 105. This loop used to read the position back out of the
+// slider every frame — `+scrub.value + (dt/DURATION)*SLIDER_MAX` — which meant
+// each frame's advance had to survive a round trip through that rounding.
+//
+// One frame advances (dt/92000)*3700 = dt * 0.0402 units. At 60Hz dt is 16.7ms,
+// the advance is 0.67, the slider rounds it up to the next integer and the
+// animation runs. Above roughly 80Hz the advance drops below 0.5, the slider
+// rounds it back DOWN to the value it already had, and the next frame re-reads
+// that same value and adds the same sub-0.5 amount again. The loop keeps
+// running, requestAnimationFrame keeps firing, nothing throws, and the playhead
+// never moves. Measured: 60Hz advances, 90/120/144/240Hz are frozen solid.
+//
+// That is why this reproduced on a high-refresh display and on no one else's
+// machine, and why the play/pause code kept auditing as correct - it was
+// correct, and it was rounding itself to a standstill against the DOM.
+//
+// playPos carries full float precision for as long as playback owns the
+// timeline. The slider is written to, never read from, while playing: it is the
+// display, not the state. Anything that moves the timeline from outside
+// playback - dragging, search, a deep link, restart - goes through pause()
+// first, which drops the accumulator so the next play() re-reads where the user
+// actually left it.
+let playPos = null;
 function tick(now){
   if(!playing) return;
   if(lastT===null) lastT=now;
   const dt = now-lastT; lastT=now;
-  let v = +scrub.value + (dt/DURATION)*SLIDER_MAX;
-  if(v>=SLIDER_MAX){ v=SLIDER_MAX; scrub.value=v; render(v); pause(); return; }
-  scrub.value = v; render(v);
+  if(playPos===null) playPos = +scrub.value;
+  playPos += (dt/DURATION)*SLIDER_MAX;
+  if(playPos>=SLIDER_MAX){ playPos=SLIDER_MAX; scrub.value=SLIDER_MAX; render(SLIDER_MAX); pause(); return; }
+  scrub.value = playPos; render(playPos);
   rafId = requestAnimationFrame(tick);
 }
-function play(){ playing=true; camBusy=false; drawFog(); lastT=null; document.getElementById('btnPlay').textContent='Pause ❚❚'; rafId=requestAnimationFrame(tick); }
-function pause(){ playing=false; setTimeout(drawFog, 0); if(rafId) cancelAnimationFrame(rafId); document.getElementById('btnPlay').textContent='Play ▶'; }
+function play(){ playing=true; camBusy=false; drawFog(); lastT=null; playPos=+scrub.value; document.getElementById('btnPlay').textContent='Pause ❚❚'; rafId=requestAnimationFrame(tick); }
+function pause(){ playing=false; playPos=null; setTimeout(drawFog, 0); if(rafId) cancelAnimationFrame(rafId); document.getElementById('btnPlay').textContent='Play ▶'; }
 document.getElementById('btnPlay').addEventListener('click', ()=>{
   markUserDriven();
   if(+scrub.value>=SLIDER_MAX){ const st=+scrub.min||0; scrub.value=st; render(st); }
