@@ -74,7 +74,13 @@
   input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:5px;border-radius:3px;background:var(--line);outline:none;}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--amber-bright);border:2px solid #000;cursor:pointer;box-shadow:0 0 8px rgba(224,167,94,.7);}
   input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--amber-bright);border:2px solid #000;cursor:pointer;}
-  .ticks{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:8px;color:#666;margin-top:5px;padding:0 2px;flex-wrap:wrap;gap:2px;}
+  /* Ticks are POSITIONED, not distributed. space-between spaced them evenly,
+     which quietly asserted that the timeline was linear - it is age-weighted,
+     so an evenly spaced label sits above a slider position it does not name.
+     Each tick is now placed at its own slider position, so the crowding of the
+     recent end is visible rather than smoothed away. */
+  .ticks{position:relative;height:11px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:#666;margin-top:5px;padding:0 2px;}
+  .ticks .tick{position:absolute;top:0;white-space:nowrap;}
 
   .controls{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;}
   .ctrl-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--parchment);background:var(--paper-2);border:1px solid var(--line);border-radius:2px;padding:9px 14px;cursor:pointer;}
@@ -364,8 +370,11 @@
       <div class="scrubrow">
         <input type="range" id="scrub" min="0" max="3700" value="0">
       </div>
-      <div class="ticks">
-        <span>Before Us</span><span>Luzon</span><span>Irhoud</span><span>Rift</span><span>Ituri</span><span>Merger</span><span>S. Pulse</span><span>Sahul</span><span>Mal’ta</span><span>Beringia</span><span>Göbekli</span><span>Caral</span><span>Bantu</span><span>Reach</span><span>1492</span>
+      <!-- Rebuilt from ERA and the live slider bounds on load; see buildTicks.
+           These literals are only the no-script fallback, and they end where
+           the timeline actually ends rather than at the old 1492 cutoff. -->
+      <div class="ticks" id="tickStrip">
+        <span class="tick" style="left:0">Before Us</span><span class="tick" style="left:50%;transform:translateX(-50%)">Sahul</span><span class="tick" style="right:0">1999</span>
       </div>
       <div class="controls">
         <button class="ctrl-btn" id="btnPlay">Play ▶</button>
@@ -1456,11 +1465,88 @@ function sliderAtYears(target){
   return Math.ceil((lo+hi)/2);
 }
 const SAPIENS_START = sliderAtYears(SAPIENS_FLOOR);
+// ---- The tick strip under the scrubber ------------------------------------
+// It used to be fifteen hand-written labels laid out with space-between, and it
+// was wrong in two separate ways. The labels sat at even intervals while the
+// timeline is age-weighted, so a tick named a slider position it was not above.
+// And the last label was "1492", the old pre-colonial cutoff, so the whole
+// post-contact stretch down to the 1999 hard stop carried no ticks at all -
+// roughly the last three centuries of the map were unlabelled.
+//
+// 1999 IS THE AUTHORED BOUNDARY AND IS NOT TOUCHED HERE. What changed is only
+// where the strip gets its labels: ERA and the live slider bounds, the way the
+// tier legend gets its chips from ANCHORS. If ERA gains an era or the floor
+// moves with the pre-sapiens toggle, the strip follows on its own.
+const TICK_PAD = 10;             // px of clear air required between two labels
+function buildTicks(){
+  const strip = document.getElementById('tickStrip');
+  if(!strip || typeof ERA === 'undefined' || !ERA.length) return;
+  const lo = +scrub.min || 0, hi = SLIDER_MAX, span = hi - lo;
+  if(!(span > 0)) return;
+  const marks = ERA
+    .map(function(e){ return {label:e.label, f:(sliderAtYears(e.yearsAgo) - lo) / span}; })
+    .filter(function(m){ return m.f >= 0 && m.f <= 1; })
+    .sort(function(a, b){ return a.f - b.f; });
+  if(!marks.length) return;
+
+  // Render every candidate first, then thin on MEASURED width. A gap expressed
+  // as a share of the track cannot work here: these labels run from "Caral" to
+  // "Yana - the Arctic Siberians", so any fixed share either lets the long ones
+  // overlap or throws away short ones that would have fitted easily.
+  strip.innerHTML = marks.map(function(m, i){
+    const pos = i === 0 ? 'left:0;'
+              : i === marks.length - 1 ? 'right:0;'
+              : 'left:' + (m.f * 100).toFixed(3) + '%;transform:translateX(-50%);';
+    return '<span class="tick" style="' + pos + '">' + m.label + '</span>';
+  }).join('');
+
+  const els = Array.prototype.slice.call(strip.children);
+  if(!strip.getBoundingClientRect().width){
+    // Nothing to measure: the strip is display:none below 760px. Leave the ends
+    // and one midpoint rather than sixty-odd stacked labels, and let the resize
+    // handler build it properly if it ever becomes visible.
+    els.forEach(function(el, i){
+      if(i !== 0 && i !== els.length - 1 && i !== (els.length >> 1)) el.remove();
+    });
+    return;
+  }
+  const box = els.map(function(el){ const r = el.getBoundingClientRect(); return {l:r.left, r:r.right}; });
+
+  // Both ends are structural - the start of the timeline and its authored end -
+  // so they are reserved before anything else competes for room. Everything
+  // between them is kept only if it clears its neighbour AND the end label.
+  // Dropping a label is a legibility decision and never a claim about the data.
+  const last = els.length - 1;
+  const keep = els.map(function(){ return false; });
+  keep[0] = true;
+  keep[last] = true;
+  let edge = box[0].r;
+  for(let i = 1; i < last; i++){
+    if(box[i].l < edge + TICK_PAD) continue;
+    if(box[i].r + TICK_PAD > box[last].l) continue;
+    keep[i] = true;
+    edge = box[i].r;
+  }
+  els.forEach(function(el, i){ if(!keep[i]) el.remove(); });
+}
+// Thinning depends on how much room the labels actually have, so it has to be
+// redone when that changes.
+let tickTimer = null;
+window.addEventListener('resize', function(){
+  if(tickTimer) clearTimeout(tickTimer);
+  tickTimer = setTimeout(buildTicks, 150);
+});
+// The first build can run against fallback font metrics, which measure narrower
+// than the real face and let one label too many through. Rebuild once the fonts
+// have settled so the strip stops changing its mind.
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(buildTicks);
+
 function applyPresapiens(){
   const on = layerState.presapiens;
   scrub.min = on ? 0 : SAPIENS_START;
   if(!on && +scrub.value < SAPIENS_START){ scrub.value = SAPIENS_START; }
   render(+scrub.value);
+  buildTicks();          // the floor just moved, so the strip's span moved with it
 }
 document.getElementById('togglePresapiens').addEventListener('change', e=>{ layerState.presapiens=e.target.checked; applyPresapiens(); });
 document.getElementById('toggleFog').addEventListener('change', e=>{ layerState.fog=e.target.checked; render(+scrub.value); });
