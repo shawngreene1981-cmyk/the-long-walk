@@ -63,6 +63,52 @@ tectonics — and rebound error is largest at high latitude, which is exactly
 Doggerland and Beringia. Before 130,000 years ago the map has no sea-level
 curve and deliberately draws no shoreline at all.
 
+## The outstanding GIS job — three targets, one afternoon
+
+Three things on this map are placeholder geometry, and they want the same
+tooling, the same sources and the same session. They are listed together because
+doing them separately would mean georeferencing the same elevation data three
+times.
+
+**1. Palaeo-shorelines.** 16 polygons, hand-drawn, currently disabled.
+Sunda and Sahul from Voris 2000 (raster plates — georeference and trace);
+Beringia from Manley 2002's bathymetric DEM (`gdal_contour`, no tracing);
+Doggerland and the Persian Gulf from GEBCO (`gdal_contour`). Note that
+ICE-6G_C's isostatically corrected paleotopography is 1×1°, too coarse for
+Doggerland or the Gulf — so those two stay `bathymetric` even done properly.
+That is the honest permanent answer for them, not a placeholder.
+
+**2. Ice sheets.** Worse than the coastlines: **26 coordinate pairs across all
+four sheets** — Laurentide 8 points, Cordilleran 6, Fennoscandian 6, Patagonian
+6. The largest ice sheet in the Northern Hemisphere is an octagon. This is the
+*easier* half of the job, because the sources ship as vectors: **Dyke 2004**
+(GSC Open File 1574) deglaciation isochrones for the Laurentide and Cordilleran,
+**DATED-1** (Hughes et al. 2016) for the Fennoscandian, Davies et al. 2020 for
+the Patagonian. No tracing, no contouring — reproject, filter to the LGM
+isochrone, simplify, convert. DATED-1 publishes explicit maximum, minimum and
+best-estimate margins, which map straight onto the `basis` field the coastlines
+already use: the ice could carry a genuine `reconstruction` tier with a real
+uncertainty band rather than a dashed approximation.
+
+**3. A self-hosted shaded-relief basemap.** The map currently sits on plain
+OpenStreetMap — a road map with prehistoric shapes on it, no topography, and
+labels and borders competing with the content. Every hosted alternative was
+rejected: Stamen is retired and now needs a key, Esri's shaded relief is a
+legacy endpoint under a licence written for licensees rather than a public
+grant, and NASA's CC0 Blue Marble is natural-colour imagery that would paint
+*modern* vegetation across an Ice Age map and contradict this map's own Green
+Sahara mechanic. So render our own, from public-domain elevation data already in
+the source list above — GEBCO, SRTM, GTOPO30. Self-hosted: no licence question,
+no watermark risk, and it can be tuned to whatever mid-tone the palette actually
+needs instead of whatever a vendor chose.
+
+That last point is not cosmetic. Overlay contrast was measured against a
+relief-toned ground and three tier colours — contested, hoax and demographic —
+lose roughly a third of their contrast on any mid-tone basemap. Those colours
+are semantic and are deliberately **not** being changed to chase a basemap that
+does not exist yet; they get retuned once there is a real one to tune against,
+which makes the palette pass part of this same job.
+
 ## Citing a single anchor
 
 Every anchor has its own address, so a specific claim can be linked directly

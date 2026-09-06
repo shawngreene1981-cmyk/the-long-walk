@@ -1461,8 +1461,29 @@ function arrowIcon(p1, p2, color){
   return L.divIcon({className:'', html:`<div style="width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:12px solid ${color};transform:rotate(${cssRotate}deg);"></div>`, iconSize:[12,12], iconAnchor:[6,6]});
 }
 
-const routeObjs = ROUTES.map(r=>{
-  const segs = splitSeam(r.pts);
+// ---- Route casings ---------------------------------------------------------
+// Routes are drawn TWICE: a dark casing underneath, the colour on top. Anchor
+// markers have carried a casing all along; routes never did. The layer that
+// needs it most is the one saying a route was FORGOTTEN, which recolours the
+// line to grey — measured at 2.81:1 against the current ground, the worst
+// pairing on the map, and forgetting is this map's whole thesis. A casing fixes
+// that against ANY basemap rather than against one particular basemap, which is
+// why it lands now and not with a basemap change.
+//
+// Built BEFORE the coloured lines, deliberately. Casing-then-line per route
+// would put route 40's casing on top of route 39's colour and notch every
+// crossing; with 111 routes there are a great many crossings. Creating every
+// casing first puts all of them beneath all of the colour, once and for all.
+const ROUTE_CASING = '#0e1420';        // the same near-black the markers use
+const ROUTE_SEGS = ROUTES.map(r => splitSeam(r.pts));
+const routeCasings = ROUTE_SEGS.map((segs, i) => segs.map(()=> L.polyline([], {
+  color: ROUTE_CASING, weight: 4.6, opacity: 0,
+  dashArray: ROUTES[i].dash || null,   // no solid casing showing through a dashed route
+  interactive: false                   // never steal the line's tooltip or its click
+}).addTo(map)));
+
+const routeObjs = ROUTES.map((r,ri)=>{
+  const segs = ROUTE_SEGS[ri];
   const lines = segs.map(()=> {
     const ln = L.polyline([], {color:r.color, weight:2.6, opacity:0.85}).addTo(map);
     ln.bindTooltip(r.name, {sticky:true});
@@ -1473,7 +1494,7 @@ const routeObjs = ROUTES.map(r=>{
     return ln;
   });
   const arrow = L.marker(segs[0][0], {icon:arrowIcon(segs[0][0],segs[0][0],r.color), interactive:false, opacity:0}).addTo(map);
-  return {r, segs, lines, arrow};
+  return {r, segs, lines, arrow, casings: routeCasings[ri]};
 });
 
 // Leader walk-backs — gold dashed, fade in at a single date, never animate as
@@ -2009,7 +2030,7 @@ function render(sliderVal){
   // Routes — progressive reveal
   const drawnByRoute = [];
   routeObjs.forEach((o,ri)=>{
-    if(!layerState.routes){ o.lines.forEach(l=>l.setLatLngs([])); o.arrow.setOpacity(0); drawnByRoute[ri]=null; return; }
+    if(!layerState.routes){ o.lines.forEach(l=>l.setLatLngs([])); o.casings.forEach(c=>c.setLatLngs([])); o.arrow.setOpacity(0); drawnByRoute[ri]=null; return; }
     const p = yearsAgo >= o.r.start ? 0 : (yearsAgo <= o.r.end ? 1 : (o.r.start-yearsAgo)/(o.r.start-o.r.end));
     const drawn = revealSegments(o.segs, p);
     drawnByRoute[ri] = drawn;
@@ -2017,10 +2038,16 @@ function render(sliderVal){
     const dim = lin && !lin.has(o.r.id);
     const forgotten = forgottenFraction(o.r, yearsAgo);
     drawn.forEach((pts,i)=>{
+      // One opacity and one weight for both passes, so the casing can never
+      // outlive its line or sit proud of it while a route draws or fades.
+      const op = dim ? 0.12 : 0.85*(1-forgotten*0.85);
+      const wt = (lin&&!dim)?3.4:2.6;
+      o.casings[i].setLatLngs(pts);
+      o.casings[i].setStyle({opacity: op, weight: wt + 2});
       o.lines[i].setLatLngs(pts);
       o.lines[i].setStyle({
-        opacity: dim ? 0.12 : 0.85*(1-forgotten*0.85),
-        weight: (lin&&!dim)?3.4:2.6,
+        opacity: op,
+        weight: wt,
         color: forgotten>0.02 ? '#6f7580' : o.r.color
       });
     });
