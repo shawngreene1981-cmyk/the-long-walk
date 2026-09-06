@@ -322,6 +322,7 @@
     <label class="toggle-item"><input type="checkbox" id="toggleConnectors" checked> African corridors</label>
     <label class="toggle-item"><input type="checkbox" id="togglePresapiens"> Pre-<em>sapiens</em> tier (<span data-count="presapiensGated">10</span> anchors before <span data-count="presapiensFloor">350,000</span> ya)</label>
     <label class="toggle-item"><input type="checkbox" id="toggleFog" checked> Fog of war (closes again where a line dies out)</label>
+    <label class="toggle-item"><input type="checkbox" id="toggleShorelines" checked> Palaeo-shorelines (sea level)</label>
     <label class="toggle-item"><input type="checkbox" id="toggleIce" checked> Ice sheets &amp; drowning coastlines</label>
     <label class="toggle-item"><input type="checkbox" id="toggleDiffusion" checked> Technology diffusion (the thing moves, not the people)</label>
     <label class="toggle-item"><input type="checkbox" id="toggleTerritory" checked> Territory held (extent, not borders — prototype)</label>
@@ -415,7 +416,8 @@
     <span><span class="lineswatch" style="border-color:#6f7580;background:#0f1826"></span> Fog — ground no one has reached</span>
     <span><span class="dot" style="background:#6b5f96"></span> Lost ground — people were here, and are gone</span>
     <span><span class="lineswatch" style="border-color:#cfe4f2;background:rgba(220,236,247,.35)"></span> Ice sheet</span>
-    <span><span class="lineswatch" style="border-color:#c2a878;background:rgba(179,154,109,.3)"></span> Dry shelf — walkable land now under sea</span>
+    <span><span class="lineswatch" style="border-color:#c2a878;background:rgba(179,154,109,.3)"></span> Shoreline, <strong>published reconstruction</strong> — solid edge</span>
+    <span><span class="lineswatch" style="border-color:#c2a878;border-top-style:dashed;background:rgba(179,154,109,.3)"></span> Shoreline, <strong>bathymetric approximation</strong> — dashed edge: a modern depth contour standing in for a palaeo-shoreline, uncorrected for isostatic rebound, sediment or tectonics. Rebound error is largest at high latitude, which is exactly Doggerland and Beringia. Before 130,000 years ago this map has no sea-level curve and deliberately draws no shoreline at all.</span>
   </div>
 
   <h2 class="sec">What this prototype is actually showing</h2>
@@ -622,8 +624,147 @@ const ANCHORS = [{"id":"us01","label":"Point Comfort — where the black line st
 
 const CONNECTORS = [{"id": "c_irhoud_rift", "from": [31.85, -8.75], "to": [6.0, 36.0], "via": [[24, 5], [15, 22]], "start": 315000, "end": 100000, "humid": true, "label": "Northwest ↔ East corridor", "note": "Intermittent contact across the Sahara between the Jebel Irhoud population and the Rift/Horn. Open only during humid pulses — watch it breathe with the corridor."}, {"id": "c_rift_ituri", "from": [6.0, 36.0], "to": [1.5, 28.5], "via": [[4, 32]], "start": 170000, "end": 90000, "humid": false, "label": "East ↔ Congo Basin corridor", "note": "Rift/Horn to the Ituri forest hub. Forest-margin contact, not desert-gated — persists while the Sahara corridors are shut."}, {"id": "c_rift_kalahari", "from": [6.0, 36.0], "to": [-20.5, 24.5], "via": [[-6, 30]], "start": 200000, "end": 90000, "humid": false, "label": "East ↔ Southern corridor", "note": "The long north–south link down the eastern side of the continent. Its intermittency is why the Khoisan lineage diverges as deeply as it does."}, {"id": "c_ituri_kalahari", "from": [1.5, 28.5], "to": [-20.5, 24.5], "via": [[-10, 24]], "start": 170000, "end": 100000, "humid": false, "label": "Congo ↔ Southern corridor", "note": "The weakest and most intermittent of the internal links — the two deepest-diverging branches in the species, rarely in contact."}, {"id": "c_exit_north", "from": [6.0, 36.0], "to": [30.5, 31.0], "via": [[15, 33], [24, 32]], "start": 246000, "end": 65000, "humid": true, "label": "Northern exit — the Nile corridor", "note": "The Nile Valley route out of Africa. Viable ~246,000–96,000 ya with two final pulses at ~78,000 and ~67,000 ya. Gated entirely by the Green Sahara — when the corridor shuts, this door shuts."}, {"id": "c_exit_south", "from": [6.0, 36.0], "to": [12.6, 43.4], "via": [[9, 40]], "start": 130000, "end": 60000, "humid": false, "label": "Southern exit — Bab-el-Mandeb", "note": "The Horn of Africa crossing at the mouth of the Red Sea. Not Sahara-gated — which is why the Southern Route stays available after the northern door closes, and why the successful pulse comes through here."}];
 
-const SHELVES = [{"id": "beringia", "label": "Beringia — the land bridge", "coords": [[68, 178], [68, -168], [62, -165], [58, -175], [60, 175]], "from": 36000, "dryUntil": 13000, "goneBy": 10500, "note": "Dry land for over twenty thousand years — not a bridge so much as a country, big enough to live in for generations. Drowned as the ice melted; fully submerged by ~11,000 ya. Everyone in the Americas descends from people who crossed it before the door shut."}, {"id": "doggerland", "label": "Doggerland — the North Sea plain", "coords": [[54.5, 1], [53.5, 3.5], [55.5, 6], [57, 3], [56, -0.5]], "from": 20000, "dryUntil": 9000, "goneBy": 8200, "note": "Rich wetland and forest joining Britain to mainland Europe, inhabited throughout. Progressively flooded, then finished by the Storegga slide tsunami ~8,150 ya. Britain becomes an island — and the branch that walked there becomes a branch that must sail."}, {"id": "sunda", "label": "Sunda shelf — mainland Southeast Asia", "coords": [[8, 98], [8, 110], [2, 112], [-6, 108], [-8, 102], [1, 96]], "from": 30000, "dryUntil": 14500, "goneBy": 7000, "note": "Sumatra, Java and Borneo were part of the Asian mainland. Drowned by post-glacial sea-level rise, most sharply at Meltwater Pulse 1A (~14,500 ya). One of the largest habitable areas ever lost to water."}, {"id": "sahul", "label": "Sahul — Australia joined to New Guinea", "coords": [[-9, 131], [-2, 138], [-6, 141], [-10, 142], [-9, 134]], "from": 65000, "dryUntil": 12000, "goneBy": 8000, "note": "Australia, Tasmania and New Guinea as one continent. Note what this does NOT solve: even at lowest sea level, reaching Sahul still required crossing open water. Whoever arrived ~65,000 ya had boats."}, {"id": "gulf", "label": "The Persian Gulf Oasis", "coords": [[30.3, 48], [27, 48.5], [24.5, 51.5], [25.5, 56.3], [27.5, 56], [29.8, 50.5]], "from": 70000, "dryUntil": 12000, "goneBy": 8000, "note": "A dry basin fed by the Tigris, Euphrates and Karun — a refuge through the arid glacial maximum. Flooded as sea level rose, finished by ~8,000 ya. Sits directly beneath the Southern Route."}];
+const SHELVES = [{"id": "beringia", "label": "Beringia — the land bridge", "from": 36000, "dryUntil": 13000, "goneBy": 10500, "note": "Dry land for over twenty thousand years — not a bridge so much as a country, big enough to live in for generations. Drowned as the ice melted; fully submerged by ~11,000 ya. Everyone in the Americas descends from people who crossed it before the door shut."}, {"id": "doggerland", "label": "Doggerland — the North Sea plain", "from": 20000, "dryUntil": 9000, "goneBy": 8200, "note": "Rich wetland and forest joining Britain to mainland Europe, inhabited throughout. Progressively flooded, then finished by the Storegga slide tsunami ~8,150 ya. Britain becomes an island — and the branch that walked there becomes a branch that must sail."}, {"id": "sunda", "label": "Sunda shelf — mainland Southeast Asia", "from": 30000, "dryUntil": 14500, "goneBy": 7000, "note": "Sumatra, Java and Borneo were part of the Asian mainland. Drowned by post-glacial sea-level rise, most sharply at Meltwater Pulse 1A (~14,500 ya). One of the largest habitable areas ever lost to water."}, {"id": "sahul", "label": "Sahul — Australia joined to New Guinea", "from": 65000, "dryUntil": 12000, "goneBy": 8000, "note": "Australia, Tasmania and New Guinea as one continent. Note what this does NOT solve: even at lowest sea level, reaching Sahul still required crossing open water. Whoever arrived ~65,000 ya had boats."}, {"id": "gulf", "label": "The Persian Gulf Oasis", "from": 70000, "dryUntil": 12000, "goneBy": 8000, "note": "A dry basin fed by the Tigris, Euphrates and Karun — a refuge through the arid glacial maximum. Flooded as sea level rose, finished by ~8,000 ya. Sits directly beneath the Southern Route."}];
 
+
+// ===================== PALAEO-SHORELINES =====================
+// A DRAWN COASTLINE IS A CLAIM, and it gets the same treatment as an anchor:
+// a source, a date, and an honest statement of confidence. Enforced in code
+// below, not left to habit — an entry missing basis or source is DROPPED.
+//
+// FOUR DEPTH STOPS, chosen from this map's own 18-point SEA curve rather than
+// from round numbers, so the shoreline can never drift out of step with the
+// sea-level readout in the HUD. Selection is by DEPTH, not by date: render
+// reads seaLevel(yearsAgo), finds the two stops that bracket it, and crossfades.
+//
+// THREE DRAWN STOPS, NOT FOUR, and the reason is worth stating rather than
+// hiding. The plan called for a -70 m pre-LGM stop and a -80 m late-glacial
+// stop. Those are ten metres apart — far below the digitising precision here —
+// so they are the same drawn shape. Keeping both would have put two identical
+// polygons on the map, each claiming a different date, and a click would have
+// returned whichever happened to be on top. That is worse than useless on a map
+// whose whole argument is that a drawn line is a claim.
+//
+// They are therefore ONE stop at -75 m that honestly covers both windows. The
+// recurrence is a real finding, not a compromise: the world at 65,000 ya and
+// the world at 13,000 ya stood at the same sea level and had the same coast.
+// The fourth state in the plan is MODERN, which needs no polygon — it is the
+// basemap, and drawing nothing is the correct rendering of it.
+const COAST_STATES = [
+  {id:'s4', depth:-40,  from:10000, to:8500,  label:'Early Holocene drowning'},
+  {id:'s3', depth:-75,  from:70000, to:12000, label:'Pre-LGM lowstand, and the same coast again after meltwater pulse 1A'},
+  {id:'s2', depth:-120, from:26500, to:19000, label:'Last Glacial Maximum'}
+];
+
+// Below this there is no sea-level curve on this map, so nothing is drawn.
+// The blank is deliberate and the legend says so.
+const COAST_FLOOR = 130000;
+
+// PROVENANCE, stated once and repeated in every popup.
+//   'reconstruction' - shape follows a published palaeogeographic reconstruction
+//   'bathymetric'    - shape follows a modern depth contour, which is a PROXY:
+//                      uncorrected for isostatic rebound, sediment infill or
+//                      tectonics. Most wrong at high latitude, which is exactly
+//                      Doggerland and Beringia.
+// Every polygon here is additionally HAND-DIGITISED at low resolution from the
+// cited figures. That is a second, separate weakness and it is stated too.
+const COAST_SRC = {
+  voris: {
+    basis:'reconstruction',
+    source:'Voris, H.K. 2000, J. Biogeography 27:1153–1167 — Pleistocene sea-level maps of SE Asia',
+    url:'https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-2699.2000.00489.x',
+    caveat:'Published and widely cited, but Voris derives his shorelines from PRESENT-DAY depth contours. It is a peer-reviewed approximation, not an isostatically corrected reconstruction.'
+  },
+  manley: {
+    basis:'reconstruction',
+    source:'Manley, W.F. 2002, INSTAAR — Postglacial Flooding of the Bering Land Bridge, 1,000-year steps',
+    url:'https://instaar.colorado.edu/groups/QGISL/bering_land_bridge',
+    caveat:'Built from a bathymetric DEM plus a sea-level curve. Best available digital treatment of Beringia, still not a full glacial-isostatic solution.'
+  },
+  isobath: {
+    basis:'bathymetric',
+    source:'Modern depth contour (GEBCO-equivalent bathymetry) used as a proxy for the palaeo-shoreline',
+    url:'',
+    caveat:'A depth contour is NOT a reconstruction. No correction for isostatic rebound, sediment infill or tectonics. Rebound error is largest at high latitude — which is precisely where Doggerland and Beringia are.'
+  }
+};
+
+const COAST_PRECISION = 'Hand-digitised at low resolution (~20–30 points per shape). Treat the line as ±50–100 km, not as a surveyed coast.';
+
+// region ids match SHELVES, so each coastline inherits that shelf's researched
+// dates and prose. Geometry is the only thing replaced.
+const COASTS = [
+  // ---- BERINGIA. Two rings because the landmass crosses the antimeridian and
+  // this map is noWrap with maxBounds at +/-179; one ring would draw the long
+  // way round the world. Same landmass, split for rendering only.
+  {id:'ber_w_s2', region:'beringia', state:'s2', src:'manley',
+   coords:[[69.8,176.5],[71.0,178.5],[71.6,180],[59.6,180],[61.5,179.0],[62.3,179.1],[64.0,178.5],[64.7,177.5],[66.5,178.0],[68.0,177.0]]},
+  {id:'ber_e_s2', region:'beringia', state:'s2', src:'manley',
+   coords:[[71.6,-180],[72.3,-172],[72.4,-165],[71.8,-160],[71.3,-157],[70.6,-159],[69.4,-163],[68.0,-166],[66.6,-164.5],[65.4,-167.8],[64.6,-164],[63.4,-162],[62.2,-165.5],[60.5,-165],[59.0,-162],[58.2,-158.5],[57.0,-158],[55.5,-161],[54.4,-164.8],[55.5,-170],[57.5,-175],[59.6,-180]]},
+  {id:'ber_w_s3', region:'beringia', state:'s3', src:'manley',
+   coords:[[69.5,177.5],[70.6,179.0],[71.0,180],[61.2,180],[62.6,179.4],[64.2,178.6],[64.8,177.8],[66.6,178.4],[68.1,177.6]]},
+  {id:'ber_e_s3', region:'beringia', state:'s3', src:'manley',
+   coords:[[71.0,-180],[71.6,-173],[71.7,-166],[71.2,-160],[70.9,-157.5],[70.2,-159.5],[69.0,-163.5],[67.6,-166],[66.4,-164.8],[65.4,-167.9],[64.5,-164.4],[63.3,-162.5],[62.1,-165.8],[60.4,-165.3],[59.1,-162.5],[58.3,-159.5],[57.2,-160],[56.2,-163],[55.6,-166.5],[57.0,-172],[58.8,-176.5],[61.2,-180]]},
+
+  // ---- DOGGERLAND. Deliberately the North Sea plain only, matching the
+  // shelf's own label; the Channel plain is a different landscape and is not
+  // claimed here. Northern edge stops at the Norwegian Trench, which never dried.
+  {id:'dog_s2', region:'doggerland', state:'s2', src:'isobath',
+   coords:[[57.7,-2.0],[58.0,0.5],[58.2,3.5],[57.6,6.5],[57.0,8.2],[55.8,8.1],[54.5,8.5],[53.5,6.5],[52.6,4.5],[51.9,4.0],[51.3,3.2],[51.0,1.6],[51.4,1.4],[52.0,1.7],[52.9,1.7],[53.6,0.2],[54.5,-0.5],[55.5,-1.5],[56.5,-2.4]]},
+  {id:'dog_s3', region:'doggerland', state:'s3', src:'isobath',
+   coords:[[57.4,-1.8],[57.6,0.8],[57.5,3.8],[57.0,6.2],[56.6,8.0],[55.6,8.2],[54.4,8.4],[53.4,6.3],[52.6,4.5],[51.9,4.0],[51.4,3.3],[51.1,1.7],[51.5,1.4],[52.1,1.7],[52.9,1.7],[53.6,0.2],[54.5,-0.5],[55.5,-1.5],[56.4,-2.2]]},
+  // By -40 m the plain is gone and what is left is the Dogger Bank island.
+  // Drawing the island rather than a shrunken plain is the honest shape.
+  {id:'dog_s4', region:'doggerland', state:'s4', src:'isobath',
+   coords:[[55.3,1.5],[55.4,2.8],[55.0,4.2],[54.4,4.0],[54.1,2.6],[54.3,1.2]]},
+
+  // ---- SUNDA
+  {id:'sun_s2', region:'sunda', state:'s2', src:'voris',
+   coords:[[7.5,97.5],[5.5,95.0],[3.0,96.5],[0.0,98.0],[-3.0,100.0],[-6.0,102.0],[-7.5,105.0],[-8.8,110.0],[-9.0,114.0],[-8.8,115.5],[-8.2,116.0],[-6.0,116.5],[-4.0,117.5],[-2.0,118.0],[0.5,118.0],[3.0,118.5],[5.0,119.0],[6.5,117.0],[8.0,114.0],[9.5,110.0],[10.5,108.5],[10.0,103.0],[8.5,99.0]]},
+  {id:'sun_s3', region:'sunda', state:'s3', src:'voris',
+   coords:[[7.0,98.0],[5.4,95.4],[3.0,96.9],[0.0,98.4],[-3.0,100.4],[-5.8,102.4],[-7.2,105.2],[-8.5,110.2],[-8.7,114.0],[-8.5,115.4],[-8.0,115.8],[-5.8,116.2],[-3.8,117.2],[-1.8,117.8],[0.6,117.8],[3.0,118.2],[4.8,118.6],[6.2,116.6],[7.6,113.5],[8.8,109.8],[9.6,108.2],[9.2,103.0],[8.0,99.4]]},
+  // At -40 m the Java Sea and the Gulf of Thailand have flooded. What survives
+  // is the Malacca corridor joining Sumatra to the peninsula.
+  {id:'sun_s4', region:'sunda', state:'s4', src:'voris',
+   coords:[[6.0,99.0],[4.5,98.5],[2.5,99.5],[1.0,101.5],[0.0,103.5],[1.0,104.5],[2.5,103.5],[4.0,101.0],[5.5,100.3]]},
+
+  // ---- SAHUL. The Arafura plain and the Carpentaria basin, matching the
+  // shelf's label: Australia joined to New Guinea.
+  {id:'sah_s2', region:'sahul', state:'s2', src:'voris',
+   coords:[[-8.0,131.0],[-9.5,137.0],[-8.5,141.0],[-8.0,143.5],[-9.5,144.0],[-11.0,142.5],[-13.0,141.5],[-16.0,140.0],[-17.5,139.5],[-16.0,137.0],[-14.0,135.5],[-12.0,133.0],[-11.0,130.5],[-10.5,128.0],[-9.5,126.0],[-8.0,128.0]]},
+  {id:'sah_s3', region:'sahul', state:'s3', src:'voris',
+   coords:[[-8.3,131.2],[-9.7,137.0],[-8.8,141.0],[-8.3,143.4],[-9.6,143.8],[-11.0,142.6],[-13.0,141.6],[-15.8,140.2],[-17.2,139.6],[-15.8,137.2],[-13.8,135.6],[-11.9,133.2],[-11.0,130.8],[-10.6,128.4],[-9.7,126.5],[-8.3,128.4]]},
+  // Torres Strait is the last thing to go; by -40 m it is a narrow neck.
+  {id:'sah_s4', region:'sahul', state:'s4', src:'isobath',
+   coords:[[-9.0,141.5],[-9.2,143.2],[-10.0,143.6],[-10.8,142.8],[-10.5,141.6],[-9.6,141.0]]},
+
+  // ---- PERSIAN GULF. The basin is under 90 m throughout, so at -120 m the
+  // whole floor is dry and drained by a single river through Hormuz.
+  {id:'gul_s2', region:'gulf', state:'s2', src:'isobath',
+   coords:[[30.3,48.5],[29.5,50.0],[28.0,51.0],[27.0,52.5],[26.5,54.5],[26.2,56.2],[25.5,56.4],[24.8,54.0],[24.5,52.0],[25.5,51.5],[26.5,50.5],[28.0,49.0],[30.0,48.0]]},
+  {id:'gul_s3', region:'gulf', state:'s3', src:'isobath',
+   coords:[[30.2,48.6],[29.4,50.1],[27.9,51.1],[27.0,52.6],[26.5,54.5],[26.2,56.1],[25.6,56.3],[24.9,54.1],[24.6,52.1],[25.5,51.6],[26.5,50.6],[28.0,49.1],[29.9,48.1]]},
+  // By -40 m the sea is through Hormuz and the south-east basin is drowned;
+  // the north-west half is still the oasis floor.
+  {id:'gul_s4', region:'gulf', state:'s4', src:'isobath',
+   coords:[[30.2,48.6],[29.3,50.2],[28.2,51.2],[27.3,52.2],[26.4,52.0],[25.8,51.2],[26.6,50.4],[28.1,49.1],[29.9,48.2]]}
+];
+
+// HARD RULE, in code rather than as a habit: a polygon that cannot carry a
+// source does not go on the map. Anything missing geometry, a known depth
+// stop, or a provenance record is dropped here and named in the console.
+const COASTS_OK = COASTS.filter(function(c){
+  const st  = COAST_STATES.filter(function(s){ return s.id === c.state; })[0];
+  const src = COAST_SRC[c.src];
+  const bad = !st ? 'unknown state'
+            : !src ? 'no source record'
+            : !src.basis ? 'no basis'
+            : !src.source ? 'no source text'
+            : (!c.coords || c.coords.length < 3) ? 'not a polygon'
+            : null;
+  if(bad){ console.warn('COASTS: dropped ' + c.id + ' — ' + bad); return false; }
+  return true;
+});
 const ICE = [{"id": "laurentide", "label": "The Laurentide ice sheet", "coords": [[49, -125], [52, -95], [55, -75], [62, -62], [72, -70], [75, -95], [70, -125], [60, -135]], "maxFrom": 75000, "peak": 21000, "goneBy": 7000, "note": "Up to three kilometres thick, covering most of Canada and the northern United States. Its southern edge is the wall the first Americans had to get around — and the reason the coastal route matters more than the interior one."}, {"id": "cordilleran", "label": "The Cordilleran ice sheet", "coords": [[48, -124], [52, -118], [58, -126], [61, -140], [56, -136], [50, -128]], "maxFrom": 50000, "peak": 20000, "goneBy": 11000, "note": "The Pacific-side sheet. Where it met the Laurentide, the continent was sealed; the gap between them — the ice-free corridor — did not open early enough to be the first route in."}, {"id": "fennoscandian", "label": "The Fennoscandian ice sheet", "coords": [[54, 8], [58, 30], [65, 42], [71, 30], [70, 12], [62, 4]], "maxFrom": 70000, "peak": 21000, "goneBy": 9000, "note": "Northern Europe under ice. Its retreat opens Scandinavia — which is why the Norse branch is one of the last to exist at all."}, {"id": "patagonian", "label": "The Patagonian ice sheet", "coords": [[-41, -73], [-46, -71], [-52, -72], [-55, -70], [-50, -75], [-44, -75]], "maxFrom": 40000, "peak": 20000, "goneBy": 11000, "note": "The southern tip's own ice cap. People reach Patagonia only as it withdraws — the far end of the longest walk in the story."}];
 
 const PAUSES = [{"id":"mazama","label":"The Mazama eruption","from":7758,"to":7660,"note":"The largest Cascade eruption in a million years — VEI 7, ~50 km³ of magma, the summit collapsing into its own emptied chamber to leave the caldera that becomes Crater Lake. **The width of this band is the width of the published confidence interval, not the duration of the event**: 7682–7584 cal BP at 95.4% (Egan, Staff & Blackford 2015), cross-checked against a GISP2 ice-core signal at 7627 ± 150 BP. Same convention as Thera on this layer, where the band is the size of the disagreement.\n\nMarked as an event, and deliberately **not** as a demonstrated population reset. Ash fell across the Pacific Northwest into Canada; people were demonstrably in the region beforehand (`or10`); but no settlement-pattern discontinuity attributable to the eruption was established in this pass. **The claim that the eruption is remembered in Klamath and Modoc oral tradition is a separate claim with separate evidence — see `mz10`, where it is argued in both directions.**"},
@@ -934,11 +1075,39 @@ GHOSTS.forEach(g=>{
 
 
 // ---- Ice sheets and drowning coastlines: the walls, not just the walking ----
-const shelfLayers = SHELVES.map(s=>{
-  const poly = L.polygon(s.coords, {color:'#c2a878', weight:1, dashArray:'4,4',
-    fillColor:'#b39a6d', fillOpacity:0, opacity:0, interactive:true}).addTo(map);
-  poly.bindPopup(`<p class="pop-title">${s.label}</p><p class="pop-age">Walkable until ~${s.dryUntil.toLocaleString()} ya \u00b7 gone by ~${s.goneBy.toLocaleString()} ya</p><p class="pop-note">${s.note}</p>`);
-  return {s, poly};
+// SHELVES no longer carries geometry. It keeps what was research \u2014 the dates
+// and the prose \u2014 and COASTS supplies the shape, so there is one system
+// drawing each region instead of two that disagree.
+const SHELF_BY_ID = {}; SHELVES.forEach(s=>{ SHELF_BY_ID[s.id] = s; });
+
+// A bathymetric shape is drawn DASHED and a published reconstruction SOLID, so
+// the weaker claim looks weaker at a glance, before anyone opens a popup.
+const coastLayers = COASTS_OK.map(c=>{
+  const shelf = SHELF_BY_ID[c.region] || {label:c.region, note:''};
+  const st    = COAST_STATES.filter(s=>s.id === c.state)[0];
+  const src   = COAST_SRC[c.src];
+  const recon = src.basis === 'reconstruction';
+  const poly = L.polygon(c.coords, {
+    color:'#c2a878', weight: recon ? 1.4 : 1,
+    dashArray: recon ? null : '4,4',
+    fillColor:'#b39a6d', fillOpacity:0, opacity:0, interactive:true
+  }).addTo(map);
+  poly.bindPopup(
+      `<p class="pop-title">${shelf.label}</p>`
+    + `<p class="pop-age">Shoreline at ${Math.abs(st.depth)} m below present `
+    + `\u00b7 ${st.label} \u00b7 ~${st.from.toLocaleString()}\u2013${st.to.toLocaleString()} ya</p>`
+    + `<p class="pop-note">${shelf.note || ''}</p>`
+    + `<p class="pop-note" style="margin-top:8px">`
+    + `<strong style="color:${recon ? 'var(--sahara-bright)' : 'var(--rust)'}">`
+    + (recon ? 'RECONSTRUCTION' : 'BATHYMETRIC APPROXIMATION') + `</strong> \u2014 `
+    + `${src.source}.${src.url ? ' ' + src.url : ''}</p>`
+    + `<p class="pop-note" style="color:var(--parchment-dimmer)">${src.caveat}</p>`
+    + `<p class="pop-note" style="color:var(--parchment-dimmer)">${COAST_PRECISION}</p>`
+    + (shelf.dryUntil ? `<p class="pop-note" style="color:var(--parchment-dimmer)">`
+        + `This region's dates are carried from the shelf record: walkable until `
+        + `~${shelf.dryUntil.toLocaleString()} ya, gone by ~${shelf.goneBy.toLocaleString()} ya.</p>` : '')
+  );
+  return {c, st, src, poly, shelf};
 });
 const iceLayers = ICE.map(i=>{
   const poly = L.polygon(i.coords, {color:'#cfe4f2', weight:1,
@@ -1453,7 +1622,7 @@ function buildFog(yearsAgo, drawnByRoute, sliderVal){
 }
 
 // ===================== TOGGLES =====================
-const layerState = {routes:true, ghosts:true, corridor:true, nodes:true, anchors:true, leaders:true, connectors:true, presapiens:false, fog:true, ice:true, camera:false, diffusion:true, territory:true, capability:true, trade:true, forced:true, textlineage:true};
+const layerState = {shorelines:true, routes:true, ghosts:true, corridor:true, nodes:true, anchors:true, leaders:true, connectors:true, presapiens:false, fog:true, ice:true, camera:false, diffusion:true, territory:true, capability:true, trade:true, forced:true, textlineage:true};
 document.getElementById('toggleRoutes').addEventListener('change', e=>{ layerState.routes=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleGhosts').addEventListener('change', e=>{ layerState.ghosts=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleCorridor').addEventListener('change', e=>{ layerState.corridor=e.target.checked; render(+scrub.value); });
@@ -1560,6 +1729,7 @@ function applyPresapiens(){
 }
 document.getElementById('togglePresapiens').addEventListener('change', e=>{ layerState.presapiens=e.target.checked; applyPresapiens(); });
 document.getElementById('toggleFog').addEventListener('change', e=>{ layerState.fog=e.target.checked; render(+scrub.value); });
+document.getElementById('toggleShorelines').addEventListener('change', e=>{ layerState.shorelines=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleIce').addEventListener('change', e=>{ layerState.ice=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleCamera').addEventListener('change', e=>{ layerState.camera=e.target.checked; });
 document.getElementById('toggleDiffusion').addEventListener('change', e=>{ layerState.diffusion=e.target.checked; render(+scrub.value); });
@@ -1740,15 +1910,46 @@ function render(sliderVal){
     poly.setStyle({fillOpacity: 0.10 + 0.42*extent, opacity: 0.25 + 0.5*extent});
   });
 
-  // Shelves: dry land, then drowning, then gone. The fade is the closing door.
-  shelfLayers.forEach(({s, poly})=>{
-    if(!layerState.ice || yearsAgo > s.from || yearsAgo < s.goneBy){
+  // Palaeo-shorelines. Selected by DEPTH, not by date: read the sea level this
+  // map already computes from its own 18-point curve, find the two depth stops
+  // that bracket it, and crossfade. The coastline is therefore driven by the
+  // same number shown in the HUD and cannot drift out of step with it.
+  //
+  // Before COAST_FLOOR there is no curve, so nothing is drawn. The blank is
+  // deliberate: an invented Pleistocene coastline would be the first thing on
+  // this map to overstate.
+  const seaNow = seaLevel(yearsAgo);
+  const shoreOn = layerState.shorelines && yearsAgo <= COAST_FLOOR;
+  coastLayers.forEach(({c, st, src, poly, shelf})=>{
+    // The region's own researched window still governs whether it is drawn at
+    // all — those dates are research and outrank the depth ladder.
+    if(!shoreOn || (shelf.from && yearsAgo > shelf.from)
+                || (shelf.goneBy && yearsAgo < shelf.goneBy)){
       poly.setStyle({fillOpacity:0, opacity:0}); return;
     }
-    const drowning = yearsAgo < s.dryUntil
-      ? (s.dryUntil - yearsAgo) / (s.dryUntil - s.goneBy) : 0;
-    poly.setStyle({fillOpacity: 0.30*(1-drowning), opacity: 0.6*(1-drowning*0.7),
-                   dashArray: drowning>0.05 ? '2,6' : '4,4'});
+    // Weight this stop by how close the live sea level is to its depth. The
+    // neighbouring stop gets the remainder, so the two crossfade.
+    const sorted = COAST_STATES.slice().sort((a,b)=>b.depth - a.depth); // -40 … -120
+    let w = 0;
+    if(seaNow >= sorted[0].depth){                       // shallower than the top stop
+      w = (st.id === sorted[0].id) ? 1 : 0;
+    } else if(seaNow <= sorted[sorted.length-1].depth){  // deeper than the bottom stop
+      w = (st.id === sorted[sorted.length-1].id) ? 1 : 0;
+    } else {
+      for(let i = 0; i < sorted.length - 1; i++){
+        const hi = sorted[i], lo = sorted[i+1];
+        if(seaNow <= hi.depth && seaNow >= lo.depth){
+          const t = (hi.depth - seaNow) / (hi.depth - lo.depth);   // 0 at hi, 1 at lo
+          if(st.id === hi.id) w = 1 - t;
+          else if(st.id === lo.id) w = t;
+          break;
+        }
+      }
+    }
+    if(w <= 0.01){ poly.setStyle({fillOpacity:0, opacity:0}); return; }
+    const recon = src.basis === 'reconstruction';
+    poly.setStyle({fillOpacity: 0.30 * w, opacity: 0.6 * w,
+                   dashArray: recon ? null : '4,4'});
   });
 
   // What the ice and the coastlines are doing RIGHT NOW, stated in words.
