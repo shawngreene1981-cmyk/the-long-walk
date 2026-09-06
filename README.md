@@ -11,30 +11,57 @@ scrubber reaches its date, so the map is watched as much as read.
 
 | | |
 |---|---|
-| Anchors | 426 (33 flagged leaders) |
-| Migration routes | 106 |
+| Anchors | 552 (34 flagged leaders) |
+| Migration routes | 111 |
 | Leader walk-backs | 15 |
 | African corridor connectors | 6 |
-| Era checkpoints | 60, across 10 ages |
+| Era checkpoints | 66, across 11 ages |
 | Sea-level curve | 18 points |
 
 Plus territories, capabilities, diffusions, pauses, continental shelves, ice
-sheets, ghost branches, origin nodes and trade routes.
+sheets, ghost branches, origin nodes and trade routes. The timeline runs to
+1999 CE.
 
 ## Every anchor carries an evidence tier
 
 | Tier | Count | |
 |---|---|---|
-| Well-supported | 317 | |
-| Contested / disputed | 81 | |
+| Well-supported | 407 | |
+| Contested / disputed | 111 | |
 | Pre-*sapiens* hominin | 26 | a separate category, not a weaker one |
+| Tradition | 6 | held and transmitted, not excavated |
 | No verified evidence | 2 | |
 
-Roughly 19% of this map is flagged contested — and that is the point, not a
+Roughly 20% of this map is flagged contested — and that is the point, not a
 defect. The aim is to show *how well each claim is supported*, not to assert
 what happened. A contested anchor is drawn as prominently as a solid one, in a
 different colour, so you can see the shape of the disagreement instead of
 having it quietly resolved for you.
+
+## Palaeo-shorelines: built, and switched off
+
+Half the routes here only make sense at low sea level — Beringia was a country,
+Doggerland an inhabited landscape, Sundaland continuous land. The layer that
+draws those coastlines is complete: shorelines are selected by **depth** rather
+than by date, read from the map's own 18-point sea-level curve, so they can
+never drift out of step with the sea-level readout. Three drawn stops
+(−40 m, −75 m, −120 m) plus modern, which correctly draws nothing.
+
+**It ships disabled, on purpose.** Every polygon carries a source, a basis and a
+confidence statement, and the code drops any polygon that cannot — but the
+shapes themselves are hand-drawn approximations rather than geometry extracted
+from the reconstructions they cite. On a map whose whole argument is that it
+never overstates, a coastline that looks surveyed and is not would be the first
+thing here to break that. The layer stays off until real sourced geometry
+replaces the placeholders; the system is data-driven, so that is a data swap
+and not a code change.
+
+When it is on: **solid edge** = published reconstruction, **dashed edge** =
+bathymetric approximation, a modern depth contour standing in for a
+palaeo-shoreline with no correction for isostatic rebound, sediment or
+tectonics — and rebound error is largest at high latitude, which is exactly
+Doggerland and Beringia. Before 130,000 years ago the map has no sea-level
+curve and deliberately draws no shoreline at all.
 
 ## Citing a single anchor
 
