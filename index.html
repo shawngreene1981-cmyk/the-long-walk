@@ -416,7 +416,8 @@
     <span><span class="lineswatch" style="border-color:#6f7580;background:#0f1826"></span> Fog — ground no one has reached</span>
     <span><span class="dot" style="background:#6b5f96"></span> Lost ground — people were here, and are gone</span>
     <span><span class="lineswatch" style="border-color:#cfe4f2;background:rgba(220,236,247,.35)"></span> Ice sheet</span>
-    <span style="flex-basis:100%;color:var(--rust)"><strong>Palaeo-shorelines are OFF by default and ship unusable on purpose.</strong> The layer, its dating and its provenance rules are complete and tested, but the polygons themselves are hand-drawn approximations rather than geometry extracted from the published sources they cite. On a map whose argument is that it never overstates, a drawn coastline that looks surveyed but is not would be the first thing here to break that. The layer stays switched off until real sourced geometry replaces the placeholders. When it is on: <strong>solid edge</strong> = published reconstruction, <strong>dashed edge</strong> = bathymetric approximation, a modern depth contour standing in for a palaeo-shoreline, uncorrected for isostatic rebound, sediment or tectonics — and rebound error is largest at high latitude, which is exactly Doggerland and Beringia. Before 130,000 years ago this map has no sea-level curve and deliberately draws no shoreline at all.</span>
+    <span style="flex-basis:100%;color:var(--rust)"><strong>The ice sheets are the crudest geometry on this map, and unlike the shorelines they are switched ON.</strong> Four sheets, <strong>26 vertices between them</strong> — Laurentide 8, Cordilleran 6, Fennoscandian 6, Patagonian 6. They are bounding boxes, not margins, and the dates they carry are better than the shapes that carry them. Read them as "ice was roughly here", never as an edge. Real LGM margins are among the best-mapped features in Quaternary science and the replacement is identified — Batchelor et al. 2019 for the Northern Hemisphere — but that deposit carries <strong>no licence on the artefact</strong>, only on the paper describing it. This project does not ship data whose rights cannot be traced to the thing itself; it refused a basemap on exactly that ground. So the boxes stay, visibly labelled as boxes, until the licence is resolved rather than assumed. The Patagonian sheet has no licence-cleared source at all.</span>
+    <span style="flex-basis:100%;color:var(--rust)"><strong>Palaeo-shorelines are OFF by default and ship unusable on purpose.</strong> The layer, its dating and its provenance rules are complete and tested, but the polygons themselves are hand-drawn approximations rather than geometry extracted from the published sources they cite. On a map whose argument is that it never overstates, a drawn coastline that looks surveyed but is not would be the first thing here to break that. The layer stays switched off until real sourced geometry replaces the placeholders. When it is on: <strong>solid edge</strong> = published reconstruction, <strong>dashed edge</strong> = bathymetric approximation, a modern depth contour standing in for a palaeo-shoreline, uncorrected for isostatic rebound, sediment or tectonics — and rebound error is largest at high latitude, which is exactly Doggerland and Beringia. Before <strong>26,000 years ago</strong> this map deliberately draws no shoreline at all. That floor is the reach of the best available source, not of our effort: De Groeve et al. 2022 is the only global shoreline reconstruction carrying a real glacial-isostatic correction, and it begins at 26 ka. Earlier than that no GIA-corrected global product exists — the edge of the science, not a gap in the collecting. The map used to draw there from hand-made shapes and no longer does, because an unsourceable coastline should be absent rather than approximate.</span>
   </div>
 
   <h2 class="sec">What this prototype is actually showing</h2>
@@ -655,9 +656,19 @@ const COAST_STATES = [
   {id:'s2', depth:-120, from:26500, to:19000, label:'Last Glacial Maximum'}
 ];
 
-// Below this there is no sea-level curve on this map, so nothing is drawn.
-// The blank is deliberate and the legend says so.
-const COAST_FLOOR = 130000;
+// Below this, nothing is drawn. The blank is deliberate and the legend says so.
+//
+// It used to be 130,000 — the reach of this map's own sea-level curve. It is
+// now 26,000, which is the reach of the best available SOURCE. De Groeve et al.
+// 2022 is the only global shoreline product with a real glacial-isostatic
+// correction (SELEN4 + ICE-6G_C + VM5a), and it begins at 26 ka. Before that
+// there is no GIA-corrected global reconstruction at all — not a gap in what
+// was collected, but the edge of the science.
+//
+// The map could have kept drawing there from hand-made shapes. It does not,
+// because a coastline is a claim and an unsourceable one should be absent
+// rather than approximate. Honest absence beats a drawn guess.
+const COAST_FLOOR = 26000;
 
 // PROVENANCE, stated once and repeated in every popup.
 //   'reconstruction' - shape follows a published palaeogeographic reconstruction
