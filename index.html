@@ -121,6 +121,14 @@
   .legend-row span.legend-note{display:block;line-height:1.55;}
   .legend-row span.legend-note .glyph{margin-right:4px;}
   .legend-row span.legend-note span{display:inline;}   /* e.g. the source credit nested inside a note */
+  /* The same defect in a short entry: a swatch plus a label with an italic word in it. Each
+     text run and the <em> became separate flex items, so "pre-sapiens" split at the italic.
+     The label is one element now, and flows as ordinary text inside it. */
+  .legend-row span.lbl{display:block;}
+  /* The layer switches had the same defect: every text run, italic and count inside the
+     flex label was its own item, so "Pre-sapiens" split and "( 518 )" gained gaps. The
+     text is one element now. */
+  .toggle-item .toggle-text{display:block;}
   .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.4);}
   /* Shape glyphs mirror the map's SHAPE_OF() mapping exactly — see the JS block
      of the same name. If a shape is added there, add its glyph here too. */
@@ -337,24 +345,24 @@
       <span class="sheet-title" id="layerPanelTitle">Layers</span>
       <button type="button" class="sheet-close" id="layersClose" aria-label="Close layers">&#10005;</button>
     </div>
-    <label class="toggle-item"><input type="checkbox" id="toggleRoutes" checked> Migration routes</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleGhosts" checked> Ghost branches &amp; reconvergence</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleCorridor" checked> Green Sahara corridor</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleNodes" checked> Origin nodes</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleAnchors" checked> Researched anchors (<span data-count="nonLeaderAnchors">518</span>)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleLeaders" checked> Leader pins &amp; walk-backs (<span data-count="leaders">34</span> + <span data-count="walkbacks">15</span>)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleConnectors" checked> African corridors</label>
-    <label class="toggle-item"><input type="checkbox" id="togglePresapiens"> Pre-<em>sapiens</em> tier (<span data-count="presapiensGated">10</span> anchors before <span data-count="presapiensFloor">350,000</span> ya)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleFog" checked> Fog of war (closes again where a line dies out)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleShorelines"> Palaeo-shorelines <em>(sourced from 26,000 ya — approximate before)</em><span class="shore-status" id="shoreStatus" role="status" aria-live="polite"></span></label>
-    <label class="toggle-item"><input type="checkbox" id="toggleIce" checked> Ice sheets &amp; drowning coastlines</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleDiffusion" checked> Technology diffusion (the thing moves, not the people)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleTerritory" checked> Territory held (extent, not borders — prototype)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleCapability" checked> Capability held &amp; lost (the people stay)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleTrade" checked> Trade routes (both directions, for centuries)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleForced" checked> Forced routes (black is coerced transit, and it never has an arrowhead)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleTextLineage" checked> Text lineage (the ring closes as a scripture fills in \u2014 the line is not a route)</label>
-    <label class="toggle-item"><input type="checkbox" id="toggleCamera"> Camera pulls back as the world opens (off by default — the map opens fully zoomed out)</label>
+    <label class="toggle-item"><input type="checkbox" id="toggleRoutes" checked> <span class="toggle-text">Migration routes</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleGhosts" checked> <span class="toggle-text">Ghost branches &amp; reconvergence</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleCorridor" checked> <span class="toggle-text">Green Sahara corridor</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleNodes" checked> <span class="toggle-text">Origin nodes</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleAnchors" checked> <span class="toggle-text">Researched anchors (<span data-count="nonLeaderAnchors">518</span>)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleLeaders" checked> <span class="toggle-text">Leader pins &amp; walk-backs (<span data-count="leaders">34</span> + <span data-count="walkbacks">15</span>)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleConnectors" checked> <span class="toggle-text">African corridors</span></label>
+    <label class="toggle-item"><input type="checkbox" id="togglePresapiens"> <span class="toggle-text">Pre-<em>sapiens</em> tier (<span data-count="presapiensGated">10</span> anchors before <span data-count="presapiensFloor">350,000</span> ya)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleFog" checked> <span class="toggle-text">Fog of war (closes again where a line dies out)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleShorelines"> <span class="toggle-text">Palaeo-shorelines <em>(sourced from 26,000 ya — approximate before)</em><span class="shore-status" id="shoreStatus" role="status" aria-live="polite"></span></span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleIce" checked> <span class="toggle-text">Ice sheets &amp; drowning coastlines</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleDiffusion" checked> <span class="toggle-text">Technology diffusion (the thing moves, not the people)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleTerritory" checked> <span class="toggle-text">Territory held (extent, not borders — prototype)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleCapability" checked> <span class="toggle-text">Capability held &amp; lost (the people stay)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleTrade" checked> <span class="toggle-text">Trade routes (both directions, for centuries)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleForced" checked> <span class="toggle-text">Forced routes (black is coerced transit, and it never has an arrowhead)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleTextLineage" checked> <span class="toggle-text">Text lineage (the ring closes as a scripture fills in \u2014 the line is not a route)</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleCamera"> <span class="toggle-text">Camera pulls back as the world opens (off by default — the map opens fully zoomed out)</span></label>
     <span class="toggle-item" style="color:var(--parchment-dimmer)">The camera only ever zooms out and never pans. Pause to move the map yourself — the fog eases back while paused so you can read what is underneath.</span>
   </div>
 
@@ -429,7 +437,7 @@
     <span><span class="lineswatch" style="border-color:#6fae52"></span> Green Sahara corridor (pulses open/closed)</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#c98a3e" stroke="#0e1420" stroke-width="1"/></svg> Site — well-supported</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><polygon points="7,1.2 12.8,7 7,12.8 1.2,7" fill="#b5573c" stroke="#0e1420" stroke-width="1"/></svg> Site — contested / disputed</span>
-    <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><polygon points="7,1 13,12 1,12" fill="#9b8ec9" stroke="#0e1420" stroke-width="1"/></svg> Site — pre-<em>sapiens</em> hominin (a separate tier, not a weaker one)</span>
+    <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><polygon points="7,1 13,12 1,12" fill="#9b8ec9" stroke="#0e1420" stroke-width="1"/></svg> <span class="lbl">Site — pre-<em>sapiens</em> hominin (a separate tier, not a weaker one)</span></span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="2" width="10" height="10" fill="none" stroke="#6b6558" stroke-width="2"/></svg> Claim — no verified evidence</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><polygon points="7,1.1 12.6,5.4 10.5,12.2 3.5,12.2 1.4,5.4" fill="none" stroke="#7fb0a3" stroke-width="1.8"/><circle cx="7" cy="7" r="1.5" fill="#7fb0a3"/></svg> Tradition-only — the record does not confirm it either way</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#c2a3d4" stroke-width="1" opacity=".3"/><circle cx="7" cy="7" r="5" fill="none" stroke="#c2a3d4" stroke-width="2.2" stroke-dasharray="12.6 18.8" transform="rotate(-90 7 7)"/><circle cx="7" cy="7" r="1.7" fill="#c2a3d4"/></svg> Text witness — arc = how much of the text this object holds</span>
@@ -924,6 +932,82 @@ const WALKBACK_GOLD = '#efc75a';
 
 // ===================== MAP INIT =====================
 try {
+// ---- BOLD AND ITALIC IN NOTES — AND NOTHING ELSE -----------------------------
+// The research notes are written with **bold** and *italic*, about 1,430 bold pairs across
+// anchors, routes, shelves, pauses, forced routes, capabilities and diffusions. Nothing ever
+// rendered them: every popup printed the asterisks, the Point Comfort popup opening with 24 of
+// them. Live the whole time, unseen until the first real render of the page.
+//
+// Ruled: bold and italic only. No links, headers or lists; this is not a markdown library.
+// Rules, kept deliberately small:
+//   - ** opens or closes bold, * opens or closes italic; *** is both, nested correctly
+//     (e.g. "**… for *fugido***" or "***quilombo* is Mbundu …**").
+//   - A marker opens only before a non-space and closes only after one, and only the
+//     innermost open marker can close, so the output is always properly nested.
+//   - HTML tags pass through untouched, and a paragraph break or <p> ends every open marker.
+//   - Anything left unmatched is written back as the literal asterisks it was, so a stray
+//     asterisk can never swallow the text after it.
+// The wording is unchanged: rendering removes the markers and adds emphasis, never words.
+function mdInline(html){
+  if(typeof html !== 'string' || html.indexOf('*') < 0) return html;
+  const out = [];            // pieces; open markers are {open:'b'|'i'} placeholders
+  let stack = [];            // indices into out of currently open markers
+  const flush = () => {      // unmatched opens become literal asterisks again
+    stack.forEach(k => { out[k] = out[k].open === 'b' ? '**' : '*'; });
+    stack = [];
+  };
+  const isSpace = c => c === undefined || /\s/.test(c);
+  let i = 0, text = '';
+  const pushText = () => { if(text){ out.push(text); text = ''; } };
+  while(i < html.length){
+    const ch = html[i];
+    if(ch === '<'){                                  // a tag: copy verbatim
+      const j = html.indexOf('>', i);
+      const tag = j < 0 ? html.slice(i) : html.slice(i, j + 1);
+      if(/^<\/?p[\s>]/i.test(tag)){ pushText(); flush(); }
+      text += tag; i += tag.length; continue;
+    }
+    if(ch === '\n' && html[i + 1] === '\n'){ pushText(); flush(); text += '\n\n'; i += 2; continue; }
+    if(ch !== '*'){ text += ch; i++; continue; }
+    let n = 0; while(html[i + n] === '*') n++;
+    const before = html[i - 1], after = html[i + n];
+    const canClose = !isSpace(before), canOpen = !isSpace(after);
+    pushText();
+    let left = n;
+    if(canClose){
+      while(left > 0 && stack.length){
+        const top = out[stack[stack.length - 1]].open;
+        const need = top === 'b' ? 2 : 1;
+        if(left < need) break;
+        out[stack.pop()] = top === 'b' ? '<strong>' : '<em>';
+        out.push(top === 'b' ? '</strong>' : '</em>');
+        left -= need;
+      }
+    }
+    if(left > 0 && canOpen){
+      while(left >= 2){ stack.push(out.length); out.push({open:'b'}); left -= 2; }
+      if(left === 1){ stack.push(out.length); out.push({open:'i'}); left = 0; }
+    }
+    if(left > 0) out.push('*'.repeat(left));
+    i += n;
+  }
+  pushText(); flush();
+  return out.join('');
+}
+// Every popup and tooltip on the map passes its content through here, so no call site can
+// forget it.
+(function(){
+  const base = L.DivOverlay.prototype.setContent;
+  L.DivOverlay.prototype.setContent = function(content){
+    return base.call(this, typeof content === 'string' ? mdInline(content) : content);
+  };
+})();
+// For text that was set with textContent: escape first, then render, so the data can
+// never inject markup.
+function mdText(s){
+  return mdInline(String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+}
+
 const map = L.map('map', {
   scrollWheelZoom:true, worldCopyJump:false,
   // Canvas, not SVG. The fog is one polygon with ~200 holes; the SVG renderer
@@ -2431,7 +2515,7 @@ function render(sliderVal){
     ? 'Sea level ' + Math.round(sl) + ' m above today'
     : 'Sea level at modern height';
   if(pauseEl){
-    pauseEl.textContent = pause ? '\u23f8  ' + pause.label + ' \u2014 ' + pause.note : '';
+    pauseEl.innerHTML = pause ? mdText('\u23f8  ' + pause.label + ' \u2014 ' + pause.note) : '';
     pauseEl.style.display = pause ? 'block' : 'none';
     const stage = document.querySelector('.stage');
     if(stage) stage.className = pause ? 'stage inreset' : 'stage';
@@ -3291,7 +3375,9 @@ window.addEventListener('orientationchange', function(){
   chips.innerHTML = order.map(function(k){
     return '<li class="tier-chip">'
       + '<span class="tier-dot" style="background:' + (TIER_COLOR[k] || '#8f897a') + '"></span>'
-      + '<span class="tier-n">' + counts[k] + '</span> ' + (NAME[k] || k)
+      + '<span class="tier-n">' + counts[k] + '</span> '
+      // One element, so an italic word ("Pre-<em>sapiens</em>") is not split off as its own flex item.
+      + '<span class="tier-name">' + (NAME[k] || k) + '</span>'
       + '</li>';
   }).join('');
 
