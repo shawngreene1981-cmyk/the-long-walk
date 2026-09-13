@@ -87,10 +87,22 @@ small islands. Every polygon carries source, basis and confidence, and the code 
 any polygon that cannot. The geometry lives in `data/coasts.json` and is fetched only
 when the layer is switched on.
 
-**Before 26,000 years ago the map deliberately draws no shoreline at all.** That is
-the reach of the best available source, not of our effort: no GIA-corrected global
-shoreline product exists before 26 ka. An unsourceable coastline should be absent
-rather than approximate.
+**Before 26,000 years ago the shorelines are an APPROXIMATION, not a reconstruction,
+and the map says so in words.** 26 ka is the reach of the best available source: no
+GIA-corrected global shoreline product exists before it. Below it the map draws the same
+De Groeve shapes, selected by its own sea-level curve rather than reconstructed for that
+date, with **no glacial-isostatic correction** — so they are most wrong at high latitude,
+which here means Beringia. The popup, the legend and the HUD all name it an
+approximation; its coastline is dashed where the reconstruction's is solid; the switch at
+26,000 years ago is instant, and a mark on the timeline shows where it falls. The curve
+is coarse there: four points between 26,500 and 130,000 years ago, with straight lines
+across 50,000 and 40,000 years. Each shelf is still drawn only within its researched
+window, so the approximation reaches back to 36 ka (Beringia), 65 ka (Sahul), 70 ka
+(Persian Gulf) and 90 ka (Sunda); Doggerland, held by ice, is never approximated.
+
+The HUD reports a shelf as walkable only while the layer is on and drawn. If the
+shoreline data fails to load, the map says so beside the switch and in the HUD, and
+ticking the switch again retries.
 
 The layer is **off by default** until the full-resolution extraction has been looked at.
 
