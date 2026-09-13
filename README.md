@@ -47,7 +47,7 @@ from the map's own 18-point sea-level curve, so they can never drift out of step
 with the sea-level readout.
 
 **The geometry is now sourced.** The 16 hand-drawn placeholders have been replaced
-by 124 polygons extracted from **De Groeve et al. 2022**, the only global shoreline
+by 3,305 polygons extracted at full resolution from **De Groeve et al. 2022**, the only global shoreline
 reconstruction with a real glacial-isostatic correction (SELEN4 sea-level solver,
 ICE-6G_C ice history, VM5a mantle). Three stops, each the reconstructed coast at the
 date this map's curve first reaches that depth, walking back from the present:
@@ -59,17 +59,31 @@ date this map's curve first reaches that depth, walking back from the present:
 | −40 m | ~9,550 ya | early Holocene drowning |
 
 Drawn for the five researched shelves only — Beringia, Doggerland, Sunda, Sahul and
-the Persian Gulf — so each coastline keeps its region's research note and dating. It
-is a model, not a survey: good to roughly 10 km, with small islands missing. Every
-polygon carries source, basis and confidence, and the code drops any polygon that
-cannot.
+the Persian Gulf — so each coastline keeps its region's research note and dating. Each
+region shows only the shelf inside its own box; where the box cuts the shelf the fill
+stops and no coastline is drawn along the cut. It is a model, not a survey, and **how
+much of each region's shelf survives simplification is measured and stated, region by
+region and stop by stop**, in every shoreline popup and here:
+
+| kept | −120 m | −75 m | −40 m |
+|---|---|---|---|
+| Beringia | 99.7% | 99.3% | 94.6% |
+| Doggerland | 99.5% | 98.6% | 92.2% |
+| Sunda | 99.5% | 97.0% | 73.3% |
+| Sahul | 98.4% | 95.5% | 77.5% |
+| Persian Gulf | 99.9% | 99.2% | 91.5% |
+
+97.9% overall. The loss concentrates at −40 m, where the shelf is fragmented into
+small islands. Every polygon carries source, basis and confidence, and the code drops
+any polygon that cannot. The geometry lives in `data/coasts.json` and is fetched only
+when the layer is switched on.
 
 **Before 26,000 years ago the map deliberately draws no shoreline at all.** That is
 the reach of the best available source, not of our effort: no GIA-corrected global
 shoreline product exists before 26 ka. An unsourceable coastline should be absent
 rather than approximate.
 
-The layer is **off by default** pending a ruling on switching it on.
+The layer is **off by default** until the full-resolution extraction has been looked at.
 
 Shoreline data: De Groeve, J., Kusumoto, B., Koene, E. *et al.* (2022). Global raster
 dataset on historical coastline positions and shelf sea extents since the Last Glacial
@@ -77,15 +91,19 @@ Maximum. *Global Ecology and Biogeography* 31(11): 2162–2171.
 https://doi.org/10.1111/geb.13573 — raster (AGE 2021) via Figshare,
 https://doi.org/10.21942/uva.c.5754779.v1, licensed
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). **Changes were made:** the
-coastline-age raster was thresholded at three dates, read at about 0.1°, polygonised,
-simplified at 0.08°, rounded to 2 decimal places, clipped to five regions, and
-fragments under 0.35 square degrees removed.
+coastline-age raster was thresholded at three dates at full resolution (2 arc-minutes)
+within five regional boxes, polygonised, simplified at 0.05°, rounded to 2 decimal
+places, and pieces under 0.003 square degrees removed.
 
 ## The GIS job — status
 
-**1. Palaeo-shorelines — done.** See above.
+**1. Palaeo-shorelines — re-extracted at full resolution, layer off until looked at.** See above.
 
-**2. Border acts — cut, not yet on the map.** Cliopatria v0.2.0 (GitHub release tag,
+**2. Border acts — cut, shipped as data, preloaded, not yet drawn.** The 56 acts are in
+`data/acts/` with a manifest. The borders layer's visual grammar is still unruled, so
+nothing is rendered; `?borders=preload` fetches and parses every act in the background,
+ahead of the playhead first, so the 25-year acts that are on screen for a tenth of a
+second are already in memory when playback reaches them. Cliopatria v0.2.0 (GitHub release tag,
 CC BY 4.0; Bennett *et al.* 2025, *Scientific Data* 12, 247,
 https://doi.org/10.1038/s41597-025-04516-9) cut into centuries before 1500 CE and
 half-centuries after, at 0.25° / 2 dp, with every invalid geometry repaired. The
@@ -100,12 +118,14 @@ only on the paper describing it. This project does not ship data whose rights ca
 be traced to the artefact, so the boxes stay, labelled as boxes, until that is
 resolved rather than assumed.
 
-**4. A self-hosted shaded-relief basemap — in progress.** The map sits on plain
+**4. A self-hosted shaded-relief basemap — built, behind `?relief=1` until looked at.** The map sits on plain
 OpenStreetMap: a road map with prehistoric shapes on it. Every hosted alternative was
 rejected — Stamen retired and keyed, Esri's relief under a licence written for
 licensees, NASA's CC0 Blue Marble painting *modern* vegetation across an Ice Age map.
-So it is rendered here from **ETOPO 2022** (NOAA, CC0 1.0), which includes bathymetry.
-Whether the existing palette holds against it is being settled by measurement.
+So it is rendered here from **ETOPO 2022** (NOAA, CC0 1.0), which includes bathymetry,
+toned to the map's own ground so the palette holds (worst overlay keeps 94.3% of its
+contrast), and cut into Web Mercator WebP tiles to zoom 5 in `tiles/relief/`
+(1,365 tiles, 12.1 MB).
 
 ## Citing a single anchor
 
@@ -142,8 +162,17 @@ link still opens the map.
 
 ## Running it locally
 
-One self-contained HTML file. No build step, no framework, no bundler — clone
-the repo and open `index.html` directly in a browser.
+A website, not a single file: the URL is the hand-over. No build step, no
+framework, no bundler, but the shoreline data, border acts and relief tiles are
+separate files fetched by the page, and browsers refuse those fetches on `file://`.
+Serve the folder instead, for example:
+
+```
+python -m http.server 8000
+```
+
+then open http://localhost:8000/. Opened directly as a file, the core map still
+works; the shoreline layer and the relief do not.
 
 Leaflet 1.9.4 and the basemap tiles load from a CDN, so the map itself needs a
 network connection. If Leaflet cannot load, the page says so explicitly rather
@@ -161,5 +190,7 @@ Map and dataset © 2026 Shawn Greene, released under
 freely, including commercially, with credit and a note of any changes. See
 [`license`](license).
 
-Basemap tiles © OpenStreetMap contributors. Shoreline data © De Groeve et al. 2022, CC BY 4.0, with
+Basemap tiles © OpenStreetMap contributors. Relief rendered from ETOPO 2022, NOAA
+NCEI (CC0 1.0). Border acts from Cliopatria v0.2.0, Bennett *et al.* 2025, CC BY 4.0,
+with changes (cut into acts, simplified, invalid geometries repaired). Shoreline data © De Groeve et al. 2022, CC BY 4.0, with
 changes — see *Palaeo-shorelines* above for the full credit.

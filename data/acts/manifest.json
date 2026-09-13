@@ -1,0 +1,467 @@
+{
+ "about": "Cliopatria border acts for The Long Walk. Years CE, negative = BCE; an act holds years from..to-1.",
+ "rulings": [
+  "Budget is 822,136 bytes, the map's measured size, read literally (2026-09-13).",
+  "GENERAL RULE: an act that exceeds budget is an act that should be cut finer. The budget is a density detector.",
+  "All invalid geometries repaired (2026-09-13)."
+ ],
+ "attribution": {
+  "source": "Cliopatria v0.2.0 (Seshat Global History Databank)",
+  "release": "GitHub tag v0.2.0 — https://github.com/Seshat-Global-History-Databank/cliopatria/releases/tag/v0.2.0",
+  "release_archive_sha256": "04e9f0d8ecb1d18a0cbb7d37a0b963a2c0ca4ebc2935708d27cc5d5131e4d5b8",
+  "internal_label_note": "The payload self-identifies as \"cliopatria_polities_only_v012\"; cite the release tag, not that label.",
+  "licence": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+  "citation": "Bennett, J.S., Mutch, E., Tollefson, A. et al. (2025). Cliopatria — A geospatial database of world-wide political entities from 3400BCE to 2024CE. Scientific Data 12, 247. https://doi.org/10.1038/s41597-025-04516-9",
+  "changes_made": "Changes were made. Features filtered to those overlapping this act window; polygons simplified with Douglas-Peucker at 0.25 degrees (topology preserved), invalid geometries repaired, and coordinates snapped to a 0.01 degree grid (2 decimal places); properties reduced to Name (n), FromYear (f), ToYear (t) and Wikidata Q-ID (w)."
+ },
+ "acts": [
+  {
+   "file": "act_-3000_-2900.geojson",
+   "from": -3000,
+   "to": -2900,
+   "features": 4,
+   "bytes": 2407,
+   "gzip_bytes": 1197
+  },
+  {
+   "file": "act_-2900_-2800.geojson",
+   "from": -2900,
+   "to": -2800,
+   "features": 4,
+   "bytes": 2407,
+   "gzip_bytes": 1197
+  },
+  {
+   "file": "act_-2800_-2700.geojson",
+   "from": -2800,
+   "to": -2700,
+   "features": 4,
+   "bytes": 2407,
+   "gzip_bytes": 1196
+  },
+  {
+   "file": "act_-2700_-2600.geojson",
+   "from": -2700,
+   "to": -2600,
+   "features": 3,
+   "bytes": 2412,
+   "gzip_bytes": 1228
+  },
+  {
+   "file": "act_-2600_-2500.geojson",
+   "from": -2600,
+   "to": -2500,
+   "features": 3,
+   "bytes": 2412,
+   "gzip_bytes": 1230
+  },
+  {
+   "file": "act_-2500_-2400.geojson",
+   "from": -2500,
+   "to": -2400,
+   "features": 3,
+   "bytes": 2720,
+   "gzip_bytes": 1356
+  },
+  {
+   "file": "act_-2400_-2300.geojson",
+   "from": -2400,
+   "to": -2300,
+   "features": 3,
+   "bytes": 2720,
+   "gzip_bytes": 1358
+  },
+  {
+   "file": "act_-2300_-2200.geojson",
+   "from": -2300,
+   "to": -2200,
+   "features": 6,
+   "bytes": 4478,
+   "gzip_bytes": 1741
+  },
+  {
+   "file": "act_-2200_-2100.geojson",
+   "from": -2200,
+   "to": -2100,
+   "features": 5,
+   "bytes": 3372,
+   "gzip_bytes": 1532
+  },
+  {
+   "file": "act_-2100_-2000.geojson",
+   "from": -2100,
+   "to": -2000,
+   "features": 6,
+   "bytes": 3386,
+   "gzip_bytes": 1489
+  },
+  {
+   "file": "act_-2000_-1900.geojson",
+   "from": -2000,
+   "to": -1900,
+   "features": 4,
+   "bytes": 3128,
+   "gzip_bytes": 1457
+  },
+  {
+   "file": "act_-1900_-1800.geojson",
+   "from": -1900,
+   "to": -1800,
+   "features": 4,
+   "bytes": 3128,
+   "gzip_bytes": 1458
+  },
+  {
+   "file": "act_-1800_-1700.geojson",
+   "from": -1800,
+   "to": -1700,
+   "features": 13,
+   "bytes": 7045,
+   "gzip_bytes": 2140
+  },
+  {
+   "file": "act_-1700_-1600.geojson",
+   "from": -1700,
+   "to": -1600,
+   "features": 6,
+   "bytes": 3289,
+   "gzip_bytes": 1457
+  },
+  {
+   "file": "act_-1600_-1500.geojson",
+   "from": -1600,
+   "to": -1500,
+   "features": 11,
+   "bytes": 4601,
+   "gzip_bytes": 1765
+  },
+  {
+   "file": "act_-1500_-1400.geojson",
+   "from": -1500,
+   "to": -1400,
+   "features": 11,
+   "bytes": 4970,
+   "gzip_bytes": 1916
+  },
+  {
+   "file": "act_-1400_-1300.geojson",
+   "from": -1400,
+   "to": -1300,
+   "features": 8,
+   "bytes": 4936,
+   "gzip_bytes": 1943
+  },
+  {
+   "file": "act_-1300_-1200.geojson",
+   "from": -1300,
+   "to": -1200,
+   "features": 19,
+   "bytes": 12940,
+   "gzip_bytes": 2739
+  },
+  {
+   "file": "act_-1200_-1100.geojson",
+   "from": -1200,
+   "to": -1100,
+   "features": 16,
+   "bytes": 9093,
+   "gzip_bytes": 2621
+  },
+  {
+   "file": "act_-1100_-1000.geojson",
+   "from": -1100,
+   "to": -1000,
+   "features": 10,
+   "bytes": 4841,
+   "gzip_bytes": 1879
+  },
+  {
+   "file": "act_-1000_-900.geojson",
+   "from": -1000,
+   "to": -900,
+   "features": 12,
+   "bytes": 5137,
+   "gzip_bytes": 1927
+  },
+  {
+   "file": "act_-900_-800.geojson",
+   "from": -900,
+   "to": -800,
+   "features": 15,
+   "bytes": 6594,
+   "gzip_bytes": 2277
+  },
+  {
+   "file": "act_-800_-700.geojson",
+   "from": -800,
+   "to": -700,
+   "features": 48,
+   "bytes": 19142,
+   "gzip_bytes": 4239
+  },
+  {
+   "file": "act_-700_-600.geojson",
+   "from": -700,
+   "to": -600,
+   "features": 70,
+   "bytes": 44437,
+   "gzip_bytes": 7169
+  },
+  {
+   "file": "act_-600_-500.geojson",
+   "from": -600,
+   "to": -500,
+   "features": 85,
+   "bytes": 47705,
+   "gzip_bytes": 8515
+  },
+  {
+   "file": "act_-500_-400.geojson",
+   "from": -500,
+   "to": -400,
+   "features": 130,
+   "bytes": 61438,
+   "gzip_bytes": 10358
+  },
+  {
+   "file": "act_-400_-300.geojson",
+   "from": -400,
+   "to": -300,
+   "features": 190,
+   "bytes": 139764,
+   "gzip_bytes": 17623
+  },
+  {
+   "file": "act_-300_-200.geojson",
+   "from": -300,
+   "to": -200,
+   "features": 334,
+   "bytes": 240540,
+   "gzip_bytes": 27467
+  },
+  {
+   "file": "act_-200_-100.geojson",
+   "from": -200,
+   "to": -100,
+   "features": 159,
+   "bytes": 111860,
+   "gzip_bytes": 17453
+  },
+  {
+   "file": "act_-100_0.geojson",
+   "from": -100,
+   "to": 0,
+   "features": 194,
+   "bytes": 192283,
+   "gzip_bytes": 21185
+  },
+  {
+   "file": "act_0_100.geojson",
+   "from": 0,
+   "to": 100,
+   "features": 157,
+   "bytes": 166415,
+   "gzip_bytes": 16479
+  },
+  {
+   "file": "act_100_200.geojson",
+   "from": 100,
+   "to": 200,
+   "features": 127,
+   "bytes": 135196,
+   "gzip_bytes": 14188
+  },
+  {
+   "file": "act_200_300.geojson",
+   "from": 200,
+   "to": 300,
+   "features": 156,
+   "bytes": 151246,
+   "gzip_bytes": 18242
+  },
+  {
+   "file": "act_300_400.geojson",
+   "from": 300,
+   "to": 400,
+   "features": 241,
+   "bytes": 257673,
+   "gzip_bytes": 26116
+  },
+  {
+   "file": "act_400_500.geojson",
+   "from": 400,
+   "to": 500,
+   "features": 363,
+   "bytes": 290027,
+   "gzip_bytes": 34362
+  },
+  {
+   "file": "act_500_600.geojson",
+   "from": 500,
+   "to": 600,
+   "features": 330,
+   "bytes": 282335,
+   "gzip_bytes": 34106
+  },
+  {
+   "file": "act_600_700.geojson",
+   "from": 600,
+   "to": 700,
+   "features": 502,
+   "bytes": 453596,
+   "gzip_bytes": 54371
+  },
+  {
+   "file": "act_700_800.geojson",
+   "from": 700,
+   "to": 800,
+   "features": 436,
+   "bytes": 382407,
+   "gzip_bytes": 44034
+  },
+  {
+   "file": "act_800_900.geojson",
+   "from": 800,
+   "to": 900,
+   "features": 635,
+   "bytes": 515635,
+   "gzip_bytes": 71685
+  },
+  {
+   "file": "act_900_1000.geojson",
+   "from": 900,
+   "to": 1000,
+   "features": 597,
+   "bytes": 344936,
+   "gzip_bytes": 59952
+  },
+  {
+   "file": "act_1000_1100.geojson",
+   "from": 1000,
+   "to": 1100,
+   "features": 799,
+   "bytes": 396294,
+   "gzip_bytes": 69197
+  },
+  {
+   "file": "act_1100_1200.geojson",
+   "from": 1100,
+   "to": 1200,
+   "features": 586,
+   "bytes": 280824,
+   "gzip_bytes": 49912
+  },
+  {
+   "file": "act_1200_1300.geojson",
+   "from": 1200,
+   "to": 1300,
+   "features": 988,
+   "bytes": 554743,
+   "gzip_bytes": 102868
+  },
+  {
+   "file": "act_1300_1400.geojson",
+   "from": 1300,
+   "to": 1400,
+   "features": 908,
+   "bytes": 622386,
+   "gzip_bytes": 117559
+  },
+  {
+   "file": "act_1400_1500.geojson",
+   "from": 1400,
+   "to": 1500,
+   "features": 1040,
+   "bytes": 843727,
+   "gzip_bytes": 152116
+  },
+  {
+   "file": "act_1500_1550.geojson",
+   "from": 1500,
+   "to": 1550,
+   "features": 612,
+   "bytes": 618475,
+   "gzip_bytes": 114093
+  },
+  {
+   "file": "act_1550_1600.geojson",
+   "from": 1550,
+   "to": 1600,
+   "features": 479,
+   "bytes": 626226,
+   "gzip_bytes": 121956
+  },
+  {
+   "file": "act_1600_1650.geojson",
+   "from": 1600,
+   "to": 1650,
+   "features": 551,
+   "bytes": 860661,
+   "gzip_bytes": 171348
+  },
+  {
+   "file": "act_1650_1700.geojson",
+   "from": 1650,
+   "to": 1700,
+   "features": 510,
+   "bytes": 801479,
+   "gzip_bytes": 187054
+  },
+  {
+   "file": "act_1700_1750.geojson",
+   "from": 1700,
+   "to": 1750,
+   "features": 568,
+   "bytes": 999260,
+   "gzip_bytes": 233294
+  },
+  {
+   "file": "act_1750_1800.geojson",
+   "from": 1750,
+   "to": 1800,
+   "features": 784,
+   "bytes": 1507827,
+   "gzip_bytes": 348235
+  },
+  {
+   "file": "act_1800_1850.geojson",
+   "from": 1800,
+   "to": 1850,
+   "features": 1065,
+   "bytes": 1918023,
+   "gzip_bytes": 472402
+  },
+  {
+   "file": "act_1850_1900.geojson",
+   "from": 1850,
+   "to": 1900,
+   "features": 818,
+   "bytes": 1755732,
+   "gzip_bytes": 429838
+  },
+  {
+   "file": "act_1900_1925.geojson",
+   "from": 1900,
+   "to": 1925,
+   "features": 480,
+   "bytes": 1431501,
+   "gzip_bytes": 408111
+  },
+  {
+   "file": "act_1925_1950.geojson",
+   "from": 1925,
+   "to": 1950,
+   "features": 575,
+   "bytes": 1696885,
+   "gzip_bytes": 468648
+  },
+  {
+   "file": "act_1950_2000.geojson",
+   "from": 1950,
+   "to": 2000,
+   "features": 516,
+   "bytes": 738306,
+   "gzip_bytes": 162392
+  }
+ ]
+}

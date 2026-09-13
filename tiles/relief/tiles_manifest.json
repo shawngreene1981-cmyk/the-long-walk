@@ -1,0 +1,32 @@
+{
+  "source": "ETOPO 2022 60 arc-second, NOAA NCEI, CC0 1.0",
+  "format": "webp q85",
+  "zooms": {
+    "5": {
+      "tiles": 1024,
+      "bytes": 8261948
+    },
+    "4": {
+      "tiles": 256,
+      "bytes": 2884382
+    },
+    "3": {
+      "tiles": 64,
+      "bytes": 776776
+    },
+    "2": {
+      "tiles": 16,
+      "bytes": 178206
+    },
+    "1": {
+      "tiles": 4,
+      "bytes": 39242
+    },
+    "0": {
+      "tiles": 1,
+      "bytes": 9378
+    }
+  },
+  "tiles": 1365,
+  "bytes": 12149932
+}
