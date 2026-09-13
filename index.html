@@ -395,6 +395,7 @@
   </div>
 
   <div class="legend-row">
+    <span style="flex-basis:100%"><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" stroke="#0e1420" stroke-width="1.2"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" fill-opacity="0.25"/></svg> <strong>Brightness is time, and only time.</strong> A mark is bright at its date and dims as the slider moves on, down to a faint version of the same shape. A dim mark is further in the past — it is <em>not</em> weaker evidence; evidence is the colour and shape, and the popup. Every mark stays clickable at every brightness. The three forced routes never dim.</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#e0a75e" stroke-width="2"/><circle cx="7" cy="7" r="2" fill="#e0a75e"/></svg> Origin node — a source, not a site</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#6fb3b3" stroke-width="2"/><circle cx="7" cy="7" r="2" fill="#6fb3b3"/></svg> Persisting branch (never ghosts — alive today)</span>
     <span><span class="dot" style="background:#9aa0aa"></span> Ghost — fading, no living descendants of this line</span>
@@ -1036,6 +1037,8 @@ function shapeMarker(latlng, shape, fill, opts){
   const m = L.marker(latlng, {icon:EMPTY_ICON(), opacity:0, keyboard:false}).addTo(map);
   m._shape = shape; m._fill = fill; m._stroke = opts.stroke || '#0e1420';
   m._hollow = !!opts.hollow; m._dash = null; m._r = -1; m._op = 0;
+  m._strokeLive = m._stroke;   // the casing, kept so the fade floor can drop it and restore it
+  m._floored = false;
   m._paint = function(){
     if(!(this._r > 0) || !(this._op > 0)){ this.setIcon(EMPTY_ICON()); this.setOpacity(0); return; }
     const g = shapeSVG(this._shape, this._r, this._fill, this._stroke, this._hollow, this._dash);
@@ -1835,6 +1838,101 @@ function autoFrame(yearsAgo, eraIdx){
   map.setZoom(z - 1, {animate:true, duration:2.6});   // one level, centre untouched
 }
 
+// ===================== FADE: THE MAP'S PRESENT TENSE =====================
+// DECISION_Layer_Break_And_Fading_Markers.md, plus the rulings of 2026-09-12
+// recorded in NOTE_Fading_Markers_b_c_d_And_Rulings.md.
+//
+// Before this, every anchor was lit at equal weight forever: a site from 300,000
+// years ago sat at the same brightness as one from 1400 CE, so the slider changed
+// nothing about emphasis. Now a mark is LIVE at its date, RECEDES after it, and
+// settles at a FLOOR. It never disappears, it stays clickable, and it keeps its
+// full popup at every state.
+//
+// THE GENERAL RULE, and it is a rule rather than a style: OPACITY CARRIES TIME AND
+// NOTHING ELSE. Every other fact about a mark lives in another channel.
+//   - Evidence tier lives in HUE and SHAPE, and in the popup. It is never encoded
+//     in opacity, saturation or size. A faded hoax and a faded solid site differ
+//     by shape and hue exactly as they do when live.
+//   - "Forgotten" lives in COLOUR: a dead-end route turns grey. It no longer
+//     also dims, so a forgotten route that has just finished drawing is grey and
+//     bright, and the same route far down the slider is grey and dim. Two facts,
+//     two channels, no collision.
+// If you are about to make opacity mean something else, put it somewhere else.
+//
+// THE FLOOR IS A DIM VERSION OF THE SAME GLYPH. NO SHAPE CHANGE. Not hollow, not
+// dashed. Hollow already means three things on this map (hoax, tradition, origin
+// hub), and 378 circles turning hollow would all read as origin hubs. So the glyph
+// keeps its shape and tier colour and drops to low alpha, and its near-black
+// casing is switched OFF at the floor — not kept, not recoloured.
+//
+// DURATION IS MEASURED IN SLIDER SPACE, NOT YEARS. 10,000 years is 0.24% of the
+// slider at 300 ka and 43% of it at 5 ka, so any fixed span of years is wrong at
+// one end of the map or the other. The slider already gives each named era equal
+// screen time, so a fixed share of the slider is a fixed share of story.
+// Starting numbers, to be tuned by eye:
+const FADE_LIVE   = 0.015;   // lit for 1.5% of the slider after its date
+const FADE_RECEDE = 0.06;    // then eased down over the next 6%
+const FADE_FLOOR  = 0.25;    // and held here. Findable, not dominant.
+//
+// STATELESS BY CONSTRUCTION. Fade is recomputed from slider position every frame,
+// so there is no state to carry across an act boundary and nothing to reset. That
+// closed an open question in the ruling; keep it true.
+//
+// SCOPE: anchors (including the 34 leader stars) and ROUTES only. Ghosts,
+// capabilities and territory already use fading to MEAN something — a lineage
+// lost, a capability lost, land drained — and a time fade on top would be two
+// meanings in one channel. Walk-backs already fade in at a single date. Leave them.
+//
+// FORCED ROUTES DO NOT FADE. EVER. Luanda to Recife, Luanda to Point Comfort and
+// Ouidah to Salvador are not in ROUTES and are deliberately untouched here. See the
+// comment at their render block before "fixing" that.
+//
+// PERFORMANCE, and this matters for anything else animated on this map later: the
+// cost was never in what a fade DOES, it was in rebuilding every shape to do it.
+// shapeMarker.setStyle regenerates the SVG and replaces the DOM icon on any opacity
+// change — measured at +6.7 ms per slider tick for 114 glyphs, on top of a 6.3 ms
+// render, which drops frames on a phone. Setting the icon's opacity directly costs
+// +0.1 ms. So glyphs are rebuilt ONCE, when they cross the floor (the casing changes),
+// and are otherwise only ever given a new opacity. Opacity is also rounded to 1/40
+// so a mark that has not visibly changed is not written at all.
+function fadeAt(sliderVal, markSlider){
+  const d = (sliderVal - markSlider) / SLIDER_MAX;
+  if(d <= FADE_LIVE) return 1;
+  if(d >= FADE_LIVE + FADE_RECEDE) return FADE_FLOOR;
+  const t = (d - FADE_LIVE) / FADE_RECEDE;
+  return 1 - (1 - FADE_FLOOR) * t * t;   // eased: it lingers, then goes
+}
+
+// A mark's position on the slider never changes, so compute it once rather than
+// bisecting the timeline for 663 marks on every tick.
+const ANCHOR_SLIDER = {};
+ANCHORS.forEach(a => { ANCHOR_SLIDER[a.id] = sliderAtYearsExact(a.appear); });
+// A route is live while it draws and recedes from its END date, not its start:
+// routes run from 10 to 212,000 years, and counted from the start a long one
+// would fade before it had finished drawing.
+const ROUTE_END_SLIDER = ROUTES.map(r => sliderAtYearsExact(r.end));
+
+function applyFade(m, k){
+  const q = Math.round(k * 40) / 40;
+  const floored = q <= FADE_FLOOR;
+  if(m._paint){
+    // DOM glyph. Rebuild only when crossing the floor, because only then does the
+    // SVG itself change (casing on or off). Everything else is setOpacity.
+    if(m._op !== 1) m.setStyle({opacity: 1});
+    if(m._floored !== floored){
+      m._floored = floored;
+      m._stroke = floored ? 'none' : m._strokeLive;
+      m._paint();
+    }
+    if(m.options.opacity !== q) m.setOpacity(q);
+  } else {
+    // Canvas circle. Fill dims with time; casing tracks it and is off at the floor.
+    if(m._fadeQ === q) return;
+    m._fadeQ = q;
+    m.setStyle({fillOpacity: 0.9 * q, opacity: floored ? 0 : q});
+  }
+}
+
 // ===================== RENDER =====================
 let playing=false, rafId=null, lastT=null;
 const ageBanner = document.getElementById('ageBanner');
@@ -2022,7 +2120,14 @@ function render(sliderVal){
     if(a.appear < TIMELINE_END) on = false;   // post-cutoff: outside this map's story
     const shown = on && yearsAgo <= a.appear;
     m.setRadius(shown ? (a.leader?7:5.5) : 0);
-    m.setStyle({fillOpacity: shown?0.9:0, opacity: shown?1:0});
+    if(!shown){
+      m.setStyle({fillOpacity:0, opacity:0});
+      m._fadeQ = null;                       // so it is repainted when it next appears
+      return;
+    }
+    // Shown means it exists at this date. How BRIGHT it is means how long ago that
+    // was, on the slider — and nothing else. See FADE above.
+    applyFade(m, fadeAt(sliderVal, ANCHOR_SLIDER[a.id]));
   });
 
   // African corridors — humid-gated ones breathe with the Sahara state
@@ -2048,10 +2153,14 @@ function render(sliderVal){
     const lin = lineageSet(focusId);
     const dim = lin && !lin.has(o.r.id);
     const forgotten = forgottenFraction(o.r, yearsAgo);
+    // Time: live while the route draws, then receding from its END date on the same
+    // slider-space curve as the anchors. "Forgotten" no longer touches opacity at all
+    // — it lives in the grey colour below. Opacity carries time and nothing else.
+    const timeK = p < 1 ? 1 : fadeAt(sliderVal, ROUTE_END_SLIDER[ri]);
     drawn.forEach((pts,i)=>{
       // One opacity and one weight for both passes, so the casing can never
       // outlive its line or sit proud of it while a route draws or fades.
-      const op = dim ? 0.12 : 0.85*(1-forgotten*0.85);
+      const op = dim ? 0.12 : 0.85*timeK;
       const wt = (lin&&!dim)?3.4:2.6;
       o.casings[i].setLatLngs(pts);
       o.casings[i].setStyle({opacity: op, weight: wt + 2});
@@ -2111,6 +2220,18 @@ function render(sliderVal){
 
 
   // FORCED ROUTES — black transit, then the line that outlives it.
+  //
+  // THESE DO NOT FADE. EVER. Ruled 2026-09-12. Luanda to Recife, Luanda to Point
+  // Comfort and Ouidah to Salvador stay at full weight at every slider position,
+  // while every anchor and every ROUTES line around them recedes. That exemption is
+  // deliberate. Do not "fix" it by routing these through fadeAt().
+  //
+  // Fading is the map saying "this is receding into the past." These three routes
+  // are drawn black with no arrowhead because "an arrowhead implies choice," and the
+  // decision record holds that forced migration must not be drawn in the same
+  // language as a Palaeolithic coastal walk, "or the map flattens a moral
+  // distinction." A fade would say something about them the map has ruled it will
+  // not say. They are the one thing on this map that does not get quieter with time.
   forcedObjs.forEach(({f, transit, arrival})=>{
     if(!layerState.forced){ transit.setStyle({opacity:0}); arrival.setStyle({opacity:0}); return; }
     // Transit: present or absent, never drawing. It fades in over the first few years of
