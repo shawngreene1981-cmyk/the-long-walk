@@ -41,22 +41,39 @@ having it quietly resolved for you.
 ## Palaeo-shorelines: sourced, and off by default
 
 Half the routes here only make sense at low sea level — Beringia was a country,
-Doggerland an inhabited landscape, Sundaland continuous land. The layer that
-draws those coastlines selects shorelines by **depth** rather than by date, read
-from the map's own 18-point sea-level curve, so they can never drift out of step
-with the sea-level readout.
+Doggerland an inhabited landscape, Sundaland continuous land.
 
-**The geometry is now sourced.** The 16 hand-drawn placeholders have been replaced
+**The geometry is sourced.** The 16 hand-drawn placeholders have been replaced
 by 3,305 polygons extracted at full resolution from **De Groeve et al. 2022**, the only global shoreline
 reconstruction with a real glacial-isostatic correction (SELEN4 sea-level solver,
-ICE-6G_C ice history, VM5a mantle). Three stops, each the reconstructed coast at the
-date this map's curve first reaches that depth, walking back from the present:
+ICE-6G_C ice history, VM5a mantle). The source reconstructs coasts **by date, place by
+place**, and the map uses three of them, **labelled and shown by date** from 26,000
+years ago onward:
 
-| sea level | date | |
-|---|---|---|
-| −120 m | ~19,000 ya | Last Glacial Maximum |
-| −75 m | ~12,900 ya | after meltwater pulse 1A |
-| −40 m | ~9,550 ya | early Holocene drowning |
+| coast | |
+|---|---|
+| ~19,000 ya | Last Glacial Maximum |
+| ~12,900 ya | after meltwater pulse 1A |
+| ~9,550 ya | early Holocene drowning |
+
+**The source and this map's global sea-level curve disagree, by tens of metres.** In the
+De Groeve raster the shelves flood while the curve still reads the sea lower. Measured
+against ETOPO 2022 depths, 8,000–20,000 years ago, the source floods higher by:
+
+| region | |
+|---|---|
+| Sunda | 18–38 m |
+| Sahul | 22–36 m |
+| Persian Gulf | 15–33 m |
+| Doggerland | 9–19 m |
+| Beringia | up to 20 m (and 4–8 m lower before 14,000 ya) |
+
+De Groeve et al. publish no regional sea-level curve for these regions and do not discuss
+the difference, so the divergence is observed in their raster and not explained in their
+paper; each shoreline popup states it. That is why the coasts are labelled by date: an
+earlier version called them "−120 / −75 / −40 m stops", a depth relationship the source
+never claimed. This map's curve is used to select coasts only before 26,000 years ago,
+where the drawing is an approximation and labelled as one.
 
 Drawn for the five researched shelves only — Beringia, Doggerland, Sunda, Sahul and
 the Persian Gulf — so each coastline keeps its region's research note and dating. Each
