@@ -60,8 +60,17 @@ date this map's curve first reaches that depth, walking back from the present:
 
 Drawn for the five researched shelves only — Beringia, Doggerland, Sunda, Sahul and
 the Persian Gulf — so each coastline keeps its region's research note and dating. Each
-region shows only the shelf inside its own box; where the box cuts the shelf the fill
-stops and no coastline is drawn along the cut. It is a model, not a survey, and **how
+region shows only the shelf inside its own box; where the box cuts the shelf the land
+stops in a straight line, which is the limit of the regional extraction and not a coast,
+and no coastline is drawn along it.
+
+**The shelf is drawn as land**, opaque, in the land colour of whichever basemap is
+active, under every route and marker, so at the glacial maximum the continents are
+simply bigger and the modern coastline is hidden beneath them. The stops are nested:
+each is solid while the sea is below it, and as the sea rises through an interval only
+that outer ring fades — the sea taking it back. With `?sea=blue` the water on either
+basemap is toned to a clear blue (only water pixels move), so there is something for
+the sea to take; that stays behind its parameter until it has been looked at. It is a model, not a survey, and **how
 much of each region's shelf survives simplification is measured and stated, region by
 region and stop by stop**, in every shoreline popup and here:
 

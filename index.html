@@ -46,6 +46,9 @@
   /* The self-hosted relief is already toned to this map's own ground; the filter
      that darkens OpenStreetMap must never touch it. */
   .relief-on .leaflet-tile-pane{filter:none;}
+  /* With ?sea=blue the OSM tiles are toned inside a canvas, once per tile, with the same
+     filter the rule above applies; the pane filter must not run a second time. */
+  .sea-blue .leaflet-tile-pane{filter:none;}
   .leaflet-container{background:#1e2a3d;}
   /* A popup renders INSIDE #map, and Leaflet sets overflow:hidden on
      .leaflet-container, so anything taller than the map is cut off at the map
@@ -421,7 +424,7 @@
     <span><span class="dot" style="background:#6b5f96"></span> Lost ground — people were here, and are gone</span>
     <span><span class="lineswatch" style="border-color:#cfe4f2;background:rgba(220,236,247,.35)"></span> Ice sheet</span>
     <span style="flex-basis:100%;color:var(--rust)"><strong>The ice sheets are the crudest geometry on this map, and unlike the shorelines they are switched ON.</strong> Four sheets, <strong>26 vertices between them</strong> — Laurentide 8, Cordilleran 6, Fennoscandian 6, Patagonian 6. They are bounding boxes, not margins, and the dates they carry are better than the shapes that carry them. Read them as "ice was roughly here", never as an edge. Real LGM margins are among the best-mapped features in Quaternary science and the replacement is identified — Batchelor et al. 2019 for the Northern Hemisphere — but that deposit carries <strong>no licence on the artefact</strong>, only on the paper describing it. This project does not ship data whose rights cannot be traced to the thing itself; it refused a basemap on exactly that ground. So the boxes stay, visibly labelled as boxes, until the licence is resolved rather than assumed. The Patagonian sheet has no licence-cleared source at all.</span>
-    <span style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today. The coastlines are now <strong>sourced</strong>: extracted from De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, drawn at three sea levels (−120 m about 19,000 years ago, −75 m about 12,900, −40 m about 9,550) and cross-faded by the sea level this map reads for the moment on the slider. Shown for the five researched shelves: Beringia, Doggerland, Sunda, Sahul and the Persian Gulf. A model, not a survey, extracted at the source's full resolution: how much of each region's shelf survives simplification is stated region by region and stop by stop in every shoreline popup. Each region shows only its own shelf; where that is cut, no coastline is drawn along the cut. The layer is off by default until that is ruled on. <strong>Solid edge</strong> = published reconstruction; <strong>dashed edge</strong> would mark a bathymetric approximation, and none remain. Before <strong>26,000 years ago</strong> this map deliberately draws no shoreline at all. That floor is the reach of the best available source, not of our effort: De Groeve et al. 2022 begins at 26 ka, and earlier than that no GIA-corrected global product exists — the edge of the science, not a gap in the collecting. An unsourceable coastline should be absent rather than approximate. <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: thresholded at three dates, polygonised, simplified, and clipped to five regions.</span></span>
+    <span style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today. The coastlines are now <strong>sourced</strong>: extracted from De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, drawn <strong>as land</strong>, in the basemap's own land colour, at three sea levels (−120 m about 19,000 years ago, −75 m about 12,900, −40 m about 9,550). As the sea level this map reads for the moment on the slider rises past each one, the sea takes that ring of land back. Shown for the five researched shelves: Beringia, Doggerland, Sunda, Sahul and the Persian Gulf. A model, not a survey, extracted at the source's full resolution: how much of each region's shelf survives simplification is stated region by region and stop by stop in every shoreline popup. Each region shows only the shelf inside its own box, so <strong>where a box cuts the shelf the land stops in a straight line</strong>: that edge is the limit of this map's regional extraction, not a coast, and no coastline is drawn along it. The layer is off by default until that is ruled on. <strong>Solid edge</strong> = published reconstruction; <strong>dashed edge</strong> would mark a bathymetric approximation, and none remain. Before <strong>26,000 years ago</strong> this map deliberately draws no shoreline at all. That floor is the reach of the best available source, not of our effort: De Groeve et al. 2022 begins at 26 ka, and earlier than that no GIA-corrected global product exists — the edge of the science, not a gap in the collecting. An unsourceable coastline should be absent rather than approximate. <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: thresholded at three dates, polygonised, simplified, and clipped to five regions.</span></span>
   </div>
 
   <h2 class="sec">What this prototype is actually showing</h2>
@@ -917,20 +920,118 @@ function worldZoom(){ return Math.max(2, Math.min(map.getZoom(), map.getBoundsZo
 // published default stays OpenStreetMap until it is looked at and ruled on — the same
 // rule the shoreline layer follows. Switching it on is this one condition.
 const RELIEF = new URLSearchParams(location.search).get('relief') === '1';
+
+// ---- THE SEA, BLUE ENOUGH TO BE TAKEN AWAY -----------------------------------
+// Ruled: the palaeo-shorelines must read as land that the sea takes back, and on a map
+// where the water is dark teal on dark there is nothing for the sea to take. So the
+// water is recoloured toward one blue on both basemaps, and only the water.
+//
+// A CSS filter cannot do that: it is applied to every pixel, and every setting that
+// turned the sea blue also turned OpenStreetMap's forests vivid green. Instead each tile
+// is toned once, in a canvas, as it arrives. A pixel is moved toward SEA_BLUE in
+// proportion to how water-like it is — how far its blue channel exceeds its red, beyond
+// what land ever shows — so land, forest, desert, roads and glaciers are untouched, and
+// anti-aliased coast pixels move part-way. On the relief the shift is proportional, so
+// the sea-floor shading survives. It costs one pass per tile, not per frame.
+//
+// THE PALETTE CRITERION WAS CHECKED FIRST, the same way the relief was: contrast of every
+// overlay against its local ground at the positions it occupies, against the map as it
+// renders today. SEA_BLUE has about the luminance the sea has now plus a quarter, so the
+// light tier colours lose almost nothing: worst overlay 97.8% on OpenStreetMap (route
+// lines) and 98.8% on the relief. Nothing below 90%, nothing pushed under 3:1; the forced
+// transit lines GAIN contrast (111.7% / 113.5%), and are not restyled in any way.
+//
+// NOT YET THE DEFAULT, for the same reason as the relief: nobody has seen it on the map.
+// It is behind ?sea=blue until it has been looked at and ruled on.
+const SEA_BLUE_ON = new URLSearchParams(location.search).get('sea') === 'blue';
+const SEA_BLUE = [24, 66, 112];
+const OSM_FILTER = 'invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.72)';
+// Each basemap's sea as it renders now, and the blue-minus-red window over which a pixel
+// goes from "land, leave it" to "water, move it fully". OSM land sits at −5 to −41,
+// glacier and boundary lines at +8; water at +31. Relief land is ≤ 0; its sea is +24 at
+// flat ground and never below +4.8 in shadow.
+const SEA_FROM = { osm:    {sea:[37, 61, 68], t0:10, t1:31},
+                   relief: {sea:[41, 59, 65], t0:0,  t1:8} };
+function recolourSea(d, from){
+  const kr = SEA_BLUE[0] / from.sea[0] - 1, kg = SEA_BLUE[1] / from.sea[1] - 1, kb = SEA_BLUE[2] / from.sea[2] - 1;
+  const t0 = from.t0, span = from.t1 - from.t0;
+  for(let i = 0; i < d.length; i += 4){
+    const s = (d[i + 2] - d[i] - t0) / span;
+    if(s <= 0) continue;
+    const w = s > 1 ? 1 : s;
+    d[i] *= 1 + w * kr; d[i + 1] *= 1 + w * kg; d[i + 2] *= 1 + w * kb;   // clamped array
+  }
+}
+const SeaToneLayer = L.TileLayer.extend({
+  createTile: function(coords, done){
+    const tile = document.createElement('canvas'); tile.width = tile.height = 256;
+    const ctx = tile.getContext('2d', {willReadFrequently:true});
+    const url = this.getTileUrl(coords), opts = this.options;
+    const plain = () => {            // no CORS or a tainted canvas: tone as before, never blank
+      const im = new Image();
+      im.onload = () => { if(opts.cssFilter) ctx.filter = opts.cssFilter; ctx.drawImage(im, 0, 0); done(null, tile); };
+      im.onerror = e => done(e, tile);
+      im.src = url;
+    };
+    const img = new Image(); img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try{
+        if(opts.cssFilter) ctx.filter = opts.cssFilter;
+        ctx.drawImage(img, 0, 0); ctx.filter = 'none';
+        const id = ctx.getImageData(0, 0, 256, 256);
+        recolourSea(id.data, opts.seaFrom);
+        ctx.putImageData(id, 0, 0);
+        done(null, tile);
+      }catch(err){ ctx.clearRect(0, 0, 256, 256); plain(); }
+    };
+    img.onerror = plain;
+    img.src = url;
+    return tile;
+  }
+});
+if(SEA_BLUE_ON) map.getContainer().classList.add('sea-blue');
+const tileLayerFor = (url, o) => SEA_BLUE_ON ? new SeaToneLayer(url, o) : L.tileLayer(url, o);
+
 if(RELIEF){
   map.getContainer().classList.add('relief-on');
-  L.tileLayer('tiles/relief/{z}/{x}/{y}.webp', {
+  tileLayerFor('tiles/relief/{z}/{x}/{y}.webp', {
     attribution: 'Relief: ETOPO 2022, NOAA NCEI (CC0 1.0)',
     maxZoom:8, minZoom:2, maxNativeZoom:5, keepBuffer:4,
-    noWrap: true, bounds: [[-84,-179],[84,179]]
+    noWrap: true, bounds: [[-84,-179],[84,179]], seaFrom: SEA_FROM.relief
   }).addTo(map);
 } else {
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+tileLayerFor('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom:8, minZoom:2,
-  noWrap: true, bounds: [[-84,-179],[84,179]]
+  noWrap: true, bounds: [[-84,-179],[84,179]], seaFrom: SEA_FROM.osm, cssFilter: OSM_FILTER
 }).addTo(map);
 }
+
+// ---- THE EXPOSED SHELF IS LAND ------------------------------------------------
+// Ruled: at the glacial maximum the continents should simply BE BIGGER. The shelf was a
+// tinted overlay at 30%, the modern coast still visible through it, so the eye read a
+// highlight. It is now filled opaque, in the land colour of whichever basemap is active,
+// so the modern coastline is hidden under it and the continent's edge is where the
+// reconstruction puts it. Land colours are what each basemap renders for plain lowland:
+// OpenStreetMap's land through this map's filter, and the relief's land at flat ground.
+//
+// IT SITS UNDER EVERYTHING ELSE. Its own pane, between the tiles and every overlay, so an
+// opaque fill can never cover a route, a marker, fog or ice. That also means it cannot
+// take clicks — the overlay canvas above it does — so its popup is opened from a map
+// click that lands inside it (see loadCoasts).
+//
+// CRITERION: no tier marker drawn where the shelf is may fall below 90% of its current
+// contrast. Measured for every anchor that sits inside any shelf polygon, on both
+// basemaps, against both the layer off and the old 30% tint, at fill opacities 1, 0.75,
+// 0.5 and 0.25: worst 92.1% (a live marker on the relief, at an anchor that falls inside
+// the −40 m Doggerland fill only through simplification and can never be on screen with
+// it); every other case 95.4% or better, and most gain contrast because land is darker
+// than sea.
+const SHELF_LAND = RELIEF ? '#252423' : '#1d1b18';
+map.createPane('shelfPane');
+map.getPane('shelfPane').style.zIndex = 350;
+map.getPane('shelfPane').style.pointerEvents = 'none';
+const shelfRenderer = L.canvas({pane:'shelfPane', padding:0.5});
 
 const corridorCircle = L.circle([CORRIDOR.lat, CORRIDOR.lon], {
   radius: CORRIDOR.minM, color:'#6fae52', weight:1, fillColor:'#6fae52', fillOpacity:0.08, opacity:0.35, interactive:false
@@ -1097,15 +1198,15 @@ function buildCoastLayers(){
     const recon = src.basis === 'reconstruction';
     // Fill carries no stroke: its edge may be a region box, and a box edge is not a coast.
     const fill = L.polygon(list.map(c => c.fill), {
-      stroke:false, fillColor:'#b39a6d', fillOpacity:0, interactive:true
+      stroke:false, fillColor:SHELF_LAND, fillOpacity:0, interactive:false, renderer:shelfRenderer
     });
     // The outline is only the true coastline segments, computed at extraction.
     const lines = []; list.forEach(c => (c.coast || []).forEach(l => lines.push(l)));
     const coast = L.polyline(lines, {
       color:'#c2a878', weight: recon ? 1.4 : 1, dashArray: recon ? null : '4,4',
-      opacity:0, interactive:false
+      opacity:0, interactive:false, renderer:shelfRenderer
     });
-    fill.bindPopup(
+    const popup = (
         `<p class="pop-title">${shelf.label}</p>`
       + `<p class="pop-age">Coast as reconstructed for ~${st.snapshot.toLocaleString()} ya `
       + `\u00b7 sea level ${Math.abs(st.depth)} m below present \u00b7 ${st.label}</p>`
@@ -1121,7 +1222,7 @@ function buildCoastLayers(){
           + `This region's dates are carried from the shelf record: walkable until `
           + `~${shelf.dryUntil.toLocaleString()} ya, gone by ~${shelf.goneBy.toLocaleString()} ya.</p>` : '')
     );
-    return {region:c0.region, st, src, fill, coast, shelf, polygons:list.length, w:-1};
+    return {region:c0.region, st, src, fill, coast, shelf, popup, polygons:list.length, w:-1, wc:-1};
   });
 }
 
@@ -1135,6 +1236,23 @@ function loadCoasts(){
       COASTS = doc.coasts || [];
       COASTS_OK = validCoasts(COASTS);
       buildCoastLayers();
+      // The fill lives under the overlay canvas, so it is found by the click, not hit by
+      // it. A click that no route, marker or ice sheet took, landing inside a drawn shelf,
+      // opens that shelf's popup: the stop drawn most strongly there, deepest on a tie.
+      map.on('click', e => {
+        if(!layerState.shorelines) return;
+        // Route and ice clicks bubble up to the map after opening their own popup (Leaflet
+        // closes open popups on preclick, before any layer sees the click). If one is open
+        // now, something above the shelf took this click, and it keeps it.
+        if(map._popup && map.hasLayer(map._popup)) return;
+        const p = map.latLngToLayerPoint(e.latlng);
+        let best = null;
+        coastLayers.forEach(o => {
+          if(o.w <= 0 || !map.hasLayer(o.fill) || !o.fill._containsPoint(p)) return;
+          if(!best || o.w > best.w || (o.w === best.w && o.st.depth < best.st.depth)) best = o;
+        });
+        if(best) L.popup().setLatLng(e.latlng).setContent(best.popup).openOn(map);
+      });
       coastsState = 'ready';
       render(+scrub.value);
     })
@@ -2061,8 +2179,8 @@ function render(sliderVal){
   });
 
   // Palaeo-shorelines. Selected by DEPTH, not by date: read the sea level this
-  // map already computes from its own 18-point curve, find the two depth stops
-  // that bracket it, and crossfade. The coastline is therefore driven by the
+  // map already computes from its own 18-point curve and draw each depth stop the
+  // sea has not yet reached. The coastline is therefore driven by the
   // same number shown in the HUD and cannot drift out of step with it.
   //
   // Before COAST_FLOOR there is no curve, so nothing is drawn. The blank is
@@ -2070,42 +2188,40 @@ function render(sliderVal){
   // this map to overstate.
   const seaNow = seaLevel(yearsAgo);
   const shoreOn = layerState.shorelines && yearsAgo <= COAST_FLOOR;
+  // THE SEA TAKES THE LAND BACK RING BY RING. With the shelf drawn opaque, crossfading two
+  // stops would leave a half-transparent continent with the modern coast showing through.
+  // The stops are nested instead — land exposed at −40 m is also exposed at −75 m and
+  // −120 m, by construction of the source raster — so each stop is drawn solid while the
+  // sea is below it, and only the ring between it and the next shallower stop fades as the
+  // sea rises through that interval. The outline follows the outermost coast: a stop's
+  // coastline shows only as far as the deeper stop outside it has gone.
+  const stopsShallowFirst = COAST_STATES.slice().sort((a,b)=>b.depth - a.depth); // -40 … -120
+  const stopW = {};
+  stopsShallowFirst.forEach((st, i) => {
+    if(i === 0){ stopW[st.id] = 1; return; }
+    const above = stopsShallowFirst[i - 1].depth;
+    stopW[st.id] = Math.max(0, Math.min(1, (above - seaNow) / (above - st.depth)));
+  });
+  const deeperOf = {};
+  stopsShallowFirst.forEach((st, i) => { deeperOf[st.id] = stopsShallowFirst[i + 1] ? stopsShallowFirst[i + 1].id : null; });
   coastLayers.forEach(o => {
     const {st, shelf} = o;
-    let w = 0;
     // The region's own researched window still governs whether it is drawn at
     // all — those dates are research and outrank the depth ladder.
-    if(shoreOn && !(shelf.from && yearsAgo > shelf.from) && !(shelf.goneBy && yearsAgo < shelf.goneBy)){
-      // Weight this stop by how close the live sea level is to its depth. The
-      // neighbouring stop gets the remainder, so the two crossfade.
-      const sorted = COAST_STATES.slice().sort((a,b)=>b.depth - a.depth); // -40 … -120
-      if(seaNow >= sorted[0].depth){
-        w = (st.id === sorted[0].id) ? 1 : 0;
-      } else if(seaNow <= sorted[sorted.length-1].depth){
-        w = (st.id === sorted[sorted.length-1].id) ? 1 : 0;
-      } else {
-        for(let i = 0; i < sorted.length - 1; i++){
-          const hi = sorted[i], lo = sorted[i+1];
-          if(seaNow <= hi.depth && seaNow >= lo.depth){
-            const t = (hi.depth - seaNow) / (hi.depth - lo.depth);   // 0 at hi, 1 at lo
-            if(st.id === hi.id) w = 1 - t;
-            else if(st.id === lo.id) w = t;
-            break;
-          }
-        }
-      }
-    }
+    const open = shoreOn && !(shelf.from && yearsAgo > shelf.from) && !(shelf.goneBy && yearsAgo < shelf.goneBy);
+    const w  = open ? stopW[st.id] : 0;
+    const wc = open ? w * (1 - (deeperOf[st.id] ? stopW[deeperOf[st.id]] : 0)) : 0;
     // Quantised, and not written when unchanged: 3,300 polygons repaint only when the
     // weight visibly moves.
-    const q = w <= 0.01 ? 0 : Math.round(w * 40) / 40;
-    if(q === o.w) return;
-    // Off means off the map, not merely transparent: an invisible fill would still catch
-    // clicks and open a shoreline popup over a sea the reader was told is not drawn.
+    const q  = w  <= 0.01 ? 0 : Math.round(w  * 40) / 40;
+    const qc = wc <= 0.01 ? 0 : Math.round(wc * 40) / 40;
+    if(q === o.w && qc === o.wc) return;
+    // Off means off the map, not merely transparent.
     if(q === 0){ map.removeLayer(o.fill); map.removeLayer(o.coast); }
     else if(o.w <= 0){ o.fill.addTo(map); o.coast.addTo(map); }
-    o.w = q;
-    o.fill.setStyle({fillOpacity: 0.30 * q});
-    o.coast.setStyle({opacity: 0.6 * q});
+    o.w = q; o.wc = qc;
+    o.fill.setStyle({fillOpacity: q});
+    o.coast.setStyle({opacity: 0.6 * qc});
   });
 
   // What the ice and the coastlines are doing RIGHT NOW, stated in words.
@@ -2702,11 +2818,11 @@ function writeUrl(push){
   } else {
     q = '?t=' + Math.round(yearsAgoFromSlider(+scrub.value));
   }
-  // Viewing switches (?relief=1, ?borders=preload) survive navigation, so a page opened
-  // to look at something does not quietly lose it on the first click. They are never
+  // Viewing switches (?relief=1, ?sea=blue, ?borders=preload) survive navigation, so a page
+  // opened to look at something does not quietly lose it on the first click. They are never
   // added to a copied citation link.
   const keep = new URLSearchParams(location.search);
-  ['relief','borders'].forEach(k => { if(keep.has(k)) q += '&' + k + '=' + encodeURIComponent(keep.get(k)); });
+  ['relief','sea','borders'].forEach(k => { if(keep.has(k)) q += '&' + k + '=' + encodeURIComponent(keep.get(k)); });
   const next = baseUrl() + q;
   if(next === location.href) return;
   try{
