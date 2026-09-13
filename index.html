@@ -85,9 +85,10 @@
   /* The 26 ka boundary on the timeline: left of it the shorelines are an approximation,
      right of it a reconstruction. Shown only while the shoreline layer is on. */
   .coastfloortick{position:absolute;top:0;width:2px;height:12px;background:#c2a878;transform:translateX(-1px);}
-  .coastfloortick span{position:absolute;top:0;line-height:12px;font-family:'IBM Plex Mono',monospace;font-size:9px;white-space:nowrap;}
-  .coastfloortick .l{right:5px;color:var(--rust);}
-  .coastfloortick .r{left:5px;color:#c2a878;}
+  .coastfloortick span{position:absolute;top:0;line-height:12px;font-family:'IBM Plex Mono',monospace;font-size:9px;white-space:nowrap;
+    background:var(--paper);padding:0 3px;z-index:1;}   /* opaque, so pause ticks behind never cut the words */
+  .coastfloortick .l{right:4px;color:var(--rust);}
+  .coastfloortick .r{left:4px;color:#c2a878;}
   .shore-status{margin-left:4px;}
   .shore-status.failed{color:var(--rust);}
   .shorenote{border-left:2px solid #c2a878;padding-left:10px;color:#e2d3b0;min-height:0;}
@@ -777,7 +778,15 @@ const PAUSES = [{"id":"mazama","label":"The Mazama eruption","from":7758,"to":76
 {"id": "lgm", "label": "Last Glacial Maximum", "from": 26500, "to": 19000, "note": "Ice at maximum, sea level ~120 m below today, deserts expanded, populations contracted into refuges. Movement does not stop everywhere — but almost nothing new is founded. The longest pause in the record."}, {"id": "mwp1a", "label": "Meltwater Pulse 1A", "from": 14700, "to": 14300, "note": "Sea level rises roughly 16–20 metres in under 500 years. Coastlines move inland fast enough to be felt inside a single life. Sunda and Beringia begin to go under."}, {"id": "yd", "label": "The Younger Dryas", "from": 12900, "to": 11700, "note": "An abrupt return to near-glacial cold, lasting about 1,200 years, then ending within decades. The event the single-Reset theory was built on — real, dramatic, and NOT caused by an impact on the evidence available. A pause, not an apocalypse."}, {"id": "e82", "label": "The 8.2 kiloyear event", "from": 8300, "to": 8000, "note": "A final cold snap as the last great glacial lakes drained. Doggerland finishes drowning; the Persian Gulf fills. The last time the map's coastlines change faster than the people on them."}];
 
 const SEA = [[130000, 0], [120000, 5], [70000, -70], [30000, -85], [26500, -105], [21000, -125], [19000, -120], [14700, -100], [14300, -82], [12900, -75], [11700, -70], [11300, -58], [10000, -45], [8200, -25], [7000, -12], [5000, -4], [3000, -1], [0, 0]];
+// THE MAP SAYS WHERE ITS EVIDENCE STOPS. Before the curve's oldest point there is no
+// sea-level data, and this returns null rather than a number. It used to extend the
+// 120,000–130,000 segment backwards forever, so the HUD read "Sea level 85 m below today"
+// at 300,000 years ago on the strength of nothing. Holding the last value would be no
+// better: it asserts a modern-height sea for 170,000 years. Same ruling as the 26 ka
+// shoreline boundary and the borders blank before 3400 BCE.
+const SEA_DATA_FROM = SEA[0][0];
 function seaLevel(yearsAgo){
+  if(yearsAgo > SEA_DATA_FROM) return null;
   for(let i=1;i<SEA.length;i++){
     if(yearsAgo >= SEA[i][0]){
       const a=SEA[i], b=SEA[i-1];
@@ -2268,7 +2277,7 @@ function render(sliderVal){
   // Below COAST_FLOOR the same selection runs, and what it draws is an APPROXIMATION:
   // labelled so, outlined dashed, and switched at the boundary with no blending.
   const seaNow = seaLevel(yearsAgo);
-  const shoreOn = layerState.shorelines;
+  const shoreOn = layerState.shorelines && seaNow !== null;   // no curve, no selection
   const shoreApprox = yearsAgo > COAST_FLOOR;
   // THE SEA TAKES THE LAND BACK RING BY RING. With the shelf drawn opaque, crossfading two
   // stops would leave a half-transparent continent with the modern coast showing through.
@@ -2357,7 +2366,9 @@ function render(sliderVal){
   // Sea level + any named pause, in the readout.
   const sl = seaLevel(yearsAgo);
   const pause = activePause(yearsAgo);
-  if(seaEl) seaEl.textContent = sl <= -1
+  if(seaEl) seaEl.textContent = sl === null
+    ? 'No sea-level data before ' + SEA_DATA_FROM.toLocaleString() + ' years ago'
+    : sl <= -1
     ? 'Sea level ' + Math.round(-sl) + ' m below today'
     : 'Sea level at modern height';
   if(pauseEl){
