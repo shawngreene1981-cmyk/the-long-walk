@@ -38,76 +38,74 @@ what happened. A contested anchor is drawn as prominently as a solid one, in a
 different colour, so you can see the shape of the disagreement instead of
 having it quietly resolved for you.
 
-## Palaeo-shorelines: built, and switched off
+## Palaeo-shorelines: sourced, and off by default
 
 Half the routes here only make sense at low sea level — Beringia was a country,
 Doggerland an inhabited landscape, Sundaland continuous land. The layer that
-draws those coastlines is complete: shorelines are selected by **depth** rather
-than by date, read from the map's own 18-point sea-level curve, so they can
-never drift out of step with the sea-level readout. Three drawn stops
-(−40 m, −75 m, −120 m) plus modern, which correctly draws nothing.
+draws those coastlines selects shorelines by **depth** rather than by date, read
+from the map's own 18-point sea-level curve, so they can never drift out of step
+with the sea-level readout.
 
-**It ships disabled, on purpose.** Every polygon carries a source, a basis and a
-confidence statement, and the code drops any polygon that cannot — but the
-shapes themselves are hand-drawn approximations rather than geometry extracted
-from the reconstructions they cite. On a map whose whole argument is that it
-never overstates, a coastline that looks surveyed and is not would be the first
-thing here to break that. The layer stays off until real sourced geometry
-replaces the placeholders; the system is data-driven, so that is a data swap
-and not a code change.
+**The geometry is now sourced.** The 16 hand-drawn placeholders have been replaced
+by 124 polygons extracted from **De Groeve et al. 2022**, the only global shoreline
+reconstruction with a real glacial-isostatic correction (SELEN4 sea-level solver,
+ICE-6G_C ice history, VM5a mantle). Three stops, each the reconstructed coast at the
+date this map's curve first reaches that depth, walking back from the present:
 
-When it is on: **solid edge** = published reconstruction, **dashed edge** =
-bathymetric approximation, a modern depth contour standing in for a
-palaeo-shoreline with no correction for isostatic rebound, sediment or
-tectonics — and rebound error is largest at high latitude, which is exactly
-Doggerland and Beringia. Before 130,000 years ago the map has no sea-level
-curve and deliberately draws no shoreline at all.
+| sea level | date | |
+|---|---|---|
+| −120 m | ~19,000 ya | Last Glacial Maximum |
+| −75 m | ~12,900 ya | after meltwater pulse 1A |
+| −40 m | ~9,550 ya | early Holocene drowning |
 
-## The outstanding GIS job — three targets, one afternoon
+Drawn for the five researched shelves only — Beringia, Doggerland, Sunda, Sahul and
+the Persian Gulf — so each coastline keeps its region's research note and dating. It
+is a model, not a survey: good to roughly 10 km, with small islands missing. Every
+polygon carries source, basis and confidence, and the code drops any polygon that
+cannot.
 
-Three things on this map are placeholder geometry, and they want the same
-tooling, the same sources and the same session. They are listed together because
-doing them separately would mean georeferencing the same elevation data three
-times.
+**Before 26,000 years ago the map deliberately draws no shoreline at all.** That is
+the reach of the best available source, not of our effort: no GIA-corrected global
+shoreline product exists before 26 ka. An unsourceable coastline should be absent
+rather than approximate.
 
-**1. Palaeo-shorelines.** 16 polygons, hand-drawn, currently disabled.
-Sunda and Sahul from Voris 2000 (raster plates — georeference and trace);
-Beringia from Manley 2002's bathymetric DEM (`gdal_contour`, no tracing);
-Doggerland and the Persian Gulf from GEBCO (`gdal_contour`). Note that
-ICE-6G_C's isostatically corrected paleotopography is 1×1°, too coarse for
-Doggerland or the Gulf — so those two stay `bathymetric` even done properly.
-That is the honest permanent answer for them, not a placeholder.
+The layer is **off by default** pending a ruling on switching it on.
 
-**2. Ice sheets.** Worse than the coastlines: **26 coordinate pairs across all
-four sheets** — Laurentide 8 points, Cordilleran 6, Fennoscandian 6, Patagonian
-6. The largest ice sheet in the Northern Hemisphere is an octagon. This is the
-*easier* half of the job, because the sources ship as vectors: **Dyke 2004**
-(GSC Open File 1574) deglaciation isochrones for the Laurentide and Cordilleran,
-**DATED-1** (Hughes et al. 2016) for the Fennoscandian, Davies et al. 2020 for
-the Patagonian. No tracing, no contouring — reproject, filter to the LGM
-isochrone, simplify, convert. DATED-1 publishes explicit maximum, minimum and
-best-estimate margins, which map straight onto the `basis` field the coastlines
-already use: the ice could carry a genuine `reconstruction` tier with a real
-uncertainty band rather than a dashed approximation.
+Shoreline data: De Groeve, J., Kusumoto, B., Koene, E. *et al.* (2022). Global raster
+dataset on historical coastline positions and shelf sea extents since the Last Glacial
+Maximum. *Global Ecology and Biogeography* 31(11): 2162–2171.
+https://doi.org/10.1111/geb.13573 — raster (AGE 2021) via Figshare,
+https://doi.org/10.21942/uva.c.5754779.v1, licensed
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). **Changes were made:** the
+coastline-age raster was thresholded at three dates, read at about 0.1°, polygonised,
+simplified at 0.08°, rounded to 2 decimal places, clipped to five regions, and
+fragments under 0.35 square degrees removed.
 
-**3. A self-hosted shaded-relief basemap.** The map currently sits on plain
-OpenStreetMap — a road map with prehistoric shapes on it, no topography, and
-labels and borders competing with the content. Every hosted alternative was
-rejected: Stamen is retired and now needs a key, Esri's shaded relief is a
-legacy endpoint under a licence written for licensees rather than a public
-grant, and NASA's CC0 Blue Marble is natural-colour imagery that would paint
-*modern* vegetation across an Ice Age map and contradict this map's own Green
-Sahara mechanic. So render our own, from public-domain elevation data already in
-the source list above — GEBCO, SRTM, GTOPO30. Self-hosted: no licence question,
-no watermark risk, and it can be tuned to whatever mid-tone the palette actually
-needs instead of whatever a vendor chose.
+## The GIS job — status
 
-That last point is not cosmetic. Overlay contrast was measured against a
-relief-toned ground and three tier colours — contested, hoax and demographic —
-lose roughly a third of their contrast on any mid-tone basemap. Those colours
-are semantic and are deliberately **not** being changed to chase a basemap that
-does not exist yet; they get retuned once there is a real one to tune against,
-which makes the palette pass part of this same job.
+**1. Palaeo-shorelines — done.** See above.
+
+**2. Border acts — cut, not yet on the map.** Cliopatria v0.2.0 (GitHub release tag,
+CC BY 4.0; Bennett *et al.* 2025, *Scientific Data* 12, 247,
+https://doi.org/10.1038/s41597-025-04516-9) cut into centuries before 1500 CE and
+half-centuries after, at 0.25° / 2 dp, with every invalid geometry repaired. The
+budget per act is 822,136 bytes — the map's own measured size, read literally — and
+**an act that exceeds it is cut finer**: the budget is a density detector, not just a
+file-size cap. One act did: 1900–1950 became two 25-year acts.
+
+**3. Ice sheets — blocked, and staying blocked.** The four sheets are **26 coordinate
+pairs** between them — bounding boxes, and the legend says so. The identified
+replacement, Batchelor *et al.* 2019, carries **no licence on the deposit itself**,
+only on the paper describing it. This project does not ship data whose rights cannot
+be traced to the artefact, so the boxes stay, labelled as boxes, until that is
+resolved rather than assumed.
+
+**4. A self-hosted shaded-relief basemap — in progress.** The map sits on plain
+OpenStreetMap: a road map with prehistoric shapes on it. Every hosted alternative was
+rejected — Stamen retired and keyed, Esri's relief under a licence written for
+licensees, NASA's CC0 Blue Marble painting *modern* vegetation across an Ice Age map.
+So it is rendered here from **ETOPO 2022** (NOAA, CC0 1.0), which includes bathymetry.
+Whether the existing palette holds against it is being settled by measurement.
 
 ## Citing a single anchor
 
@@ -163,4 +161,5 @@ Map and dataset © 2026 Shawn Greene, released under
 freely, including commercially, with credit and a note of any changes. See
 [`license`](license).
 
-Basemap tiles © OpenStreetMap contributors, © CARTO.
+Basemap tiles © OpenStreetMap contributors. Shoreline data © De Groeve et al. 2022, CC BY 4.0, with
+changes — see *Palaeo-shorelines* above for the full credit.
