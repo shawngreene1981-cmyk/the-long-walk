@@ -98,6 +98,9 @@
   .shore-status.failed{color:var(--rust);}
   .shorenote{border-left:2px solid #c2a878;padding-left:10px;color:#e2d3b0;min-height:0;}
   .shorenote.approx{border-left:2px dashed var(--rust);color:var(--rust);}
+  /* The flood-age cells are the source's real resolution: scaled up past zoom 5 they stay square
+     rather than being blurred into a precision the reconstruction does not have. */
+  .flood-layer .leaflet-tile{image-rendering:pixelated;image-rendering:crisp-edges;}
   /* Deliberate: this filter DOES apply to every pane, because a reset should
      drain colour from the whole scene, markers included. */
   .stage.inreset #map{filter:saturate(0.3) brightness(0.92);transition:filter .6s ease;}
@@ -456,7 +459,7 @@
     <span><span class="dot" style="background:#6b5f96"></span> Lost ground — people were here, and are gone</span>
     <span><span class="lineswatch" style="border-color:#cfe4f2;background:rgba(220,236,247,.35)"></span> Ice sheet</span>
     <span class="legend-note" style="flex-basis:100%;color:var(--rust)"><strong>The ice sheets are the crudest geometry on this map, and unlike the shorelines they are switched ON.</strong> Four sheets, <strong>26 vertices between them</strong> — Laurentide 8, Cordilleran 6, Fennoscandian 6, Patagonian 6. They are bounding boxes, not margins, and the dates they carry are better than the shapes that carry them. Read them as "ice was roughly here", never as an edge. Real LGM margins are among the best-mapped features in Quaternary science and the replacement is identified — Batchelor et al. 2019 for the Northern Hemisphere — but that deposit carries <strong>no licence on the artefact</strong>, only on the paper describing it. This project does not ship data whose rights cannot be traced to the thing itself; it refused a basemap on exactly that ground. So the boxes stay, visibly labelled as boxes, until the licence is resolved rather than assumed. The Patagonian sheet has no licence-cleared source at all.</span>
-    <span class="legend-note" style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today. The coastlines are now <strong>sourced</strong>: extracted from De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, drawn <strong>as land</strong>, in the basemap's own land colour, as De Groeve et al. reconstruct the coast at <strong>three dates: about 19,000, 12,900 and 9,550 years ago</strong>. From 26,000 years ago on they are shown <strong>by date</strong>: as the slider passes from one reconstructed date to the next, the sea takes back the ring of land between them. <strong>The source and this map's global sea-level curve disagree</strong>: in De Groeve's raster the shelves flood while the curve still reads the sea tens of metres lower — 18–38 m in Sunda, 22–36 m in Sahul, 15–33 m in the Persian Gulf, less at high latitude. That is observed in their raster and not explained in their paper, each shoreline popup gives the measured figure, and it is why the coasts are labelled by date rather than by depth. Shown for the five researched shelves: Beringia, Doggerland, Sunda, Sahul and the Persian Gulf. A model, not a survey, extracted at the source's full resolution: how much of each region's shelf survives simplification is stated region by region and coast by coast in every shoreline popup. Each region shows only the shelf inside its own box, so <strong>where a box cuts the shelf the land stops in a straight line</strong>: that edge is the limit of this map's regional extraction, not a coast, and no coastline is drawn along it. <strong>The layer is off by default because of those straight edges</strong>: at the zoom a reader uses, Doggerland's cuts at 6°W and 49°N read as a coastline that never existed, so the layer waits for a global extraction without region boxes. <strong>From 26,000 years ago to the present this is a reconstruction</strong>, and its coastline is drawn <strong>solid</strong>. <strong>Before 26,000 years ago it is an APPROXIMATION, not a reconstruction</strong>, and its coastline is drawn <strong>dashed</strong>. No reconstruction exists there: De Groeve et al. 2022 begins at 26 ka and no glacial-isostatic-corrected global product reaches further back — the edge of the science, not a gap in the collecting. What is drawn instead is <strong>the same De Groeve shapes, selected by this map's own sea-level curve</strong> — each dated coast matched to the depth the curve reads at its date, a match this map makes and the source does not — not by any reconstruction of that date, and with <strong>no glacial-isostatic correction</strong>: the rise and fall of the land itself under the ice sheets is ignored, so it is <strong>most wrong at high latitude — here, Beringia</strong>. The curve is coarse there too: four points between 26,500 and 130,000 years ago, with straight lines across the 50,000 years from 120,000 to 70,000 and the 40,000 years from 70,000 to 30,000. The switch happens at exactly 26,000 years ago with no blending; the HUD says which side of it you are on, and a mark on the timeline shows where it falls. Each shelf is still drawn only inside its researched window, so the approximation reaches back 36,000 years for Beringia, 65,000 for Sahul, 70,000 for the Persian Gulf and 90,000 for Sunda; Doggerland, held by ice, is never approximated. <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: thresholded at three dates, polygonised, simplified, and clipped to five regions.</span></span>
+    <span class="legend-note" style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today, drawn <strong>as land</strong> in the basemap's own land colour, <strong>for the whole world</strong>. The source is De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, <strong>drawn at its own resolution and in its own 0.5 kyr steps</strong>: nothing simplified or removed. Zoomed past level 5 its square 2-arc-minute cells show, because that is the reconstruction's real resolution. As the slider moves toward the present the sea takes the land back step by step, on the source's own dates. <strong>The HUD's walkable and drowning words for the five named shelves follow what is drawn</strong>; where a shelf's research dates differ from the source, its popup states both and picks neither. <strong>The source and this map's global sea-level curve disagree</strong>: in De Groeve's raster the shelves flood while the curve still reads the sea tens of metres lower — 18–38 m in Sunda, 22–36 m in Sahul, 15–33 m in the Persian Gulf, less at high latitude — and every popup gives the figure measured for its own place, observed in the raster and not explained in the paper. Before the glacial lowstand the raster records only the most recent coastline, so ground exposed only at the lowstand shows a little early. <strong>From 26,000 years ago to the present this is a reconstruction</strong>, and its coastline is drawn <strong>solid</strong>. <strong>From 26,000 back to 90,000 years ago it is an APPROXIMATION, not a reconstruction</strong>, and its coastline is drawn <strong>dotted</strong>. No reconstruction exists there, so the map draws the source's coast for the date its own sea-level curve last stood at the same depth, with <strong>no glacial-isostatic correction</strong> — most wrong near the ice, which across the world means <strong>most of the northern shelves</strong>. The curve is coarse there too: four points between 26,500 and 130,000 years ago, with straight lines across the 50,000 years from 120,000 to 70,000 and the 40,000 years from 70,000 to 30,000. The switch happens at exactly 26,000 years ago with no blending; the HUD says which side of it you are on, and a mark on the timeline shows where it falls. <strong>Before 90,000 years ago nothing is drawn, anywhere</strong>: that is the oldest researched shelf window on this map, applied to every shelf at once, because a time limit draws no edges. <strong>The layer is off by default until the global layer has been looked at.</strong> <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: re-encoded as one byte per cell and reprojected to Web Mercator tiles by nearest neighbour; nothing simplified, smoothed or removed.</span></span>
   </div>
 
   <h2 class="sec">What this prototype is actually showing</h2>
@@ -667,68 +670,43 @@ const SHELVES = [{"id": "beringia", "label": "Beringia — the land bridge", "fr
 
 
 // ===================== PALAEO-SHORELINES =====================
-// A DRAWN COASTLINE IS A CLAIM, and it gets the same treatment as an anchor:
-// a source, a date, and an honest statement of confidence. Enforced in code
-// below, not left to habit — an entry missing basis or source is DROPPED.
+// A DRAWN COASTLINE IS A CLAIM, and it gets the same treatment as an anchor: a source, a
+// date, and an honest statement of confidence.
 //
-// THE GEOMETRY IS SOURCED, AT FULL RESOLUTION. Every polygon is extracted from De
-// Groeve et al. 2022, the only global shoreline reconstruction with a real
-// glacial-isostatic correction. Re-extracted, as ruled, at the raster's full
-// 2-arc-minute resolution, simplified at 0.05 deg, pieces under 0.003 deg2 removed:
-// 97.9% of the exposed shelf kept overall. The first extraction read the raster at a
-// third of that resolution and cut pieces under 0.35 deg2; that deleted ALL of Sunda's
-// fragmented shelf at -40 m, and the gap was briefly mistaken for a disagreement with
-// the shelf record. It was not one.
+// THE GLOBAL PASS, AS RULED. The shelf is drawn from De Groeve et al. 2022's coastline-age
+// raster ITSELF, for the whole world, AT ITS OWN RESOLUTION AND IN ITS OWN 0.5 kyr STEPS:
+// tiles/floodage holds one byte per cell (the cell's most recent coastline step, or modern
+// land, or open sea). Nothing is simplified, smoothed or removed, and there are no region
+// boxes, so no fill edge can be a box edge. Zoomed past level 5 the square 2-arc-minute
+// cells show — that is the reconstruction's real resolution made visible, and this map has
+// refused smoothed data before: it would not close Sunda's polygons into more land than the
+// source had, it went blank below 26 ka rather than guess, and it held the whole layer off
+// rather than feather a box edge.
 //
-// THE LOSS IS STATED PER REGION AND PER STOP, in every shoreline popup, from the
-// numbers measured at extraction — never as "small islands are missing".
+// EXPOSURE RULE, from the source's encoding: a cell whose most recent coastline was s x 500
+// years ago is exposed at date T when s x 500 < T. Exact after the glacial lowstand. Before
+// it (~21,000 ya on this map's curve) the sea was still falling and the raster records only
+// the most recent crossing, so ground exposed only at the lowstand shows a little early; the
+// popup says so.
 //
-// EACH REGION SHOWS ONLY THE SHELF INSIDE ITS OWN BOX. Exposed shelf runs continuously
-// along coastlines — at the Last Glacial Maximum one strip joins the Persian Gulf,
-// India and Sunda — so any rule that assigns whole polygons to a region puts one
-// region's shelf under another region's name and dates. Where a box cuts the shelf,
-// the FILL stops at the cut and NO OUTLINE is drawn along it: an outline is a coastline
-// claim, and a box edge is not a coast.
-//
-// DATED COASTS. De Groeve et al. reconstruct coastlines by DATE, place by place, with a
-// glacial-isostatic correction; they never assign a coast one global sea-level depth.
-// These three are their coasts at ~19,000, ~12,900 and ~9,550 years ago, and from
-// 26,000 years ago onward they are labelled and shown BY DATE.
-//
-// The `depth` field is THIS MAP'S gloss, not the source's: the depth its own global
-// sea-level curve reads at each date. It was once used to select the coasts at every
-// date, and that is where an error entered — it asserted a depth relationship the
-// source never claimed, and a real render showed the result: in Sunda at "−75 m" the
-// source's ~12,900 ya coast already has the Gulf of Thailand and the Java Sea under
-// water. Ruled: the depth is now used ONLY below 26 ka, where the drawing is an
-// approximation selected by this map's curve and already labelled as one.
-// The modern state needs no polygon: it is the basemap, and drawing nothing is
-// the correct rendering of it.
-const COAST_STATES = [
-  {id:'s4', depth:-40,  snapshot:9550,  label:'Early Holocene drowning'},
-  {id:'s3', depth:-75,  snapshot:12900, label:'After meltwater pulse 1A'},
-  {id:'s2', depth:-120, snapshot:19000, label:'Last Glacial Maximum'}
-];
+// THE DRAWING FOLLOWS THE SOURCE; THE HUD FOLLOWS THE DRAWING (ruled). No region is switched
+// off at a researched date, because that would cut the shelf along the old box lines in
+// time. The five named shelves' HUD words come from how much of their glacial-maximum shelf
+// is drawn; their research dates live in the popups, and where the source differs the popup
+// states both and picks neither.
 
-// THE 26 ka BOUNDARY. Above it the shorelines are a reconstruction; below it they are an
-// approximation, and the map says which, in words, wherever a shoreline is described.
-//
-// 26,000 is the reach of the best available SOURCE. De Groeve et al. 2022 is the only
-// global shoreline product with a real glacial-isostatic correction (SELEN4 + ICE-6G_C +
-// VM5a), and it begins at 26 ka. Before that there is no GIA-corrected global
-// reconstruction at all — not a gap in what was collected, but the edge of the science.
-//
-// For a time the map drew nothing below it. That was honest, but the shelves were then
-// absent from almost all of the story in which people crossed them, and the HUD still
-// announced them as walkable. Ruled: below 26 ka, APPROXIMATION IS APPROVED, on three
-// conditions that are enforced here rather than left to habit:
-//   1. It is labelled as an approximation, in words, in the popup, the legend and the HUD.
-//   2. It says what it is an approximation OF: De Groeve's geometry, selected by depth;
-//      dated by this map's sea curve, not reconstructed for that date; and with NO
-//      glacial-isostatic correction, which is most wrong at high latitude (Beringia).
-//   3. The boundary stays visible. The switch at 26,000 is instant — dashed outline,
-//      APPROXIMATION in the HUD, a mark on the timeline — and nothing blends across it.
+// THE 26 ka BOUNDARY. Above it the shorelines are a reconstruction; below it an approximation,
+// and the map says which, in words, wherever a shoreline is described. 26,000 is the reach of
+// the source: no glacial-isostatic-corrected global reconstruction reaches further back.
+// Below it the approximation is labelled in the popup, the legend and the HUD; says what it
+// approximates (the source's coast for the date this map's curve last stood at the same depth,
+// with NO glacial-isostatic correction — most wrong near the ice, which globally means most of
+// the northern shelves); and switches at 26,000 with no blending (dotted outline, red HUD line,
+// a mark on the timeline).
 const COAST_FLOOR = 26000;
+// THE APPROXIMATION STOPS AT 90,000 YEARS AGO FOR EVERY SHELF AT ONCE (ruled): the oldest
+// researched shelf window on this map. A time limit draws no edges.
+const COAST_APPROX_LIMIT = 90000;
 
 // What the sea curve actually offers below the boundary, computed from SEA itself so the
 // words cannot drift from the data: the points it has, and its longest straight line.
@@ -741,13 +719,6 @@ function seaBelowFloor(){
   return {pts, long};
 }
 
-// PROVENANCE, stated once and repeated in every popup.
-//   'reconstruction' - shape follows a published palaeogeographic reconstruction.
-//                      Outline drawn SOLID.
-//   'bathymetric'    - shape follows a modern depth contour, which is a PROXY,
-//                      uncorrected for isostatic rebound, sediment infill or
-//                      tectonics. Outline drawn DASHED. None remain, but the
-//                      distinction stays in the code for any that are added.
 const COAST_SRC = {
   degroeve: {
     basis:'reconstruction',
@@ -755,35 +726,10 @@ const COAST_SRC = {
     url:'https://doi.org/10.1111/geb.13573',
     data:'Historic coastline age raster (AGE 2021), Figshare https://doi.org/10.21942/uva.c.5754779.v1',
     licence:'CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/',
-    changes:'Changes were made: the coastline-age raster was thresholded at 19,000, 12,900 and 9,550 years ago at full resolution (2 arc-minutes) within five regional boxes, converted to polygons, simplified at 0.05 degrees, rounded to 2 decimal places, and pieces smaller than 0.003 square degrees removed. Where a region box cuts the shelf, the fill stops at the cut and no coastline is drawn along it.',
+    changes:'Changes were made: the coastline-age raster was re-encoded as one byte per cell (its 0.5 kyr coastline step, modern land, or open sea) and reprojected to Web Mercator tiles at zoom 0–5 by nearest neighbour. Nothing was simplified, smoothed or removed. Which named shelf a popup describes is chosen by this map\'s old region boxes, which draw nothing.',
     caveat:'A glacial-isostatic reconstruction (SELEN4 sea-level solver, ICE-6G_C ice history, VM5a mantle), not a depth contour. It is still a model: its shorelines are only as good as that ice history and mantle, and it says nothing before 26,000 years ago.'
   }
 };
-
-// Option B: the geometry lives in data/coasts.json (1.7 MB raw, ~225 KB gzipped) and is
-// fetched the first time the layer is switched on, so it costs nothing to anyone who
-// never opens the layer. COAST_KEPT holds the measured share of each region's shelf kept
-// at each stop, and is what the popup states.
-let COASTS = [], COASTS_OK = [], COAST_KEPT = {};
-
-// HARD RULE, in code rather than as a habit: a polygon that cannot carry a
-// source does not go on the map. Anything missing a valid outer ring, a known
-// depth stop, or a provenance record is dropped here and named in the console.
-function validCoasts(list){
-  return list.filter(function(c){
-    const st  = COAST_STATES.filter(function(s){ return s.id === c.state; })[0];
-    const src = COAST_SRC[c.src];
-    const outer = c.fill && c.fill[0];
-    const bad = !st ? 'unknown state'
-              : !src ? 'no source record'
-              : !src.basis ? 'no basis'
-              : !src.source ? 'no source text'
-              : !(outer && outer.length >= 4) ? 'not a polygon'
-              : null;
-    if(bad){ console.warn('COASTS: dropped ' + c.id + ' — ' + bad); return false; }
-    return true;
-  });
-}
 const ICE = [{"id": "laurentide", "label": "The Laurentide ice sheet", "coords": [[49, -125], [52, -95], [55, -75], [62, -62], [72, -70], [75, -95], [70, -125], [60, -135]], "maxFrom": 75000, "peak": 21000, "goneBy": 7000, "note": "Up to three kilometres thick, covering most of Canada and the northern United States. Its southern edge is the wall the first Americans had to get around — and the reason the coastal route matters more than the interior one."}, {"id": "cordilleran", "label": "The Cordilleran ice sheet", "coords": [[48, -124], [52, -118], [58, -126], [61, -140], [56, -136], [50, -128]], "maxFrom": 50000, "peak": 20000, "goneBy": 11000, "note": "The Pacific-side sheet. Where it met the Laurentide, the continent was sealed; the gap between them — the ice-free corridor — did not open early enough to be the first route in."}, {"id": "fennoscandian", "label": "The Fennoscandian ice sheet", "coords": [[54, 8], [58, 30], [65, 42], [71, 30], [70, 12], [62, 4]], "maxFrom": 70000, "peak": 21000, "goneBy": 9000, "note": "Northern Europe under ice. Its retreat opens Scandinavia — which is why the Norse branch is one of the last to exist at all."}, {"id": "patagonian", "label": "The Patagonian ice sheet", "coords": [[-41, -73], [-46, -71], [-52, -72], [-55, -70], [-50, -75], [-44, -75]], "maxFrom": 40000, "peak": 20000, "goneBy": 11000, "note": "The southern tip's own ice cap. People reach Patagonia only as it withdraws — the far end of the longest walk in the story."}];
 
 const PAUSES = [{"id":"mazama","label":"The Mazama eruption","from":7758,"to":7660,"note":"The largest Cascade eruption in a million years — VEI 7, ~50 km³ of magma, the summit collapsing into its own emptied chamber to leave the caldera that becomes Crater Lake. **The width of this band is the width of the published confidence interval, not the duration of the event**: 7682–7584 cal BP at 95.4% (Egan, Staff & Blackford 2015), cross-checked against a GISP2 ice-core signal at 7627 ± 150 BP. Same convention as Thera on this layer, where the band is the size of the disagreement.\n\nMarked as an event, and deliberately **not** as a demonstrated population reset. Ash fell across the Pacific Northwest into Canada; people were demonstrably in the region beforehand (`or10`); but no settlement-pattern discontinuity attributable to the eruption was established in this pass. **The claim that the eruption is remembered in Klamath and Modoc oral tradition is a separate claim with separate evidence — see `mz10`, where it is argued in both directions.**"},
@@ -1168,7 +1114,7 @@ tileLayerFor('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // IT SITS UNDER EVERYTHING ELSE. Its own pane, between the tiles and every overlay, so an
 // opaque fill can never cover a route, a marker, fog or ice. That also means it cannot
 // take clicks — the overlay canvas above it does — so its popup is opened from a map
-// click that lands inside it (see loadCoasts).
+// click, sampled from the flood-age tile under it (see loadCoasts).
 //
 // CRITERION: no tier marker drawn where the shelf is may fall below 90% of its current
 // contrast. Measured for every anchor that sits inside any shelf polygon, on both
@@ -1181,7 +1127,6 @@ const SHELF_LAND = RELIEF ? '#252423' : '#1d1b18';
 map.createPane('shelfPane');
 map.getPane('shelfPane').style.zIndex = 350;
 map.getPane('shelfPane').style.pointerEvents = 'none';
-const shelfRenderer = L.canvas({pane:'shelfPane', padding:0.5});
 
 const corridorCircle = L.circle([CORRIDOR.lat, CORRIDOR.lon], {
   radius: CORRIDOR.minM, color:'#6fae52', weight:1, fillColor:'#6fae52', fillOpacity:0.08, opacity:0.35, interactive:false
@@ -1314,30 +1259,31 @@ GHOSTS.forEach(g=>{
 
 
 // ---- Ice sheets and drowning coastlines: the walls, not just the walking ----
-// SHELVES no longer carries geometry. It keeps what was research \u2014 the dates
-// and the prose \u2014 and COASTS supplies the shape, so there is one system
-// drawing each region instead of two that disagree.
+// SHELVES carries research — dates and prose — and the flood-age tiles carry the shape.
 const SHELF_BY_ID = {}; SHELVES.forEach(s=>{ SHELF_BY_ID[s.id] = s; });
 
-// Built once, after data/coasts.json arrives. ONE fill layer and ONE outline layer per
-// region per stop — 30 layers — rather than one per polygon (3,305), because every
-// polygon of a region's stop shares one opacity. The render loop then touches 30
-// layers per tick instead of 6,600.
-let coastLayers = [];
-let coastsState = 'idle';                 // idle -> loading -> ready | failed
-const COAST_STOP_LABEL = {s2:'~19,000 ya coast', s3:'~12,900 ya coast', s4:'~9,550 ya coast'};
+// The old region boxes survive ONLY to decide which named popup and which HUD word belongs to
+// a place. Choosing a popup by box draws nothing, so it cannot create an edge.
+const SHELF_BOXES = {beringia:[[155,50,180,76],[-180,50,-150,76]], doggerland:[[-6,49,13,62]],
+                     sunda:[[90,-12,120,15]], sahul:[[120,-45,156,0]], gulf:[[47,23,57,31]]};
+function shelfRegionAt(lat, lon){
+  for(const r in SHELF_BOXES){
+    if(SHELF_BOXES[r].some(b => lon >= b[0] && lon <= b[2] && lat >= b[1] && lat <= b[3])) return r;
+  }
+  return null;
+}
 
-// WHAT THIS MAP DOES NOT KNOW: the source floods these shelves at different depths than
-// this map's global sea-level curve would. Measured by geowork/divergence_by_region.py:
-// every cell of the De Groeve coastline-age raster in each region box, grouped by the
-// date the source floods it, its median modern depth (ETOPO 2022, averaged onto the
-// raster's grid — the source itself used GEBCO) compared with this map's curve at that
-// date, 8,000–20,000 years ago. Positive = the source floods it while the curve still
-// reads the sea lower. `at12` is the ~12,200 ya group.
-// De Groeve et al. 2022 publish no regional sea-level curve for any of these regions
-// and do not discuss a difference from a global curve. Their Figure 2(c) caption says
-// only that the East Sunda region saw "most drowning between 20 and 15 kyr bp". The
-// divergence is observed in their raster, not explained in their paper.
+let coastsState = 'idle';                 // idle -> loading -> ready | failed
+const FLOOD = {manifest:null, tileSet:null, regions:null, grid:null, layer:null, key:null, clickBound:false};
+
+// WHAT THIS MAP DOES NOT KNOW: the source floods these shelves at different depths than this
+// map's global sea-level curve would. Measured by geowork/divergence_by_region.py for the five
+// named shelves, and by geowork/build_floodage.py for every 10-degree cell with enough flooded
+// ground (data/floodage/divergence_grid.json): cells flooded 8,000–20,000 years ago, grouped by
+// flood date, median modern depth (ETOPO 2022 averaged onto the raster grid; the source used
+// GEBCO) against this map's curve at that date. Positive = the source floods it while the curve
+// still reads the sea lower. De Groeve et al. 2022 publish no regional sea-level curve and do
+// not discuss a difference from a global curve. Observed in their raster, not explained.
 const COAST_DIVERGENCE = {
   sunda:      {lo:18, hi:38, at12:{depth:34, curve:72}},
   sahul:      {lo:22, hi:36, at12:{depth:36, curve:72}},
@@ -1345,6 +1291,11 @@ const COAST_DIVERGENCE = {
   doggerland: {lo:9,  hi:19, at12:{depth:53, curve:72}},
   beringia:   {lo:-8, hi:20, at12:{depth:53, curve:72}}
 };
+function divergenceRange(lo, hi){
+  if(lo < 0 && hi > 0) return `from ${-lo} m lower to ${hi} m higher`;
+  if(hi <= 0) return `lower, by ${-hi} to ${-lo} m`;
+  return `higher, by ${lo} to ${hi} m`;
+}
 function coastDivergenceHtml(region){
   const d = COAST_DIVERGENCE[region];
   if(!d) return '';
@@ -1359,90 +1310,162 @@ function coastDivergenceHtml(region){
     + `it leaves out tectonics and sediment (it notes the Sunda shelf has subsided about 5 m in 20,000 years) and any errors in its `
     + `GEBCO bathymetry. It publishes no regional sea-level curve here and does not discuss the difference. `
     + `<strong>The divergence is observed in their raster, measured by this map, and not explained in their paper.</strong> `
-    + `This is why the coasts above are labelled by their dates and not by a depth.</p>`;
+    + `This is why the drawing follows the source's dates and never a depth.</p>`;
+}
+// The generic popup states a figure measured for ITS OWN 10-degree cell, or says none was
+// measured — never a regional figure borrowed from somewhere else.
+function gridDivergenceHtml(lat, lon){
+  const cells = FLOOD.grid && FLOOD.grid.cells || [];
+  const c = cells.find(x => lat >= x.lat && lat < x.lat + 10 && lon >= x.lon && lon < x.lon + 10);
+  const cellName = (v, pos, neg) => Math.abs(v) + '°' + (v >= 0 ? pos : neg);
+  if(!c) return `<p class="pop-note" style="color:var(--parchment-dimmer)">How far the source's flooding here departs from this map's `
+    + `global sea-level curve is <strong>not measured</strong>: this 10° cell has too little ground flooded between 8,000 and 20,000 years ago to measure it.</p>`;
+  return `<p class="pop-note"><strong style="color:var(--rust)">THE SOURCE AND THIS MAP'S SEA CURVE DIFFER HERE.</strong> `
+    + `Measured in this 10° cell (${cellName(c.lat, 'N', 'S')}–${cellName(c.lat + 10, 'N', 'S')}, ${cellName(c.lon, 'E', 'W')}–${cellName(c.lon + 10, 'E', 'W')}): `
+    + `between 8,000 and 20,000 years ago the source floods ground ${divergenceRange(c.lo, c.hi)} than this map's global curve would`
+    + (c.at12 ? `; ground flooded about 12,200 years ago lies a median ${c.at12.depth} m below today's sea, when the curve reads about \u2212${c.at12.curve} m` : '')
+    + `. The source computes sea level place by place, with a glacial-isostatic correction, which a single global curve cannot, `
+    + `and leaves out tectonics, sediment and any errors in its bathymetry. `
+    + `<strong>Observed in their raster, measured by this map, and not explained in their paper.</strong></p>`;
 }
 
-function coastKeptText(region, sid){
-  const k = COAST_KEPT[region] || {};
-  const pct = v => v != null ? v.toFixed(1) + '%' : 'not measured';
-  const all = ['s2','s3','s4'].map(s => COAST_STOP_LABEL[s] + ' ' + pct(k[s])).join(' · ');
-  return `What is drawn here keeps <strong>${pct(k[sid])}</strong> `
-       + `of the exposed shelf the source shows in this region for this coast; the rest is pieces too small `
-       + `to draw at this scale (under 0.003 square degrees: about 37 km² at the equator, less toward the poles) and detail removed by simplifying at 0.05°. `
-       + `This region, every coast: ${all}.`;
+// Walking back from the present over the curve's rising limb (to its lowstand), the date when
+// the curve first reads a given depth. Used ONLY by the approximation, as labelled.
+function dateForDepth(depth){
+  const pts = SEA.slice().sort((a, b) => a[0] - b[0]).filter(p => p[0] <= 21000);
+  for(let i = 1; i < pts.length; i++){
+    const [y0, d0] = pts[i - 1], [y1, d1] = pts[i];
+    if(d1 <= depth){ const t = (depth - d0) / (d1 - d0); return y0 + (y1 - y0) * t; }
+  }
+  return 21000;
 }
 
-function buildCoastLayers(){
-  const groups = {};
-  COASTS_OK.forEach(c => { const k = c.region + '|' + c.state; (groups[k] = groups[k] || []).push(c); });
-  coastLayers = Object.keys(groups).map(k => {
-    const list = groups[k], c0 = list[0];
-    const shelf = SHELF_BY_ID[c0.region] || {label:c0.region, note:''};
-    const st    = COAST_STATES.filter(s => s.id === c0.state)[0];
-    const src   = COAST_SRC[c0.src];
-    const recon = src.basis === 'reconstruction';
-    // Fill carries no stroke: its edge may be a region box, and a box edge is not a coast.
-    const fill = L.polygon(list.map(c => c.fill), {
-      stroke:false, fillColor:SHELF_LAND, fillOpacity:0, interactive:false, renderer:shelfRenderer
-    });
-    // The outline is only the true coastline segments, computed at extraction.
-    const lines = []; list.forEach(c => (c.coast || []).forEach(l => lines.push(l)));
-    const coast = L.polyline(lines, {
-      color:'#c2a878', weight: recon ? 1.4 : 1, dashArray: recon ? null : '4,4',
-      opacity:0, interactive:false, renderer:shelfRenderer
-    });
-    const sourceBody = `${src.source}.${src.url ? ' ' + src.url : ''}</p>`
-      + (src.data ? `<p class="pop-note" style="color:var(--parchment-dimmer)">Data: ${src.data}. Licence ${src.licence}. ${src.changes || ''}</p>` : '')
-      + `<p class="pop-note" style="color:var(--parchment-dimmer)">${src.caveat}</p>`
-      + `<p class="pop-note" style="color:var(--parchment-dimmer)">${coastKeptText(c0.region, c0.state)}</p>`
-      + (shelf.dryUntil ? `<p class="pop-note" style="color:var(--parchment-dimmer)">`
-          + `This region's dates are carried from the shelf record: walkable from `
-          + `~${shelf.from.toLocaleString()} ya until ~${shelf.dryUntil.toLocaleString()} ya, gone by ~${shelf.goneBy.toLocaleString()} ya.</p>` : '');
-    const popup =
-        `<p class="pop-title">${shelf.label}</p>`
-      + `<p class="pop-age">The ~${st.snapshot.toLocaleString()} ya coast, as reconstructed \u00b7 ${st.label}</p>`
-      + `<p class="pop-note">${shelf.note || ''}</p>`
-      + coastDivergenceHtml(c0.region)
-      + `<p class="pop-note" style="margin-top:8px">`
-      + `<strong style="color:${recon ? 'var(--sahara-bright)' : 'var(--rust)'}">`
-      + (recon ? 'RECONSTRUCTION' : 'BATHYMETRIC APPROXIMATION') + `</strong> \u2014 `
-      + sourceBody;
-    const shapeLines = `<p class="pop-note" style="margin-top:8px">`
-      + `<strong style="color:var(--parchment-dim)">THE SHAPE IS FROM</strong> \u2014 ` + sourceBody;
-    return {region:c0.region, st, src, fill, coast, shelf, popup, shapeLines, recon, polygons:list.length, w:-1, wc:-1, approx:null};
-  });
+const FLOOD_RESOLUTION_NOTE = `Drawn at the source's own resolution (2 arc-minutes, about 3.7 km) and in its own 0.5 kyr steps: `
+  + `nothing simplified, smoothed or removed. Zoomed in past level 5 the square cells show \u2014 that is the reconstruction's real resolution, not a rendering fault.`;
+const FLOOD_LOWSTAND_NOTE = `<p class="pop-note" style="color:var(--parchment-dimmer)">Before the glacial lowstand (about 21,000 years ago on this map's curve) the sea was still falling, `
+  + `and the source records only the most recent time the coastline passed each cell, so ground that was exposed only at the lowstand itself is drawn here a little early.</p>`;
+
+function researchWindowHtml(region, yearsAgo, approx){
+  const sh = SHELF_BY_ID[region], r = FLOOD.regions && FLOOD.regions[region];
+  if(!sh || !r) return '';
+  const pctAt = ya => r.pct_of_glacial_max_exposed_by_step[Math.max(0, Math.min(52, Math.ceil(ya / 500) - 1))];
+  let html = `<p class="pop-note" style="color:var(--parchment-dimmer)">This shelf's research dates, carried from the shelf record: `
+    + `walkable from ~${sh.from.toLocaleString()} ya until ~${sh.dryUntil.toLocaleString()} ya, gone by ~${sh.goneBy.toLocaleString()} ya. `
+    + `The source's raster, which is what is drawn, has <strong>${pctAt(sh.goneBy)}%</strong> of this shelf's glacial-maximum extent still exposed at ~${sh.goneBy.toLocaleString()} ya`
+    + (r.source_below_2pct_ya ? ` and falls below 2% by ~${r.source_below_2pct_ya.toLocaleString()} ya` : '')
+    + `. <strong>Both are stated; this map does not choose between them.</strong></p>`;
+  if(approx && yearsAgo > sh.from){
+    html += `<p class="pop-note" style="color:var(--rust)">The research record does not have this shelf open at this date \u2014 it opens ~${sh.from.toLocaleString()} ya \u2014 `
+      + `but the approximation draws what this map's sea curve implies. Both are stated; neither is chosen.</p>`;
+  }
+  return html;
 }
 
-// The popup below the 26 ka boundary. It says what the drawing is, what it is not, and
-// what it rests on, before anything else.
-function approxPopupHtml(o, yearsAgo){
-  const ya  = Math.round(yearsAgo / 100) * 100;
+function floodPopupHtml(latlng, step, yearsAgo){
+  const region = shelfRegionAt(latlng.lat, latlng.lng), shelf = region ? SHELF_BY_ID[region] : null;
+  const src = COAST_SRC.degroeve, approx = yearsAgo > COAST_FLOOR;
+  const ya = Math.round(yearsAgo / 100) * 100;
+  const title = `<p class="pop-title">${shelf ? shelf.label : 'Exposed continental shelf'}</p>`;
+  const divergence = region ? coastDivergenceHtml(region) : gridDivergenceHtml(latlng.lat, latlng.lng);
+  const credit = `<p class="pop-note" style="margin-top:8px"><strong style="color:${approx ? 'var(--parchment-dim)' : 'var(--sahara-bright)'}">`
+    + (approx ? 'THE SHAPE IS FROM' : 'RECONSTRUCTION') + `</strong> \u2014 ${src.source}. ${src.url}</p>`
+    + `<p class="pop-note" style="color:var(--parchment-dimmer)">Data: ${src.data}. Licence ${src.licence}. ${src.changes}</p>`
+    + `<p class="pop-note" style="color:var(--parchment-dimmer)">${src.caveat}</p>`
+    + `<p class="pop-note" style="color:var(--parchment-dimmer)">${FLOOD_RESOLUTION_NOTE}</p>`;
+  if(!approx){
+    return title
+      + `<p class="pop-age">Exposed ground at ~${ya.toLocaleString()} ya, as reconstructed \u00b7 in the source this ground floods about ${(step * 500).toLocaleString()} ya</p>`
+      + (shelf ? `<p class="pop-note">${shelf.note || ''}</p>` : '')
+      + (yearsAgo > 21000 ? FLOOD_LOWSTAND_NOTE : '')
+      + (region ? researchWindowHtml(region, yearsAgo, false) : '')
+      + divergence + credit;
+  }
   const sea = Math.round(-seaLevel(yearsAgo));
+  const T = Math.round(dateForDepth(seaLevel(yearsAgo)) / 100) * 100;
   const curve = seaBelowFloor();
   const pts = curve.pts.map(y => y.toLocaleString()).join(', ');
   const long = curve.long.map(g => `${(g[1] - g[0]).toLocaleString()} years from ${g[1].toLocaleString()} to ${g[0].toLocaleString()}`).join(' and ');
-  return `<p class="pop-title">${o.shelf.label}</p>`
-    + `<p class="pop-age" style="color:var(--rust)">APPROXIMATION \u00b7 ~${ya.toLocaleString()} ya \u00b7 `
-    + `this map's sea curve puts the sea ~${sea} m below present</p>`
+  return title
+    + `<p class="pop-age" style="color:var(--rust)">APPROXIMATION \u00b7 ~${ya.toLocaleString()} ya \u00b7 this map's sea curve puts the sea ~${sea} m below present</p>`
     + `<p class="pop-note"><strong style="color:var(--rust)">NOT A RECONSTRUCTION OF THIS DATE.</strong> `
-    + `No shoreline reconstruction exists before 26,000 years ago. What is drawn is De Groeve et al. 2022's `
-    + `~${o.st.snapshot.toLocaleString()} ya coast, selected by depth: this map's own sea-level curve reads about `
-    + `\u2212${Math.abs(o.st.depth)} m at ${o.st.snapshot.toLocaleString()} ya and about \u2212${sea} m at this date. `
-    + `That depth match is this map's, not the source's \u2014 the source dates its coasts and gives them no single depth. `
-    + `The shape is theirs; the date is only the curve's.</p>`
+    + `No shoreline reconstruction exists before 26,000 years ago. What is drawn is De Groeve et al. 2022's coastline for about `
+    + `${T.toLocaleString()} ya, selected by depth: this map's own sea-level curve reads about \u2212${sea} m at this date, and walking back `
+    + `from the present first reads that depth at about ${T.toLocaleString()} ya. That depth match is this map's, not the source's \u2014 `
+    + `the source dates its coasts and gives them no single depth. The shape is theirs; the date is only the curve's.</p>`
     + `<p class="pop-note"><strong style="color:var(--rust)">NO GLACIAL-ISOSTATIC CORRECTION EXISTS BEFORE 26,000 YEARS AGO.</strong> `
-    + `The land itself rose and sank as the ice sheets grew and shrank, and that is not in this drawing: a coast `
-    + `reconstructed for a later surface is wrong here by an amount nobody has measured. It is most wrong at high `
-    + `latitude, near the ice \u2014 on this map, Beringia. (Doggerland is never approximated: ice held it until 23,000 ya.)</p>`
+    + `The land itself rose and sank as the ice sheets grew and shrank, and that is not in this drawing: a coast reconstructed for a later `
+    + `date is wrong here by an amount nobody has measured. It is most wrong near the ice \u2014 and across a global layer that means `
+    + `<strong>most of the northern shelves</strong>: those beside the Laurentide and Fennoscandian ice sheets, and Beringia.</p>`
     + `<p class="pop-note" style="color:var(--parchment-dimmer)">The curve is coarse here. Between 26,000 and 130,000 years ago `
     + `it has ${curve.pts.length} points \u2014 ${pts} years ago \u2014 and runs in straight lines between them, `
-    + `including straight stretches of ${long}, `
-    + `where the real sea rose and fell by tens of metres. Which ring of land is drawn at a given date can be wrong for that reason alone.</p>`
-    + coastDivergenceHtml(o.region)
-    + o.shapeLines;
+    + `including straight stretches of ${long}, where the real sea rose and fell by tens of metres. `
+    + `Which ground is drawn at a given date can be wrong for that reason alone. Nothing is drawn before 90,000 years ago, anywhere.</p>`
+    + (region ? researchWindowHtml(region, yearsAgo, true) : '')
+    + divergence + credit;
 }
 
-let coastClickBound = false;
+// ---- The flood-age tile layer --------------------------------------------------
+// Each tile keeps its step bytes and repaints itself when the date crosses a 0.5 kyr step:
+// fill in the basemap's land colour, and a 1-cell coastline where exposed ground meets open
+// sea (never along modern land, and never along a tile edge, whose neighbour it cannot see).
+// The approximation's coastline is dotted where the reconstruction's is solid.
+const FLOOD_FILL = [parseInt(SHELF_LAND.slice(1, 3), 16), parseInt(SHELF_LAND.slice(3, 5), 16), parseInt(SHELF_LAND.slice(5, 7), 16)];
+const FLOOD_LINE = [194, 168, 120].map((v, k) => Math.round(v * 0.6 + FLOOD_FILL[k] * 0.4));
+function paintFloodTile(c){
+  const s = c._steps; if(!s || !FLOOD.key) return;
+  const ctx = c.getContext('2d');
+  const img = c._img || (c._img = ctx.createImageData(256, 256));
+  const d = img.data; d.fill(0);
+  const m = FLOOD.key.m, dotted = FLOOD.key.approx;
+  const open = v => v !== 255 && !(v >= 1 && v <= m);          // open sea at this date
+  for(let y = 0; y < 256; y++){
+    for(let x = 0; x < 256; x++){
+      const i = y * 256 + x, v = s[i];
+      if(!(v >= 1 && v <= m)) continue;
+      let edge = (x > 0 && open(s[i - 1])) || (x < 255 && open(s[i + 1])) || (y > 0 && open(s[i - 256])) || (y < 255 && open(s[i + 256]));
+      if(edge && dotted && ((x + y) & 3) > 1) edge = false;
+      const col = edge ? FLOOD_LINE : FLOOD_FILL, o = i * 4;
+      d[o] = col[0]; d[o + 1] = col[1]; d[o + 2] = col[2]; d[o + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+function repaintFlood(){
+  const lyr = FLOOD.layer; if(!lyr || !lyr._tiles) return;
+  for(const k in lyr._tiles){ const t = lyr._tiles[k]; if(t && t.el && t.el._steps) paintFloodTile(t.el); }
+}
+const FloodLayer = L.GridLayer.extend({
+  createTile: function(coords, done){
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const key = coords.z + '/' + coords.x + '/' + coords.y;
+    if(!FLOOD.tileSet || !FLOOD.tileSet.has(key)){ setTimeout(() => done(null, c), 0); return c; }   // no shelf here: never requested
+    const img = new Image();
+    img.onload = () => {
+      const ctx = c.getContext('2d', {willReadFrequently:true});
+      ctx.drawImage(img, 0, 0);
+      const px = ctx.getImageData(0, 0, 256, 256).data, steps = new Uint8Array(65536);
+      for(let i = 0; i < 65536; i++) steps[i] = px[i * 4];
+      ctx.clearRect(0, 0, 256, 256);
+      c._steps = steps;
+      paintFloodTile(c);
+      done(null, c);
+    };
+    img.onerror = () => { FLOOD.tileErrors = (FLOOD.tileErrors || 0) + 1; done(null, c); };
+    img.src = 'tiles/floodage/' + key + '.png';
+    return c;
+  }
+});
+// The step value under a point, from the tile already on screen.
+function floodSampleAt(latlng){
+  const lyr = FLOOD.layer;
+  if(!lyr || !map.hasLayer(lyr) || lyr._tileZoom == null) return null;
+  const z = lyr._tileZoom, p = map.project(latlng, z);
+  const tx = Math.floor(p.x / 256), ty = Math.floor(p.y / 256);
+  const t = lyr._tiles[tx + ':' + ty + ':' + z];
+  if(!t || !t.el || !t.el._steps) return null;
+  return t.el._steps[Math.floor(p.y - ty * 256) * 256 + Math.floor(p.x - tx * 256)];
+}
+
 function setShoreStatus(){
   const el = document.getElementById('shoreStatus');
   if(!el) return;
@@ -1460,35 +1483,29 @@ function loadCoasts(){
   setShoreStatus();
   const ctrl  = window.AbortController ? new AbortController() : null;
   const timer = setTimeout(() => { if(ctrl) ctrl.abort(); }, 30000);
-  fetch('data/coasts.json', ctrl ? {signal: ctrl.signal} : undefined)
-    .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(doc => {
+  const get = path => fetch(path, ctrl ? {signal: ctrl.signal} : undefined).then(r => { if(!r.ok) throw new Error(path + ' HTTP ' + r.status); return r.json(); });
+  Promise.all([get('data/floodage/manifest.json'), get('data/floodage/regions.json'), get('data/floodage/divergence_grid.json')])
+    .then(([manifest, regions, grid]) => {
       clearTimeout(timer);
-      COAST_KEPT = doc.kept_percent || {};
-      COASTS = doc.coasts || [];
-      COASTS_OK = validCoasts(COASTS);
-      buildCoastLayers();
-      // The fill lives under the overlay canvas, so it is found by the click, not hit by
-      // it. A click that no route, marker or ice sheet took, landing inside a drawn shelf,
-      // opens that shelf's popup: the stop drawn most strongly there, deepest on a tie.
-      if(!coastClickBound) map.on('click', e => {
-        if(!layerState.shorelines) return;
+      FLOOD.manifest = manifest; FLOOD.regions = regions; FLOOD.grid = grid;
+      FLOOD.tileSet = new Set();
+      Object.keys(manifest.tiles).forEach(z => manifest.tiles[z].forEach(xy => FLOOD.tileSet.add(z + '/' + xy)));
+      if(!FLOOD.layer) FLOOD.layer = new FloodLayer({pane:'shelfPane', tileSize:256, minZoom:2, maxZoom:8, maxNativeZoom:5,
+        noWrap:true, bounds:[[-85, -180], [85, 180]], updateWhenZooming:false, keepBuffer:2, className:'flood-layer'});
+      // The fill lives under the overlay canvas, so it is found by the click, not hit by it. A
+      // click that no route, marker or ice sheet took, landing on ground drawn as exposed shelf,
+      // opens that place's popup: a named shelf's by box, a generic one elsewhere.
+      if(!FLOOD.clickBound) map.on('click', e => {
+        if(!layerState.shorelines || !FLOOD.key) return;
         // Route and ice clicks bubble up to the map after opening their own popup (Leaflet
         // closes open popups on preclick, before any layer sees the click). If one is open
         // now, something above the shelf took this click, and it keeps it.
         if(map._popup && map.hasLayer(map._popup)) return;
-        const p = map.latLngToLayerPoint(e.latlng);
-        let best = null;
-        coastLayers.forEach(o => {
-          // A ring more than half faded reads as water, so it does not answer a click as land.
-          if(o.w < 0.5 || !map.hasLayer(o.fill) || !o.fill._containsPoint(p)) return;
-          if(!best || o.w > best.w || (o.w === best.w && o.st.depth < best.st.depth)) best = o;
-        });
-        if(!best) return;
-        const ya = yearsAgoFromSlider(+scrub.value);
-        L.popup().setLatLng(e.latlng).setContent(ya > COAST_FLOOR ? approxPopupHtml(best, ya) : best.popup).openOn(map);
+        const v = floodSampleAt(e.latlng);
+        if(v == null || !(v >= 1 && v <= FLOOD.key.m)) return;
+        L.popup().setLatLng(e.latlng).setContent(floodPopupHtml(e.latlng, v, yearsAgoFromSlider(+scrub.value))).openOn(map);
       });
-      coastClickBound = true;
+      FLOOD.clickBound = true;
       coastsState = 'ready';
       setShoreStatus();
       render(+scrub.value);
@@ -1497,7 +1514,7 @@ function loadCoasts(){
       clearTimeout(timer);
       coastsState = 'failed';
       setShoreStatus();
-      console.warn('COASTS: could not load data/coasts.json \u2014 ' + (err && err.message));
+      console.warn('COASTS: could not load the flood-age data \u2014 ' + (err && err.message));
       render(+scrub.value);
     });
 }
@@ -2419,64 +2436,26 @@ function render(sliderVal){
     poly.setStyle({fillOpacity: 0.10 + 0.42*extent, opacity: 0.25 + 0.5*extent});
   });
 
-  // Palaeo-shorelines. Selected by DEPTH, not by date: read the sea level this
-  // map already computes from its own 18-point curve and draw each depth stop the
-  // sea has not yet reached. The coastline is therefore driven by the
-  // same number shown in the HUD and cannot drift out of step with it.
-  //
-  // Below COAST_FLOOR the same selection runs, and what it draws is an APPROXIMATION:
-  // labelled so, outlined dashed, and switched at the boundary with no blending.
+  // Palaeo-shorelines. FROM 26 ka ON, BY DATE: the flood-age tiles show every cell the source
+  // has exposed at this date. FROM 26 TO 90 ka, AN APPROXIMATION: the source's coast for the
+  // date this map's curve last stood at the same depth. BEFORE 90 ka, nothing, anywhere.
+  // Tiles repaint only when the date crosses one of the source's 0.5 kyr steps.
   const seaNow = seaLevel(yearsAgo);
-  const shoreOn = layerState.shorelines && seaNow !== null;   // no curve, no selection
   const shoreApprox = yearsAgo > COAST_FLOOR;
-  // THE SEA TAKES THE LAND BACK RING BY RING. With the shelf drawn opaque, crossfading two
-  // coasts would leave a half-transparent continent with the modern coast showing through.
-  // The coasts are nested instead — land exposed at ~9,550 ya was also exposed at ~12,900
-  // and ~19,000 ya, by construction of the source raster — so each is drawn solid until its
-  // time is past, and only the ring between it and the next younger coast fades.
-  //
-  // FROM 26 ka ON, BY DATE: the ~12,900 ya coast is fully drawn at 12,900 ya, and the ring
-  // between the ~19,000 and ~12,900 ya coasts fades across those 6,100 years. This map's
-  // global sea curve takes no part, so it is never set against the regional reconstruction.
-  // BELOW 26 ka, BY DEPTH: there is no dated coast for those years, so the approximation
-  // selects by the depth this map's curve reads, exactly as labelled.
-  // The outline follows the outermost coast.
-  const stopsShallowFirst = COAST_STATES.slice().sort((a,b)=>a.snapshot - b.snapshot); // 9,550 … 19,000
-  const stopW = {};
-  stopsShallowFirst.forEach((st, i) => {
-    if(i === 0){ stopW[st.id] = 1; return; }
-    const prev = stopsShallowFirst[i - 1];
-    stopW[st.id] = shoreApprox
-      ? Math.max(0, Math.min(1, (prev.depth - seaNow) / (prev.depth - st.depth)))
-      : Math.max(0, Math.min(1, (yearsAgo - prev.snapshot) / (st.snapshot - prev.snapshot)));
-  });
-  const deeperOf = {};
-  stopsShallowFirst.forEach((st, i) => { deeperOf[st.id] = stopsShallowFirst[i + 1] ? stopsShallowFirst[i + 1].id : null; });
-  coastLayers.forEach(o => {
-    const {st, shelf} = o;
-    // The region's own researched window still governs whether it is drawn at
-    // all — those dates are research and outrank the depth ladder.
-    const open = shoreOn && !(shelf.from && yearsAgo > shelf.from) && !(shelf.goneBy && yearsAgo < shelf.goneBy);
-    const w  = open ? stopW[st.id] : 0;
-    const wc = open ? w * (1 - (deeperOf[st.id] ? stopW[deeperOf[st.id]] : 0)) : 0;
-    // Quantised, and not written when unchanged: 3,300 polygons repaint only when the
-    // weight visibly moves.
-    const q  = w  <= 0.01 ? 0 : Math.round(w  * 40) / 40;
-    const qc = wc <= 0.01 ? 0 : Math.round(wc * 40) / 40;
-    // Which side of 26 ka: a reconstruction's coast is solid, the approximation's dashed.
-    // Set the instant the boundary is crossed, never faded across it.
-    if(o.approx !== shoreApprox){
-      o.approx = shoreApprox;
-      o.coast.setStyle({dashArray: shoreApprox ? '6,5' : (o.recon ? null : '4,4')});
+  const shoreOn = layerState.shorelines && coastsState === 'ready' && seaNow !== null && yearsAgo <= COAST_APPROX_LIMIT;
+  if(FLOOD.layer){
+    if(!shoreOn){
+      if(map.hasLayer(FLOOD.layer)) map.removeLayer(FLOOD.layer);
+      FLOOD.key = null;
+    } else {
+      const T = shoreApprox ? dateForDepth(seaNow) : yearsAgo;
+      const m = Math.max(0, Math.min(52, Math.ceil(T / 500) - 1));     // cells with step <= m are exposed
+      const changed = !FLOOD.key || FLOOD.key.m !== m || FLOOD.key.approx !== shoreApprox;
+      FLOOD.key = {m, approx: shoreApprox, T};
+      if(!map.hasLayer(FLOOD.layer)) FLOOD.layer.addTo(map);
+      else if(changed) repaintFlood();
     }
-    if(q === o.w && qc === o.wc) return;
-    // Off means off the map, not merely transparent.
-    if(q === 0){ map.removeLayer(o.fill); map.removeLayer(o.coast); }
-    else if(o.w <= 0){ o.fill.addTo(map); o.coast.addTo(map); }
-    o.w = q; o.wc = qc;
-    o.fill.setStyle({fillOpacity: q});
-    o.coast.setStyle({opacity: 0.6 * qc});
-  });
+  }
 
   // What the ice and the coastlines are doing RIGHT NOW, stated in words.
   if(iceEl){
@@ -2488,12 +2467,16 @@ function render(sliderVal){
       else if(yearsAgo > i.peak) bits.push(short + ' advancing');
       else bits.push(short + ' retreating');
     });
-    // Shelves are reported only while they are drawn: the layer on and its data loaded.
-    // With the layer off the map draws open water, and the HUD must not call it walkable.
-    if(layerState.shorelines && coastsState === 'ready') SHELVES.forEach(sh=>{
-      if(yearsAgo > sh.from || yearsAgo < sh.goneBy) return;
+    // THE HUD FOLLOWS THE DRAWING (ruled). A named shelf is walkable while more than half of its
+    // glacial-maximum shelf is drawn, drowning while more than 2% is, and not mentioned below
+    // that — so the HUD can never call a shelf walkable over open water, or fall silent while
+    // the map still draws it. With the layer off nothing is drawn and nothing is claimed.
+    if(FLOOD.key && FLOOD.regions) SHELVES.forEach(sh=>{
+      const r = FLOOD.regions[sh.id]; if(!r) return;
+      const p = r.pct_of_glacial_max_exposed_by_step[FLOOD.key.m];
+      if(p == null || p <= 2) return;
       const short = sh.label.split(' \u2014 ')[0];
-      bits.push(short + (yearsAgo < sh.dryUntil ? ' drowning' : ' walkable'));
+      bits.push(short + (p > 50 ? ' walkable' : ' drowning'));
     });
     iceEl.textContent = bits.length ? bits.join('  \u00b7  ') : 'No ice sheets or land bridges active';
   }
@@ -2501,15 +2484,15 @@ function render(sliderVal){
   // Which side of 26 ka the shorelines are on, at a glance, whenever one is drawn — and a
   // failed or slow load said out loud rather than left to the console.
   if(shoreNoteEl){
-    const anyShelf = SHELVES.some(sh => !(yearsAgo > sh.from || yearsAgo < sh.goneBy));
+    const anyShelf = !!FLOOD.key;
     let text = '', approxCls = false;
     if(layerState.shorelines){
       if(coastsState === 'failed'){ text = 'Shorelines could not load. Untick and tick Palaeo-shorelines to try again.'; approxCls = true; }
       else if(coastsState === 'loading'){ text = 'Shorelines loading\u2026'; }
       else if(coastsState === 'ready' && anyShelf){
         text = shoreApprox
-          ? 'SHORELINES: APPROXIMATION \u2014 before 26,000 years ago no reconstruction exists. De Groeve\u2019s shapes, selected by this map\u2019s sea curve, with no glacial-isostatic correction.'
-          : 'Shorelines: reconstruction \u2014 De Groeve et al. 2022\u2019s dated coasts, shown by date, glacial-isostatic corrected.';
+          ? 'SHORELINES: APPROXIMATION \u2014 before 26,000 years ago no reconstruction exists. De Groeve\u2019s coast for the date this map\u2019s sea curve last stood this low, with no glacial-isostatic correction \u2014 most wrong on the northern shelves.'
+          : 'Shorelines: reconstruction \u2014 De Groeve et al. 2022 at its own resolution, in its own 0.5 kyr steps, glacial-isostatic corrected.';
         approxCls = shoreApprox;
       }
     }

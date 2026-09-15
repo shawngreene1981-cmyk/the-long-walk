@@ -38,23 +38,34 @@ what happened. A contested anchor is drawn as prominently as a solid one, in a
 different colour, so you can see the shape of the disagreement instead of
 having it quietly resolved for you.
 
-## Palaeo-shorelines: sourced, and off by default
+## Palaeo-shorelines: global, at the source's own resolution, and off by default
 
 Half the routes here only make sense at low sea level — Beringia was a country,
 Doggerland an inhabited landscape, Sundaland continuous land.
 
-**The geometry is sourced.** The 16 hand-drawn placeholders have been replaced
-by 3,305 polygons extracted at full resolution from **De Groeve et al. 2022**, the only global shoreline
+**The shelf is drawn from the source itself, for the whole world.** The layer shows
+**De Groeve et al. 2022**'s coastline-age raster — the only global shoreline
 reconstruction with a real glacial-isostatic correction (SELEN4 sea-level solver,
-ICE-6G_C ice history, VM5a mantle). The source reconstructs coasts **by date, place by
-place**, and the map uses three of them, **labelled and shown by date** from 26,000
-years ago onward:
+ICE-6G_C ice history, VM5a mantle) — as Web Mercator tiles in `tiles/floodage/`
+(668 tiles, 1.46 MB; a view loads only its own), one byte per cell. **Nothing is
+simplified, smoothed or removed**, and there are **no region boxes**, so no edge of the
+drawing is a box edge. The sea takes the land back **in the source's own 0.5 kyr steps**,
+on the source's own dates. Zoomed past level 5 the square 2-arc-minute cells show:
+that is the reconstruction's real resolution, and the map does not smooth it into a
+precision the source does not have.
 
-| coast | |
-|---|---|
-| ~19,000 ya | Last Glacial Maximum |
-| ~12,900 ya | after meltwater pulse 1A |
-| ~9,550 ya | early Holocene drowning |
+The shelf is drawn **as land**, opaque, in the basemap's land colour, under every route
+and marker, so at the glacial maximum the continents are simply bigger. Before the
+glacial lowstand (~21,000 years ago) the raster records only the most recent coastline,
+so ground exposed only at the lowstand shows a little early; the popup says so.
+
+**The HUD follows the drawing.** The five named shelves (Beringia, Doggerland, Sunda,
+Sahul, the Persian Gulf) are *walkable* while more than half of their glacial-maximum
+shelf is drawn, *drowning* while more than 2% is. Their research dates stay in their
+popups; where the source differs — Beringia still 20% exposed at its researched closing
+date of 10,500 years ago, Sunda gone by ~8,000 against a researched 7,000 — **the popup
+states both and picks neither.** Which named popup opens is chosen by the old region
+boxes, which draw nothing.
 
 **The source and this map's global sea-level curve disagree, by tens of metres.** In the
 De Groeve raster the shelves flood while the curve still reads the sea lower. Measured
@@ -68,64 +79,27 @@ against ETOPO 2022 depths, 8,000–20,000 years ago, the source floods higher by
 | Doggerland | 9–19 m |
 | Beringia | up to 20 m (and 4–8 m lower before 14,000 ya) |
 
-De Groeve et al. publish no regional sea-level curve for these regions and do not discuss
-the difference, so the divergence is observed in their raster and not explained in their
-paper; each shoreline popup states it. That is why the coasts are labelled by date: an
-earlier version called them "−120 / −75 / −40 m stops", a depth relationship the source
-never claimed. This map's curve is used to select coasts only before 26,000 years ago,
-where the drawing is an approximation and labelled as one.
+Every other popup gives the figure measured for its own 10° cell
+(`data/floodage/divergence_grid.json`), or says none could be measured there. De Groeve
+et al. publish no regional sea-level curve and do not discuss the difference: it is
+observed in their raster and not explained in their paper.
 
-Drawn for the five researched shelves only — Beringia, Doggerland, Sunda, Sahul and
-the Persian Gulf — so each coastline keeps its region's research note and dating. Each
-region shows only the shelf inside its own box; where the box cuts the shelf the land
-stops in a straight line, which is the limit of the regional extraction and not a coast,
-and no coastline is drawn along it.
+**From 26,000 years ago to the present this is a reconstruction** (solid coastline).
+**From 26,000 back to 90,000 years ago it is an APPROXIMATION, not a reconstruction**
+(dotted coastline): no reconstruction exists there, so the map draws the source's coast
+for the date its own sea-level curve last stood at the same depth, with **no
+glacial-isostatic correction** — most wrong near the ice, which across the world means
+most of the northern shelves. The curve is coarse there: four points between 26,500 and
+130,000 years ago, with straight lines across 50,000 and 40,000 years. The switch at
+26,000 years ago is instant, the HUD names which side you are on, and a mark on the
+timeline shows where it falls. **Before 90,000 years ago nothing is drawn, anywhere** —
+the oldest researched shelf window, applied to every shelf at once, because a time limit
+draws no edges.
 
-**The shelf is drawn as land**, opaque, in the land colour of whichever basemap is
-active, under every route and marker, so at the glacial maximum the continents are
-simply bigger and the modern coastline is hidden beneath them. The stops are nested:
-each is solid while the sea is below it, and as the sea rises through an interval only
-that outer ring fades — the sea taking it back. The water on either basemap is toned to
-a clear blue by default (only water pixels move; `?sea=teal` turns it off), so there is
-something for the sea to take. It is a model, not a survey, and **how
-much of each region's shelf survives simplification is measured and stated, region by
-region and stop by stop**, in every shoreline popup and here:
+If the shoreline data fails to load, the map says so beside the switch and in the HUD,
+and ticking the switch again retries.
 
-| kept | −120 m | −75 m | −40 m |
-|---|---|---|---|
-| Beringia | 99.7% | 99.3% | 94.6% |
-| Doggerland | 99.5% | 98.6% | 92.2% |
-| Sunda | 99.5% | 97.0% | 73.3% |
-| Sahul | 98.4% | 95.5% | 77.5% |
-| Persian Gulf | 99.9% | 99.2% | 91.5% |
-
-97.9% overall. The loss concentrates at −40 m, where the shelf is fragmented into
-small islands. Every polygon carries source, basis and confidence, and the code drops
-any polygon that cannot. The geometry lives in `data/coasts.json` and is fetched only
-when the layer is switched on.
-
-**Before 26,000 years ago the shorelines are an APPROXIMATION, not a reconstruction,
-and the map says so in words.** 26 ka is the reach of the best available source: no
-GIA-corrected global shoreline product exists before it. Below it the map draws the same
-De Groeve shapes, selected by its own sea-level curve rather than reconstructed for that
-date, with **no glacial-isostatic correction** — so they are most wrong at high latitude,
-which here means Beringia. The popup, the legend and the HUD all name it an
-approximation; its coastline is dashed where the reconstruction's is solid; the switch at
-26,000 years ago is instant, and a mark on the timeline shows where it falls. The curve
-is coarse there: four points between 26,500 and 130,000 years ago, with straight lines
-across 50,000 and 40,000 years. Each shelf is still drawn only within its researched
-window, so the approximation reaches back to 36 ka (Beringia), 65 ka (Sahul), 70 ka
-(Persian Gulf) and 90 ka (Sunda); Doggerland, held by ice, is never approximated.
-
-The HUD reports a shelf as walkable only while the layer is on and drawn. If the
-shoreline data fails to load, the map says so beside the switch and in the HUD, and
-ticking the switch again retries.
-
-The layer is **off by default**, and the reason is the region boxes. The founder looked at it
-on the live map at ~19,000 ya and it works — Sunda joined to Asia, Sahul joined, the Gulf dry,
-Britain on Europe, Beringia closed, the Kelp Highway route over exposed shelf. But zoomed to
-Europe, Doggerland's straight cuts at 6°W and 49°N read as a coastline that never existed.
-**It waits for a global extraction without region boxes.**
+The layer is **off by default** until the global layer has been looked at.
 
 Shoreline data: De Groeve, J., Kusumoto, B., Koene, E. *et al.* (2022). Global raster
 dataset on historical coastline positions and shelf sea extents since the Last Glacial
@@ -133,13 +107,13 @@ Maximum. *Global Ecology and Biogeography* 31(11): 2162–2171.
 https://doi.org/10.1111/geb.13573 — raster (AGE 2021) via Figshare,
 https://doi.org/10.21942/uva.c.5754779.v1, licensed
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). **Changes were made:** the
-coastline-age raster was thresholded at three dates at full resolution (2 arc-minutes)
-within five regional boxes, polygonised, simplified at 0.05°, rounded to 2 decimal
-places, and pieces under 0.003 square degrees removed.
+coastline-age raster was re-encoded as one byte per cell (its 0.5 kyr coastline step,
+modern land, or open sea) and reprojected to Web Mercator tiles at zoom 0–5 by nearest
+neighbour. Nothing was simplified, smoothed or removed.
 
 ## The GIS job — status
 
-**1. Palaeo-shorelines — looked at; off by default until a global extraction removes the region-box edges.** See above.
+**1. Palaeo-shorelines — global pass built from the source raster itself; off by default until looked at.** See above.
 
 **2. Border acts — cut, shipped as data, preloaded, not yet drawn.** The 56 acts are in
 `data/acts/` with a manifest. The borders layer's visual grammar is still unruled, so
