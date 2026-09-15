@@ -1361,12 +1361,34 @@ function researchWindowHtml(region, yearsAgo, approx){
   return html;
 }
 
+// WHERE THE EVIDENCE STOPS, NORTH OF 65°N (ruled, D6). The source classes every cell as land or sea by
+// its height against a sea level computed with the ICE-6G_C ice history; it never marks ice. This map
+// draws no ice sheet on most Arctic shelf (and only bounding boxes where it does), so land drawn up here
+// with no ice on it would read as walkable ground. That inference is not earned, and the popup says so.
+const ARCTIC_NOTE_LAT = 65;
+function inRing(lat, lon, ring){
+  let inside = false;
+  for(let k = 0, j = ring.length - 1; k < ring.length; j = k++){
+    const [ya, xa] = ring[k], [yb, xb] = ring[j];
+    if((ya > lat) !== (yb > lat) && lon < (xb - xa) * (lat - ya) / (yb - ya) + xa) inside = !inside;
+  }
+  return inside;
+}
+function arcticIceHtml(latlng, yearsAgo){
+  if(latlng.lat < ARCTIC_NOTE_LAT) return '';
+  const underBox = layerState.ice && ICE.some(i => yearsAgo <= i.maxFrom && yearsAgo >= i.goneBy && inRing(latlng.lat, latlng.lng, i.coords));
+  return `<p class="pop-note" style="color:var(--rust)">North of 65°N the source's ice history (ICE-6G_C) governs where this ground stood against the sea, `
+    + `but the source marks only land and sea, never ice, and ${underBox ? "this map's ice sheet here is a bounding box, not a margin" : 'this map draws no ice sheet here'} `
+    + `\u2014 so ground drawn as land may have lain under ice, and <strong>this map does not say it was walkable</strong>.</p>`;
+}
+
 function floodPopupHtml(latlng, step, yearsAgo){
   const region = shelfRegionAt(latlng.lat, latlng.lng), shelf = region ? SHELF_BY_ID[region] : null;
   const src = COAST_SRC.degroeve, approx = yearsAgo > COAST_FLOOR;
   const ya = Math.round(yearsAgo / 100) * 100;
   const title = `<p class="pop-title">${shelf ? shelf.label : 'Exposed continental shelf'}</p>`;
   const divergence = region ? coastDivergenceHtml(region) : gridDivergenceHtml(latlng.lat, latlng.lng);
+  const arctic = region ? '' : arcticIceHtml(latlng, yearsAgo);
   const credit = `<p class="pop-note" style="margin-top:8px"><strong style="color:${approx ? 'var(--parchment-dim)' : 'var(--sahara-bright)'}">`
     + (approx ? 'THE SHAPE IS FROM' : 'RECONSTRUCTION') + `</strong> \u2014 ${src.source}. ${src.url}</p>`
     + `<p class="pop-note" style="color:var(--parchment-dimmer)">Data: ${src.data}. Licence ${src.licence}. ${src.changes}</p>`
@@ -1375,6 +1397,7 @@ function floodPopupHtml(latlng, step, yearsAgo){
   if(!approx){
     return title
       + `<p class="pop-age">Exposed ground at ~${ya.toLocaleString()} ya, as reconstructed \u00b7 in the source this ground floods about ${(step * 500).toLocaleString()} ya</p>`
+      + arctic
       + (shelf ? `<p class="pop-note">${shelf.note || ''}</p>` : '')
       + (yearsAgo > 21000 ? FLOOD_LOWSTAND_NOTE : '')
       + (region ? researchWindowHtml(region, yearsAgo, false) : '')
@@ -1387,6 +1410,7 @@ function floodPopupHtml(latlng, step, yearsAgo){
   const long = curve.long.map(g => `${(g[1] - g[0]).toLocaleString()} years from ${g[1].toLocaleString()} to ${g[0].toLocaleString()}`).join(' and ');
   return title
     + `<p class="pop-age" style="color:var(--rust)">APPROXIMATION \u00b7 ~${ya.toLocaleString()} ya \u00b7 this map's sea curve puts the sea ~${sea} m below present</p>`
+    + arctic
     + `<p class="pop-note"><strong style="color:var(--rust)">NOT A RECONSTRUCTION OF THIS DATE.</strong> `
     + `No shoreline reconstruction exists before 26,000 years ago. What is drawn is De Groeve et al. 2022's coastline for about `
     + `${T.toLocaleString()} ya, selected by depth: this map's own sea-level curve reads about \u2212${sea} m at this date, and walking back `
