@@ -38,7 +38,7 @@ what happened. A contested anchor is drawn as prominently as a solid one, in a
 different colour, so you can see the shape of the disagreement instead of
 having it quietly resolved for you.
 
-## Palaeo-shorelines: global, at the source's own resolution, and off by default
+## Palaeo-shorelines: global, at the source's own resolution, and on by default
 
 Half the routes here only make sense at low sea level — Beringia was a country,
 Doggerland an inhabited landscape, Sundaland continuous land.
@@ -99,7 +99,7 @@ draws no edges.
 If the shoreline data fails to load, the map says so beside the switch and in the HUD,
 and ticking the switch again retries.
 
-The layer is **off by default** until the global layer has been looked at.
+The layer is **on by default**. It was switched on after the global layer had been looked at on the live site; untick it to see today's coastline alone.
 
 Shoreline data: De Groeve, J., Kusumoto, B., Koene, E. *et al.* (2022). Global raster
 dataset on historical coastline positions and shelf sea extents since the Last Glacial
@@ -113,7 +113,7 @@ neighbour. Nothing was simplified, smoothed or removed.
 
 ## The GIS job — status
 
-**1. Palaeo-shorelines — global pass built from the source raster itself; off by default until looked at.** See above.
+**1. Palaeo-shorelines — global pass built from the source raster itself; looked at, and on by default.** See above.
 
 **2. Border acts — cut, shipped as data, preloaded, not yet drawn.** The 56 acts are in
 `data/acts/` with a manifest. The borders layer's visual grammar is still unruled, so
