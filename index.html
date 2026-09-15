@@ -46,8 +46,9 @@
   /* The self-hosted relief is already toned to this map's own ground; the filter
      that darkens OpenStreetMap must never touch it. */
   .relief-on .leaflet-tile-pane{filter:none;}
-  /* With ?sea=blue the OSM tiles are toned inside a canvas, once per tile, with the same
-     filter the rule above applies; the pane filter must not run a second time. */
+  /* With the blue sea (the default; ?sea=teal turns it off) OSM tiles are toned inside a
+     canvas, once per tile, with the same filter the rule above applies; the pane filter
+     must not run a second time. */
   .sea-blue .leaflet-tile-pane{filter:none;}
   .leaflet-container{background:#1e2a3d;}
   /* A popup renders INSIDE #map, and Leaflet sets overflow:hidden on
@@ -455,7 +456,7 @@
     <span><span class="dot" style="background:#6b5f96"></span> Lost ground — people were here, and are gone</span>
     <span><span class="lineswatch" style="border-color:#cfe4f2;background:rgba(220,236,247,.35)"></span> Ice sheet</span>
     <span class="legend-note" style="flex-basis:100%;color:var(--rust)"><strong>The ice sheets are the crudest geometry on this map, and unlike the shorelines they are switched ON.</strong> Four sheets, <strong>26 vertices between them</strong> — Laurentide 8, Cordilleran 6, Fennoscandian 6, Patagonian 6. They are bounding boxes, not margins, and the dates they carry are better than the shapes that carry them. Read them as "ice was roughly here", never as an edge. Real LGM margins are among the best-mapped features in Quaternary science and the replacement is identified — Batchelor et al. 2019 for the Northern Hemisphere — but that deposit carries <strong>no licence on the artefact</strong>, only on the paper describing it. This project does not ship data whose rights cannot be traced to the thing itself; it refused a basemap on exactly that ground. So the boxes stay, visibly labelled as boxes, until the licence is resolved rather than assumed. The Patagonian sheet has no licence-cleared source at all.</span>
-    <span class="legend-note" style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today. The coastlines are now <strong>sourced</strong>: extracted from De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, drawn <strong>as land</strong>, in the basemap's own land colour, as De Groeve et al. reconstruct the coast at <strong>three dates: about 19,000, 12,900 and 9,550 years ago</strong>. From 26,000 years ago on they are shown <strong>by date</strong>: as the slider passes from one reconstructed date to the next, the sea takes back the ring of land between them. <strong>The source and this map's global sea-level curve disagree</strong>: in De Groeve's raster the shelves flood while the curve still reads the sea tens of metres lower — 18–38 m in Sunda, 22–36 m in Sahul, 15–33 m in the Persian Gulf, less at high latitude. That is observed in their raster and not explained in their paper, each shoreline popup gives the measured figure, and it is why the coasts are labelled by date rather than by depth. Shown for the five researched shelves: Beringia, Doggerland, Sunda, Sahul and the Persian Gulf. A model, not a survey, extracted at the source's full resolution: how much of each region's shelf survives simplification is stated region by region and coast by coast in every shoreline popup. Each region shows only the shelf inside its own box, so <strong>where a box cuts the shelf the land stops in a straight line</strong>: that edge is the limit of this map's regional extraction, not a coast, and no coastline is drawn along it. The layer is off by default until that is ruled on. <strong>From 26,000 years ago to the present this is a reconstruction</strong>, and its coastline is drawn <strong>solid</strong>. <strong>Before 26,000 years ago it is an APPROXIMATION, not a reconstruction</strong>, and its coastline is drawn <strong>dashed</strong>. No reconstruction exists there: De Groeve et al. 2022 begins at 26 ka and no glacial-isostatic-corrected global product reaches further back — the edge of the science, not a gap in the collecting. What is drawn instead is <strong>the same De Groeve shapes, selected by this map's own sea-level curve</strong> — each dated coast matched to the depth the curve reads at its date, a match this map makes and the source does not — not by any reconstruction of that date, and with <strong>no glacial-isostatic correction</strong>: the rise and fall of the land itself under the ice sheets is ignored, so it is <strong>most wrong at high latitude — here, Beringia</strong>. The curve is coarse there too: four points between 26,500 and 130,000 years ago, with straight lines across the 50,000 years from 120,000 to 70,000 and the 40,000 years from 70,000 to 30,000. The switch happens at exactly 26,000 years ago with no blending; the HUD says which side of it you are on, and a mark on the timeline shows where it falls. Each shelf is still drawn only inside its researched window, so the approximation reaches back 36,000 years for Beringia, 65,000 for Sahul, 70,000 for the Persian Gulf and 90,000 for Sunda; Doggerland, held by ice, is never approximated. <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: thresholded at three dates, polygonised, simplified, and clipped to five regions.</span></span>
+    <span class="legend-note" style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today. The coastlines are now <strong>sourced</strong>: extracted from De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, drawn <strong>as land</strong>, in the basemap's own land colour, as De Groeve et al. reconstruct the coast at <strong>three dates: about 19,000, 12,900 and 9,550 years ago</strong>. From 26,000 years ago on they are shown <strong>by date</strong>: as the slider passes from one reconstructed date to the next, the sea takes back the ring of land between them. <strong>The source and this map's global sea-level curve disagree</strong>: in De Groeve's raster the shelves flood while the curve still reads the sea tens of metres lower — 18–38 m in Sunda, 22–36 m in Sahul, 15–33 m in the Persian Gulf, less at high latitude. That is observed in their raster and not explained in their paper, each shoreline popup gives the measured figure, and it is why the coasts are labelled by date rather than by depth. Shown for the five researched shelves: Beringia, Doggerland, Sunda, Sahul and the Persian Gulf. A model, not a survey, extracted at the source's full resolution: how much of each region's shelf survives simplification is stated region by region and coast by coast in every shoreline popup. Each region shows only the shelf inside its own box, so <strong>where a box cuts the shelf the land stops in a straight line</strong>: that edge is the limit of this map's regional extraction, not a coast, and no coastline is drawn along it. <strong>The layer is off by default because of those straight edges</strong>: at the zoom a reader uses, Doggerland's cuts at 6°W and 49°N read as a coastline that never existed, so the layer waits for a global extraction without region boxes. <strong>From 26,000 years ago to the present this is a reconstruction</strong>, and its coastline is drawn <strong>solid</strong>. <strong>Before 26,000 years ago it is an APPROXIMATION, not a reconstruction</strong>, and its coastline is drawn <strong>dashed</strong>. No reconstruction exists there: De Groeve et al. 2022 begins at 26 ka and no glacial-isostatic-corrected global product reaches further back — the edge of the science, not a gap in the collecting. What is drawn instead is <strong>the same De Groeve shapes, selected by this map's own sea-level curve</strong> — each dated coast matched to the depth the curve reads at its date, a match this map makes and the source does not — not by any reconstruction of that date, and with <strong>no glacial-isostatic correction</strong>: the rise and fall of the land itself under the ice sheets is ignored, so it is <strong>most wrong at high latitude — here, Beringia</strong>. The curve is coarse there too: four points between 26,500 and 130,000 years ago, with straight lines across the 50,000 years from 120,000 to 70,000 and the 40,000 years from 70,000 to 30,000. The switch happens at exactly 26,000 years ago with no blending; the HUD says which side of it you are on, and a mark on the timeline shows where it falls. Each shelf is still drawn only inside its researched window, so the approximation reaches back 36,000 years for Beringia, 65,000 for Sahul, 70,000 for the Persian Gulf and 90,000 for Sunda; Doggerland, held by ice, is never approximated. <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: thresholded at three dates, polygonised, simplified, and clipped to five regions.</span></span>
   </div>
 
   <h2 class="sec">What this prototype is actually showing</h2>
@@ -1045,6 +1046,7 @@ const map = L.map('map', {
 // inside the no-panning rule the rest of the camera code is built on.
 const WORLD_BOUNDS = L.latLngBounds([[-84,-179],[84,179]]);
 function worldZoom(){ return Math.max(2, Math.min(map.getZoom(), map.getBoundsZoom(WORLD_BOUNDS))); }
+// OpenStreetMap is now the OVERRIDE basemap (?relief=0); the default is the relief below.
 // Plain OpenStreetMap, deliberately. CARTO's dark_all basemap now requires an
 // API key and stamps "API KEY REQUIRED" diagonally across every tile, which is
 // invisible when the file is opened locally against a warm cache and very
@@ -1065,10 +1067,9 @@ function worldZoom(){ return Math.max(2, Math.min(map.getZoom(), map.getBoundsZo
 // of its contrast. Strength 2; shadows softened so no pixel is crushed to black, because
 // the shadowed faces of ridges are where the passes are.
 //
-// NOT YET THE DEFAULT. Nobody has seen it on the map, so it is behind ?relief=1 and the
-// published default stays OpenStreetMap until it is looked at and ruled on — the same
-// rule the shoreline layer follows. Switching it on is this one condition.
-const RELIEF = new URLSearchParams(location.search).get('relief') === '1';
+// THE DEFAULT, ruled after the founder looked at it on the live map — and it held on a
+// phone. ?relief=0 still gives OpenStreetMap, as an override.
+const RELIEF = new URLSearchParams(location.search).get('relief') !== '0';
 
 // ---- THE SEA, BLUE ENOUGH TO BE TAKEN AWAY -----------------------------------
 // Ruled: the palaeo-shorelines must read as land that the sea takes back, and on a map
@@ -1090,9 +1091,9 @@ const RELIEF = new URLSearchParams(location.search).get('relief') === '1';
 // lines) and 98.8% on the relief. Nothing below 90%, nothing pushed under 3:1; the forced
 // transit lines GAIN contrast (111.7% / 113.5%), and are not restyled in any way.
 //
-// NOT YET THE DEFAULT, for the same reason as the relief: nobody has seen it on the map.
-// It is behind ?sea=blue until it has been looked at and ruled on.
-const SEA_BLUE_ON = new URLSearchParams(location.search).get('sea') === 'blue';
+// THE DEFAULT, ruled with the relief after the founder looked at both on the live map.
+// ?sea=teal still gives the old untoned sea, as an override.
+const SEA_BLUE_ON = new URLSearchParams(location.search).get('sea') !== 'teal';
 const SEA_BLUE = [24, 66, 112];
 const OSM_FILTER = 'invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.72)';
 // Each basemap's sea as it renders now, and the blue-minus-red window over which a pixel
@@ -3114,7 +3115,7 @@ function writeUrl(push){
   } else {
     q = '?t=' + Math.round(yearsAgoFromSlider(+scrub.value));
   }
-  // Viewing switches (?relief=1, ?sea=blue, ?borders=preload) survive navigation, so a page
+  // Viewing overrides (?relief=0, ?sea=teal, ?borders=preload) survive navigation, so a page
   // opened to look at something does not quietly lose it on the first click. They are never
   // added to a copied citation link.
   const keep = new URLSearchParams(location.search);

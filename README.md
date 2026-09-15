@@ -85,9 +85,9 @@ and no coastline is drawn along it.
 active, under every route and marker, so at the glacial maximum the continents are
 simply bigger and the modern coastline is hidden beneath them. The stops are nested:
 each is solid while the sea is below it, and as the sea rises through an interval only
-that outer ring fades — the sea taking it back. With `?sea=blue` the water on either
-basemap is toned to a clear blue (only water pixels move), so there is something for
-the sea to take; that stays behind its parameter until it has been looked at. It is a model, not a survey, and **how
+that outer ring fades — the sea taking it back. The water on either basemap is toned to
+a clear blue by default (only water pixels move; `?sea=teal` turns it off), so there is
+something for the sea to take. It is a model, not a survey, and **how
 much of each region's shelf survives simplification is measured and stated, region by
 region and stop by stop**, in every shoreline popup and here:
 
@@ -121,7 +121,11 @@ The HUD reports a shelf as walkable only while the layer is on and drawn. If the
 shoreline data fails to load, the map says so beside the switch and in the HUD, and
 ticking the switch again retries.
 
-The layer is **off by default** until the full-resolution extraction has been looked at.
+The layer is **off by default**, and the reason is the region boxes. The founder looked at it
+on the live map at ~19,000 ya and it works — Sunda joined to Asia, Sahul joined, the Gulf dry,
+Britain on Europe, Beringia closed, the Kelp Highway route over exposed shelf. But zoomed to
+Europe, Doggerland's straight cuts at 6°W and 49°N read as a coastline that never existed.
+**It waits for a global extraction without region boxes.**
 
 Shoreline data: De Groeve, J., Kusumoto, B., Koene, E. *et al.* (2022). Global raster
 dataset on historical coastline positions and shelf sea extents since the Last Glacial
@@ -135,7 +139,7 @@ places, and pieces under 0.003 square degrees removed.
 
 ## The GIS job — status
 
-**1. Palaeo-shorelines — re-extracted at full resolution, layer off until looked at.** See above.
+**1. Palaeo-shorelines — looked at; off by default until a global extraction removes the region-box edges.** See above.
 
 **2. Border acts — cut, shipped as data, preloaded, not yet drawn.** The 56 acts are in
 `data/acts/` with a manifest. The borders layer's visual grammar is still unruled, so
@@ -156,7 +160,8 @@ only on the paper describing it. This project does not ship data whose rights ca
 be traced to the artefact, so the boxes stay, labelled as boxes, until that is
 resolved rather than assumed.
 
-**4. A self-hosted shaded-relief basemap — built, behind `?relief=1` until looked at.** The map sits on plain
+**4. A self-hosted shaded-relief basemap — the default.** Looked at on the live map and on a
+phone, and switched on; `?relief=0` still gives OpenStreetMap. The map used to sit on plain
 OpenStreetMap: a road map with prehistoric shapes on it. Every hosted alternative was
 rejected — Stamen retired and keyed, Esri's relief under a licence written for
 licensees, NASA's CC0 Blue Marble painting *modern* vegetation across an Ice Age map.
