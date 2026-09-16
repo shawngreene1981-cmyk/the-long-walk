@@ -115,9 +115,16 @@ neighbour. Nothing was simplified, smoothed or removed.
 
 **1. Palaeo-shorelines — global pass built from the source raster itself; looked at, and on by default.** See above.
 
-**2. Border acts — cut, shipped as data, preloaded, not yet drawn.** The 56 acts are in
-`data/acts/` with a manifest. The borders layer's visual grammar is still unruled, so
-nothing is rendered; `?borders=preload` fetches and parses every act in the background,
+**2. Border acts — cut, shipped as data, preloaded; ONE act drawn, behind `?borders=1`, waiting to be looked at.**
+The first act, 1000–1100 CE, is built into `data/borders/` as a timed grid of 0.1° cells
+(`act_1000_1100.bin` with its `.json` header; built by `geowork/borders/build_act.py`) and drawn
+only when the page is opened with `?borders=1`. In that mode, and only in it, the evidence
+tier leaves the anchor dots and goes into their tooltip and popup, so colour belongs to the
+borders; the dots are one warm neutral and the tier is still carried by shape. Between two
+dated Cliopatria shapes the growth and retreat you watch is drawn by the map, not recorded
+in the source, and the layer says so. Every insignia is labelled ATTESTED or ILLUSTRATIVE.
+The other 55 acts are in
+`data/acts/` with a manifest and are not drawn; `?borders=preload` fetches and parses every act in the background,
 ahead of the playhead first, so the 25-year acts that are on screen for a tenth of a
 second are already in memory when playback reaches them. Cliopatria v0.2.0 (GitHub release tag,
 CC BY 4.0; Bennett *et al.* 2025, *Scientific Data* 12, 247,
@@ -209,5 +216,5 @@ freely, including commercially, with credit and a note of any changes. See
 
 Basemap tiles © OpenStreetMap contributors. Relief rendered from ETOPO 2022, NOAA
 NCEI (CC0 1.0). Border acts from Cliopatria v0.2.0, Bennett *et al.* 2025, CC BY 4.0,
-with changes (cut into acts, simplified, invalid geometries repaired). Shoreline data © De Groeve et al. 2022, CC BY 4.0, with
+with changes (cut into acts, simplified, invalid geometries repaired; for the drawn act, rasterised to 0.1° cells, composite records not drawn, and the growth between dated shapes computed by this map). Shoreline data © De Groeve et al. 2022, CC BY 4.0, with
 changes — see *Palaeo-shorelines* above for the full credit.

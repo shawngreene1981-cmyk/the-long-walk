@@ -318,6 +318,8 @@
     font-size:11.5px;color:var(--parchment-dim);}
   .tier-dot{width:9px;height:9px;border-radius:50%;flex:none;
     border:1px solid rgba(0,0,0,.45);transform:translateY(1px);}
+  .pop-title .tier-dot,.pop-age .tier-dot,.leaflet-tooltip .tier-dot{display:inline-block;margin-right:6px;transform:none;vertical-align:baseline;}
+  .border-tip{font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.5;}
   .tier-n{font-size:15px;font-weight:600;color:var(--parchment);letter-spacing:.02em;}
   .tier-point{font-size:12.8px;line-height:1.55;color:var(--parchment-dim);margin:0;
     max-width:82ch;}
@@ -1017,6 +1019,24 @@ function worldZoom(){ return Math.max(2, Math.min(map.getZoom(), map.getBoundsZo
 // phone. ?relief=0 still gives OpenStreetMap, as an override.
 const RELIEF = new URLSearchParams(location.search).get('relief') !== '0';
 
+// ---- BORDERS, TRIAL ACT (?borders=1) -------------------------------------------
+// The first Cliopatria act, 1000-1100 CE, is built and switched on only by this parameter until the founder has
+// looked at it. In this mode Decision 1 applies (ruled 2026-09-14, C4 2026-09-16): TIER COLOUR LEAVES THE ANCHOR
+// DOTS AND GOES INTO THE TOOLTIP AND POPUP, so hue belongs to the borders. The dots are one warm neutral, "bone";
+// the SHAPES still carry the tier (circle, diamond, triangle, hollow pentagon, hollow square), and they are the
+// colour-blind-safe channel. Bone was tested at the 25% fade floor against the plain parchment #ece3cf, which read
+// grey there — and grey is this map's colour for dying routes. #f4e2a1 keeps a visible warmth at the floor and is
+// at least 15 (CIEDE2000) from every tier colour and the leader gold at full brightness (geowork/bone_test.py).
+const BORDERS_ON = new URLSearchParams(location.search).get('borders') === '1';
+const ANCHOR_BONE = '#f4e2a1';
+// Routes that deliver a spread (C6): they fade to grey and disappear once delivered. Every other route is unchanged.
+const BORDER_SEED_ROUTES = new Set(BORDERS_ON ? ['r135', 'r136'] : []);
+function mixHex(a, b, t){
+  const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const x = p(a), y = p(b);
+  return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+
 // ---- THE SEA, BLUE ENOUGH TO BE TAKEN AWAY -----------------------------------
 // Ruled: the palaeo-shorelines must read as land that the sea takes back, and on a map
 // where the water is dark teal on dark there is nothing for the sea to take. So the
@@ -1578,10 +1598,12 @@ const TIER_LABEL = {solid:'WELL-SUPPORTED', contested:'CONTESTED / DISPUTED', no
 // past the evidence are both failures, and an ordinary contested tag hides which one is at risk.
 const anchorMarkers = {};
 ANCHORS.forEach(a=>{
-  const color = a.leader ? '#d4af37' : TIER_COLOR[a.status];
+  const color = a.leader ? '#d4af37' : (BORDERS_ON ? ANCHOR_BONE : TIER_COLOR[a.status]);
   const shape = SHAPE_OF(a);
   const m = shapeMarker([a.lat,a.lon], shape, color, {hollow: shape === 'square' || shape === 'pentagon'});
-  m.bindPopup(`<p class="pop-title">${a.leader?'\u2605 ':''}${a.label}</p><p class="pop-age">${a.age} \u00b7 ${TIER_LABEL[a.status]}</p><p class="pop-note">${a.note}</p><button type="button" class="pop-copy" data-copy-anchor="${a.id}">Copy link to this anchor</button>`);
+  const tierDot = BORDERS_ON ? `<span class="tier-dot" style="background:${TIER_COLOR[a.status]}"></span>` : '';
+  if(BORDERS_ON) m.bindTooltip(`${tierDot}<strong>${TIER_LABEL[a.status]}</strong> \u00b7 ${a.label.split(' \u2014 ')[0]}`, {direction:'top', offset:[0, -6]});
+  m.bindPopup(`<p class="pop-title">${a.leader?'\u2605 ':''}${a.label}</p><p class="pop-age">${a.age} \u00b7 ${tierDot}${TIER_LABEL[a.status]}</p><p class="pop-note">${a.note}</p><button type="button" class="pop-copy" data-copy-anchor="${a.id}">Copy link to this anchor</button>`);
   // Tag the marker so popupopen can tell an ANCHOR popup from the node, ghost,
   // diffusion, territory, trade, forced-route and text-witness popups that
   // share this map. Without the tag the URL never learns which anchor is open,
@@ -2390,6 +2412,7 @@ function render(sliderVal){
   showAge(AGE_OF_ERA[idx]);
   eraLabel.textContent = ERA[idx].label;
   eraNote.textContent = ERA[idx].note;
+  if(BORDERS_ON && window.__bordersFrame) window.__bordersFrame(sliderVal, yearsAgo);
 
   // Sahara corridor
   if(layerState.corridor){
@@ -2592,10 +2615,16 @@ function render(sliderVal){
     // slider-space curve as the anchors. "Forgotten" no longer touches opacity at all
     // — it lives in the grey colour below. Opacity carries time and nothing else.
     const timeK = p < 1 ? 1 : fadeAt(sliderVal, ROUTE_END_SLIDER[ri]);
+    // C6 (ruled): only a route that seeds a spread. Lit while it delivers, then over the same recede window every
+    // mark uses it turns to the dying-route grey and goes to nothing. A delivery is an event that ends.
+    let seedT = -1;
+    if(BORDER_SEED_ROUTES.has(o.r.id) && p >= 1){
+      seedT = Math.max(0, Math.min(1, ((sliderVal - ROUTE_END_SLIDER[ri]) / SLIDER_MAX - FADE_LIVE) / FADE_RECEDE));
+    }
     drawn.forEach((pts,i)=>{
       // One opacity and one weight for both passes, so the casing can never
       // outlive its line or sit proud of it while a route draws or fades.
-      const op = dim ? 0.12 : 0.85*timeK;
+      const op = dim ? 0.12 : (seedT >= 0 ? 0.85 * (1 - seedT * seedT) : 0.85*timeK);
       const wt = (lin&&!dim)?3.4:2.6;
       o.casings[i].setLatLngs(pts);
       o.casings[i].setStyle({opacity: op, weight: wt + 2});
@@ -2603,7 +2632,7 @@ function render(sliderVal){
       o.lines[i].setStyle({
         opacity: op,
         weight: wt,
-        color: forgotten>0.02 ? '#6f7580' : o.r.color
+        color: seedT > 0 ? mixHex(o.r.color, '#6f7580', seedT) : (forgotten>0.02 ? '#6f7580' : o.r.color)
       });
     });
     if(p>0 && p<1){
@@ -2628,6 +2657,7 @@ function render(sliderVal){
   // Territory — soft extent, fading in on arrival and draining out on departure
   territoryObjs.forEach(({t, poly})=>{
     if(!layerState.territory || yearsAgo > t.from){ poly.setStyle({fillOpacity:0, opacity:0}); return; }
+    if(BORDERS_ON && window.__bordersCovers && window.__bordersCovers(t.id)){ poly.setStyle({fillOpacity:0, opacity:0}); return; }
     let a = 0.30;
     const rampIn = Math.min(600, (t.from - t.to) * 0.15);
     if(yearsAgo > t.from - rampIn) a *= (t.from - yearsAgo) / rampIn;      // arriving
@@ -2864,7 +2894,11 @@ function tick(now){
   if(lastT===null) lastT=now;
   const dt = now-lastT; lastT=now;
   if(playPos===null) playPos = +scrub.value;
+  const prevPos = playPos;
   playPos += (dt/DURATION)*SLIDER_MAX;
+  // C1 (ruled): slower only while a borders spread big enough to watch is moving on screen, and held while an
+  // act banner shows. Playback only: a dragged slider never passes through here, so a date looks the same either way.
+  if(BORDERS_ON && window.__bordersPace) playPos = window.__bordersPace(prevPos, playPos, dt, now);
   if(playPos>=SLIDER_MAX){ playPos=SLIDER_MAX; scrub.value=SLIDER_MAX; render(SLIDER_MAX); pause(); return; }
   scrub.value = playPos; render(playPos);
   rafId = requestAnimationFrame(tick);
@@ -3400,8 +3434,10 @@ window.addEventListener('orientationchange', function(){
   const PREF = ['solid','contested','nonsapiens','demographic','tradition','hoax'];
   const order = PREF.filter(function(k){ return counts[k]; })
     .concat(Object.keys(counts).filter(function(k){ return PREF.indexOf(k) < 0; }).sort());
+  const CHIP_SHAPE = {solid:'circle', contested:'diamond', nonsapiens:'triangle', hoax:'square', tradition:'pentagon', demographic:'circle'};
   chips.innerHTML = order.map(function(k){
     return '<li class="tier-chip">'
+      + (BORDERS_ON ? '<span style="display:inline-block;transform:translateY(2px)">' + shapeSVG(CHIP_SHAPE[k] || 'circle', 4.5, ANCHOR_BONE, '#0e1420', k === 'hoax' || k === 'tradition').html + '</span>' : '')
       + '<span class="tier-dot" style="background:' + (TIER_COLOR[k] || '#8f897a') + '"></span>'
       + '<span class="tier-n">' + counts[k] + '</span> '
       // One element, so an italic word ("Pre-<em>sapiens</em>") is not split off as its own flex item.
@@ -3416,9 +3452,13 @@ window.addEventListener('orientationchange', function(){
   point.innerHTML =
       'Roughly <strong>' + pct + '%</strong> of this map is flagged contested &mdash; and that is '
     + 'the point, not a defect. The aim is to show <em>how well each claim is supported</em>, not '
-    + 'to assert what happened. A contested anchor is drawn as prominently as a solid one, in a '
-    + 'different colour, so you can see the shape of the disagreement instead of having it quietly '
-    + 'resolved for you.';
+    + 'to assert what happened. A contested anchor is drawn as prominently as a solid one, '
+    + (BORDERS_ON
+      ? 'as a diamond rather than a circle, and its tier is named in its own colour when you hover over it or '
+        + 'open it. <strong>Colour on the map now belongs to the borders</strong>, so where the disagreement clusters '
+        + 'can no longer be seen at a glance; it is found by shape, and read in the tooltip.'
+      : 'in a different colour, so you can see the shape of the disagreement instead of having it quietly '
+        + 'resolved for you.');
 })();
 
 // ===================== COMPUTED COUNTS IN THE PROSE =====================
@@ -3558,6 +3598,466 @@ if(new URLSearchParams(location.search).get('borders') === 'preload'){
   window.__borderActs = BORDER_ACTS;      // inspection handle, present only in this mode
   window.__borderActFor = borderActFor;
   setTimeout(preloadBorderActs, 0);       // after the first frame
+}
+
+// ===================== BORDERS LAYER — THE FIRST ACT, 1000–1100 CE (?borders=1) =====================
+// Rulings C1–C9 (2026-09-16). One act, built to be looked at before the other 55 are built.
+//
+// THE DATA is not polygons at draw time. geowork/borders/build_act.py turns the act's Cliopatria records into
+// a timed ownership grid of 0.1-degree cells: the grid at the act's first year, then every later change as
+// "these cells become owned by this set of polities at this sixteenth of a year". The browser only replays
+// changes, so a date always shows the same picture however it was reached — playing, dragging or a deep link.
+//
+// WHAT THE CHANGES ARE, stated where someone will look for it:
+//  - A spread is the change from one dated Cliopatria shape of a polity to its next. It starts at the new
+//    shape's first year and is complete by the middle of that shape's span, so no ground is shown before the
+//    source dates it. Ground arrives in order of distance travelled through the new shape (outside it costs 4x,
+//    so colour runs along coasts instead of jumping water), from the old shape, from a route's landing point
+//    (C6: r135 at Aversa, r136 at Pevensey), or from the new shape's interior. That growth is DRAWN, NOT RECORDED.
+//  - Lost ground recedes in the same window, farthest first, unless another polity's spread over it has begun by
+//    then — then it goes exactly when that front arrives, so ground is never shown empty between two owners.
+//  - Where the source draws two polities on one cell at one time the cell is striped, and given to neither.
+//  - A new contact between two powers lights a seam along it on the map's one time curve (fadeAt): lit at its
+//    date, eased down, held at the floor. What stays is the border. Brightness is time here as everywhere.
+//
+// COLOUR belongs to the borders (Decision 1, ruled). Eight colours, each polity keeps its own for its whole life,
+// no two neighbours share one (geowork/borders/palette_assign.py). The tooltip names polities; colour does not.
+// GRAND SCALE (ruled): the source is smoothed to 0.07 degrees and the act was cut at 0.25. Zoomed in, the cells
+// show as cells, the same way the shelf tiles do.
+const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1};
+(function bordersLayer(){
+  if(!BORDERS_ON) return;
+  layerState.borders = true;
+  const ACT_FILE = 'data/borders/act_1000_1100';
+  const BONE = ANCHOR_BONE;
+  // INSIGNIA (amendment, C5). ATTESTED means attested in use by that polity WITHIN ITS DATES, and says what and
+  // where. Everything else is ILLUSTRATIVE: a mark designed for this map, and the tooltip says so in one word.
+  const INSIGNIA_ATTESTED = {
+    'Byzantine Empire': {glyph:'crosscrosslet', what:'the cross-crosslet struck on the silver miliaresion from the mid-10th century into the 11th (Grierson, <em>Byzantine Coinage</em>, Dumbarton Oaks 1999). The double-headed eagle is later — 13th–14th century — and is not used here'},
+    'Kingdom of England': {glyph:'longcross', what:'the long cross, reaching the rim, on the reverse of Æthelred II’s Long Cross pennies, minted from the late 990s to the late 1000s'}
+  };
+  const MOTIFS = ['dots', 'chevrons', 'lozenge', 'rays', 'rings', 'bars', 'wave', 'nested'];
+  const FRAMES = ['circle', 'square', 'diamond'];
+  function hash(s){ let h = 2166136261; for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+  const pane = map.createPane('bordersPane');
+  pane.style.zIndex = '360';             // above the exposed shelf (350), below routes and marks (400+)
+  pane.style.pointerEvents = 'none';
+  const cv = document.createElement('canvas');
+  cv.className = 'borders-canvas';
+  cv.style.position = 'absolute'; cv.style.top = '0'; cv.style.left = '0'; cv.style.pointerEvents = 'none';
+  pane.appendChild(cv);
+  const ctx = cv.getContext('2d');
+  let zooming = false;
+
+  let W, H, WEST, NORTH, CELL, QPY, A0, A1, SETS, RGB, base, cur, pairFirst, basePairs, isActiveSeam, activeSeams;
+  let gQ, gS, gOff, runs, G, applied = 0, curQ = -1e9;
+  let fillCv, fillCx, fillImg, seamCv, seamCx, seamImg, dirtyList = [], needFull = true;
+  const qSlider = new Map();
+  const FLOOR = -1e9;
+
+  // ---- toggle, legend, credit
+  (function addToggle(){
+    const shore = document.getElementById('toggleShorelines');
+    const label = document.createElement('label');
+    label.className = 'toggle-item';
+    label.innerHTML = '<input type="checkbox" id="toggleBorders" checked> <span class="toggle-text">Borders <em>(trial act: 1000–1100 CE only — Cliopatria)</em>'
+      + '<span class="shore-status" id="bordersStatus" role="status" aria-live="polite"></span></span>';
+    if(shore && shore.closest('label')) shore.closest('label').insertAdjacentElement('afterend', label);
+    label.querySelector('input').addEventListener('change', e => { layerState.borders = e.target.checked; render(+scrub.value); if(typeof updateLayerCount === 'function') updateLayerCount(); });
+    if(typeof updateLayerCount === 'function') updateLayerCount();
+  })();
+  const statusEl = () => document.getElementById('bordersStatus');
+  map.attributionControl.addAttribution('Borders: <a href="https://github.com/Seshat-Global-History-Databank/cliopatria">Cliopatria</a> v0.2.0 (CC BY 4.0)');
+
+  Promise.all([
+    fetch(ACT_FILE + '.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+    fetch(ACT_FILE + '.bin').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
+  ]).then(([hdr, buf]) => {
+    const t0 = performance.now();
+    BORDERS.hdr = hdr;
+    W = hdr.w; H = hdr.h; WEST = hdr.west; NORTH = hdr.north; CELL = hdr.cell; QPY = hdr.qpy; A0 = hdr.act[0]; A1 = hdr.act[1];
+    SETS = hdr.sets;
+    RGB = [[0, 0, 0]].concat(hdr.colour.map(h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]));
+    const u8 = new Uint8Array(buf); let p = 0;
+    const rv = () => { let n = 0, m = 1, b; do { b = u8[p++]; n += (b & 127) * m; m *= 128; } while(b & 128); return n; };
+    base = new Uint16Array(W * H);
+    for(let i = 0; i < W * H;){ const s = rv(), n = rv(); base.fill(s, i, i + n); i += n; }
+    G = rv(); gQ = new Int32Array(G); gS = new Uint16Array(G); gOff = new Uint32Array(G + 1);
+    const tmp = []; let q = 0;
+    for(let g = 0; g < G; g++){
+      q += rv(); gQ[g] = q; gS[g] = rv(); gOff[g] = tmp.length / 2;
+      const nr = rv(); let pe = 0;
+      for(let k = 0; k < nr; k++){ const st = pe + rv(), len = rv(); tmp.push(st, len); pe = st + len; }
+    }
+    gOff[G] = tmp.length / 2; runs = Uint32Array.from(tmp);
+    cur = base.slice();
+    basePairs = new Map();
+    for(let c = 0; c < W * H; c++){
+      const s0 = base[c]; if(!s0) continue;
+      if((c % W) < W - 1 && differ(s0, base[c + 1])) basePairs.set(pairKey(s0, base[c + 1]), FLOOR);
+      if(c < W * (H - 1) && differ(s0, base[c + W])) basePairs.set(pairKey(s0, base[c + W]), FLOOR);
+    }
+    pairFirst = new Map(basePairs);
+    isActiveSeam = new Uint8Array(W * H); activeSeams = [];
+    fillCv = document.createElement('canvas'); fillCv.width = W; fillCv.height = H; fillCx = fillCv.getContext('2d');
+    seamCv = document.createElement('canvas'); seamCv.width = W; seamCv.height = H; seamCx = seamCv.getContext('2d');
+    fillImg = fillCx.createImageData(W, H); seamImg = seamCx.createImageData(W, H);
+    hdr.recordsByPid = {};
+    hdr.records.forEach(r => { (hdr.recordsByPid[r[0]] = hdr.recordsByPid[r[0]] || []).push(r); });
+    BORDERS.decodeMs = Math.round(performance.now() - t0);
+    BORDERS.state = 'ready';
+    if(statusEl()) statusEl().textContent = '';
+    render(+scrub.value);
+  }).catch(err => {
+    BORDERS.state = 'failed';
+    if(statusEl()) statusEl().textContent = ' — the borders data did not load';
+    console.warn('BORDERS: ' + err);
+  });
+
+  function sliderOfQ(q){
+    let v = qSlider.get(q);
+    if(v === undefined){ v = sliderAtYearsExact(2026 - (A0 + q / QPY)); qSlider.set(q, v); }
+    return v;
+  }
+  // A SEAM is where two different owners touch. It is one cell wide: a cell carries the border with its right-hand
+  // and lower neighbour. Its time is the moment THAT PAIR OF OWNERS first touched anywhere in the act, so a border
+  // is lit when two powers meet and stays on that one clock as it lengthens, rather than every ordinary adjustment
+  // of an old frontier lighting up. Pairs already touching at the act's first year sit at the floor. Ground shared
+  // with a contested (striped) cell is not a seam: the stripes already say it.
+  function pairKey(a, b){ return a < b ? a * 65536 + b : b * 65536 + a; }
+  function differ(a, b){
+    if(!a || !b || a === b) return false;
+    const A = SETS[a], B = SETS[b];
+    for(let i = 0; i < A.length; i++) if(B.indexOf(A[i]) >= 0) return false;
+    return true;
+  }
+  function seamPairQ(c){
+    const s = cur[c]; if(!s) return null;
+    const x = c % W; let q = null;
+    if(x < W - 1 && differ(s, cur[c + 1])){ const v = pairFirst.get(pairKey(s, cur[c + 1])); q = v; }
+    if(c < W * (H - 1) && differ(s, cur[c + W])){ const v = pairFirst.get(pairKey(s, cur[c + W])); if(q === null || v > q) q = v; }
+    return q === undefined ? FLOOR : q;
+  }
+  function paintFill(c){
+    const s = cur[c], o = c * 4, d = fillImg.data;
+    if(!s){ d[o + 3] = 0; return; }
+    const ow = SETS[s];
+    const pid = ow.length === 1 ? ow[0] : ow[((c % W + ((c / W) | 0)) >> 1) % ow.length];
+    const rgb = RGB[pid];
+    d[o] = rgb[0]; d[o + 1] = rgb[1]; d[o + 2] = rgb[2]; d[o + 3] = 255;
+  }
+  function seamAlpha(c, sliderVal){
+    const q = seamPairQ(c);
+    if(q === null) return 0;
+    const k = q <= FLOOR ? FADE_FLOOR : fadeAt(sliderVal, sliderOfQ(q));
+    return Math.round(Math.round(k * 40) / 40 * 235);
+  }
+  function paintSeam(c, sliderVal){
+    const o = c * 4, d = seamImg.data, a = seamAlpha(c, sliderVal);
+    if(d[o + 3] === a) return false;
+    d[o] = 243; d[o + 1] = 234; d[o + 2] = 215; d[o + 3] = a;
+    return true;
+  }
+  function reset(){
+    cur.set(base); pairFirst = new Map(basePairs); isActiveSeam.fill(0); activeSeams = [];
+    applied = 0; curQ = -1e9; needFull = true; dirtyList = [];
+  }
+  function applyGroup(g){
+    const s = gS[g], q = gQ[g];
+    for(let r = gOff[g]; r < gOff[g + 1]; r++){
+      const st = runs[2 * r], end = st + runs[2 * r + 1];
+      for(let c = st; c < end; c++){
+        if(cur[c] === s) continue;
+        cur[c] = s;
+        if(!needFull) dirtyList.push(c);
+        if(s){
+          const x = c % W;
+          const nb = [x > 0 ? c - 1 : -1, x < W - 1 ? c + 1 : -1, c - W, c + W];
+          for(let k = 0; k < 4; k++){
+            const n = nb[k]; if(n < 0 || n >= W * H) continue;
+            const t = cur[n];
+            if(differ(s, t)){
+              const key = pairKey(s, t);
+              if(!pairFirst.has(key)) pairFirst.set(key, q);
+              if(pairFirst.get(key) > FLOOR){
+                if(!isActiveSeam[c]){ isActiveSeam[c] = 1; activeSeams.push(c); }
+                if(!isActiveSeam[n]){ isActiveSeam[n] = 1; activeSeams.push(n); }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  function advanceTo(q){
+    if(applied > 0 && gQ[applied - 1] > q) reset();
+    while(applied < G && gQ[applied] <= q){ applyGroup(applied); applied++; }
+    curQ = q;
+  }
+  function upload(sliderVal){
+    if(needFull){
+      for(let c = 0; c < W * H; c++){ paintFill(c); }
+      const sd = seamImg.data;
+      for(let c = 0; c < W * H; c++){
+        const o = c * 4; sd[o] = 243; sd[o + 1] = 234; sd[o + 2] = 215; sd[o + 3] = cur[c] ? seamAlpha(c, sliderVal) : 0;
+        if(sd[o + 3] > 0 && !isActiveSeam[c] && seamPairQ(c) > FLOOR){ isActiveSeam[c] = 1; activeSeams.push(c); }
+      }
+      fillCx.putImageData(fillImg, 0, 0); seamCx.putImageData(seamImg, 0, 0);
+      needFull = false; dirtyList = [];
+      return;
+    }
+    let sx0 = W, sy0 = H, sx1 = -1, sy1 = -1, fx0 = W, fy0 = H, fx1 = -1, fy1 = -1;
+    const grow = (x, y) => { if(x < sx0) sx0 = x; if(y < sy0) sy0 = y; if(x > sx1) sx1 = x; if(y > sy1) sy1 = y; };
+    for(let i = 0; i < dirtyList.length; i++){
+      const c = dirtyList[i], x = c % W, y = (c / W) | 0;
+      paintFill(c);
+      if(x < fx0) fx0 = x; if(y < fy0) fy0 = y; if(x > fx1) fx1 = x; if(y > fy1) fy1 = y;
+      const nb = [c, x > 0 ? c - 1 : -1, x < W - 1 ? c + 1 : -1, c - W, c + W];
+      for(let k = 0; k < 5; k++){ const n = nb[k]; if(n >= 0 && n < W * H && paintSeam(n, sliderVal)) grow(n % W, (n / W) | 0); }
+    }
+    dirtyList = [];
+    if(fx1 >= 0) fillCx.putImageData(fillImg, 0, 0, fx0, fy0, fx1 - fx0 + 1, fy1 - fy0 + 1);
+    // lit seams dim with time, on the same curve as every mark
+    const keep = [];
+    for(let i = 0; i < activeSeams.length; i++){
+      const c = activeSeams[i];
+      if(paintSeam(c, sliderVal)) grow(c % W, (c / W) | 0);
+      const pq = seamPairQ(c);
+      if(pq !== null && pq > FLOOR) keep.push(c); else isActiveSeam[c] = 0;
+    }
+    activeSeams = keep;
+    if(sx1 >= 0) seamCx.putImageData(seamImg, 0, 0, sx0, sy0, sx1 - sx0 + 1, sy1 - sy0 + 1);
+  }
+
+  // ---- drawing onto the map, in 1-degree bands so every band sits on its own Mercator latitude
+  function draw(){
+    if(!BORDERS.visible || zooming){ cv.style.display = 'none'; return; }
+    cv.style.display = '';
+    const s = map.getSize(), dpr = window.devicePixelRatio || 1;
+    if(cv.width !== s.x * dpr || cv.height !== s.y * dpr){ cv.width = s.x * dpr; cv.height = s.y * dpr; cv.style.width = s.x + 'px'; cv.style.height = s.y + 'px'; }
+    L.DomUtil.setPosition(cv, map.containerPointToLayerPoint([0, 0]));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, s.x, s.y);
+    const xa = map.latLngToContainerPoint([0, WEST]).x, xb = map.latLngToContainerPoint([0, WEST + W * CELL]).x;
+    const pxPerCell = (xb - xa) / W;
+    ctx.imageSmoothingEnabled = pxPerCell < 1;         // zoomed out: average; zoomed in: the source's cells, as cells
+    const BAND = 10;
+    const bands = [];
+    for(let r = 0; r < H; r += BAND){
+      const n = Math.min(BAND, H - r);
+      const la = Math.max(-85, Math.min(85, NORTH - r * CELL)), lb = Math.max(-85, Math.min(85, NORTH - (r + n) * CELL));
+      const ya = map.latLngToContainerPoint([la, WEST]).y, yb = map.latLngToContainerPoint([lb, WEST]).y;
+      if(yb < 0 || ya > s.y) continue;
+      bands.push([r, n, ya, yb]);
+    }
+    ctx.globalAlpha = 0.6;
+    bands.forEach(([r, n, ya, yb]) => ctx.drawImage(fillCv, 0, r, W, n, xa, ya, xb - xa, yb - ya));
+    ctx.globalAlpha = 1;
+    bands.forEach(([r, n, ya, yb]) => ctx.drawImage(seamCv, 0, r, W, n, xa, ya, xb - xa, yb - ya));
+    drawInsignia(s);
+  }
+  function currentRecord(pid, y){
+    const rs = BORDERS.hdr.recordsByPid[pid]; if(!rs) return null;
+    for(let i = 0; i < rs.length; i++){ if(y >= rs[i][1] && y < rs[i][2] + 1) return rs[i]; }
+    return null;
+  }
+  function cellAt(lat, lon){
+    const x = Math.floor((lon - WEST) / CELL), y = Math.floor((NORTH - lat) / CELL);
+    return (x < 0 || y < 0 || x >= W || y >= H) ? -1 : y * W + x;
+  }
+  function drawInsignia(s){
+    const y = BORDERS.year, hdr = BORDERS.hdr;
+    for(let pid = 1; pid <= hdr.polities.length; pid++){
+      const r = currentRecord(pid, y); if(!r || r[5] <= 0) continue;
+      const c = cellAt(r[3], r[4]); if(c < 0 || !cur[c] || SETS[cur[c]].indexOf(pid) < 0) continue;
+      const pt = map.latLngToContainerPoint([r[3], r[4]]);
+      if(pt.x < -30 || pt.y < -30 || pt.x > s.x + 30 || pt.y > s.y + 30) continue;
+      const rad = degToPx(r[3], r[4], r[5]);
+      if(rad < 22) continue;                      // only where the ground is big enough to hold a mark without crowding
+      glyph(hdr.polities[pid - 1], pt.x, pt.y, Math.min(20, rad * 0.8));
+    }
+  }
+  function glyph(name, x, y, size){
+    const h = size / 2, att = INSIGNIA_ATTESTED[name];
+    ctx.save(); ctx.translate(x, y);
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    const hv = hash(name), frame = att ? 'circle' : FRAMES[(hv >>> 8) % FRAMES.length];
+    const path = () => {
+      ctx.beginPath();
+      if(frame === 'circle') ctx.arc(0, 0, h, 0, Math.PI * 2);
+      else if(frame === 'square'){ ctx.rect(-h * 0.88, -h * 0.88, h * 1.76, h * 1.76); }
+      else { ctx.moveTo(0, -h * 1.12); ctx.lineTo(h * 1.12, 0); ctx.lineTo(0, h * 1.12); ctx.lineTo(-h * 1.12, 0); ctx.closePath(); }
+    };
+    path(); ctx.fillStyle = 'rgba(14,20,32,0.62)'; ctx.fill();
+    ctx.lineWidth = 1.3; ctx.strokeStyle = BONE; ctx.globalAlpha = 0.95; path(); ctx.stroke();
+    ctx.fillStyle = BONE; ctx.strokeStyle = BONE; ctx.lineWidth = Math.max(1.2, size / 11);
+    const k = h * 0.58;
+    const motif = att ? att.glyph : MOTIFS[hv % MOTIFS.length];
+    ctx.beginPath();
+    switch(motif){
+      case 'crosscrosslet': {
+        const a = k, b = k * 0.42;
+        ctx.moveTo(0, -a); ctx.lineTo(0, a); ctx.moveTo(-a, 0); ctx.lineTo(a, 0);
+        ctx.moveTo(-b, -a); ctx.lineTo(b, -a); ctx.moveTo(-b, a); ctx.lineTo(b, a);
+        ctx.moveTo(-a, -b); ctx.lineTo(-a, b); ctx.moveTo(a, -b); ctx.lineTo(a, b); ctx.stroke(); break;
+      }
+      case 'longcross': {
+        const a = h * 0.95, g = k * 0.22;
+        ctx.moveTo(-g, -a); ctx.lineTo(-g, a); ctx.moveTo(g, -a); ctx.lineTo(g, a);
+        ctx.moveTo(-a, -g); ctx.lineTo(a, -g); ctx.moveTo(-a, g); ctx.lineTo(a, g); ctx.stroke(); break;
+      }
+      case 'dots': [[0, -k * 0.6], [-k * 0.6, k * 0.45], [k * 0.6, k * 0.45]].forEach(([u, v]) => { ctx.moveTo(u + k * 0.24, v); ctx.arc(u, v, k * 0.24, 0, Math.PI * 2); }); ctx.fill(); break;
+      case 'chevrons': ctx.moveTo(-k, -k * 0.15); ctx.lineTo(0, -k * 0.8); ctx.lineTo(k, -k * 0.15); ctx.moveTo(-k, k * 0.65); ctx.lineTo(0, 0); ctx.lineTo(k, k * 0.65); ctx.stroke(); break;
+      case 'lozenge': ctx.moveTo(0, -k); ctx.lineTo(k * 0.7, 0); ctx.lineTo(0, k); ctx.lineTo(-k * 0.7, 0); ctx.closePath(); ctx.stroke(); ctx.beginPath(); ctx.arc(0, 0, k * 0.2, 0, Math.PI * 2); ctx.fill(); break;
+      case 'rays': for(let i = 0; i < 8; i++){ const a = i * Math.PI / 4; ctx.moveTo(Math.cos(a) * k * 0.35, Math.sin(a) * k * 0.35); ctx.lineTo(Math.cos(a) * k, Math.sin(a) * k); } ctx.stroke(); break;
+      case 'rings': ctx.arc(0, 0, k * 0.85, 0, Math.PI * 2); ctx.moveTo(k * 0.4, 0); ctx.arc(0, 0, k * 0.4, 0, Math.PI * 2); ctx.stroke(); break;
+      case 'bars': [-0.55, 0, 0.55].forEach(v => { ctx.moveTo(-k * 0.8, v * k); ctx.lineTo(k * 0.8, v * k); }); ctx.stroke(); break;
+      case 'wave': [-0.35, 0.35].forEach(v => { ctx.moveTo(-k, v * k); ctx.bezierCurveTo(-k * 0.4, v * k - k * 0.5, k * 0.4, v * k + k * 0.5, k, v * k); }); ctx.stroke(); break;
+      default: ctx.rect(-k * 0.75, -k * 0.75, k * 1.5, k * 1.5); ctx.rect(-k * 0.3, -k * 0.3, k * 0.6, k * 0.6); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  map.on('move resize', () => { if(BORDERS.state === 'ready') draw(); });
+  map.on('zoomstart', () => { zooming = true; cv.style.display = 'none'; });
+  map.on('zoomend', () => { zooming = false; if(BORDERS.state === 'ready') draw(); });
+
+  // ---- what the viewer can ask: hover names, click explains
+  const owner = pid => BORDERS.hdr.polities[pid - 1];
+  function describe(latlng, full){
+    if(BORDERS.state !== 'ready' || !BORDERS.visible) return null;
+    const c = cellAt(latlng.lat, latlng.lng); if(c < 0 || !cur[c]) return null;
+    const ow = SETS[cur[c]], y = BORDERS.year;
+    const parts = ow.map(pid => {
+      const name = owner(pid), rec = currentRecord(pid, y), att = INSIGNIA_ATTESTED[name];
+      const member = rec && rec[6] ? rec[6].replace(/^\(|\)$/g, '') : '';
+      const sw = `<span class="tier-dot" style="background:${BORDERS.hdr.colour[pid - 1]}"></span>`;
+      if(!full) return `${sw}<strong>${name}</strong>${member && member !== name ? ' · part of ' + member : ''} · insignia <strong>${att ? 'ATTESTED' : 'ILLUSTRATIVE'}</strong>`;
+      return `<p class="pop-title">${sw}${name}</p>`
+        + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + rec[1] + '–' + rec[2] + ' CE' : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
+        + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
+        + (att ? `In use by this polity within its dates: ${att.what}.` : `Designed for this map. It is not a symbol this polity is known to have used, and the picture alone cannot say so.`) + `</p>`;
+    });
+    if(!full) return parts.join('<br>') + (ow.length > 1 ? '<br><em>The source draws ' + (ow.length === 2 ? 'both' : 'all ' + ow.length) + ' on this ground at this date.</em>' : '');
+    const hdr = BORDERS.hdr, a = hdr.attribution;
+    return parts.join('')
+      + (ow.length > 1 ? `<p class="pop-note" style="color:var(--rust)"><strong>The source draws ${ow.map(owner).join(' and ')} on this same ground at this date.</strong> The map stripes it and gives it to neither.</p>` : '')
+      + `<p class="pop-note"><strong>The growth and retreat you watch between two dated shapes is drawn, not recorded.</strong> Cliopatria gives one shape per span of years; this map grows each new shape outward from the old one`
+      + ` (or from where a route on this map lands) through the new shape, starting at its first year and complete by the middle of its span, so no ground appears before the source dates it.</p>`
+      + `<p class="pop-note" style="color:var(--parchment-dimmer)">Grand scale only: the source is smoothed to about 0.07° and this act was cut at 0.25°; the square cells seen zoomed in are 0.1° and are not finer knowledge. Colour tells neighbours apart and nothing else — eight colours, each polity keeps its own.</p>`
+      + `<p class="pop-note" style="margin-top:8px"><strong style="color:var(--sahara-bright)">BORDERS</strong> — ${a.citation} Data: ${a.source}, ${a.release.split(' — ')[0]}, from GitHub. Licence <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${hdr.changes_made_here}</p>`;
+  }
+  const tip = document.createElement('div');
+  tip.className = 'leaflet-tooltip border-tip'; tip.hidden = true;
+  tip.style.position = 'absolute'; tip.style.pointerEvents = 'none'; tip.style.zIndex = '650'; tip.style.whiteSpace = 'nowrap';
+  map.getContainer().appendChild(tip);
+  let tipRaf = null, tipEvt = null;
+  map.on('mousemove', e => { tipEvt = e; if(!tipRaf) tipRaf = requestAnimationFrame(showTip); });
+  map.on('mouseout zoomstart movestart', () => { tip.hidden = true; });
+  function showTip(){
+    tipRaf = null; const e = tipEvt; if(!e) return;
+    const t = e.originalEvent && e.originalEvent.target;
+    const overMark = t && t.closest && (t.closest('.leaflet-marker-icon') || t.closest('.leaflet-popup') || (t.classList && t.classList.contains('leaflet-interactive')));
+    const otherTip = document.querySelector('.leaflet-tooltip-pane .leaflet-tooltip');
+    const html = (overMark || otherTip) ? null : describe(e.latlng, false);
+    if(!html){ tip.hidden = true; return; }
+    tip.innerHTML = html; tip.hidden = false;
+    tip.style.left = (e.containerPoint.x + 14) + 'px'; tip.style.top = (e.containerPoint.y + 14) + 'px';
+  }
+  map.on('click', e => {
+    setTimeout(() => {                       // after any route, mark, ice or shelf popup has had the click
+      if(map._popup && map.hasLayer(map._popup)) return;
+      const html = describe(e.latlng, true); if(!html) return;
+      tip.hidden = true;
+      L.popup().setLatLng(e.latlng).setContent(html).openOn(map);
+    }, 0);
+  });
+
+  // ---- C7: the soft territory fill gives way where Cliopatria draws the same ground
+  window.__bordersCovers = function(tid){
+    if(BORDERS.state !== 'ready' || !BORDERS.visible) return false;
+    const cells = BORDERS.hdr.territoryCells[tid]; if(!cells) return false;
+    let n = 0; cells.forEach(c => { if(cur[c]) n++; });
+    return n / cells.length >= 0.3;
+  };
+
+  // ---- C9: a banner at the map's era marks while the layer is drawing, in both directions
+  function eraBanner(idx){
+    if(!ageBanner) return;
+    ageName.textContent = ERA[idx].label;
+    ageSub.textContent = 'Borders · ' + A0 + '–' + A1 + ' CE · Cliopatria';
+    ageBanner.className = 'agebanner show';
+    if(bannerTimer) clearTimeout(bannerTimer);
+    bannerTimer = setTimeout(() => { ageBanner.className = 'agebanner'; }, 2600);
+    if(playing) BORDERS.holdUntil = performance.now() + 1800;
+  }
+
+  window.__bordersFrame = function(sliderVal, yearsAgo){
+    if(BORDERS.state !== 'ready'){ return; }
+    const y = 2026 - yearsAgo;
+    BORDERS.year = y;
+    const was = BORDERS.visible;
+    BORDERS.visible = !!layerState.borders && y >= A0 && y < A1;
+    const idx = eraIndexFromSlider(sliderVal);
+    if(BORDERS.visible && was && BORDERS.lastEra >= 0 && idx !== BORDERS.lastEra) eraBanner(idx);
+    BORDERS.lastEra = BORDERS.visible ? idx : -1;
+    if(!BORDERS.visible){ cv.style.display = 'none'; tip.hidden = true; return; }
+    advanceTo(Math.floor((y - A0) * QPY));
+    upload(sliderVal);
+    draw();
+  };
+
+  // ---- C1: playback slows while a spread big enough to watch is moving on screen. Scrubbing is untouched.
+  const SLOW_MS_PER_YEAR = 150, VISIBLE_PX2 = 64;
+  function spreadOnScreen(y){
+    const b = map.getBounds(), sp = BORDERS.hdr.spreads;
+    for(let i = 0; i < sp.length; i++){
+      const s = sp[i];
+      if(y < s.lo || y >= s.hi) continue;
+      if(s.bb[2] < b.getWest() || s.bb[0] > b.getEast() || s.bb[3] < b.getSouth() || s.bb[1] > b.getNorth()) continue;
+      const lat = (s.bb[1] + s.bb[3]) / 2, cellPx = degToPx(lat, (s.bb[0] + s.bb[2]) / 2, CELL);
+      if(s.cells * cellPx * cellPx >= VISIBLE_PX2) return true;
+    }
+    return false;
+  }
+  window.__bordersPace = function(pos0, pos1, dt, now){
+    if(BORDERS.state !== 'ready' || !layerState.borders) return pos1;
+    if(BORDERS.holdUntil > now) return pos0;
+    const y0 = 2026 - yearsAgoFromSlider(pos0), y1 = 2026 - yearsAgoFromSlider(pos1);
+    if(y0 < A0 || y0 >= A1) return pos1;
+    const maxStep = dt / SLOW_MS_PER_YEAR;
+    if(y1 - y0 <= maxStep || !spreadOnScreen(y0)) return pos1;
+    return Math.max(pos0, sliderAtYearsExact(2026 - (y0 + maxStep)));
+  };
+  BORDERS.map = map;
+  window.__borders = BORDERS;                 // inspection handle for the harness (present only with ?borders=1)
+})();
+
+// Legend, in this mode only: the evidence line no longer says colour, and the layer says what it is.
+if(BORDERS_ON){
+  document.querySelectorAll('.legend-note').forEach(n => {
+    if(n.innerHTML.indexOf('evidence is the colour and shape, and the') >= 0){
+      n.innerHTML = n.innerHTML.replace('evidence is the colour and shape, and the', 'evidence is the shape, and the tooltip and the')
+        .split('fill="#e5a75f"').join('fill="' + ANCHOR_BONE + '"');
+    }
+  });
+  const row = document.querySelector('.legend-row');
+  if(row){
+    const note = document.createElement('span');
+    note.className = 'legend-note'; note.style.flexBasis = '100%';
+    note.innerHTML = '<strong>Borders \u2014 a trial act, 1000\u20131100 CE only.</strong> Real polities from Cliopatria, one solid colour each; '
+      + 'eight colours, no two neighbours alike, and a polity keeps its colour for its whole life. Colour tells neighbours apart and names no one: '
+      + 'hover to name them. Between two dated shapes <strong>the growth and retreat you watch is drawn, not recorded</strong> \u2014 each new shape grows '
+      + 'out from the old one, or from where a route on this map lands, and is complete by the middle of its dates. Ground the source gives to two '
+      + 'polities at once is striped. A new meeting of two powers lights a seam that dims with time like every mark. '
+      + 'Each polity carries an insignia, and its tooltip says in one word whether it is <strong>ATTESTED</strong> (used by that polity within its dates) '
+      + 'or <strong>ILLUSTRATIVE</strong> (designed for this map). Grand scale only: zoomed in, the cells are cells. While a spread you can see is moving, '
+      + 'playback slows; dragging the slider never does. '
+      + '<span style="color:var(--parchment-dimmer)">Borders: Bennett, J.S., Mutch, E., Tollefson, A. <em>et al.</em> (2025), Cliopatria, <em>Scientific Data</em> 12, 247, '
+      + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.0 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '
+      + 'composite records not drawn, growth between dated shapes computed by this map.</span>';
+    row.appendChild(note);
+  }
 }
 
 applyPresapiens();
