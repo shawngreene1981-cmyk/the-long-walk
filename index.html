@@ -3936,7 +3936,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       return `<p class="pop-title">${sw}${name}</p>`
         + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + rec[1] + '–' + rec[2] + ' CE' : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
         + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
-        + (att ? `In use by this polity within its dates: ${att.what}.` : `Designed for this map. It is not a symbol this polity is known to have used, and the picture alone cannot say so.`) + `</p>`;
+        + (att ? `In use by this polity within its dates: ${att.what}.` : `Designed for this map. It is not a symbol attested for this polity within its dates — none has been identified for this map — and the picture alone cannot say so.`) + `</p>`;
     });
     if(!full) return parts.join('<br>') + (ow.length > 1 ? '<br><em>The source draws ' + (ow.length === 2 ? 'both' : 'all ' + ow.length) + ' on this ground at this date.</em>' : '');
     const hdr = BORDERS.hdr, a = hdr.attribution;
