@@ -3991,7 +3991,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     return parts.join('')
       + (ow.length > 1 ? `<p class="pop-note" style="color:var(--rust)"><strong>The source draws ${ow.map(owner).join(' and ')} on this same ground at this date.</strong> The map stripes it and gives it to neither.</p>` : '')
       + `<p class="pop-note"><strong>The growth and retreat you watch between two dated shapes is drawn, not recorded.</strong> Cliopatria gives one shape per span of years; this map grows each new shape outward from the old one`
-      + ` (or from where a route on this map lands) through the new shape, starting at its first year and complete by the middle of its span, so no ground appears before the source dates it.</p>`
+      + ` (or from where a route on this map lands) through the new shape, starting at its first year and complete by the middle of its span — a polity's first shape within ten years at most, because arrival is a state, not a century-long process — so no ground appears before the source dates it.</p>`
       + `<p class="pop-note" style="color:var(--parchment-dimmer)">Grand scale only: the source is smoothed to about 0.07° and this act was cut at 0.25°; the square cells seen zoomed in are 0.1° and are not finer knowledge. Colour tells neighbours apart and nothing else — eight colours, each polity keeps its own.</p>`
       + `<p class="pop-note" style="margin-top:8px"><strong style="color:var(--sahara-bright)">BORDERS</strong> — ${a.citation} Data: ${a.source}, ${a.release.split(' — ')[0]}, from GitHub. Licence <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${hdr.changes_made_here}</p>`;
   }
@@ -4095,7 +4095,7 @@ if(BORDERS_ON){
     note.innerHTML = '<strong>Borders \u2014 a trial act, 1000\u20131100 CE only.</strong> Real polities from Cliopatria, one solid colour each; '
       + 'eight colours, no two neighbours alike, and a polity keeps its colour for its whole life. Colour tells neighbours apart and names no one: '
       + 'hover to name them. Between two dated shapes <strong>the growth and retreat you watch is drawn, not recorded</strong> \u2014 each new shape grows '
-      + 'out from the old one, or from where a route on this map lands, and is complete by the middle of its dates. Ground the source gives to two '
+      + 'out from the old one, or from where a route on this map lands, and is complete by the middle of its dates, or within ten years for a first appearance. Ground the source gives to two '
       + 'polities at once is striped. A new meeting of two powers lights a seam that dims with time like every mark. '
       + 'Each polity carries an insignia, and its tooltip says in one word whether it is <strong>ATTESTED</strong> (used by that polity within its dates) '
       + 'or <strong>ILLUSTRATIVE</strong> (designed for this map). Grand scale only: zoomed in, the cells are cells. Playback slows only while a polity that a route on this map delivers is spreading, '
