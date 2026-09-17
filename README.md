@@ -214,6 +214,27 @@ Map and dataset © 2026 Shawn Greene, released under
 freely, including commercially, with credit and a note of any changes. See
 [`license`](license).
 
+### Licence obligations, dataset by dataset
+
+Every dataset drawn or shipped here, and what its licence requires of this map. **One entry is a debt, not a
+clearance, and it is the only one:**
+
+| Dataset | Licence | Obligation | Commercial use |
+|---|---|---|---|
+| ETOPO 2022 relief, NOAA NCEI | CC0 1.0 | none (credited anyway) | yes |
+| OpenStreetMap basemap tiles | ODbL, tiles © OSM contributors | attribution on the map | yes |
+| De Groeve *et al.* 2022 shoreline raster | CC BY 4.0 | credit, licence link, state changes | yes |
+| Cliopatria v0.2.0 (Bennett *et al.* 2025) | CC BY 4.0 | credit, licence link, state changes | yes |
+| **PATICE — Patagonian Ice Sheet, Davies *et al.* 2020** | **CC BY-NC 3.0** | **credit, licence link, state changes** | **NO — NON-COMMERCIAL ONLY** |
+
+**PATICE MUST BE REMOVED OR RELICENSED BEFORE ANY COMMERCIAL USE OF THIS MAP, THE SHOW OR THE GAME.**
+It was taken knowingly, as a deliberate exception to the rule that has already excluded three datasets
+(Esri's basemap, `historical-basemaps`, CShapes). It is the only non-commercial asset here and it should stay
+the only one. It covers the Patagonian ice sheet alone; removing it means dropping that sheet or replacing it
+with a differently licensed reconstruction, and nothing else on the map depends on it.
+**Not yet in the map:** the ice-margin rebuild that uses it is queued behind the stop rule, and this row will
+name the files it arrives in when it does.
+
 Basemap tiles © OpenStreetMap contributors. Relief rendered from ETOPO 2022, NOAA
 NCEI (CC0 1.0). Border acts from Cliopatria v0.2.0, Bennett *et al.* 2025, CC BY 4.0,
 with changes (cut into acts, simplified, invalid geometries repaired; for the drawn act, rasterised to 0.1° cells, composite records not drawn, and the growth between dated shapes computed by this map). Shoreline data © De Groeve et al. 2022, CC BY 4.0, with
