@@ -77,6 +77,12 @@
   .eranote{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--parchment-dim);margin-bottom:12px;max-width:90ch;line-height:1.5;min-height:32px;}
 
   .scrubrow{display:flex;align-items:center;gap:10px;}
+  /* TRADE: two dash trains running opposite ways at constant opacity. The pulse is motion, not brightness —
+     opacity on this map means time and nothing else. SVG, because a canvas path has no dash offset to animate. */
+  .trade-flow{animation:tradeflow 2.6s linear infinite;}
+  .trade-flow-back{animation:tradeflow 2.6s linear infinite reverse;}
+  @keyframes tradeflow{from{stroke-dashoffset:0;}to{stroke-dashoffset:-24;}}
+  @media (prefers-reduced-motion: reduce){ .trade-flow,.trade-flow-back{animation:none;} }
   .agebanner{position:absolute;left:0;right:0;top:38%;text-align:center;pointer-events:none;
     opacity:0;transition:opacity .5s ease;z-index:600;}
   .agebanner.show{opacity:1;}
@@ -460,6 +466,7 @@
     <span><span class="lineswatch" style="border-color:#6f7580;background:#0f1826"></span> Fog — ground no one has reached</span>
     <span><span class="dot" style="background:#6b5f96"></span> Lost ground — people were here, and are gone</span>
     <span><span class="lineswatch" style="border-color:#cfe4f2;background:rgba(220,236,247,.35)"></span> Ice sheet</span>
+    <span class="legend-note" style="flex-basis:100%"><strong>Ground whose people died out drains of colour</strong> rather than being marked: the land itself goes grey where a lineage ended, under everything else on the map. <strong>Trade lines move instead of pulsing</strong> — two dash trains, opposite ways, at one brightness — because brightness on this map means time and nothing else. <strong>The Last Glacial Maximum no longer greys the map</strong>: the ice and the exposed shelf already draw it.</span>
     <span class="legend-note" style="flex-basis:100%;color:var(--rust)"><strong>The ice sheets are the crudest geometry on this map, and unlike the shorelines they are switched ON.</strong> Four sheets, <strong>26 vertices between them</strong> — Laurentide 8, Cordilleran 6, Fennoscandian 6, Patagonian 6. They are bounding boxes, not margins, and the dates they carry are better than the shapes that carry them. Read them as "ice was roughly here", never as an edge. Real LGM margins are among the best-mapped features in Quaternary science and the replacement is identified — Batchelor et al. 2019 for the Northern Hemisphere — but that deposit carries <strong>no licence on the artefact</strong>, only on the paper describing it. This project does not ship data whose rights cannot be traced to the thing itself; it refused a basemap on exactly that ground. So the boxes stay, visibly labelled as boxes, until the licence is resolved rather than assumed. The Patagonian sheet has no licence-cleared source at all.</span>
     <span class="legend-note" style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today, drawn <strong>as land</strong> in the basemap's own land colour, <strong>for the whole world</strong>. The source is De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, <strong>drawn at its own resolution and in its own 0.5 kyr steps</strong>: nothing simplified or removed. Zoomed past level 5 its square 2-arc-minute cells show, because that is the reconstruction's real resolution. As the slider moves toward the present the sea takes the land back step by step, on the source's own dates. <strong>The HUD's walkable and drowning words for the five named shelves follow what is drawn</strong>; where a shelf's research dates differ from the source, its popup states both and picks neither. <strong>The source and this map's global sea-level curve disagree</strong>: in De Groeve's raster the shelves flood while the curve still reads the sea tens of metres lower — 18–38 m in Sunda, 22–36 m in Sahul, 15–33 m in the Persian Gulf, less at high latitude — and every popup gives the figure measured for its own place, observed in the raster and not explained in the paper. Before the glacial lowstand the raster records only the most recent coastline, so ground exposed only at the lowstand shows a little early. <strong>From 26,000 years ago to the present this is a reconstruction</strong>, and its coastline is drawn <strong>solid</strong>. <strong>From 26,000 back to 90,000 years ago it is an APPROXIMATION, not a reconstruction</strong>, and its coastline is drawn <strong>dotted</strong>. No reconstruction exists there, so the map draws the source's coast for the date its own sea-level curve last stood at the same depth, with <strong>no glacial-isostatic correction</strong> — most wrong near the ice, which across the world means <strong>most of the northern shelves</strong>. The curve is coarse there too: four points between 26,500 and 130,000 years ago, with straight lines across the 50,000 years from 120,000 to 70,000 and the 40,000 years from 70,000 to 30,000. The switch happens at exactly 26,000 years ago with no blending; the HUD says which side of it you are on, and a mark on the timeline shows where it falls. <strong>Before 90,000 years ago nothing is drawn, anywhere</strong>: that is the oldest researched shelf window on this map, applied to every shelf at once, because a time limit draws no edges. <strong>The layer is on by default; untick it to see today's coastline alone.</strong> <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: re-encoded as one byte per cell and reprojected to Web Mercator tiles by nearest neighbour; nothing simplified, smoothed or removed.</span></span>
   </div>
@@ -1636,11 +1643,17 @@ const territoryObjs = TERRITORIES.map(t=>{
 // no origin and no destination — it is a persistent two-way link that runs for
 // centuries. So it draws all at once rather than progressively, pulses gently
 // in both directions rather than carrying an arrowhead, and simply persists.
+const tradeRenderer = L.svg({padding:0.3});
 const tradeObjs = TRADE.map(t=>{
-  const line = L.polyline(t.pts, {color:t.color, weight:2, opacity:0, dashArray:'10,5'}).addTo(map);
+  // Two lines, one dash train each way, so the link reads as two-way traffic without an arrowhead and without
+  // touching opacity. The second carries no tooltip or popup: it is the same link, drawn twice.
+  const back = L.polyline(t.pts, {renderer:tradeRenderer, className:'trade-flow-back', color:t.color, weight:2,
+                                  opacity:0, dashArray:'3,9', lineCap:'butt', interactive:false}).addTo(map);
+  const line = L.polyline(t.pts, {renderer:tradeRenderer, className:'trade-flow', color:t.color, weight:2,
+                                  opacity:0, dashArray:'3,9', dashOffset:'12', lineCap:'butt'}).addTo(map);
   line.bindTooltip(t.label + ' \u2014 trade, both directions, for centuries', {sticky:true});
   line.bindPopup(`<p class="pop-title">${t.label}</p><p class="pop-age">Active ~${t.from.toLocaleString()}\u2013${t.to.toLocaleString()} ya \u00b7 bidirectional, persistent</p><p class="pop-note">${t.note}</p>`);
-  return {t, line};
+  return {t, line, back};
 });
 
 
@@ -2003,6 +2016,16 @@ const walkbackObjs = WALKBACKS.map(w=>{
 // a pixel is either cleared or it is not. The previous polygon-with-holes
 // version rendered correctly with zero holes and flipped the moment holes
 // existed, drawing the explored world solid and the unknown world clear.
+// The ground whose people died out is DRAINED, not spotted (ruled 2026-09-17). This canvas sits in the same pane as
+// the fog and blends in 'saturation', which keeps the basemap's own lightness and takes its colour away: lost ground
+// goes grey-in-place rather than wearing a lavender disc. It is under the shelf, the routes and every mark, so
+// nothing that carries meaning in colour is touched by it.
+const lostCanvas = document.createElement('canvas');
+lostCanvas.style.position = 'absolute';
+lostCanvas.style.top = '0';
+lostCanvas.style.left = '0';
+lostCanvas.style.pointerEvents = 'none';
+lostCanvas.style.mixBlendMode = 'saturation';
 const fogCanvas = document.createElement('canvas');
 fogCanvas.style.position = 'absolute';
 fogCanvas.style.top = '0';
@@ -2016,8 +2039,10 @@ map.createPane('fogPane');
 const fogPane = map.getPane('fogPane');
 fogPane.style.zIndex = '250';
 fogPane.style.pointerEvents = 'none';
+fogPane.appendChild(lostCanvas);
 fogPane.appendChild(fogCanvas);
 const fogCtx = fogCanvas.getContext('2d');
+const lostCtx = lostCanvas.getContext('2d');
 
 // fogReveals is declared ABOVE the try block — see the note there.
 let fogHidden = false;    // suppressed mid-zoom so a stale frame never shows
@@ -2028,6 +2053,8 @@ function sizeFogCanvas(){
   if(fogCanvas.width !== s.x*dpr || fogCanvas.height !== s.y*dpr){
     fogCanvas.width = s.x*dpr; fogCanvas.height = s.y*dpr;
     fogCanvas.style.width = s.x+'px'; fogCanvas.style.height = s.y+'px';
+    lostCanvas.width = s.x*dpr; lostCanvas.height = s.y*dpr;
+    lostCanvas.style.width = s.x+'px'; lostCanvas.style.height = s.y+'px';
   }
   return dpr;
 }
@@ -2040,8 +2067,8 @@ function degToPx(lat, lon, rDeg){
 }
 
 function drawFog(){
-  if(!layerState.fog || fogHidden){ fogCanvas.style.display = 'none'; return; }
-  fogCanvas.style.display = '';
+  if(!layerState.fog || fogHidden){ fogCanvas.style.display = 'none'; lostCanvas.style.display = 'none'; return; }
+  fogCanvas.style.display = ''; lostCanvas.style.display = '';
   const dpr = sizeFogCanvas();
   // re-anchor to the view origin: the pane is transformed with the map, but the
   // canvas is drawn in container coordinates
@@ -2049,6 +2076,9 @@ function drawFog(){
   const w = fogCanvas.width, h = fogCanvas.height;
   fogCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
   fogCtx.clearRect(0, 0, w, h);
+  L.DomUtil.setPosition(lostCanvas, map.containerPointToLayerPoint([0, 0]));
+  lostCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  lostCtx.clearRect(0, 0, w, h);
 
   // 1. lay the fog down over everything
   fogCtx.globalCompositeOperation = 'source-over';
@@ -2073,17 +2103,25 @@ function drawFog(){
     fogCtx.beginPath(); fogCtx.arc(p.x, p.y, rad, 0, Math.PI*2); fogCtx.fill();
   });
 
-  // 3. tint the ground whose people died out. It stays revealed — it just
-  //    stops being ordinary known ground and reads as lost.
-  fogCtx.globalCompositeOperation = 'source-over';
+  // 3. DRAIN the ground whose people died out. It stays revealed — it just stops being ordinary known ground.
+  //    Painted on the blend canvas, not here: grey in 'saturation' takes the colour out of the land itself
+  //    instead of laying a coloured disc over it. A mark pointing at a state is not the state.
   fogReveals.filter(r=>r.lost > 0.02).forEach(r=>{
     const p = map.latLngToContainerPoint([r.lat, r.lon]);
     const rad = degToPx(r.lat, r.lon, r.rDeg);
     if(rad < 1) return;
-    const g = fogCtx.createRadialGradient(p.x, p.y, rad*0.3, p.x, p.y, rad);
-    g.addColorStop(0, 'rgba(122,105,168,' + (0.42*r.lost).toFixed(3) + ')');
-    g.addColorStop(1, 'rgba(122,105,168,0)');
-    fogCtx.fillStyle = g;
+    if(p.x < -rad || p.y < -rad || p.x > w/dpr + rad || p.y > h/dpr + rad) return;
+    const g = lostCtx.createRadialGradient(p.x, p.y, rad*0.25, p.x, p.y, rad);
+    g.addColorStop(0, 'rgba(128,128,128,' + (0.55*r.lost).toFixed(3) + ')');
+    g.addColorStop(1, 'rgba(128,128,128,0)');
+    lostCtx.fillStyle = g;
+    lostCtx.beginPath(); lostCtx.arc(p.x, p.y, rad, 0, Math.PI*2); lostCtx.fill();
+    // and a little of the fog's own dark, so drained ground reads as tired rather than bleached
+    const d = fogCtx.createRadialGradient(p.x, p.y, rad*0.25, p.x, p.y, rad);
+    d.addColorStop(0, 'rgba(8,13,22,' + (0.16*r.lost).toFixed(3) + ')');
+    d.addColorStop(1, 'rgba(8,13,22,0)');
+    fogCtx.globalCompositeOperation = 'source-over';
+    fogCtx.fillStyle = d;
     fogCtx.beginPath(); fogCtx.arc(p.x, p.y, rad, 0, Math.PI*2); fogCtx.fill();
   });
 }
@@ -2596,8 +2634,10 @@ function render(sliderVal){
   if(pauseEl){
     pauseEl.innerHTML = pause ? mdText('\u23f8  ' + pause.label + ' \u2014 ' + pause.note) : '';
     pauseEl.style.display = pause ? 'block' : 'none';
+    // The Last Glacial Maximum is DRAWN — the ice sheets and the exposed shelf — so it does not also get the
+    // map-wide grey (ruled 2026-09-17). A pause with nothing else on the map to show it keeps the filter.
     const stage = document.querySelector('.stage');
-    if(stage) stage.className = pause ? 'stage inreset' : 'stage';
+    if(stage) stage.className = (pause && pause.id !== 'lgm') ? 'stage inreset' : 'stage';
   }
 
   // Researched anchors — each appears at its own earliest dated evidence
@@ -2706,12 +2746,14 @@ function render(sliderVal){
                    fillColor: t.hidden ? '#4a5d55' : t.color});
   });
 
-  // Trade — draws whole, persists, and breathes rather than advancing.
-  tradeObjs.forEach(({t, line})=>{
-    if(!layerState.trade || yearsAgo > t.from || yearsAgo < t.to){ line.setStyle({opacity:0}); return; }
+  // Trade — draws whole, persists, and MOVES rather than breathing. The two-way pulse is two dash trains running
+  // opposite ways (see the CSS); opacity here carries only the link's arrival, and then holds.
+  tradeObjs.forEach(({t, line, back})=>{
+    if(!layerState.trade || yearsAgo > t.from || yearsAgo < t.to){ line.setStyle({opacity:0}); back.setStyle({opacity:0}); return; }
     const ramp = Math.min(1, (t.from - yearsAgo) / Math.max(1, (t.from - t.to)*0.06));
-    const breath = 0.62 + 0.16*Math.sin(yearsAgo/40);   // two-way pulse, no direction
-    line.setStyle({opacity: ramp*breath, weight: 1.7 + 0.6*ramp});
+    const w = 1.7 + 0.6*ramp;
+    line.setStyle({opacity: 0.72*ramp, weight: w});
+    back.setStyle({opacity: 0.72*ramp, weight: w});
   });
 
 
