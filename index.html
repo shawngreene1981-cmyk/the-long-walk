@@ -2927,8 +2927,8 @@ function tick(now){
   if(playPos===null) playPos = +scrub.value;
   const prevPos = playPos;
   playPos += (dt/DURATION)*SLIDER_MAX;
-  // C1 (ruled): slower only while a borders spread big enough to watch is moving on screen, and held while an
-  // act banner shows. Playback only: a dragged slider never passes through here, so a date looks the same either way.
+  // C1 (ruled 2026-09-17): slower only while a polity a route on this map delivers is spreading, the same at every
+  // zoom, and held while an act banner shows. Playback only: a dragged slider never passes through here, so a date looks the same either way.
   if(BORDERS_ON && window.__bordersPace) playPos = window.__bordersPace(prevPos, playPos, dt, now);
   if(playPos>=SLIDER_MAX){ playPos=SLIDER_MAX; scrub.value=SLIDER_MAX; render(SLIDER_MAX); pause(); return; }
   scrub.value = playPos; render(playPos);
@@ -3681,7 +3681,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   const ctx = cv.getContext('2d');
   let zooming = false;
 
-  let W, H, WEST, NORTH, CELL, QPY, A0, A1, SETS, RGB, base, cur, pairFirst, basePairs, isActiveSeam, activeSeams;
+  let W, H, WEST, NORTH, CELL, QPY, A0, A1, SETS, CSET, RGB, base, cur, pairFirst, basePairs, isActiveSeam, activeSeams;
   let gQ, gS, gOff, runs, G, applied = 0, curQ = -1e9;
   let fillCv, fillCx, fillImg, seamCv, seamCx, seamImg, dirtyList = [], needFull = true;
   const qSlider = new Map();
@@ -3709,6 +3709,15 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     BORDERS.hdr = hdr;
     W = hdr.w; H = hdr.h; WEST = hdr.west; NORTH = hdr.north; CELL = hdr.cell; QPY = hdr.qpy; A0 = hdr.act[0]; A1 = hdr.act[1];
     SETS = hdr.sets;
+    const canon = hdr.polities.map((_, i) => i + 1);
+    (hdr.renames || []).forEach(r => { canon[r.to - 1] = r.from; });
+    const root = pid => { let p = pid, guard = 0; while(canon[p - 1] !== p && guard++ < 50) p = canon[p - 1]; return p; };
+    const csetIndex = new Map();
+    CSET = SETS.map(owners => {
+      const k = owners.map(root).sort((x, y) => x - y).join(',');
+      if(!csetIndex.has(k)) csetIndex.set(k, csetIndex.size);
+      return csetIndex.get(k);
+    });
     RGB = [[0, 0, 0]].concat(hdr.colour.map(h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]));
     const u8 = new Uint8Array(buf); let p = 0;
     const rv = () => { let n = 0, m = 1, b; do { b = u8[p++]; n += (b & 127) * m; m *= 128; } while(b & 128); return n; };
@@ -3756,7 +3765,10 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   // is lit when two powers meet and stays on that one clock as it lengthens, rather than every ordinary adjustment
   // of an old frontier lighting up. Pairs already touching at the act's first year sit at the floor. Ground shared
   // with a contested (striped) cell is not a seam: the stripes already say it.
-  function pairKey(a, b){ return a < b ? a * 65536 + b : b * 65536 + a; }
+  // A seam's clock is kept per pair of OWNERS, with a renamed polity counted as the polity it renames (the build's
+  // `renames`, ruled 2026-09-17): an end and an appearance on the same ground in the same year is a colour change in
+  // place, so the borders of the renamed ground are not new meetings and do not light.
+  function pairKey(a, b){ a = CSET[a]; b = CSET[b]; return a < b ? a * 65536 + b : b * 65536 + a; }
   function differ(a, b){
     if(!a || !b || a === b) return false;
     const A = SETS[a], B = SETS[b];
@@ -3963,11 +3975,16 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       const name = owner(pid), rec = currentRecord(pid, y), att = INSIGNIA_ATTESTED[name];
       const member = rec && rec[6] ? rec[6].replace(/^\(|\)$/g, '') : '';
       const sw = `<span class="tier-dot" style="background:${BORDERS.hdr.colour[pid - 1]}"></span>`;
-      if(!full) return `${sw}<strong>${name}</strong>${member && member !== name ? ' · part of ' + member : ''} · insignia <strong>${att ? 'ATTESTED' : 'ILLUSTRATIVE'}</strong>`;
+      const srcNote = rec ? (BORDERS.hdr.sourceNotes[name] || []).find(n => rec[1] >= n.from && rec[2] <= n.to) : null;
+      const renamed = rec ? (BORDERS.hdr.renames || []).find(r => r.to === pid && r.year === rec[1]) : null;
+      if(!full) return `${sw}<strong>${name}</strong>${member && member !== name ? ' \u00b7 part of ' + member : ''} \u00b7 insignia <strong>${att ? 'ATTESTED' : 'ILLUSTRATIVE'}</strong>`
+        + (srcNote ? ` \u00b7 <strong style="color:var(--rust)">${srcNote.short}</strong>` : '');
       return `<p class="pop-title">${sw}${name}</p>`
         + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + rec[1] + '–' + rec[2] + ' CE' : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
         + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
-        + (att ? `In use by this polity within its dates: ${att.what}.` : `Designed for this map. It is not a symbol attested for this polity within its dates — none has been identified for this map — and the picture alone cannot say so.`) + `</p>`;
+        + (att ? `In use by this polity within its dates: ${att.what}.` : `Designed for this map. It is not a symbol attested for this polity within its dates \u2014 none has been identified for this map \u2014 and the picture alone cannot say so.`) + `</p>`
+        + (renamed ? `<p class="pop-note">In ${renamed.year} the source ends <strong>${owner(renamed.from)}</strong> and begins <strong>${name}</strong> on the same ground. A new name on the same ground is not a conquest, so this map changes the colour in place: no front, no retreat, no new border.</p>` : '')
+        + (srcNote ? `<p class="pop-note" style="color:var(--rust)">${srcNote.html}</p>` : '');
     });
     if(!full) return parts.join('<br>') + (ow.length > 1 ? '<br><em>The source draws ' + (ow.length === 2 ? 'both' : 'all ' + ow.length) + ' on this ground at this date.</em>' : '');
     const hdr = BORDERS.hdr, a = hdr.attribution;
@@ -4038,17 +4055,16 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     draw();
   };
 
-  // ---- C1: playback slows while a spread big enough to watch is moving on screen. Scrubbing is untouched.
-  const SLOW_MS_PER_YEAR = 150, VISIBLE_PX2 = 64;
-  function spreadOnScreen(y){
-    const b = map.getBounds(), sp = BORDERS.hdr.spreads;
-    for(let i = 0; i < sp.length; i++){
-      const s = sp[i];
-      if(y < s.lo || y >= s.hi) continue;
-      if(s.bb[2] < b.getWest() || s.bb[0] > b.getEast() || s.bb[3] < b.getSouth() || s.bb[1] > b.getNorth()) continue;
-      const lat = (s.bb[1] + s.bb[3]) / 2, cellPx = degToPx(lat, (s.bb[0] + s.bb[2]) / 2, CELL);
-      if(s.cells * cellPx * cellPx >= VISIBLE_PX2) return true;
-    }
+  // ---- C1, ruled 2026-09-17 as (A) with (C). Playback slows ONLY while a polity that a route on this map delivers is
+  // spreading: its first taking of ground or a gain of at least 100 cells (build_act.py marks those spreads `slow`).
+  // The map slows where its own story is happening, which is where a route brought the viewer. Measured in cells,
+  // never screen pixels, and never tested against the view, so every viewer at every zoom gets the same pace, just
+  // as a date looks the same whether it is played or dragged. Scrubbing never passes through here.
+  // An earlier version slowed for any spread covering 64 px on screen, which was nearly always.
+  const SLOW_MS_PER_YEAR = 150;
+  function storySpreadAt(y){
+    const sp = BORDERS.hdr.spreads;
+    for(let i = 0; i < sp.length; i++){ const s = sp[i]; if(s.slow && y >= s.lo && y < s.hi) return true; }
     return false;
   }
   window.__bordersPace = function(pos0, pos1, dt, now){
@@ -4057,7 +4073,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     const y0 = 2026 - yearsAgoFromSlider(pos0), y1 = 2026 - yearsAgoFromSlider(pos1);
     if(y0 < A0 || y0 >= A1) return pos1;
     const maxStep = dt / SLOW_MS_PER_YEAR;
-    if(y1 - y0 <= maxStep || !spreadOnScreen(y0)) return pos1;
+    if(y1 - y0 <= maxStep || !storySpreadAt(y0)) return pos1;
     return Math.max(pos0, sliderAtYearsExact(2026 - (y0 + maxStep)));
   };
   BORDERS.map = map;
@@ -4082,8 +4098,8 @@ if(BORDERS_ON){
       + 'out from the old one, or from where a route on this map lands, and is complete by the middle of its dates. Ground the source gives to two '
       + 'polities at once is striped. A new meeting of two powers lights a seam that dims with time like every mark. '
       + 'Each polity carries an insignia, and its tooltip says in one word whether it is <strong>ATTESTED</strong> (used by that polity within its dates) '
-      + 'or <strong>ILLUSTRATIVE</strong> (designed for this map). Grand scale only: zoomed in, the cells are cells. While a spread you can see is moving, '
-      + 'playback slows; dragging the slider never does. '
+      + 'or <strong>ILLUSTRATIVE</strong> (designed for this map). Grand scale only: zoomed in, the cells are cells. Playback slows only while a polity that a route on this map delivers is spreading, '
+      + 'the same at every zoom; dragging the slider never slows. A new name on the same ground changes colour in place. '
       + '<span style="color:var(--parchment-dimmer)">Borders: Bennett, J.S., Mutch, E., Tollefson, A. <em>et al.</em> (2025), Cliopatria, <em>Scientific Data</em> 12, 247, '
       + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.0 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '
       + 'composite records not drawn, growth between dated shapes computed by this map.</span>';
