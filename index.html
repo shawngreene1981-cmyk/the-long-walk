@@ -95,6 +95,7 @@
   .resettick:hover{opacity:1;height:12px;box-shadow:0 0 5px var(--rust);}
   /* The 26 ka boundary on the timeline: left of it the shorelines are an approximation,
      right of it a reconstruction. Shown only while the shoreline layer is on. */
+  .icetick{position:absolute;top:0;width:2px;height:9px;background:#cfe4f2;opacity:.85;transform:translateX(-1px);}
   .coastfloortick{position:absolute;top:0;width:2px;height:12px;background:#c2a878;transform:translateX(-1px);}
   .coastfloortick span{position:absolute;top:0;line-height:12px;font-family:'IBM Plex Mono',monospace;font-size:9px;white-space:nowrap;
     background:var(--paper);padding:0 3px;z-index:1;}   /* opaque, so pause ticks behind never cut the words */
@@ -103,6 +104,7 @@
   .shore-status{margin-left:4px;}
   .shore-status.failed{color:var(--rust);}
   .shorenote{border-left:2px solid #c2a878;padding-left:10px;color:#e2d3b0;min-height:0;}
+  .icenote{border-left-color:#cfe4f2;color:#d8e8f3;}
   .shorenote.approx{border-left:2px dashed var(--rust);color:var(--rust);}
   /* The flood-age cells are the source's real resolution: scaled up past zoom 5 they stay square
      rather than being blurred into a precision the reconstruction does not have. */
@@ -424,6 +426,7 @@
       <div class="agebanner" id="ageBanner"><span class="agename" id="ageName"></span><span class="agesub" id="ageSub"></span></div>
       <div class="eranote" id="iceStatus" style="color:#cfe4f2;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.03em;"></div>
       <div class="eranote shorenote" id="shoreNote" role="status" aria-live="polite" hidden></div>
+      <div class="eranote shorenote icenote" id="iceNote" role="status" aria-live="polite" hidden></div>
       <div class="eranote" id="pauseNote" style="color:#cfe4f2;display:none;border-left:2px solid #cfe4f2;padding-left:10px;"></div>
       <div class="eranote" id="focusNote" style="color:#efc75a"></div>
       <div class="eranote" id="eraNote">Nothing yet — the stem populations that will eventually diverge into every branch this project tracks haven't left evidence this far back.</div>
@@ -467,7 +470,7 @@
     <span><span class="dot" style="background:#6b5f96"></span> Lost ground — people were here, and are gone</span>
     <span><span class="lineswatch" style="border-color:#cfe4f2;background:rgba(220,236,247,.35)"></span> Ice sheet</span>
     <span class="legend-note" style="flex-basis:100%"><strong>Ground whose people died out drains of colour</strong> rather than being marked: the land itself goes grey where a lineage ended, under everything else on the map. <strong>Trade lines move instead of pulsing</strong> — two dash trains, opposite ways, at one brightness — because brightness on this map means time and nothing else. <strong>The Last Glacial Maximum no longer greys the map</strong>: the ice and the exposed shelf already draw it.</span>
-    <span class="legend-note" style="flex-basis:100%;color:var(--rust)"><strong>The ice sheets are the crudest geometry on this map, and unlike the shorelines they are switched ON.</strong> Four sheets, <strong>26 vertices between them</strong> — Laurentide 8, Cordilleran 6, Fennoscandian 6, Patagonian 6. They are bounding boxes, not margins, and the dates they carry are better than the shapes that carry them. Read them as "ice was roughly here", never as an edge. Real LGM margins are among the best-mapped features in Quaternary science and the replacement is identified — Batchelor et al. 2019 for the Northern Hemisphere — but that deposit carries <strong>no licence on the artefact</strong>, only on the paper describing it. This project does not ship data whose rights cannot be traced to the thing itself; it refused a basemap on exactly that ground. So the boxes stay, visibly labelled as boxes, until the licence is resolved rather than assumed. The Patagonian sheet has no licence-cleared source at all.</span>
+    <span class="legend-note" style="flex-basis:100%"><strong>The ice sheets are real margins where the evidence reaches, and boxes where it does not.</strong> From <strong>25,000 years ago</strong> North America is drawn from <strong>NADI-1</strong> (Dalton <em>et al.</em> 2023, CC BY 4.0) every 500 years; from <strong>38,000 years ago</strong> Eurasia, including the Svalbard–Barents–Kara sheet, from <strong>DATED-1</strong> (Hughes <em>et al.</em> 2016, CC BY 3.0); from <strong>35,000 years ago</strong> Patagonia from <strong>PATICE</strong> (Davies <em>et al.</em> 2020). Each is drawn in its source's own time slices, the nearest slice to the date, never interpolated. Each carries its source's uncertainty: <strong>whitest is the minimum</strong> the evidence requires, <strong>the body is the best estimate</strong>, and <strong>the faint feathered band reaches the maximum</strong> — ice that may have been there. PATICE publishes one extent per slice and rates its margin by confidence, which is not drawn yet. <strong>Before those dates the old sheets are still boxes</strong> — four hand-drawn polygons, 26 vertices between them — drawn exactly as before, with no softening, because a softened box would look like a margin it is not; a line under the HUD and a tick on the timeline say which you are looking at. The HUD's ice words follow the drawing: margins speak from their mapped area, boxes are marked "(box)". <span style="color:var(--rust)"><strong>PATICE is licensed CC BY-NC 3.0 — non-commercial only</strong>, taken knowingly and recorded as a debt: it must be removed or relicensed before any commercial use. It is the only non-commercial asset on this map.</span> <span style="color:var(--parchment-dimmer)">Ice data: Dalton, A.S. et al. (2023) NADI-1, <em>Quaternary Science Reviews</em> 321, 108345, doi:10.1016/j.quascirev.2023.108345, data doi:10.5281/zenodo.8161764, CC BY 4.0; Hughes, A.L.C. et al. (2016) DATED-1, <em>Boreas</em> 45, 1–45, doi:10.1111/bor.12142, data doi:10.1594/PANGAEA.848117, CC BY 3.0; Davies, B.J. et al. (2020) PATICE, <em>Earth-Science Reviews</em> 204, 103152, doi:10.1016/j.earscirev.2020.103152, data doi:10.17632/rjnw46vbdw, CC BY-NC 3.0. Changes were made: reprojected to WGS84, simplified (NADI-1 0.05°, DATED-1 3 km, PATICE 1 km) and rounded; nothing else.</span></span>
     <span class="legend-note" style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today, drawn <strong>as land</strong> in the basemap's own land colour, <strong>for the whole world</strong>. The source is De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, <strong>drawn at its own resolution and in its own 0.5 kyr steps</strong>: nothing simplified or removed. Zoomed past level 5 its square 2-arc-minute cells show, because that is the reconstruction's real resolution. As the slider moves toward the present the sea takes the land back step by step, on the source's own dates. <strong>The HUD's walkable and drowning words for the five named shelves follow what is drawn</strong>; where a shelf's research dates differ from the source, its popup states both and picks neither. <strong>The source and this map's global sea-level curve disagree</strong>: in De Groeve's raster the shelves flood while the curve still reads the sea tens of metres lower — 18–38 m in Sunda, 22–36 m in Sahul, 15–33 m in the Persian Gulf, less at high latitude — and every popup gives the figure measured for its own place, observed in the raster and not explained in the paper. Before the glacial lowstand the raster records only the most recent coastline, so ground exposed only at the lowstand shows a little early. <strong>From 26,000 years ago to the present this is a reconstruction</strong>, and its coastline is drawn <strong>solid</strong>. <strong>From 26,000 back to 90,000 years ago it is an APPROXIMATION, not a reconstruction</strong>, and its coastline is drawn <strong>dotted</strong>. No reconstruction exists there, so the map draws the source's coast for the date its own sea-level curve last stood at the same depth, with <strong>no glacial-isostatic correction</strong> — most wrong near the ice, which across the world means <strong>most of the northern shelves</strong>. The curve is coarse there too: four points between 26,500 and 130,000 years ago, with straight lines across the 50,000 years from 120,000 to 70,000 and the 40,000 years from 70,000 to 30,000. The switch happens at exactly 26,000 years ago with no blending; the HUD says which side of it you are on, and a mark on the timeline shows where it falls. <strong>Before 90,000 years ago nothing is drawn, anywhere</strong>: that is the oldest researched shelf window on this map, applied to every shelf at once, because a time limit draws no edges. <strong>The layer is on by default; untick it to see today's coastline alone.</strong> <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: re-encoded as one byte per cell and reprojected to Web Mercator tiles by nearest neighbour; nothing simplified, smoothed or removed.</span></span>
   </div>
 
@@ -1419,6 +1422,18 @@ function inRing(lat, lon, ring){
 }
 function arcticIceHtml(latlng, yearsAgo){
   if(latlng.lat < ARCTIC_NOTE_LAT) return '';
+  // D6, answered with geometry (2026-09-17): where DATED-1 or NADI-1 covers this ground at this date, say what it draws.
+  const q = layerState.ice && window.__ice && window.__ice.at ? window.__ice.at(latlng.lat, latlng.lng, yearsAgo) : null;
+  if(q){
+    const m = q.src.meta, nm = m.names || {}, who = q.src.id === 'dated1' ? 'DATED-1' : q.src.id === 'nadi1' ? 'NADI-1' : 'PATICE';
+    const said = q.band === 'min' ? `puts ice on this ground even at its <strong>minimum</strong>`
+      : q.band === 'mc' ? `puts ice on this ground at its <strong>${nm.mc}</strong> margin`
+      : q.band === 'max' ? `puts ice here only at its <strong>maximum</strong> — it may have been ice-covered, or open`
+      : `puts <strong>no ice on this ground</strong>, even at its maximum`;
+    return `<p class="pop-note" style="color:var(--rust)">At this date the ice source for this ground, ${who}, ${said}. `
+      + (q.band ? `Ground drawn as land here may have lain under ice, and <strong>this map does not say it was walkable</strong>.`
+                : `This shelf is drawn from De Groeve's land-and-sea classes, and the ice source leaves it clear.`) + `</p>`;
+  }
   const underBox = layerState.ice && ICE.some(i => yearsAgo <= i.maxFrom && yearsAgo >= i.goneBy && inRing(latlng.lat, latlng.lng, i.coords));
   return `<p class="pop-note" style="color:var(--rust)">North of 65°N the source's ice history (ICE-6G_C) governs where this ground stood against the sea, `
     + `but the source marks only land and sea, never ice, and ${underBox ? "this map's ice sheet here is a bounding box, not a margin" : 'this map draws no ice sheet here'} `
@@ -2497,6 +2512,8 @@ function render(sliderVal){
   eraLabel.textContent = ERA[idx].label;
   eraNote.textContent = ERA[idx].note;
   if(BORDERS_ON && window.__bordersFrame) window.__bordersFrame(sliderVal, yearsAgo);
+  const ICEM = window.__ice;
+  if(ICEM) ICEM.frame(sliderVal, yearsAgo);
 
   // Sahara corridor
   if(layerState.corridor){
@@ -2559,11 +2576,14 @@ function render(sliderVal){
     }
   });
 
-  // Ice: grows toward its maximum, then retreats and is gone.
+  // Ice BOXES: only where no real margin exists at this date (ruled 2026-09-17). Drawn exactly as before - a box
+  // stays a box - and taken off the map entirely when not drawn, so an invisible box cannot answer a click.
   iceLayers.forEach(({i, poly})=>{
-    if(!layerState.ice || yearsAgo > i.maxFrom || yearsAgo < i.goneBy){
-      poly.setStyle({fillOpacity:0, opacity:0}); return;
+    const margin = ICEM && ICEM.sheetIsMargin(i.id, yearsAgo);
+    if(!layerState.ice || yearsAgo > i.maxFrom || yearsAgo < i.goneBy || margin){
+      poly.setStyle({fillOpacity:0, opacity:0}); if(map.hasLayer(poly)) poly.remove(); return;
     }
+    if(!map.hasLayer(poly)) poly.addTo(map);
     let extent;
     if(yearsAgo >= i.peak) extent = (i.maxFrom - yearsAgo) / (i.maxFrom - i.peak);
     else extent = Math.max(0, (yearsAgo - i.goneBy) / (i.peak - i.goneBy));
@@ -2594,13 +2614,19 @@ function render(sliderVal){
   // What the ice and the coastlines are doing RIGHT NOW, stated in words.
   if(iceEl){
     const bits = [];
+    const iceMargins = window.__ice;
     ICE.forEach(i=>{
       if(yearsAgo > i.maxFrom || yearsAgo < i.goneBy) return;
+      if(iceMargins && iceMargins.sheetIsMargin(i.id, yearsAgo)) return;   // the margins speak for this sheet below
       const short = i.label.replace('The ','').replace(' ice sheet','');
-      if(Math.abs(yearsAgo - i.peak) < 2500) bits.push(short + ' at maximum');
-      else if(yearsAgo > i.peak) bits.push(short + ' advancing');
-      else bits.push(short + ' retreating');
+      if(Math.abs(yearsAgo - i.peak) < 2500) bits.push(short + ' at maximum (box)');
+      else if(yearsAgo > i.peak) bits.push(short + ' advancing (box)');
+      else bits.push(short + ' retreating (box)');
     });
+    // THE HUD FOLLOWS THE DRAWING, as for the shelves: where a real margin is drawn, its words come from the
+    // source's own mapped area - at maximum within 5% of the source's largest, else growing or shrinking against the
+    // next older slice.
+    if(iceMargins && layerState.ice) iceMargins.hud(yearsAgo).forEach(b => bits.push(b));
     // THE HUD FOLLOWS THE DRAWING (ruled). A named shelf is walkable while more than half of its
     // glacial-maximum shelf is drawn, drowning while more than 2% is, and not mentioned below
     // that — so the HUD can never call a shelf walkable over open water, or fall silent while
@@ -2629,6 +2655,13 @@ function render(sliderVal){
           : 'Shorelines: reconstruction \u2014 De Groeve et al. 2022 at its own resolution, in its own 0.5 kyr steps, glacial-isostatic corrected.';
         approxCls = shoreApprox;
       }
+    }
+    const iceNoteEl = document.getElementById('iceNote');
+    if(iceNoteEl && window.__ice){
+      const n = window.__ice.note(yearsAgo);
+      iceNoteEl.hidden = !n || !n.text;
+      iceNoteEl.textContent = n && n.text ? n.text : '';
+      iceNoteEl.className = 'eranote shorenote icenote' + (n && n.box ? ' approx' : '');
     }
     shoreNoteEl.hidden = !text;
     shoreNoteEl.textContent = text;
@@ -4164,6 +4197,268 @@ if(BORDERS_ON){
     row.appendChild(note);
   }
 }
+
+// ===================== THE ICE — REAL MARGINS WHERE THE DATA REACHES, BOXES WHERE IT DOES NOT =====================
+// Ruled 2026-09-17 (the stop rule reversed for it). Three sources, drawn in their own time slices from data/ice/:
+//   NADI-1  (Dalton et al. 2023, CC BY 4.0)  North America, 25,000-1,000 ya, every 500 years
+//   DATED-1 (Hughes et al. 2016, CC BY 3.0)  Eurasia incl. Svalbard-Barents-Kara, 38,000-10,000 ya
+//   PATICE  (Davies et al. 2020, CC BY-NC 3.0, a RECORDED DEBT - see README licence table) Patagonia, 35,000-200 ya
+// The date shows the source's NEAREST slice; nothing is interpolated between slices. Each slice carries the source's
+// own uncertainty: MIN (ice the evidence requires) drawn whitest, the best / most-credible / optimal margin as the body,
+// MAX (ice that may have been there) as a faint feathered band. That is the uncertainty band, not a dashed guess.
+// THE SOFT RENDERER IS FOR REAL MARGINS ONLY. Before a source's first slice the old sheet is still a box, drawn
+// exactly as before - no feather, no gradient, no texture - because a prettified box is a box made to look like a
+// margin. The handoff is visible: ticks on the timeline, a line under the HUD, and the popups.
+const ICEDATA = {state:'idle', srcs:[], T:null, drawn:[]};
+(function iceMargins(){
+  const SRC = [
+    {id:'nadi1', label:'North American ice', where:'North America', sheets:['laurentide','cordilleran'], index:'data/ice/nadi1_index.json', from:25000},
+    {id:'dated1', label:'Eurasian ice', where:'Eurasia', sheets:['fennoscandian'], file:'data/ice/dated1.json', from:38000},
+    {id:'patice', label:'Patagonian ice', where:'Patagonia', sheets:['patagonian'], file:'data/ice/patice.json', from:35000}
+  ];
+  ICEDATA.srcs = SRC;
+  const MAX_TAIL = 250;               // the youngest slice holds at most this many years past its own date
+  const pane = map.createPane('icePane');
+  pane.style.zIndex = '370';          // over the exposed shelf and the borders, under every route and mark
+  pane.style.pointerEvents = 'none';
+  const cv = document.createElement('canvas');
+  cv.style.position = 'absolute'; cv.style.top = '0'; cv.style.left = '0'; cv.style.pointerEvents = 'none';
+  pane.appendChild(cv);
+  const ctx = cv.getContext('2d');
+  let zooming = false;
+
+  // ---- loading: Eurasia and Patagonia whole (small); North America by the part that covers the date
+  function getJSON(u){ return fetch(u).then(r => { if(!r.ok) throw new Error(u + ' HTTP ' + r.status); return r.json(); }); }
+  function prep(src, doc){
+    doc.slices.forEach(s => {
+      s.lo = s.t; s.hi = s.tTo || s.t;
+      s.body = s.noMc ? s.min : s.mc;              // DATED-1 35-38 ka has only max and min
+      s.cache = {};
+      ['min','mc','max'].forEach(k => (s[k] || []).forEach(poly => poly.bb = ringBounds(poly[0])));
+    });
+    src.meta = doc;
+    src.slices = (src.slices || []).concat(doc.slices).sort((a, b) => a.lo - b.lo);
+    src.maxArea = Math.max(...src.slices.map(s => s.area_km2 || 0));
+  }
+  function ringBounds(r){ let a = 1e9, b = 1e9, c = -1e9, d = -1e9; r.forEach(([x, y]) => { if(x < a) a = x; if(y < b) b = y; if(x > c) c = x; if(y > d) d = y; }); return [a, b, c, d]; }
+  function loadAll(){
+    if(ICEDATA.state !== 'idle') return;
+    ICEDATA.state = 'loading';
+    const jobs = SRC.map(src => {
+      if(src.file) return getJSON(src.file).then(doc => prep(src, doc));
+      return getJSON(src.index).then(ix => {
+        src.parts = ix.parts;                       // [{file, from, to}]
+        const now = yearsAgoFromSlider(+scrub.value);
+        const first = ix.parts.find(p => now <= p.from + 250 && now >= p.to - 250) || ix.parts[0];
+        return getJSON('data/ice/' + first.file).then(doc => { first.loaded = true; prep(src, doc); })
+          .then(() => { ix.parts.filter(p => !p.loaded).forEach(p => getJSON('data/ice/' + p.file).then(doc => { p.loaded = true; prep(src, doc); render(+scrub.value); })); });
+      });
+    });
+    Promise.all(jobs).then(() => { ICEDATA.state = 'ready'; render(+scrub.value); })
+      .catch(err => { ICEDATA.state = 'failed'; console.warn('ICE: ' + err); render(+scrub.value); });
+  }
+  // coverage: from the source's oldest slice to half a step past its youngest (at most MAX_TAIL)
+  function coverage(src){
+    if(!src.slices || !src.slices.length) return null;
+    const y = src.slices[0], n = src.slices[1];
+    const tail = n ? Math.min(MAX_TAIL, (n.lo - y.hi) / 2) : MAX_TAIL;
+    return {from: src.from, to: Math.max(0, y.lo - tail)};
+  }
+  function sliceAt(src, T){
+    const c = coverage(src); if(!c || T > c.from || T < c.to) return null;
+    let best = null, bd = 1e9;
+    src.slices.forEach(s => { const d = T < s.lo ? s.lo - T : (T > s.hi ? T - s.hi : 0); if(d < bd){ bd = d; best = s; } });
+    return best;
+  }
+  ICEDATA.sliceAt = sliceAt; ICEDATA.coverage = coverage;
+
+  // ---- the soft renderer
+  const noise = (function(){
+    const c = document.createElement('canvas'); c.width = c.height = 96;
+    const x = c.getContext('2d'), img = x.createImageData(96, 96);
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for(let i = 0; i < 96 * 96; i++){
+      const v = 200 + Math.floor(rnd() * 55);
+      img.data[i * 4] = v - 10; img.data[i * 4 + 1] = v - 3; img.data[i * 4 + 2] = 255; img.data[i * 4 + 3] = Math.floor(rnd() * 90);
+    }
+    x.putImageData(img, 0, 0);
+    return c;
+  })();
+  let pattern = null;
+  function projected(s, key, z){
+    const k = key + '@' + z;
+    if(!s.cache[k]) s.cache[k] = (s[key] || []).map(poly => ({bb: poly.bb, rings: poly.map(r => {
+      const a = new Float64Array(r.length * 2);
+      r.forEach(([lon, lat], i) => { const p = map.project([lat, lon], z); a[2 * i] = p.x; a[2 * i + 1] = p.y; });
+      return a;
+    })}));
+    return s.cache[k];
+  }
+  function tracePath(list, ox, oy, view){
+    ctx.beginPath();
+    list.forEach(poly => {
+      if(poly.bb[2] < view[0] || poly.bb[0] > view[2] || poly.bb[3] < view[1] || poly.bb[1] > view[3]) return;
+      poly.rings.forEach(a => {
+        ctx.moveTo(a[0] - ox, a[1] - oy);
+        for(let i = 2; i < a.length; i += 2) ctx.lineTo(a[i] - ox, a[i + 1] - oy);
+        ctx.closePath();
+      });
+    });
+  }
+  // A feathered fill: the path is drawn far off the canvas and only its blurred shadow lands in place.
+  function feather(list, ox, oy, view, colour, blur, dpr){
+    const OFF = 20000;
+    ctx.save();
+    ctx.shadowColor = colour; ctx.shadowBlur = blur * dpr; ctx.shadowOffsetX = OFF * dpr;
+    tracePath(list, ox + OFF, oy, view);
+    ctx.fillStyle = '#000'; ctx.fill('evenodd');
+    ctx.restore();
+  }
+  function draw(){
+    const T = ICEDATA.T;
+    if(!layerState.ice || zooming || T === null){ cv.style.display = 'none'; return; }
+    const todo = SRC.map(src => ({src, s: sliceAt(src, T)})).filter(x => x.s);
+    if(!todo.length){ cv.style.display = 'none'; return; }
+    cv.style.display = '';
+    const size = map.getSize(), dpr = window.devicePixelRatio || 1;
+    if(cv.width !== size.x * dpr || cv.height !== size.y * dpr){ cv.width = size.x * dpr; cv.height = size.y * dpr; cv.style.width = size.x + 'px'; cv.style.height = size.y + 'px'; }
+    L.DomUtil.setPosition(cv, map.containerPointToLayerPoint([0, 0]));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, size.x, size.y);
+    const z = map.getZoom(), o = map.getPixelBounds().min;
+    const b = map.getBounds(), view = [b.getWest() - 2, b.getSouth() - 2, b.getEast() + 2, b.getNorth() + 2];
+    if(!pattern) pattern = ctx.createPattern(noise, 'repeat');
+    todo.forEach(({src, s}) => {
+      const max = projected(s, 'max', z), body = projected(s, s.noMc ? 'min' : 'mc', z), min = projected(s, 'min', z);
+      if(max.length) feather(max, o.x, o.y, view, 'rgba(206,228,246,0.26)', 9, dpr);        // may have been ice
+      feather(body, o.x, o.y, view, 'rgba(226,240,251,0.66)', 4, dpr);                       // the source's margin
+      ctx.save(); tracePath(body, o.x, o.y, view); ctx.clip('evenodd');                      // a little texture, inside only
+      ctx.globalAlpha = 0.22; ctx.fillStyle = pattern; ctx.fillRect(0, 0, size.x, size.y); ctx.restore();
+      if(min.length && !s.noMc) feather(min, o.x, o.y, view, 'rgba(248,252,255,0.34)', 3, dpr); // required by the evidence
+    });
+  }
+  map.on('move resize', () => { if(ICEDATA.state === 'ready') draw(); });
+  map.on('zoomstart', () => { zooming = true; cv.style.display = 'none'; });
+  map.on('zoomend', () => { zooming = false; draw(); });
+
+  // ---- point queries (popups, the Arctic sentence)
+  function pip(lon, lat, ring){
+    let inside = false;
+    for(let i = 0, j = ring.length - 1; i < ring.length; j = i++){
+      const [xi, yi] = ring[i], [xj, yj] = ring[j];
+      if((yi > lat) !== (yj > lat) && lon < (xj - xi) * (lat - yi) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+  }
+  function inside(list, lon, lat){
+    return (list || []).some(poly => lon >= poly.bb[0] && lon <= poly.bb[2] && lat >= poly.bb[1] && lat <= poly.bb[3]
+      && pip(lon, lat, poly[0]) && !poly.slice(1).some(h => pip(lon, lat, h)));
+  }
+  function regionBounds(src){
+    if(src.rb) return src.rb;
+    let a = 1e9, bb = 1e9, c = -1e9, d = -1e9;
+    src.slices.forEach(s => ['max','mc','min'].forEach(k => (s[k] || []).forEach(p => { a = Math.min(a, p.bb[0]); bb = Math.min(bb, p.bb[1]); c = Math.max(c, p.bb[2]); d = Math.max(d, p.bb[3]); })));
+    return (src.rb = [a, bb, c, d]);
+  }
+  // what the ice sources say about one point at one date: null if no source covers it
+  ICEDATA.at = function(lat, lon, T){
+    for(const src of SRC){
+      const s = sliceAt(src, T); if(!s) continue;
+      const rb = regionBounds(src); if(lon < rb[0] - 1 || lon > rb[2] + 1 || lat < rb[1] - 1 || lat > rb[3] + 1) continue;
+      const band = !s.noMc && inside(s.min, lon, lat) ? 'min' : inside(s.body, lon, lat) ? (s.noMc ? 'min' : 'mc') : inside(s.max, lon, lat) ? 'max' : null;
+      return {src, s, band};
+    }
+    return null;
+  };
+  function sliceText(s){ return s.hi !== s.lo ? '~' + s.lo.toLocaleString() + '–' + s.hi.toLocaleString() + ' ya' : '~' + s.lo.toLocaleString() + ' ya'; }
+  function stepText(src){
+    return src.id === 'nadi1' ? 'every 500 years' : src.id === 'dated1' ? 'every 1,000 years from 25,000 to 10,000 ya, with wider slices at 27, 28–29, 30–32 and 35–38 ka' : 'at 35, 30, 25, 20, 15, 13, 10 and 5 ka and in the Little Ice Age (~200 ya)';
+  }
+  function iceHtml(q, T){
+    const m = q.src.meta, nm = m.names || {};
+    const bandText = q.band === 'min' ? `Inside the <strong>${nm.min || 'minimum'} extent</strong> — ice the evidence requires.`
+      : q.band === 'mc' ? (q.src.id === 'patice' ? `Inside the <strong>reconstructed extent</strong>. PATICE publishes one extent per slice and rates stretches of its margin by confidence; this map does not draw the confidence yet.`
+                                                 : `Inside the <strong>${nm.mc} margin</strong> — the source's best estimate — but outside its minimum.`)
+      : `Outside the ${nm.mc || 'best'} margin but inside the <strong>maximum extent</strong> — ice that may have been here.`;
+    return `<p class="pop-title">${m.region}</p>`
+      + `<p class="pop-age">Ice at ~${(Math.round(T / 100) * 100).toLocaleString()} ya, as reconstructed · the source's slice for ${sliceText(q.s)}</p>`
+      + `<p class="pop-note">${bandText}</p>`
+      + `<p class="pop-note" style="color:var(--parchment-dimmer)">Drawn in the source's own time slices, ${stepText(q.src)}: the date shows the nearest slice, and nothing is interpolated between them. `
+      + `Whitest is the minimum, the body is the best estimate, the faint feathered band reaches the maximum.</p>`
+      + (m.debt ? `<p class="pop-note" style="color:var(--rust)"><strong>NON-COMMERCIAL LICENCE.</strong> ${m.debt}</p>` : '')
+      + `<p class="pop-note" style="margin-top:8px"><strong style="color:var(--sahara-bright)">ICE MARGINS</strong> — ${m.source}</p>`
+      + `<p class="pop-note" style="color:var(--parchment-dimmer)">Data: ${m.data}. Licence ${m.licence}. ${m.changes}</p>`;
+  }
+  // Registered at start-up, before the shelf's handler (which binds when its data arrives), so ice takes the click
+  // over the exposed shelf beneath it; routes and marks still come first, because they open their popups earlier.
+  map.on('click', e => {
+    if(!layerState.ice || ICEDATA.state !== 'ready') return;
+    if(map._popup && map.hasLayer(map._popup)) return;
+    const T = yearsAgoFromSlider(+scrub.value);
+    const q = ICEDATA.at(e.latlng.lat, e.latlng.lng, T);
+    if(!q || !q.band) return;
+    L.popup().setLatLng(e.latlng).setContent(iceHtml(q, T)).openOn(map);
+  });
+
+  // ---- the frame: which sheets are margins, which are boxes, and what the HUD may say
+  ICEDATA.frame = function(sliderVal, yearsAgo){
+    if(layerState.ice && ICEDATA.state === 'idle') loadAll();
+    ICEDATA.T = yearsAgo;
+    if(ICEDATA.state === 'ready') draw(); else cv.style.display = 'none';
+  };
+  // a sheet is a BOX when its source has no slice yet at this date (before the data begins, or data not loaded)
+  ICEDATA.sheetIsMargin = function(sheetId, T){
+    const src = SRC.find(s => s.sheets.indexOf(sheetId) >= 0);
+    if(!src || ICEDATA.state !== 'ready') return false;
+    const c = coverage(src); return !!c && T <= c.from;
+  };
+  ICEDATA.hud = function(T){
+    const bits = [];
+    SRC.forEach(src => {
+      const s = sliceAt(src, T); if(!s || !s.area_km2) return;
+      const k = src.slices.indexOf(s), older = src.slices[k + 1];
+      let word = s.area_km2 >= 0.95 * src.maxArea ? 'at maximum' : (older && older.area_km2 < s.area_km2) ? 'advancing' : 'retreating';
+      bits.push(src.label + ' ' + word);
+    });
+    return bits;
+  };
+  ICEDATA.note = function(T){
+    if(!layerState.ice) return '';
+    if(ICEDATA.state === 'failed') return {text:'Ice margins could not load; the old boxes are drawn instead.', box:true};
+    if(ICEDATA.state !== 'ready') return '';
+    const margins = [], boxes = [], ended = [];
+    SRC.forEach(src => {
+      const c = coverage(src); if(!c) return;
+      if(T <= c.from && T >= c.to) margins.push(src.meta.id === 'nadi1' ? 'NADI-1' : src.meta.id === 'dated1' ? 'DATED-1' : 'PATICE');
+      else if(T > c.from) boxes.push(src.where + ' (margins begin ' + c.from.toLocaleString() + ' ya)');
+      else if(T < c.to && ICE.some(i => src.sheets.indexOf(i.id) >= 0 && T >= i.goneBy))
+        ended.push(src.where + ': ' + (src.id === 'dated1' ? 'DATED-1' : src.id === 'nadi1' ? 'NADI-1' : 'PATICE')
+          + '’s last slice is ' + src.slices[0].lo.toLocaleString() + ' ya, and later ice is not drawn');
+    });
+    const icing = ICE.some(i => T <= i.maxFrom && T >= i.goneBy) || margins.length || ended.length;
+    if(!icing) return '';
+    let text = '';
+    if(margins.length) text += 'Ice: real margins — ' + margins.join(', ') + ', in the sources’ own time slices.';
+    if(boxes.length) text += (text ? ' ' : '') + 'BOXES, NOT MARGINS: ' + boxes.join('; ') + '.';
+    if(ended.length) text += (text ? ' ' : '') + ended.join('; ') + '.';
+    return {text, box: boxes.length > 0};
+  };
+
+  // ---- the handoff on the timeline, one tick per source
+  (function ticks(){
+    const bar = document.querySelector('.resetticks'); if(!bar) return;
+    SRC.forEach(src => {
+      const t = document.createElement('span');
+      t.className = 'icetick';
+      t.style.left = (sliderAtYearsExact(src.from) / SLIDER_MAX * 100).toFixed(2) + '%';
+      t.title = src.from.toLocaleString() + ' years ago: ' + src.where + ' ice changes from a box to real margins ('
+        + (src.id === 'nadi1' ? 'NADI-1' : src.id === 'dated1' ? 'DATED-1' : 'PATICE') + ').';
+      bar.appendChild(t);
+    });
+  })();
+  ICEDATA.toScreen = (lat, lon) => { const p = map.latLngToContainerPoint([lat, lon]); return [p.x, p.y]; };   // for the render checks
+  window.__ice = ICEDATA;
+})();
 
 applyPresapiens();
 

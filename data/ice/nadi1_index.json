@@ -1,0 +1,15 @@
+{
+ "id": "nadi1",
+ "parts": [
+  {
+   "file": "nadi1_0.json",
+   "from": 25000.0,
+   "to": 15000.0
+  },
+  {
+   "file": "nadi1_1.json",
+   "from": 14500.0,
+   "to": 1000.0
+  }
+ ]
+}

@@ -134,12 +134,15 @@ budget per act is 822,136 bytes — the map's own measured size, read literally 
 **an act that exceeds it is cut finer**: the budget is a density detector, not just a
 file-size cap. One act did: 1900–1950 became two 25-year acts.
 
-**3. Ice sheets — blocked, and staying blocked.** The four sheets are **26 coordinate
-pairs** between them — bounding boxes, and the legend says so. The identified
-replacement, Batchelor *et al.* 2019, carries **no licence on the deposit itself**,
-only on the paper describing it. This project does not ship data whose rights cannot
-be traced to the artefact, so the boxes stay, labelled as boxes, until that is
-resolved rather than assumed.
+**3. Ice sheets — real margins where the evidence reaches, boxes where it does not.** North America
+from **NADI-1** (Dalton *et al.* 2023, CC BY 4.0) from 25,000 years ago, every 500 years; Eurasia,
+including the Svalbard–Barents–Kara sheet, from **DATED-1** (Hughes *et al.* 2016, CC BY 3.0) from 38,000
+years ago; Patagonia from **PATICE** (Davies *et al.* 2020, **CC BY-NC 3.0 — see the licence table**) from
+35,000 years ago. Files in `data/ice/` (`nadi1_0.json`, `nadi1_1.json` cut by time under the budget,
+`dated1.json`, `patice.json`), built by `geowork/ice/build_ice.py`. Each is drawn in its own time slices, never
+interpolated, with its own uncertainty: minimum, best estimate and maximum. Before those dates the four old
+boxes remain, unsoftened and labelled as boxes. Batchelor *et al.* 2019 is still unlicensed and no longer needed
+for the last glacial cycle: the two clean alternatives were never checked until 2026-09-17.
 
 **4. A self-hosted shaded-relief basemap — the default.** Looked at on the live map and on a
 phone, and switched on; `?relief=0` still gives OpenStreetMap. The map used to sit on plain
@@ -225,6 +228,8 @@ clearance, and it is the only one:**
 | OpenStreetMap basemap tiles | ODbL, tiles © OSM contributors | attribution on the map | yes |
 | De Groeve *et al.* 2022 shoreline raster | CC BY 4.0 | credit, licence link, state changes | yes |
 | Cliopatria v0.2.0 (Bennett *et al.* 2025) | CC BY 4.0 | credit, licence link, state changes | yes |
+| NADI-1 ice margins, Dalton *et al.* 2023 | CC BY 4.0 | credit, licence link, state changes | yes |
+| DATED-1 ice margins, Hughes *et al.* 2016 | CC BY 3.0 | credit, licence link, state changes | yes |
 | **PATICE — Patagonian Ice Sheet, Davies *et al.* 2020** | **CC BY-NC 3.0** | **credit, licence link, state changes** | **NO — NON-COMMERCIAL ONLY** |
 
 **PATICE MUST BE REMOVED OR RELICENSED BEFORE ANY COMMERCIAL USE OF THIS MAP, THE SHOW OR THE GAME.**
@@ -232,8 +237,9 @@ It was taken knowingly, as a deliberate exception to the rule that has already e
 (Esri's basemap, `historical-basemaps`, CShapes). It is the only non-commercial asset here and it should stay
 the only one. It covers the Patagonian ice sheet alone; removing it means dropping that sheet or replacing it
 with a differently licensed reconstruction, and nothing else on the map depends on it.
-**Not yet in the map:** the ice-margin rebuild that uses it is queued behind the stop rule, and this row will
-name the files it arrives in when it does.
+**Where it is:** `data/ice/patice.json` (built by `geowork/ice/build_ice.py` from the Mendeley deposit's
+`Shapefiles/Reconstruction/Icesheet*.shp`). To remove it: delete that file and the `patice` entry in the ice
+module's source list in `index.html`; the Patagonian sheet then falls back to its labelled box.
 
 Basemap tiles © OpenStreetMap contributors. Relief rendered from ETOPO 2022, NOAA
 NCEI (CC0 1.0). Border acts from Cliopatria v0.2.0, Bennett *et al.* 2025, CC BY 4.0,
