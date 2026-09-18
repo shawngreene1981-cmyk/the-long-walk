@@ -134,15 +134,16 @@ budget per act is 822,136 bytes — the map's own measured size, read literally 
 **an act that exceeds it is cut finer**: the budget is a density detector, not just a
 file-size cap. One act did: 1900–1950 became two 25-year acts.
 
-**3. Ice sheets — real margins where the evidence reaches, boxes where it does not.** North America
+**3. Ice sheets — real margins where the evidence reaches, nothing where it does not.** North America
 from **NADI-1** (Dalton *et al.* 2023, CC BY 4.0) from 25,000 years ago, every 500 years; Eurasia,
 including the Svalbard–Barents–Kara sheet, from **DATED-1** (Hughes *et al.* 2016, CC BY 3.0) from 38,000
 years ago; Patagonia from **PATICE** (Davies *et al.* 2020, **CC BY-NC 3.0 — see the licence table**) from
 35,000 years ago. Files in `data/ice/` (`nadi1_0.json`, `nadi1_1.json` cut by time under the budget,
 `dated1.json`, `patice.json`), built by `geowork/ice/build_ice.py`. Each is drawn in its own time slices, never
-interpolated, with its own uncertainty: minimum, best estimate and maximum. Before those dates the four old
-boxes remain, unsoftened and labelled as boxes. Batchelor *et al.* 2019 is still unlicensed and no longer needed
-for the last glacial cycle: the two clean alternatives were never checked until 2026-09-17.
+interpolated, with its own uncertainty: minimum, best estimate and maximum. Before those dates no ice is drawn:
+the four old boxes were removed on 2026-09-18, the same treatment as the shoreline floor. The blank is where the
+mapping stops, not the ice. Batchelor *et al.* 2019 is still unlicensed and no longer needed for the last glacial
+maximum: the two clean alternatives were never checked until 2026-09-17.
 
 **4. A self-hosted shaded-relief basemap — the default.** Looked at on the live map and on a
 phone, and switched on; `?relief=0` still gives OpenStreetMap. The map used to sit on plain
@@ -239,7 +240,8 @@ the only one. It covers the Patagonian ice sheet alone; removing it means droppi
 with a differently licensed reconstruction, and nothing else on the map depends on it.
 **Where it is:** `data/ice/patice.json` (built by `geowork/ice/build_ice.py` from the Mendeley deposit's
 `Shapefiles/Reconstruction/Icesheet*.shp`). To remove it: delete that file and the `patice` entry in the ice
-module's source list in `index.html`; the Patagonian sheet then falls back to its labelled box.
+module's source list in `index.html`; Patagonia then has no ice drawn at any date until a differently licensed
+reconstruction replaces it.
 
 Basemap tiles © OpenStreetMap contributors. Relief rendered from ETOPO 2022, NOAA
 NCEI (CC0 1.0). Border acts from Cliopatria v0.2.0, Bennett *et al.* 2025, CC BY 4.0,
