@@ -4353,17 +4353,29 @@ const ICEDATA = {state:'idle', srcs:[], T:null, drawn:[]};
   function stepText(src){
     return src.id === 'nadi1' ? 'every 500 years' : src.id === 'dated1' ? 'every 1,000 years from 25,000 to 10,000 ya, with wider slices at 27, 28–29, 30–32 and 35–38 ka' : 'at 35, 30, 25, 20, 15, 13, 10 and 5 ka and in the Little Ice Age (~200 ya)';
   }
+  // WHAT THE SHEET WAS (ruled 2026-09-18): the old boxes' notes, moved here when the boxes went. They describe the ice
+  // itself and are not geometry, so they sit in their own paragraph, labelled as such, apart from the sentences above
+  // that say what the source maps at this point and slice. NADI-1 covers two of the old sheets; this map does not
+  // decide which one a point belongs to, so both notes are given, each by name.
+  function aboutSheet(src){
+    const sheets = ICE.filter(i => src.sheets.indexOf(i.id) >= 0);
+    if(!sheets.length) return '';
+    return `<p class="pop-note" style="margin-top:8px"><strong style="color:#cfe4f2">ABOUT THE ICE SHEET</strong> — background, not drawn from ${ICEDATA.whoOf(src)}. `
+      + sheets.map(i => (sheets.length > 1 ? `<em>${i.label.replace(/^The /, '').replace(/ ice sheet$/, '')}:</em> ` : '') + i.note).join(' ') + `</p>`;
+  }
   function iceHtml(q, T){
     const m = q.src.meta, nm = m.names || {};
     const bandText = q.band === 'min' ? `Inside the <strong>${nm.min || 'minimum'} extent</strong> — ice the evidence requires.`
       : q.band === 'mc' ? (q.src.id === 'patice' ? `Inside the <strong>reconstructed extent</strong>. PATICE publishes one extent per slice and rates stretches of its margin by confidence; this map does not draw the confidence yet.`
                                                  : `Inside the <strong>${nm.mc} margin</strong> — the source's best estimate — but outside its minimum.`)
+      : q.s.noMc ? `Outside the <strong>${nm.min || 'minimum'} extent</strong> but inside the <strong>maximum extent</strong> — ice that may have been here. This slice has no ${nm.mc || 'best'} margin.`
       : `Outside the ${nm.mc || 'best'} margin but inside the <strong>maximum extent</strong> — ice that may have been here.`;
     return `<p class="pop-title">${m.region}</p>`
       + `<p class="pop-age">Ice at ~${(Math.round(T / 100) * 100).toLocaleString()} ya, as reconstructed · the source's slice for ${sliceText(q.s)}</p>`
       + `<p class="pop-note">${bandText}</p>`
       + `<p class="pop-note" style="color:var(--parchment-dimmer)">Drawn in the source's own time slices, ${stepText(q.src)}: the date shows the nearest slice, and nothing is interpolated between them. `
       + `Whitest is the minimum, the body is the best estimate, the faint feathered band reaches the maximum.</p>`
+      + aboutSheet(q.src)
       + (m.debt ? `<p class="pop-note" style="color:var(--rust)"><strong>NON-COMMERCIAL LICENCE.</strong> ${m.debt}</p>` : '')
       + `<p class="pop-note" style="margin-top:8px"><strong style="color:var(--sahara-bright)">ICE MARGINS</strong> — ${m.source}</p>`
       + `<p class="pop-note" style="color:var(--parchment-dimmer)">Data: ${m.data}. Licence ${m.licence}. ${m.changes}</p>`;
