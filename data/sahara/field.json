@@ -1,0 +1,25 @@
+{
+ "box": [
+  -18.0,
+  8.0,
+  40.0,
+  36.0
+ ],
+ "cell": 0.1,
+ "nx": 580,
+ "ny": 280,
+ "thr": "byte b -> 4 + b/10 degrees latitude; 255 = not drawn",
+ "mask": "byte -> desert weight 0..1 (Natural Earth SAHARA, blurred ~0.6 deg, land only)",
+ "rows": "north to south",
+ "front": {
+  "full": 31.0,
+  "dry": 11.0,
+  "full_source": "Tierney, Pausata & deMenocal 2017, Science Advances 3, e1601503: the Green Sahara extended to 31 N"
+ },
+ "trim": "desert weight fades to 0 between 16.5 and 14.5 N (the polygon runs into the Sahel)",
+ "drawn": "THR = latitude - up to 2.0 deg over ground above 500 m (full at 2,000 m) - up to 1.2 deg along valleys + smooth noise +-0.8 deg. A drawing, not a reconstruction.",
+ "sources": [
+  "Natural Earth 10m geography regions (public domain), polygon SAHARA",
+  "ETOPO 2022 60 arc-second, NOAA NCEI (CC0)"
+ ]
+}

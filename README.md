@@ -145,6 +145,14 @@ the four old boxes were removed on 2026-09-18, the same treatment as the shoreli
 mapping stops, not the ice. Batchelor *et al.* 2019 is still unlicensed and no longer needed for the last glacial
 maximum: the two clean alternatives were never checked until 2026-09-17.
 
+**3b. The Green Sahara — the land greens, then sand again; the dates are sourced, the shape is drawn.** The
+placeholder circle is gone. `data/sahara/` (`field.bin`, `field.json`, `rivers.json`), built by
+`geowork/sahara/build_sahara.py`. Sourced: when (Armstrong *et al.* 2023's precession pacing; the Holocene window,
+Shanahan *et al.* 2015), how far at full (31°N, Tierney *et al.* 2017), and where the desert is (Natural Earth's
+SAHARA polygon, public domain; its river centrelines name the modern perennial rivers, which are not drawn). Drawn by this map and labelled so: the shape of the greening (a front with a soft,
+terrain-shaped edge) and the rivers — drainage computed from ETOPO 2022 (CC0) by priority-flood and D8 flow
+accumulation, not mapped palaeochannels, none of which are released as licensed data.
+
 **4. A self-hosted shaded-relief basemap — the default.** Looked at on the live map and on a
 phone, and switched on; `?relief=0` still gives OpenStreetMap. The map used to sit on plain
 OpenStreetMap: a road map with prehistoric shapes on it. Every hosted alternative was
@@ -225,7 +233,8 @@ clearance, and it is the only one:**
 
 | Dataset | Licence | Obligation | Commercial use |
 |---|---|---|---|
-| ETOPO 2022 relief, NOAA NCEI | CC0 1.0 | none (credited anyway) | yes |
+| ETOPO 2022 relief, NOAA NCEI (also the Green Sahara's computed drainage) | CC0 1.0 | none (credited anyway) | yes |
+| Natural Earth 10m geography regions and river centrelines (the Sahara polygon; the modern rivers the drawn channels avoid) | public domain | none (credited anyway) | yes |
 | OpenStreetMap basemap tiles | ODbL, tiles © OSM contributors | attribution on the map | yes |
 | De Groeve *et al.* 2022 shoreline raster | CC BY 4.0 | credit, licence link, state changes | yes |
 | Cliopatria v0.2.0 (Bennett *et al.* 2025) | CC BY 4.0 | credit, licence link, state changes | yes |

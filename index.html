@@ -105,6 +105,7 @@
   .shore-status.failed{color:var(--rust);}
   .shorenote{border-left:2px solid #c2a878;padding-left:10px;color:#e2d3b0;min-height:0;}
   .icenote{border-left-color:#cfe4f2;color:#d8e8f3;}
+  .saharanote{border-left-color:#6fae52;color:#cfe6bf;}
   .shorenote.approx{border-left:2px dashed var(--rust);color:var(--rust);}
   /* The flood-age cells are the source's real resolution: scaled up past zoom 5 they stay square
      rather than being blurred into a precision the reconstruction does not have. */
@@ -349,7 +350,7 @@
   <header>
     <div class="eyebrow">Full dataset build · Evolution of <code>the_long_walk.html</code> · Companion to Correction #6</div>
     <h1>The Long Walk, interactive: <em>network, ghosts &amp; reconvergence</em></h1>
-    <div class="sub">A real, pannable, zoomable map — not the fixed schematic — scrubbing through deep time. This build demonstrates three new mechanics in one place: a pulsing Green Sahara corridor that grows and shrinks with the actual humid-period record, African origin nodes that appear on their own dated evidence instead of one fixed pin, and "ghost branches" — lineages that fade to grey and vanish to a faint marker when they die out, with a new bright marker lighting the same ground later when someone else arrives.</div>
+    <div class="sub">A real, pannable, zoomable map — not the fixed schematic — scrubbing through deep time. This build demonstrates three new mechanics in one place: a Green Sahara that greens, fills with rivers and dries again with the actual humid-period record, African origin nodes that appear on their own dated evidence instead of one fixed pin, and "ghost branches" — lineages that fade to grey and vanish to a faint marker when they die out, with a new bright marker lighting the same ground later when someone else arrives.</div>
     <div class="protoflag">COMPLETE BUILD — the entire researched dataset is now on one scrubbable timeline: <span data-count="anchors">552</span> dated anchors across <span data-count="tiersWord">five</span> evidence tiers, <span data-count="routes">111</span> researched migration routes, <span data-count="forcedWord">three</span> forced routes, and <span data-count="textsWord">one</span> text lineage — including the Siberian spine that carries the Ancient North Eurasian line to the Arctic — drawing progressively across their own real date windows, <span data-count="walkbacks">15</span> gold leader walk-back lines, and <span data-count="connectors">6</span> African corridor connectors linking the origin nodes so the story no longer starts abruptly with the southern migration. The timeline reaches back <span data-count="oldestSpan">1.8 million</span> years, so the contested Gibraltar hominin claims and the pre-<em>sapiens</em> Luzon evidence sit at real dated positions rather than floating outside it. Scrub or hit Play below.</div>
   </header>
 
@@ -427,6 +428,7 @@
       <div class="eranote" id="iceStatus" style="color:#cfe4f2;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.03em;"></div>
       <div class="eranote shorenote" id="shoreNote" role="status" aria-live="polite" hidden></div>
       <div class="eranote shorenote icenote" id="iceNote" role="status" aria-live="polite" hidden></div>
+      <div class="eranote shorenote saharanote" id="saharaNote" role="status" aria-live="polite" hidden></div>
       <div class="eranote" id="pauseNote" style="color:#cfe4f2;display:none;border-left:2px solid #cfe4f2;padding-left:10px;"></div>
       <div class="eranote" id="focusNote" style="color:#efc75a"></div>
       <div class="eranote" id="eraNote">Nothing yet — the stem populations that will eventually diverge into every branch this project tracks haven't left evidence this far back.</div>
@@ -453,7 +455,7 @@
     <span><span class="dot" style="background:#9aa0aa"></span> Ghost — fading, no living descendants of this line</span>
     <span><span class="dot" style="background:#5c626c;opacity:.6"></span> Faint marker — where a line died out</span>
     <span><span class="dot" style="background:#e0a75e;box-shadow:0 0 4px #e0a75e"></span> Reconvergence — new arrival lighting the same ground</span>
-    <span><span class="lineswatch" style="border-color:#6fae52"></span> Green Sahara (humid periods; the circle is a placeholder)</span>
+    <span><span class="lineswatch" style="border-color:#6fae52"></span> Green Sahara (humid periods: the land greens, the rivers fill; the shape is drawn, the dates are sourced)</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#c98a3e" stroke="#0e1420" stroke-width="1"/></svg> Site — well-supported</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><polygon points="7,1.2 12.8,7 7,12.8 1.2,7" fill="#b5573c" stroke="#0e1420" stroke-width="1"/></svg> Site — contested / disputed</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><polygon points="7,1 13,12 1,12" fill="#9b8ec9" stroke="#0e1420" stroke-width="1"/></svg> <span class="lbl">Site — pre-<em>sapiens</em> hominin (a separate tier, not a weaker one)</span></span>
@@ -476,7 +478,7 @@
 
   <h2 class="sec">What this prototype is actually showing</h2>
   <div class="panel">
-    <p><span class="lead">The Green Sahara opens and closes instead of sitting on the map as a static line, because it wasn't a static line.</span> A 2023 <em>Nature Communications</em> palaeoclimate study (Armstrong <em>et al.</em>) counts 20 North African Humid Periods over the past 800,000 years, <strong>paced by precession, about every 21,000 years</strong> — and not at every beat: when the ice sheets are large, glacial cooling suppresses the monsoon, so some precession minima bring no humid period at all. That is why the long glacial stretch after ~67,000 ya shows none. The older windows keep the dates of this project's own Correction 3 research — broadly viable 246,000–96,000 ya, with two final pulses around 78,000 and 67,000 ya — and inside them the map shows the 21,000-year rhythm, anchored at the Last Interglacial, ~125,000 ya; the individual older peaks are not dated by the source, and the map draws nothing finer. That includes not knowing which of them the penultimate glacial (~190,000–130,000 ya) suppressed: the window draws every beat in it, and some of those may never have come. <strong>Then the Sahara greens again.</strong> The African Humid Period runs from ~14,800 to ~5,500 ya (Shanahan <em>et al.</em> 2015, <em>Nature Geoscience</em>) — the Green Sahara of the rock art — and it ends later the further south you go: ~5,000 ya at 20°N, ~3,000 ya at 6.5°N. <strong>The circle is a placeholder, not the extent.</strong> It is drawn at 20.5°N and closes on the 20°N date; the land turning from sand to green and back, and its rivers, will replace it.</p>
+    <p><span class="lead">The Green Sahara opens and closes instead of sitting on the map as a static line, because it wasn't a static line.</span> A 2023 <em>Nature Communications</em> palaeoclimate study (Armstrong <em>et al.</em>) counts 20 North African Humid Periods over the past 800,000 years, <strong>paced by precession, about every 21,000 years</strong> — and not at every beat: when the ice sheets are large, glacial cooling suppresses the monsoon, so some precession minima bring no humid period at all. That is why the long glacial stretch after ~67,000 ya shows none. The older windows keep the dates of this project's own Correction 3 research — broadly viable 246,000–96,000 ya, with two final pulses around 78,000 and 67,000 ya — and inside them the map shows the 21,000-year rhythm, anchored at the Last Interglacial, ~125,000 ya; the individual older peaks are not dated by the source, and the map draws nothing finer. That includes not knowing which of them the penultimate glacial (~190,000–130,000 ya) suppressed: the window draws every beat in it, and some of those may never have come. <strong>Then the Sahara greens again.</strong> The African Humid Period runs from ~14,800 to ~5,500 ya (Shanahan <em>et al.</em> 2015, <em>Nature Geoscience</em>) — the Green Sahara of the rock art — and it ends later the further south you go: ~5,000 ya at 20°N, ~3,000 ya at 6.5°N. <strong>The land itself turns from sand to green and back.</strong> What is sourced: <em>when</em>, as above; <em>how far</em> at full — the Green Sahara reached <strong>31°N</strong> (Tierney, Pausata &amp; deMenocal 2017, <em>Science Advances</em>); and <em>where the desert is</em> — Natural Earth's Sahara (public domain), its southern edge faded out between ~16.5° and ~14.5°N so the Sahel is not painted as sand. <strong>What is drawn by this map, not reconstructed:</strong> the shape of the greening — green south of a front that moves with the date, a little further on over high ground and along valleys, with a soft irregular edge — and <strong>the rivers</strong>, which are the drainage the terrain still holds, computed by this map from ETOPO 2022 (CC0), not mapped palaeochannels. No licensed map of the ancient channels exists that this map may use; the famous ones are figures in papers. A channel carries water only where the ground under it is green, so the rivers fill as the green arrives. Rivers fed mostly from outside the desert — the Nile, the Niger, the Senegal, named from Natural Earth's river lines — are not drawn: this map draws no modern rivers. The Holocene front walks south on the dated ends, 20°N at ~5,000 ya and 6.5°N at ~3,000 ya; the older windows use the Holocene's reach, scaled by the beat. The two humid-gated African corridors follow the field: each is drawn only over green ground, so it reaches the sand and stops there.</p>
     <p><span class="lead">The <span data-count="nodesWord">four</span> origin nodes replace the single fixed Rift Valley pin from the old schematic build,</span> each keyed to its own dated evidence: Jebel Irhoud, Morocco (~315,000 ya); the Rift/Horn, Ethiopia (~250,000 ya, this project's own long-running anchor); the Kalahari/Makgadikgadi, Botswana (~200,000 ya, the Chan et al. 2019 claim — shown <strong>CONTESTED</strong>, per Correction #6, not as a settled single origin); and the Ituri Forest, DRC (~170,000 ya). None of the four is "the" start. The Khoisan lineage's first split (~135,000 ya) appears as a persisting branch — it never ghosts, because it's a living population today — and a brief pulse around ~100,000 ya marks the merger that forms the ancestors of eastern and western African populations (Ragsdale et al. 2023).</p>
     <p><span class="lead"><span data-count="ghostChainsWordCap">Three</span> ghost/reconvergence chains show the same visual grammar Shawn asked for, in two honest variants.</span> <strong>Same exact ground:</strong> Jebel Faya's older occupation layer (~125,000–100,000 ya) fades to a ghost and leaves a faint marker — then the identical coordinates light back up around 65,000 ya when the Southern Route's successful pulse actually arrives. Dorset culture in the eastern Arctic does the same at the same coordinates around 1300 CE, replaced by Thule with "virtually no evidence of genetic or cultural interaction" between them — same spot, unrelated population. <strong>Same broader ground, not the same point:</strong> Tianyuan man's own lineage near Beijing (~40,000 ya) is a genuine dead end — nobody alive today descends from him — and fades to a ghost accordingly; the marker that lights up later, around 9,000 ya, sits nearby in the Yellow River valley and represents the Neolithic farmers whose ancestry actually became dominant across China. That's a different population arriving in the same region generations later, not the same line returning — worth keeping that distinction honest on-air rather than letting "reconvergence" imply a bloodline reunion it isn't.</p>
     <p><span class="lead">Known limitation, stated plainly:</span> the routes now carry the full researched multi-stage paths from <code>human_spread_map_2.html</code>, but the dedicated Kelp Highway, Southern Road and African Migrations maps still hold detail this one doesn't — landmark-level stops, then-and-now tables, and per-route discussion. This map answers "when, and in what order"; those answer "where, exactly, and what's there now." Route date windows are drawn from the project's own sourced research; where a window is genuinely disputed the underlying anchor carries the CONTESTED tag, but the line itself does not yet visually distinguish a contested window from a settled one. That's the next honest improvement to make here.</p>
@@ -634,14 +636,14 @@ const AMERICAS_MIX = {lat:65.0, lon:175.0, start:25000, end:20000,
   note:'Not a migration — a merger. Two populations that had been separate for tens of thousands of years combine in northeast Asia / Beringia: roughly 65% East Asian, 35% Ancient North Eurasian. Everyone who later walks into the Americas descends from this event.'};
 const MERGER = {lat:-4.3, lon:29.6, start:105000, end:90000, label:'The Merger', note:'Ancestors of eastern and western African populations converge (Ragsdale et al. 2023).'};
 
-// GREEN SAHARA — corrected 2026-09-17; the circle is a PLACEHOLDER until the sand-to-green field is drawn.
+// GREEN SAHARA — corrected 2026-09-17; drawn as a field since 2026-09-18 (the circle is gone). This is the TIMING.
 // Pacing is PRECESSION, ~21,000 years (Armstrong et al. 2023: 20 North African humid periods in 800 kyr, timed by
 // precession minima; large glacial ice sheets suppress some, so not every minimum has a humid period). Inside the
 // 246,000–96,000 window and at the ~78,000 / ~67,000 pulses (this project's Correction 3 research) the rhythm is the
 // source's but the individual peaks are not dated by it: the cycle is anchored at the Last Interglacial humid
 // period, ~125,000 ya, and says nothing finer than that. THE HOLOCENE WINDOW is dated: ~14,800 to ~5,500 ya
-// (Shanahan et al. 2015), ending later the further south — ~5,000 ya at 20°N, ~3,000 ya at 6.5°N. The circle sits
-// at 20.5°N, so it closes on the 20°N date; the later southern end is stated, not drawn.
+// (Shanahan et al. 2015), ending later the further south — ~5,000 ya at 20°N, ~3,000 ya at 6.5°N; the field's front
+// walks south across those latitudes on those dates. saharaState's radius and opacity are the old circle's and unused.
 const CORRIDOR = {lat:20.5, lon:24.0, viableStart:246000, viableEnd:96000, closingPulses:[78000, 67000],
                   period:21000, anchor:125000, minM:350000, maxM:2400000,
                   holocene:{onset:14800, onsetRamp:500, fadeFrom:6000, endAt20N:5000, endAt6N:3000}};
@@ -1174,9 +1176,7 @@ map.createPane('shelfPane');
 map.getPane('shelfPane').style.zIndex = 350;
 map.getPane('shelfPane').style.pointerEvents = 'none';
 
-const corridorCircle = L.circle([CORRIDOR.lat, CORRIDOR.lon], {
-  radius: CORRIDOR.minM, color:'#6fae52', weight:1, fillColor:'#6fae52', fillOpacity:0.08, opacity:0.35, interactive:false
-}).addTo(map);
+// The Green Sahara placeholder circle is gone (2026-09-18): the land itself greens - see THE GREEN SAHARA module.
 
 // ---- MARKER SHAPE: what KIND of thing this is ------------------------------
 // The tier COLOUR system below answers "how good is the evidence". The shape
@@ -1830,14 +1830,20 @@ const textObjs = TEXTS.map(t=>{
 });
 
 // ---- African corridor connectors: the fix for "the origin nodes just sit there" ----
-// Dashed links between hubs, switching on and off over deep time. Humid-gated
-// connectors breathe with the Green Sahara state instead of holding steady.
+// Dashed links between hubs, switching on and off over deep time. Humid-gated connectors FOLLOW THE GREEN SAHARA
+// FIELD (2026-09-18): drawn only over ground that is green, so they reach the sand and stop, and cross when the green
+// does; two dash trains running opposite ways at constant opacity, as trade does - opacity means time. A link that
+// is not drawn is taken off the map, so nothing invisible answers a click.
 const connectorObjs = CONNECTORS.map(c=>{
   const pts = [c.from, ...(c.via||[]), c.to];
-  const line = L.polyline(pts, {color:'#6fae52', weight:2, opacity:0, dashArray:'3,7', interactive:true}).addTo(map);
+  const back = c.humid ? L.polyline(pts, {renderer:tradeRenderer, className:'trade-flow-back', color:'#8fd06e', weight:2,
+                                          opacity:0.72, dashArray:'3,9', lineCap:'butt', interactive:false}) : null;
+  const line = L.polyline(pts, c.humid
+    ? {renderer:tradeRenderer, className:'trade-flow', color:'#8fd06e', weight:2, opacity:0.72, dashArray:'3,9', dashOffset:'12', lineCap:'butt'}
+    : {color:'#7a8f4a', weight:2, opacity:0.45, dashArray:'3,7', interactive:true});
   line.bindTooltip(c.label, {sticky:true});
   line.bindPopup(`<p class="pop-title">${c.label}</p><p class="pop-age">Active ~${c.start.toLocaleString()}\u2013${c.end.toLocaleString()} ya \u00b7 ${c.humid?'humid-gated':'not Sahara-gated'}</p><p class="pop-note">${c.note}</p>`);
-  return {c, line};
+  return {c, line, back};
 });
 
 function splitSeam(pts){
@@ -2514,14 +2520,8 @@ function render(sliderVal){
   const ICEM = window.__ice;
   if(ICEM) ICEM.frame(sliderVal, yearsAgo);
 
-  // Sahara corridor
-  if(layerState.corridor){
-    const s = saharaState(yearsAgo);
-    corridorCircle.setRadius(s.radius);
-    corridorCircle.setStyle({fillOpacity:s.opacity, opacity:Math.min(0.5, s.opacity+0.15), fillColor: s.opacity>0.2 ? '#8fd06e' : '#6fae52'});
-  } else {
-    corridorCircle.setStyle({fillOpacity:0, opacity:0});
-  }
+  // The Green Sahara: the land greens and its rivers fill, then sand again (the field module, below)
+  if(window.__sahara) window.__sahara.frame(yearsAgo);
 
   // Origin nodes
   NODES.forEach(n=>{
@@ -2605,6 +2605,8 @@ function render(sliderVal){
     // maximum within 5% of the source's largest, else growing or shrinking against the next older slice. Where no
     // source has a slice, nothing is drawn and nothing is claimed; the line under the HUD says why.
     if(window.__ice && layerState.ice) window.__ice.hud(yearsAgo).forEach(b => bits.push(b));
+    const saharaWords = window.__sahara && window.__sahara.hud(yearsAgo);   // the HUD follows the drawing
+    if(saharaWords) bits.push(saharaWords);
     // THE HUD FOLLOWS THE DRAWING (ruled). A named shelf is walkable while more than half of its
     // glacial-maximum shelf is drawn, drowning while more than 2% is, and not mentioned below
     // that — so the HUD can never call a shelf walkable over open water, or fall silent while
@@ -2640,6 +2642,13 @@ function render(sliderVal){
       iceNoteEl.hidden = !n || !n.text;
       iceNoteEl.textContent = n && n.text ? n.text : '';
       iceNoteEl.className = 'eranote shorenote icenote' + (n && n.approx ? ' approx' : '');
+    }
+    const saharaNoteEl = document.getElementById('saharaNote');
+    if(saharaNoteEl && window.__sahara){
+      const n = window.__sahara.note(yearsAgo);
+      saharaNoteEl.hidden = !n;
+      saharaNoteEl.textContent = n ? n.text : '';
+      saharaNoteEl.className = 'eranote shorenote saharanote' + (n && n.approx ? ' approx' : '');
     }
     shoreNoteEl.hidden = !text;
     shoreNoteEl.textContent = text;
@@ -2685,17 +2694,17 @@ function render(sliderVal){
     applyFade(m, fadeAt(sliderVal, ANCHOR_SLIDER[a.id]));
   });
 
-  // African corridors — humid-gated ones breathe with the Sahara state
+  // African corridors — humid-gated ones follow the Green Sahara field; a link not drawn leaves the map
   connectorObjs.forEach(o=>{
     const c = o.c;
     const inWindow = layerState.connectors && yearsAgo <= c.start && yearsAgo >= c.end;
-    if(!inWindow){ o.line.setStyle({opacity:0}); return; }
-    if(c.humid){
-      const s = saharaState(yearsAgo);
-      o.line.setStyle({opacity: 0.10 + 0.62*s.openness, weight: 1.5 + 1.8*s.openness, color: s.openness>0.5?'#8fd06e':'#6fae52'});
-    } else {
-      o.line.setStyle({opacity:0.45, weight:2, color:'#7a8f4a'});
-    }
+    const runs = !inWindow ? [] : c.humid ? (window.__sahara ? window.__sahara.gate(c, yearsAgo) : []) : null;
+    const show = inWindow && (runs === null || runs.length > 0);
+    [o.line, o.back].forEach(l => {
+      if(!l) return;
+      if(show){ if(runs) l.setLatLngs(runs); if(!map.hasLayer(l)) l.addTo(map); }
+      else if(map.hasLayer(l)) l.remove();
+    });
   });
 
   // Routes — progressive reveal
@@ -4452,6 +4461,177 @@ const ICEDATA = {state:'idle', srcs:[], T:null, drawn:[]};
   })();
   ICEDATA.toScreen = (lat, lon) => { const p = map.latLngToContainerPoint([lat, lon]); return [p.x, p.y]; };   // for the render checks
   window.__ice = ICEDATA;
+})();
+// ===================== THE GREEN SAHARA — THE LAND GREENS AND THE RIVERS FILL, THEN SAND AGAIN =====================
+// Ruled: render, don't annotate. The placeholder circle is gone (2026-09-18). What is sourced and what is drawn:
+//   WHEN   sourced. saharaState / CORRIDOR above: Armstrong et al. 2023's ~21,000-year precession pacing inside the
+//          246,000-96,000 window and the ~78,000 / ~67,000 pulses (the rhythm is the source's, the older peaks are not
+//          dated by it); the Holocene window ~14,800 to ~5,500 ya, ending ~5,000 ya at 20 N and ~3,000 ya at 6.5 N
+//          (Shanahan et al. 2015) - so the front here walks south across those latitudes on those dates.
+//   REACH  sourced at full: the Green Sahara extended to 31 N (Tierney, Pausata & deMenocal 2017).
+//   WHERE  the desert today: Natural Earth's SAHARA polygon (public domain), its southern edge trimmed out of the Sahel.
+//   SHAPE  DRAWN by this map: green south of a front, sand north of it, the front a little further on over high ground
+//          and along valleys, with a soft irregular edge. Not a vegetation reconstruction.
+//   RIVERS DRAWN by this map: the drainage the terrain still holds, computed from ETOPO 2022 (CC0) - not mapped
+//          palaeochannels. A channel carries water where the ground under it is green, so the rivers fill as the green
+//          arrives and are gone when it leaves. Colour and extent say the state; opacity is not used.
+// Built offline by geowork/sahara/build_sahara.py into data/sahara/.
+const SAHARA = {state:'idle', front:null};
+(function greenSahara(){
+  const F0 = 11, FMAX = 31, EDGE = 1.0;          // front when dry / at full (degrees N); width of the soft edge
+  const SAND = [214, 178, 120], GREEN = [111, 174, 82];
+  const pane = map.createPane('saharaPane');
+  pane.style.zIndex = '345';                      // on the land, under the shelf, the borders, the ice and every mark
+  pane.style.pointerEvents = 'none';
+  const cv = document.createElement('canvas');
+  cv.style.position = 'absolute'; cv.style.top = '0'; cv.style.left = '0'; cv.style.pointerEvents = 'none';
+  pane.appendChild(cv);
+  const ctx = cv.getContext('2d');
+  let F = null, thr = null, mask = null, rivers = null, off = null, offCtx = null, img = null, rowSrc = null;
+  let paintedFront = null, zooming = false, riverCache = {z:null, pts:null};
+
+  // THE FRONT, from the dated windows. North of it the desert is sand; south of it, green.
+  SAHARA.frontAt = function(T){
+    const H = CORRIDOR.holocene;
+    if(T <= H.onset && T >= H.endAt6N){
+      if(T > H.fadeFrom) return F0 + (FMAX - F0) * Math.min(1, (H.onset - T) / H.onsetRamp);
+      if(T >= H.endAt20N) return 20 + (FMAX - 20) * (T - H.endAt20N) / (H.fadeFrom - H.endAt20N);
+      return 6.5 + (20 - 6.5) * (T - H.endAt6N) / (H.endAt20N - H.endAt6N);
+    }
+    return F0 + (FMAX - F0) * saharaState(T).openness;
+  };
+  SAHARA.dated = T => T <= CORRIDOR.holocene.onset && T >= CORRIDOR.holocene.endAt6N;
+
+  function load(){
+    SAHARA.state = 'loading';
+    Promise.all([fetch('data/sahara/field.json').then(r => r.json()), fetch('data/sahara/field.bin').then(r => r.arrayBuffer()),
+                 fetch('data/sahara/rivers.json').then(r => r.json())])
+      .then(([f, bin, rv]) => {
+        F = f; const n = f.nx * f.ny, b = new Uint8Array(bin);
+        thr = b.subarray(0, n); mask = b.subarray(n, 2 * n); rivers = rv.rivers;
+        // the offscreen field is laid out in Mercator rows, so one drawImage lands it exactly on the map
+        const [W, S, E, N] = f.box, my = lat => Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360));
+        const rows = Math.round(f.ny * 1.15); rowSrc = new Int32Array(rows);
+        for(let r = 0; r < rows; r++){
+          const y = my(N) - (r + 0.5) / rows * (my(N) - my(S));
+          const lat = (2 * Math.atan(Math.exp(y)) - Math.PI / 2) * 180 / Math.PI;
+          rowSrc[r] = Math.min(f.ny - 1, Math.max(0, Math.floor((N - lat) / f.cell)));
+        }
+        off = document.createElement('canvas'); off.width = f.nx; off.height = rows;
+        offCtx = off.getContext('2d'); img = offCtx.createImageData(f.nx, rows);
+        SAHARA.state = 'ready'; render(+scrub.value);
+      })
+      .catch(err => { SAHARA.state = 'failed'; console.warn('SAHARA: ' + err); render(+scrub.value); });
+  }
+  function thrAt(lon, lat){
+    if(!F) return null;
+    const [W, S, E, N] = F.box;
+    if(lon < W || lon >= E || lat <= S || lat > N) return null;
+    const k = Math.floor((N - lat) / F.cell) * F.nx + Math.floor((lon - W) / F.cell);
+    return thr[k] === 255 || mask[k] < 64 ? null : 4 + thr[k] / 10;
+  }
+  function paint(front){
+    const d = img.data, nx = F.nx;
+    for(let r = 0; r < rowSrc.length; r++){
+      const base = rowSrc[r] * nx;
+      for(let x = 0; x < nx; x++){
+        const k = base + x, o = (r * nx + x) * 4, m = mask[k];
+        if(!m || thr[k] === 255){ d[o + 3] = 0; continue; }
+        let g = (front - (4 + thr[k] / 10)) / EDGE + 0.5; g = g < 0 ? 0 : g > 1 ? 1 : g; g = g * g * (3 - 2 * g);
+        d[o] = SAND[0] + (GREEN[0] - SAND[0]) * g; d[o + 1] = SAND[1] + (GREEN[1] - SAND[1]) * g; d[o + 2] = SAND[2] + (GREEN[2] - SAND[2]) * g;
+        d[o + 3] = m * (0.34 + 0.10 * g);
+      }
+    }
+    offCtx.putImageData(img, 0, 0); paintedFront = front;
+  }
+  function riverPts(z){
+    if(riverCache.z === z) return riverCache.pts;
+    riverCache = {z, pts: rivers.map(rv => rv.map(v => { const p = map.project([v[1], v[0]], z); return [p.x, p.y, v[2], v[3]]; }))};
+    return riverCache.pts;
+  }
+  function draw(){
+    const T = SAHARA.T;
+    if(!layerState.corridor || zooming || T === null || SAHARA.state !== 'ready'){ cv.style.display = 'none'; return; }
+    const front = Math.round(SAHARA.frontAt(T) * 20) / 20;
+    if(front !== paintedFront) paint(front);
+    cv.style.display = '';
+    const size = map.getSize(), dpr = window.devicePixelRatio || 1;
+    if(cv.width !== size.x * dpr || cv.height !== size.y * dpr){ cv.width = size.x * dpr; cv.height = size.y * dpr; cv.style.width = size.x + 'px'; cv.style.height = size.y + 'px'; }
+    L.DomUtil.setPosition(cv, map.containerPointToLayerPoint([0, 0]));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, size.x, size.y);
+    const [W, S, E, N] = F.box, a = map.latLngToContainerPoint([N, W]), b = map.latLngToContainerPoint([S, E]);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(off, a.x, a.y, b.x - a.x, b.y - a.y);
+    // the rivers: only where the ground under both ends is green; smaller channels only when zoomed in
+    const z = map.getZoom(), o = map.getPixelBounds().min;
+    const minLog = z < 3 ? 3.3 : z < 4 ? 2.9 : z < 5 ? 2.6 : 2.4, k = z < 3 ? 0.5 : z < 4 ? 0.8 : z < 5 ? 1.1 : 1.5;
+    ctx.strokeStyle = 'rgb(95,168,211)'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const buckets = {};
+    riverPts(z).forEach(rv => {
+      for(let i = 1; i < rv.length; i++){
+        const p = rv[i - 1], q = rv[i];
+        if(p[2] > front || q[2] > front || p[3] < minLog) continue;
+        const w = Math.max(0.5, Math.round((p[3] - 2.2) * k * 2) / 2);
+        (buckets[w] = buckets[w] || []).push(p[0] - o.x, p[1] - o.y, q[0] - o.x, q[1] - o.y);
+      }
+    });
+    Object.keys(buckets).forEach(w => {
+      const s = buckets[w]; ctx.lineWidth = +w; ctx.beginPath();
+      for(let i = 0; i < s.length; i += 4){ ctx.moveTo(s[i], s[i + 1]); ctx.lineTo(s[i + 2], s[i + 3]); }
+      ctx.stroke();
+    });
+  }
+  map.on('move resize', () => { if(SAHARA.state === 'ready') draw(); });
+  map.on('zoomstart', () => { zooming = true; cv.style.display = 'none'; });
+  map.on('zoomend', () => { zooming = false; draw(); });
+
+  SAHARA.frame = function(yearsAgo){
+    if(layerState.corridor && SAHARA.state === 'idle') load();
+    SAHARA.T = yearsAgo;
+    draw();
+  };
+  // THE HUMID CONNECTORS FOLLOW THE FIELD: while any of its desert crossing is green, a humid-gated link is drawn over
+  // the ground that is green (or outside the desert), so it reaches the sand and stops there, and crosses when the
+  // green does; with the crossing all sand it is not drawn at all. Returns the runs to draw.
+  SAHARA.gate = function(c, yearsAgo){
+    if(!c._dense){
+      const pts = [c.from, ...(c.via || []), c.to], out = [];
+      for(let i = 1; i < pts.length; i++){
+        const [la0, lo0] = pts[i - 1], [la1, lo1] = pts[i], n = Math.max(1, Math.ceil(Math.hypot(la1 - la0, lo1 - lo0) / 0.25));
+        for(let j = i === 1 ? 0 : 1; j <= n; j++) out.push([la0 + (la1 - la0) * j / n, lo0 + (lo1 - lo0) * j / n]);
+      }
+      c._dense = out;
+    }
+    if(SAHARA.state !== 'ready') return saharaState(yearsAgo).openness > 0.5 ? [c._dense] : [];
+    // drawn only while some of its desert crossing is green: a shut door draws nothing, not two stubs to the sand
+    const front = SAHARA.frontAt(yearsAgo), runs = []; let run = [], greenDesert = false;
+    c._dense.forEach(p => {
+      const t = thrAt(p[1], p[0]);
+      if(t !== null && t <= front) greenDesert = true;
+      if(t === null || t <= front) run.push(p);
+      else { if(run.length > 1) runs.push(run); run = []; }
+    });
+    if(run.length > 1) runs.push(run);
+    return greenDesert ? runs : [];
+  };
+  // the HUD's words and the line under it
+  SAHARA.hud = function(T){
+    if(!layerState.corridor || SAHARA.state !== 'ready') return null;
+    const f = SAHARA.frontAt(T);
+    return f >= 16 ? 'Sahara green to ~' + Math.round(f) + '°N' : null;
+  };
+  SAHARA.note = function(T){
+    if(!layerState.corridor) return null;
+    if(SAHARA.state === 'failed') return {text:'The Green Sahara could not load, so it is not drawn. Reload the page to try again.', approx:true};
+    if(SAHARA.state !== 'ready' || SAHARA.frontAt(T) < 16) return null;
+    if(SAHARA.dated(T)) return {text:'Green Sahara: the dated Holocene window (Shanahan et al. 2015). The reach is drawn by this map — green south of a front that stands at 31°N at full (Tierney et al. 2017) — and the rivers are the drainage the terrain still holds, computed by this map. Neither is a mapped reconstruction.', approx:false};
+    return {text:'GREEN SAHARA: THE RHYTHM IS THE SOURCE’S, THIS PEAK IS NOT DATED — Armstrong et al. 2023’s ~21,000-year beat, anchored at ~125,000 ya. The reach is drawn at the Holocene’s, and the rivers are computed from today’s terrain.', approx:true};
+  };
+  // for the render checks: what is on the map, from inside the map's own scope
+  SAHARA.checks = () => ({circle: typeof corridorCircle, zoom: map.getZoom(),
+    connectors: typeof connectorObjs === 'undefined' ? null : connectorObjs.map(o => o.c.id + ':' + (map.hasLayer(o.line) ? (o.c.humid ? o.line.getLatLngs().length + ' runs' : 'on') : 'off')).join(' ')});
+  window.__sahara = SAHARA;
 })();
 
 applyPresapiens();
