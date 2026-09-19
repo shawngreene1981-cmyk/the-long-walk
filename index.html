@@ -1047,7 +1047,7 @@ function worldZoom(){ return Math.max(2, Math.min(map.getZoom(), map.getBoundsZo
 // phone. ?relief=0 still gives OpenStreetMap, as an override.
 const RELIEF = new URLSearchParams(location.search).get('relief') !== '0';
 
-// ---- BORDERS, TRIAL ACT (?borders=1) -------------------------------------------
+// ---- BORDERS: THE SEQUENCE, 3000 BCE TO 1 CE, AND THE 1000-1100 CE TRIAL --------------
 // The first Cliopatria act, 1000-1100 CE, is built and switched on only by this parameter until the founder has
 // looked at it. In this mode Decision 1 applies (ruled 2026-09-14, C4 2026-09-16): TIER COLOUR LEAVES THE ANCHOR
 // DOTS AND GOES INTO THE TOOLTIP AND POPUP, so hue belongs to the borders. The dots are one warm neutral, "bone";
@@ -3715,8 +3715,12 @@ if(new URLSearchParams(location.search).get('borders') === 'preload'){
   setTimeout(preloadBorderActs, 0);       // after the first frame
 }
 
-// ===================== BORDERS LAYER — THE FIRST ACT, 1000–1100 CE (?borders=1) =====================
-// Rulings C1–C9 (2026-09-16). One act, built to be looked at before the other 55 are built.
+// ===================== BORDERS LAYER — THE SEQUENCE: 3000 BCE TO 1 CE, AND THE 1000–1100 CE TRIAL =====================
+// Rulings C1–C9 (2026-09-16); the sequence ruled 2026-09-18: thirty century acts, 3000 BCE to 1 CE, built first, the
+// rest to follow once the stretch has been looked at. Each act is its own timed grid (below); the layer loads the act
+// for the date on screen and the next one ahead of a boundary. At a boundary the new act's opening seams keep the date
+// their two powers first met in an earlier act (the build's `pairSince`), so a frontier lit in one century does not
+// snap dark in the next, and a date still shows the same picture however it was reached.
 //
 // THE DATA is not polygons at draw time. geowork/borders/build_act.py turns the act's Cliopatria records into
 // a timed ownership grid of 0.1-degree cells: the grid at the act's first year, then every later change as
@@ -3743,13 +3747,41 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
 (function bordersLayer(){
   if(!BORDERS_ON) return;
   layerState.borders = true;
-  const ACT_FILE = 'data/borders/act_1000_1100';
+  // THE ACTS drawn so far, from data/borders/acts.json. Anywhere else the line under the HUD says borders are not drawn.
+  let ACTS = null, activeIdx = -1;
+  const decoded = new Map(), pending = new Map();
+  // Cliopatria writes years as signed integers: -650 is 650 BCE. So does this map.
+  const fmtYear = y => y < 0 ? (-y) + ' BCE' : y + ' CE';
+  const fmtRange = (a, b) => (a < 0 && b < 0) ? (-a) + '–' + (-b) + ' BCE'
+                          : (a > 0 && b > 0) ? a + '–' + b + ' CE'
+                          : fmtYear(a) + '–' + (b === 0 ? '1 CE' : fmtYear(b));
   const BONE = ANCHOR_BONE;
   // INSIGNIA (amendment, C5). ATTESTED means attested in use by that polity WITHIN ITS DATES, and says what and
   // where. Everything else is ILLUSTRATIVE: a mark designed for this map, and the tooltip says so in one word.
   const INSIGNIA_ATTESTED = {
     'Byzantine Empire': {glyph:'crosscrosslet', what:'the cross-crosslet struck on the silver miliaresion from the mid-10th century into the 11th (Grierson, <em>Byzantine Coinage</em>, Dumbarton Oaks 1999). The double-headed eagle is later — 13th–14th century — and is not used here'},
-    'Kingdom of England': {glyph:'longcross', what:'the long cross, reaching the rim, on the reverse of Æthelred II’s Long Cross pennies, minted from the late 990s to the late 1000s'}
+    'Kingdom of England': {glyph:'longcross', what:'the long cross, reaching the rim, on the reverse of Æthelred II’s Long Cross pennies, minted from the late 990s to the late 1000s'},
+    // ---- the ancient sequence, 3000 BCE to 1 CE (ruled 2026-09-18). Each: the object, its date, where it is.
+    'Early Dynastic Period of Egypt': {glyph:'serekh', what:'the king’s Horus name in a serekh surmounted by a falcon, on the stela of King Raneb, Dynasty 2, about 2880 BCE (Metropolitan Museum of Art 60.144)'},
+    'Old Kingdom of Egypt': {glyph:'serekh', what:'the royal titulary, the Horus name in a serekh, on a palm column from Sahure’s pyramid temple, Dynasty 5, about 2458–2446 BCE (Metropolitan Museum of Art 10.175.137)'},
+    'Middle Kingdom of Egypt': {glyph:'uraeus', what:'the uraeus, the rearing cobra of kingship: the gold uraeus of Senusret II from his pyramid at Lahun, about 1897–1878 BCE (Egyptian Museum, Cairo, JE 46694; Petrie, Brunton &amp; Murray, <em>Lahun II</em>, 1923)'},
+    'New Kingdom of Egypt': {glyph:'crookflail', what:'the crook and flail of kingship: Tutankhamun’s own, about 1332–1323 BCE (Egyptian Museum, Cairo, JE 61763 and 61760; Carter nos. 269d and 269e, Griffith Institute)'},
+    'Thirtieth Dynasty of Egypt': {glyph:'uraeus', what:'the uraeus on the white crown of Nectanebo I, on a granite head inscribed with his names, 379–361 BCE (Musée du Louvre E 27124)'},
+    'Hittites': {glyph:'wingeddisc', what:'the winged sun disc over the Great King’s name on the royal seal: the seal of Tudhaliya IV on a letter to the king of Ugarit, about 1250–1220 BCE (Musée du Louvre AO 21091). Under the empire the winged disc hovers over the royal name on every Great King’s seal (Hawkins, <em>Corpus of Hieroglyphic Luwian Inscriptions</em> I, 2000)'},
+    'Neo-Assyrian Empire': {glyph:'standard', what:'the army’s disc-topped standards, carried on the king’s chariots into battle and in victory: the palace reliefs of Ashurnasirpal II at Nimrud, about 875–860 BCE (British Museum 124550; Pongratz-Leisten, Deller &amp; Bleibtreu, <em>Baghdader Mitteilungen</em> 23, 1992). Drawn as the standard, not as the winged disc, which the reliefs set above the king as the god’s presence'},
+    'Kingdom of Kush': {glyph:'doubleuraeus', what:'the double uraeus, the Kushite kings’ own sign of kingship, on the granite sphinx of Taharqo from Kawa, about 680 BCE (British Museum EA 1770)'},
+    'Lydia': {glyph:'lionhead', what:'the roaring lion’s head on the electrum coinage of Sardis, 610–560 BCE (American Numismatic Society 2011.74.1), carried into Croesus’s gold'},
+    'Achaemenid Empire': {glyph:'archer', what:'the crowned royal archer with spear and bow on the gold daric, struck at Sardis, 500–400 BCE (American Numismatic Society 1944.100.73497; Carradice type III)'},
+    'Carthage': {glyph:'horsepalm', what:'the horse before a palm tree on Carthage’s coinage, 300–260 BCE and again 210–202 BCE (American Numismatic Society 1944.100.79632 and 1944.100.79646; SNG Copenhagen 142, 351)'},
+    'Ptolemaic Kingdom': {glyph:'eaglebolt', what:'the eagle on a thunderbolt, reverse of Ptolemaic silver from Ptolemy I, 294–282 BCE, to Ptolemy VIII (Lorber, <em>Coins of the Ptolemaic Empire</em> I, 2018, no. 150; Metropolitan Museum of Art 05.44.884)'},
+    'Seleucid Empire': {glyph:'anchor', what:'the anchor, the dynasty’s badge, on Seleucid coinage from Seleucus I, 300–281 BCE, to Antiochus VII, 132–131 BCE (Houghton &amp; Lorber, <em>Seleucid Coins</em>, nos. 26 and 2123)'},
+    'Parthian Empire': {glyph:'seatedarcher', what:'the seated archer holding a bow, reverse of Arsacid silver drachms under Mithradates I, 171–138 BCE, and Mithradates II (American Numismatic Society 1944.100.82023 and 1944.100.82250; Sellwood 10.8, 26.7)'},
+    'Kingdom of Pontus': {glyph:'starcrescent', what:'the star and crescent, the badge of the Pontic house, on royal coinage from Mithridates III, about 220–185 BCE, to Mithridates VI (de Callataÿ, in Højte ed., <em>Mithridates VI and the Pontic Kingdom</em>, 2009; American Numismatic Society 1944.100.41472)'},
+    'Kingdom of Armenia': {glyph:'startiara', what:'the royal tiara with an eight-pointed star between two eagles, on the tetradrachms of Tigranes II, about 95–56 BCE, and still under Artavasdes II (Museum of Fine Arts, Boston, 01.5649 and 1989.192)'},
+    'Roman Republic': {glyph:'aquila', what:'the legionary eagle, given to every legion by Marius in 104 BCE (Pliny, <em>Natural History</em> 10.5.16), shown between standards on a denarius of 82 BCE (Crawford, <em>Roman Republican Coinage</em> 365/1a)'},
+    'Roman Empire': {glyph:'aquila', what:'the legionary eagle, on Augustus’s SIGNIS RECEPTIS denarius of 19 BCE (RIC I² Augustus 86A; American Numismatic Society 1944.100.39065)'},
+    'Indo-Scythians': {glyph:'horseman', what:'the king on horseback with a couched spear, shared by the coinage of Azes I, 35–20 BCE, and Azilises (American Numismatic Society 1991.3.118 and 1991.3.119; Senior, <em>Indo-Scythian Coins and History</em>, 2001)'},
+    'Satavahana Dynasty': {glyph:'elephant', what:'the elephant with raised trunk on Satavahana coinage, from issues dated 39 BCE–100 CE (American Numismatic Society 1944.100.59920) into those of later kings (1921.54.1184)'}
   };
   const MOTIFS = ['dots', 'chevrons', 'lozenge', 'rays', 'rings', 'bars', 'wave', 'nested'];
   const FRAMES = ['circle', 'square', 'diamond'];
@@ -3776,7 +3808,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     const shore = document.getElementById('toggleShorelines');
     const label = document.createElement('label');
     label.className = 'toggle-item';
-    label.innerHTML = '<input type="checkbox" id="toggleBorders" checked> <span class="toggle-text">Borders <em>(trial act: 1000–1100 CE only — Cliopatria)</em>'
+    label.innerHTML = '<input type="checkbox" id="toggleBorders" checked> <span class="toggle-text">Borders <em>(Cliopatria: 3000 BCE–1 CE, and 1000–1100 CE)</em>'
       + '<span class="shore-status" id="bordersStatus" role="status" aria-live="polite"></span></span>';
     if(shore && shore.closest('label')) shore.closest('label').insertAdjacentElement('afterend', label);
     label.querySelector('input').addEventListener('change', e => { layerState.borders = e.target.checked; render(+scrub.value); if(typeof updateLayerCount === 'function') updateLayerCount(); });
@@ -3785,36 +3817,58 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   const statusEl = () => document.getElementById('bordersStatus');
   map.attributionControl.addAttribution('Borders: <a href="https://github.com/Seshat-Global-History-Databank/cliopatria">Cliopatria</a> v0.2.0 (CC BY 4.0)');
 
-  Promise.all([
-    fetch(ACT_FILE + '.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
-    fetch(ACT_FILE + '.bin').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
-  ]).then(([hdr, buf]) => {
-    const t0 = performance.now();
-    BORDERS.hdr = hdr;
-    W = hdr.w; H = hdr.h; WEST = hdr.west; NORTH = hdr.north; CELL = hdr.cell; QPY = hdr.qpy; A0 = hdr.act[0]; A1 = hdr.act[1];
-    SETS = hdr.sets;
-    const canon = hdr.polities.map((_, i) => i + 1);
-    (hdr.renames || []).forEach(r => { canon[r.to - 1] = r.from; });
-    const root = pid => { let p = pid, guard = 0; while(canon[p - 1] !== p && guard++ < 50) p = canon[p - 1]; return p; };
-    const csetIndex = new Map();
-    CSET = SETS.map(owners => {
-      const k = owners.map(root).sort((x, y) => x - y).join(',');
-      if(!csetIndex.has(k)) csetIndex.set(k, csetIndex.size);
-      return csetIndex.get(k);
+  // ---- one act: fetch, decode, keep. The decoded act holds everything that belongs to it; activate() makes it current.
+  function loadAct(i){
+    if(decoded.has(i)) return Promise.resolve(decoded.get(i));
+    if(pending.has(i)) return pending.get(i);
+    const stem = 'data/borders/' + ACTS[i].file;
+    const pr = Promise.all([
+      fetch(stem + '.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+      fetch(stem + '.bin').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
+    ]).then(([hdr, buf]) => {
+      const t0 = performance.now(), o = {hdr, idx: i};
+      o.W = hdr.w; o.H = hdr.h; o.WEST = hdr.west; o.NORTH = hdr.north; o.CELL = hdr.cell; o.QPY = hdr.qpy; o.A0 = hdr.act[0]; o.A1 = hdr.act[1];
+      o.SETS = hdr.sets;
+      const canon = hdr.polities.map((_, k) => k + 1);
+      (hdr.renames || []).forEach(r => { canon[r.to - 1] = r.from; });
+      const root = pid => { let q = pid, guard = 0; while(canon[q - 1] !== q && guard++ < 50) q = canon[q - 1]; return q; };
+      const csetIndex = new Map();
+      o.CSET = o.SETS.map(owners => {
+        const k = owners.map(root).sort((x, y) => x - y).join(',');
+        if(!csetIndex.has(k)) csetIndex.set(k, csetIndex.size);
+        return csetIndex.get(k);
+      });
+      o.RGB = [[0, 0, 0]].concat(hdr.colour.map(h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]));
+      const u8 = new Uint8Array(buf); let p = 0;
+      const rv = () => { let n = 0, m = 1, b; do { b = u8[p++]; n += (b & 127) * m; m *= 128; } while(b & 128); return n; };
+      const WH = o.W * o.H;
+      o.base = new Uint16Array(WH);
+      for(let c = 0; c < WH;){ const s0 = rv(), n = rv(); o.base.fill(s0, c, c + n); c += n; }
+      o.G = rv(); o.gQ = new Int32Array(o.G); o.gS = new Uint16Array(o.G); o.gOff = new Uint32Array(o.G + 1);
+      const tmp = []; let q = 0;
+      for(let g = 0; g < o.G; g++){
+        q += rv(); o.gQ[g] = q; o.gS[g] = rv(); o.gOff[g] = tmp.length / 2;
+        const nr = rv(); let pe = 0;
+        for(let k = 0; k < nr; k++){ const st = pe + rv(), len = rv(); tmp.push(st, len); pe = st + len; }
+      }
+      o.gOff[o.G] = tmp.length / 2; o.runs = Uint32Array.from(tmp);
+      hdr.recordsByPid = {};
+      hdr.records.forEach(r => { (hdr.recordsByPid[r[0]] = hdr.recordsByPid[r[0]] || []).push(r); });
+      o.decodeMs = Math.round(performance.now() - t0);
+      decoded.set(i, o); pending.delete(i);
+      // keep the current act, its neighbours and this one; drop the rest
+      [...decoded.keys()].forEach(k => { if(decoded.size > 4 && Math.abs(k - i) > 1 && k !== activeIdx) decoded.delete(k); });
+      return o;
     });
-    RGB = [[0, 0, 0]].concat(hdr.colour.map(h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]));
-    const u8 = new Uint8Array(buf); let p = 0;
-    const rv = () => { let n = 0, m = 1, b; do { b = u8[p++]; n += (b & 127) * m; m *= 128; } while(b & 128); return n; };
-    base = new Uint16Array(W * H);
-    for(let i = 0; i < W * H;){ const s = rv(), n = rv(); base.fill(s, i, i + n); i += n; }
-    G = rv(); gQ = new Int32Array(G); gS = new Uint16Array(G); gOff = new Uint32Array(G + 1);
-    const tmp = []; let q = 0;
-    for(let g = 0; g < G; g++){
-      q += rv(); gQ[g] = q; gS[g] = rv(); gOff[g] = tmp.length / 2;
-      const nr = rv(); let pe = 0;
-      for(let k = 0; k < nr; k++){ const st = pe + rv(), len = rv(); tmp.push(st, len); pe = st + len; }
-    }
-    gOff[G] = tmp.length / 2; runs = Uint32Array.from(tmp);
+    pending.set(i, pr);
+    pr.catch(() => pending.delete(i));
+    return pr;
+  }
+  function activate(o){
+    BORDERS.hdr = o.hdr; activeIdx = o.idx;
+    W = o.W; H = o.H; WEST = o.WEST; NORTH = o.NORTH; CELL = o.CELL; QPY = o.QPY; A0 = o.A0; A1 = o.A1;
+    SETS = o.SETS; CSET = o.CSET; RGB = o.RGB; base = o.base; G = o.G; gQ = o.gQ; gS = o.gS; gOff = o.gOff; runs = o.runs;
+    qSlider.clear();
     cur = base.slice();
     basePairs = new Map();
     for(let c = 0; c < W * H; c++){
@@ -3822,22 +3876,27 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       if((c % W) < W - 1 && differ(s0, base[c + 1])) basePairs.set(pairKey(s0, base[c + 1]), FLOOR);
       if(c < W * (H - 1) && differ(s0, base[c + W])) basePairs.set(pairKey(s0, base[c + W]), FLOOR);
     }
+    // a frontier that met in an earlier act keeps that date (the build's pairSince: [csetA, csetB, year])
+    (o.hdr.pairSince || []).forEach(([a, b, y]) => {
+      const k = a < b ? a * 65536 + b : b * 65536 + a;
+      if(basePairs.has(k)) basePairs.set(k, Math.floor((y - A0) * QPY));
+    });
     pairFirst = new Map(basePairs);
     isActiveSeam = new Uint8Array(W * H); activeSeams = [];
     fillCv = document.createElement('canvas'); fillCv.width = W; fillCv.height = H; fillCx = fillCv.getContext('2d');
     seamCv = document.createElement('canvas'); seamCv.width = W; seamCv.height = H; seamCx = seamCv.getContext('2d');
     fillImg = fillCx.createImageData(W, H); seamImg = seamCx.createImageData(W, H);
-    hdr.recordsByPid = {};
-    hdr.records.forEach(r => { (hdr.recordsByPid[r[0]] = hdr.recordsByPid[r[0]] || []).push(r); });
-    BORDERS.decodeMs = Math.round(performance.now() - t0);
-    BORDERS.state = 'ready';
-    if(statusEl()) statusEl().textContent = '';
-    render(+scrub.value);
-  }).catch(err => {
-    BORDERS.state = 'failed';
-    if(statusEl()) statusEl().textContent = ' — the borders data did not load';
-    console.warn('BORDERS: ' + err);
-  });
+    applied = 0; curQ = -1e9; needFull = true; dirtyList = [];
+    BORDERS.decodeMs = o.decodeMs;
+  }
+  const actIndexAt = y => ACTS ? ACTS.findIndex(a => y >= a.from && y < a.to) : -1;
+  fetch('data/borders/acts.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(m => { ACTS = m.acts; BORDERS.acts = ACTS; BORDERS.spanText = m.drawn; BORDERS.state = 'ready'; if(statusEl()) statusEl().textContent = ''; render(+scrub.value); })
+    .catch(err => {
+      BORDERS.state = 'failed';
+      if(statusEl()) statusEl().textContent = ' — the borders data did not load';
+      console.warn('BORDERS: ' + err);
+    });
 
   function sliderOfQ(q){
     let v = qSlider.get(q);
@@ -3969,10 +4028,10 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     const xa = map.latLngToContainerPoint([0, WEST]).x, xb = map.latLngToContainerPoint([0, WEST + W * CELL]).x;
     const pxPerCell = (xb - xa) / W;
     ctx.imageSmoothingEnabled = pxPerCell < 1;         // zoomed out: average; zoomed in: the source's cells, as cells
-    const BAND = 10;
+    const BAND = 10, first = Math.round((NORTH - Math.floor(NORTH)) / CELL) || BAND;   // bands break on whole degrees
     const bands = [];
-    for(let r = 0; r < H; r += BAND){
-      const n = Math.min(BAND, H - r);
+    for(let r = 0, n; r < H; r += n){
+      n = Math.min(r === 0 ? first : BAND, H - r);
       const la = Math.max(-85, Math.min(85, NORTH - r * CELL)), lb = Math.max(-85, Math.min(85, NORTH - (r + n) * CELL));
       const ya = map.latLngToContainerPoint([la, WEST]).y, yb = map.latLngToContainerPoint([lb, WEST]).y;
       if(yb < 0 || ya > s.y) continue;
@@ -4041,6 +4100,115 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       case 'rings': ctx.arc(0, 0, k * 0.85, 0, Math.PI * 2); ctx.moveTo(k * 0.4, 0); ctx.arc(0, 0, k * 0.4, 0, Math.PI * 2); ctx.stroke(); break;
       case 'bars': [-0.55, 0, 0.55].forEach(v => { ctx.moveTo(-k * 0.8, v * k); ctx.lineTo(k * 0.8, v * k); }); ctx.stroke(); break;
       case 'wave': [-0.35, 0.35].forEach(v => { ctx.moveTo(-k, v * k); ctx.bezierCurveTo(-k * 0.4, v * k - k * 0.5, k * 0.4, v * k + k * 0.5, k, v * k); }); ctx.stroke(); break;
+      // ---- the attested devices, as small silhouettes: what the object shows, not a copy of it
+      case 'serekh': {                                    // palace-facade panel with a falcon on it
+        ctx.rect(-k * 0.6, -k * 0.2, k * 1.2, k * 1.15); ctx.stroke();
+        ctx.beginPath(); [-0.3, 0, 0.3].forEach(u => { ctx.moveTo(u * k, k * 0.35); ctx.lineTo(u * k, k * 0.95); }); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(-k * 0.05, -k * 0.55, k * 0.32, k * 0.2, 0, 0, Math.PI * 2); ctx.arc(k * 0.25, -k * 0.78, k * 0.14, 0, Math.PI * 2); ctx.fill(); break;
+      }
+      case 'uraeus': {                                    // rearing cobra: coil, neck, spread hood
+        ctx.moveTo(-k * 0.7, k * 0.85); ctx.bezierCurveTo(k * 0.7, k * 0.95, k * 0.6, k * 0.2, -k * 0.05, k * 0.15); ctx.lineTo(0, -k * 0.2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, -k * 0.95); ctx.bezierCurveTo(k * 0.55, -k * 0.7, k * 0.35, -k * 0.1, 0, -k * 0.15);
+        ctx.bezierCurveTo(-k * 0.35, -k * 0.1, -k * 0.55, -k * 0.7, 0, -k * 0.95); ctx.fill(); break;
+      }
+      case 'doubleuraeus': {                              // two rearing cobras
+        [-0.42, 0.42].forEach(u => {
+          ctx.moveTo(u * k, k * 0.85); ctx.lineTo(u * k, -k * 0.1);
+          ctx.moveTo(u * k, -k * 0.95); ctx.bezierCurveTo(u * k + k * 0.36, -k * 0.7, u * k + k * 0.24, -k * 0.15, u * k, -k * 0.2);
+          ctx.bezierCurveTo(u * k - k * 0.24, -k * 0.15, u * k - k * 0.36, -k * 0.7, u * k, -k * 0.95);
+        }); ctx.stroke(); ctx.fill(); break;
+      }
+      case 'crookflail': {                                // crossed crook and flail
+        ctx.moveTo(-k * 0.7, k * 0.85); ctx.lineTo(k * 0.45, -k * 0.55); ctx.arc(k * 0.2, -k * 0.75, k * 0.25, 0.7, Math.PI * 1.8, true);
+        ctx.moveTo(k * 0.7, k * 0.85); ctx.lineTo(-k * 0.45, -k * 0.55);
+        [[-0.95, -0.7], [-0.8, -0.95], [-0.55, -1.05]].forEach(([u, v]) => { ctx.moveTo(-k * 0.45, -k * 0.55); ctx.lineTo(u * k, v * k); });
+        ctx.stroke(); break;
+      }
+      case 'wingeddisc': {                                // sun disc with spread wings
+        ctx.arc(0, 0, k * 0.28, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); [-1, 1].forEach(sd => { ctx.moveTo(sd * k * 0.3, 0); ctx.quadraticCurveTo(sd * k * 0.7, -k * 0.55, sd * k * 1.05, -k * 0.2);
+          ctx.lineTo(sd * k * 0.75, -k * 0.05); ctx.lineTo(sd * k * 0.95, k * 0.12); ctx.lineTo(sd * k * 0.3, k * 0.08); }); ctx.fill(); break;
+      }
+      case 'standard': {                                  // a disc standard: spoked disc on a pole, a stock below it
+        ctx.moveTo(0, k * 0.95); ctx.lineTo(0, -k * 0.05); ctx.moveTo(-k * 0.3, k * 0.15); ctx.lineTo(k * 0.3, k * 0.15);
+        ctx.moveTo(k * 0.45, -k * 0.5); ctx.arc(0, -k * 0.5, k * 0.45, 0, Math.PI * 2);
+        for(let i = 0; i < 4; i++){ const a = i * Math.PI / 4; ctx.moveTo(Math.cos(a) * k * 0.45, -k * 0.5 + Math.sin(a) * k * 0.45); ctx.lineTo(-Math.cos(a) * k * 0.45, -k * 0.5 - Math.sin(a) * k * 0.45); }
+        ctx.stroke(); break;
+      }
+      case 'lionhead': {                                  // lion's head in profile, facing right, jaws open, mane behind
+        ctx.moveTo(-k * 0.35, -k * 0.55); ctx.quadraticCurveTo(k * 0.35, -k * 0.75, k * 0.8, -k * 0.2); ctx.lineTo(k * 0.25, -k * 0.02);
+        ctx.lineTo(k * 0.8, k * 0.25); ctx.quadraticCurveTo(k * 0.3, k * 0.75, -k * 0.35, k * 0.55); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); for(let i = 0; i < 6; i++){ const a = Math.PI * 0.62 + i * Math.PI * 0.15; ctx.moveTo(-k * 0.3 + Math.cos(a) * k * 0.3, Math.sin(a) * k * 0.55); ctx.lineTo(-k * 0.3 + Math.cos(a) * k * 0.72, Math.sin(a) * k * 0.95); }
+        ctx.stroke(); break;
+      }
+      case 'archer': {                                    // kneeling archer: head, body, bent leg, bow, spear
+        ctx.arc(-k * 0.15, -k * 0.7, k * 0.2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(-k * 0.15, -k * 0.5); ctx.lineTo(-k * 0.2, k * 0.2); ctx.lineTo(k * 0.25, k * 0.45); ctx.lineTo(k * 0.25, k * 0.9);
+        ctx.moveTo(-k * 0.2, k * 0.2); ctx.lineTo(-k * 0.55, k * 0.9);
+        ctx.moveTo(-k * 0.15, -k * 0.3); ctx.lineTo(k * 0.45, -k * 0.3);
+        ctx.moveTo(k * 0.45, -k * 0.85); ctx.quadraticCurveTo(k * 0.85, -k * 0.3, k * 0.45, k * 0.25);
+        ctx.moveTo(-k * 0.75, k * 0.6); ctx.lineTo(-k * 0.4, -k * 0.95); ctx.stroke(); break;
+      }
+      case 'seatedarcher': {                              // archer seated on a stool, bow held out
+        ctx.arc(-k * 0.2, -k * 0.7, k * 0.2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(-k * 0.2, -k * 0.5); ctx.lineTo(-k * 0.25, k * 0.15); ctx.lineTo(k * 0.25, k * 0.15); ctx.lineTo(k * 0.25, k * 0.85);
+        ctx.moveTo(-k * 0.6, k * 0.15); ctx.lineTo(k * 0.05, k * 0.15); ctx.moveTo(-k * 0.55, k * 0.15); ctx.lineTo(-k * 0.55, k * 0.85);
+        ctx.moveTo(-k * 0.2, -k * 0.25); ctx.lineTo(k * 0.45, -k * 0.35);
+        ctx.moveTo(k * 0.5, -k * 0.95); ctx.quadraticCurveTo(k * 0.9, -k * 0.35, k * 0.5, k * 0.2); ctx.stroke(); break;
+      }
+      case 'horseman': {                                  // rider on a horse, spear couched
+        ctx.ellipse(-k * 0.05, k * 0.2, k * 0.55, k * 0.25, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(k * 0.45, k * 0.1); ctx.lineTo(k * 0.75, -k * 0.3);
+        [-0.45, -0.2, 0.15, 0.35].forEach(u => { ctx.moveTo(u * k, k * 0.35); ctx.lineTo(u * k, k * 0.9); });
+        ctx.moveTo(-k * 0.1, 0); ctx.lineTo(-k * 0.1, -k * 0.55); ctx.stroke();
+        ctx.beginPath(); ctx.arc(-k * 0.1, -k * 0.72, k * 0.16, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(-k * 0.8, -k * 0.2); ctx.lineTo(k * 0.95, -k * 0.55); ctx.stroke(); break;
+      }
+      case 'eaglebolt': {                                 // eagle standing on a thunderbolt
+        ctx.ellipse(-k * 0.05, -k * 0.1, k * 0.28, k * 0.5, 0.25, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(k * 0.2, -k * 0.62, k * 0.17, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(-k * 0.3, k * 0.3); ctx.lineTo(-k * 0.55, k * 0.55);
+        ctx.moveTo(-k * 0.9, k * 0.72); ctx.lineTo(-k * 0.45, k * 0.6); ctx.lineTo(-k * 0.2, k * 0.8); ctx.lineTo(k * 0.2, k * 0.6); ctx.lineTo(k * 0.45, k * 0.8); ctx.lineTo(k * 0.9, k * 0.68); ctx.stroke(); break;
+      }
+      case 'aquila': {                                    // legionary eagle, wings spread, on its pole
+        ctx.moveTo(0, k * 0.95); ctx.lineTo(0, -k * 0.2); ctx.moveTo(-k * 0.35, k * 0.1); ctx.lineTo(k * 0.35, k * 0.1); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, -k * 0.2); ctx.lineTo(-k * 0.95, -k * 0.85); ctx.lineTo(-k * 0.55, -k * 0.35); ctx.lineTo(0, -k * 0.35);
+        ctx.lineTo(k * 0.55, -k * 0.35); ctx.lineTo(k * 0.95, -k * 0.85); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, -k * 0.55, k * 0.15, 0, Math.PI * 2); ctx.fill(); break;
+      }
+      case 'anchor': {                                    // the Seleucid anchor, shown flukes upward, ring below
+        ctx.moveTo(0, k * 0.75); ctx.lineTo(0, -k * 0.55);
+        ctx.moveTo(-k * 0.4, k * 0.45); ctx.lineTo(k * 0.4, k * 0.45);
+        ctx.moveTo(0, -k * 0.55); ctx.quadraticCurveTo(-k * 0.75, -k * 0.5, -k * 0.75, -k * 0.95);
+        ctx.moveTo(0, -k * 0.55); ctx.quadraticCurveTo(k * 0.75, -k * 0.5, k * 0.75, -k * 0.95);
+        ctx.moveTo(-k * 0.75, -k * 0.95); ctx.lineTo(-k * 0.55, -k * 0.8); ctx.moveTo(k * 0.75, -k * 0.95); ctx.lineTo(k * 0.55, -k * 0.8);
+        ctx.stroke(); ctx.beginPath(); ctx.arc(0, k * 0.9, k * 0.15, 0, Math.PI * 2); ctx.stroke(); break;
+      }
+      case 'starcrescent': {                              // eight-rayed star above a crescent
+        for(let i = 0; i < 8; i++){ const a = i * Math.PI / 4; ctx.moveTo(0, -k * 0.35); ctx.lineTo(Math.cos(a) * k * 0.42, -k * 0.35 + Math.sin(a) * k * 0.42); }
+        ctx.stroke(); ctx.beginPath();
+        ctx.arc(0, k * 0.35, k * 0.55, 0.15 * Math.PI, 0.85 * Math.PI); ctx.arc(0, k * 0.15, k * 0.5, 0.8 * Math.PI, 0.2 * Math.PI, true); ctx.fill(); break;
+      }
+      case 'startiara': {                                 // the peaked Armenian tiara, a star on its face
+        ctx.moveTo(-k * 0.6, k * 0.85); ctx.lineTo(-k * 0.7, -k * 0.35); ctx.lineTo(-k * 0.45, -k * 0.75); ctx.lineTo(-k * 0.22, -k * 0.45);
+        ctx.lineTo(0, -k * 0.95); ctx.lineTo(k * 0.22, -k * 0.45); ctx.lineTo(k * 0.45, -k * 0.75); ctx.lineTo(k * 0.7, -k * 0.35); ctx.lineTo(k * 0.6, k * 0.85); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); for(let i = 0; i < 8; i++){ const a = i * Math.PI / 4; ctx.moveTo(0, k * 0.2); ctx.lineTo(Math.cos(a) * k * 0.3, k * 0.2 + Math.sin(a) * k * 0.3); } ctx.stroke(); break;
+      }
+      case 'horsepalm': {                                 // horse standing, head up, before a palm tree
+        ctx.moveTo(k * 0.6, k * 0.95); ctx.lineTo(k * 0.6, -k * 0.5);
+        for(let i = 0; i < 5; i++){ const a = -Math.PI * 0.95 + i * Math.PI * 0.225; ctx.moveTo(k * 0.6, -k * 0.5); ctx.quadraticCurveTo(k * 0.6 + Math.cos(a) * k * 0.3, -k * 0.5 + Math.sin(a) * k * 0.4, k * 0.6 + Math.cos(a) * k * 0.45, -k * 0.5 + Math.sin(a) * k * 0.15 + k * 0.2); }
+        ctx.stroke(); ctx.beginPath();
+        ctx.ellipse(-k * 0.2, k * 0.2, k * 0.42, k * 0.2, 0, 0, Math.PI * 2);                 // body
+        ctx.moveTo(-k * 0.55, k * 0.1); ctx.lineTo(-k * 0.75, -k * 0.45); ctx.lineTo(-k * 0.95, -k * 0.35); ctx.lineTo(-k * 0.6, k * 0.25); ctx.fill();   // neck and head
+        ctx.beginPath(); [-0.5, -0.35, 0.02, 0.15].forEach(u => { ctx.moveTo(u * k, k * 0.35); ctx.lineTo(u * k, k * 0.95); });
+        ctx.moveTo(k * 0.22, k * 0.15); ctx.quadraticCurveTo(k * 0.4, k * 0.3, k * 0.32, k * 0.65); ctx.stroke(); break;   // legs, tail
+      }
+      case 'elephant': {                                  // elephant, trunk raised
+        ctx.ellipse(-k * 0.1, k * 0.2, k * 0.55, k * 0.35, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(k * 0.5, -k * 0.05, k * 0.25, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(k * 0.7, -k * 0.1); ctx.quadraticCurveTo(k * 1.05, -k * 0.3, k * 0.85, -k * 0.8);
+        [-0.5, -0.25, 0.1, 0.3].forEach(u => { ctx.moveTo(u * k, k * 0.45); ctx.lineTo(u * k, k * 0.95); }); ctx.stroke(); break;
+      }
       default: ctx.rect(-k * 0.75, -k * 0.75, k * 1.5, k * 1.5); ctx.rect(-k * 0.3, -k * 0.3, k * 0.6, k * 0.6); ctx.stroke();
     }
     ctx.restore();
@@ -4064,7 +4232,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       if(!full) return `${sw}<strong>${name}</strong>${member && member !== name ? ' \u00b7 part of ' + member : ''} \u00b7 insignia <strong>${att ? 'ATTESTED' : 'ILLUSTRATIVE'}</strong>`
         + (srcNote ? ` \u00b7 <strong style="color:var(--rust)">${srcNote.short}</strong>` : '');
       return `<p class="pop-title">${sw}${name}</p>`
-        + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + rec[1] + '–' + rec[2] + ' CE' : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
+        + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + fmtRange(rec[1], rec[2]) : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
         + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
         + (att ? `In use by this polity within its dates: ${att.what}.` : `Designed for this map. It is not a symbol attested for this polity within its dates \u2014 none has been identified for this map \u2014 and the picture alone cannot say so.`) + `</p>`
         + (renamed ? `<p class="pop-note">In ${renamed.year} the source ends <strong>${owner(renamed.from)}</strong> and begins <strong>${name}</strong> on the same ground. A new name on the same ground is not a conquest, so this map changes the colour in place: no front, no retreat, no new border.</p>` : '')
@@ -4076,7 +4244,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       + (ow.length > 1 ? `<p class="pop-note" style="color:var(--rust)"><strong>The source draws ${ow.map(owner).join(' and ')} on this same ground at this date.</strong> The map stripes it and gives it to neither.</p>` : '')
       + `<p class="pop-note"><strong>The growth and retreat you watch between two dated shapes is drawn, not recorded.</strong> Cliopatria gives one shape per span of years; this map grows each new shape outward from the old one`
       + ` (or from where a route on this map lands) through the new shape, starting at its first year and complete by the middle of its span — a polity's first shape within ten years at most, because arrival is a state, not a century-long process — so no ground appears before the source dates it.</p>`
-      + `<p class="pop-note" style="color:var(--parchment-dimmer)">Grand scale only: the source is smoothed to about 0.07° and this act was cut at 0.25°; the square cells seen zoomed in are 0.1° and are not finer knowledge. Colour tells neighbours apart and nothing else — eight colours, each polity keeps its own.</p>`
+      + `<p class="pop-note" style="color:var(--parchment-dimmer)">This act: ${fmtRange(A0, A1)}. Grand scale only: the source is smoothed to about 0.07° and this act was cut at 0.25°; the square cells seen zoomed in are 0.1° and are not finer knowledge. Colour tells neighbours apart and nothing else — eight colours, each polity keeps its own.</p>`
       + `<p class="pop-note" style="margin-top:8px"><strong style="color:var(--sahara-bright)">BORDERS</strong> — ${a.citation} Data: ${a.source}, ${a.release.split(' — ')[0]}, from GitHub. Licence <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${hdr.changes_made_here}</p>`;
   }
   const tip = document.createElement('div');
@@ -4117,23 +4285,55 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   function eraBanner(idx){
     if(!ageBanner) return;
     ageName.textContent = ERA[idx].label;
-    ageSub.textContent = 'Borders · ' + A0 + '–' + A1 + ' CE · Cliopatria';
+    ageSub.textContent = 'Borders · ' + fmtRange(A0, A1) + ' · Cliopatria';
     ageBanner.className = 'agebanner show';
     if(bannerTimer) clearTimeout(bannerTimer);
     bannerTimer = setTimeout(() => { ageBanner.className = 'agebanner'; }, 2600);
     if(playing) BORDERS.holdUntil = performance.now() + 1800;
   }
 
+  // THE HUD SAYS WHERE BORDERS ARE NOT DRAWN, in the ice's grammar: inside Cliopatria's span (3400 BCE to 2024 CE) but
+  // outside the acts built so far, a rust line says so. Before the source begins, nothing is said.
+  const noteEl = (() => {
+    const ice = document.getElementById('iceNote'); if(!ice) return null;
+    const el = document.createElement('div');
+    el.className = 'eranote shorenote bordersnote approx'; el.id = 'bordersNote'; el.setAttribute('role', 'status'); el.hidden = true;
+    ice.insertAdjacentElement('afterend', el);
+    return el;
+  })();
+  function hudNote(y){
+    if(!noteEl) return;
+    const say = !!(layerState.borders && ACTS && actIndexAt(y) < 0 && y >= -3400 && y <= 2024);
+    noteEl.hidden = !say;
+    if(say) noteEl.textContent = 'BORDERS NOT DRAWN AT THIS DATE: this map draws Cliopatria\u2019s borders for ' + BORDERS.spanText
+      + ' so far. The rest of the source follows once these have been looked at.';
+  }
   window.__bordersFrame = function(sliderVal, yearsAgo){
     if(BORDERS.state !== 'ready'){ return; }
     const y = 2026 - yearsAgo;
     BORDERS.year = y;
+    hudNote(y);
     const was = BORDERS.visible;
-    BORDERS.visible = !!layerState.borders && y >= A0 && y < A1;
+    const i = layerState.borders ? actIndexAt(y) : -1;
+    if(i < 0){ BORDERS.visible = false; BORDERS.lastEra = -1; cv.style.display = 'none'; tip.hidden = true; return; }
+    if(i !== activeIdx){
+      const o = decoded.get(i);
+      if(!o){                                   // not here yet: draw nothing for this frame, fetch, redraw on arrival
+        BORDERS.visible = false; cv.style.display = 'none'; tip.hidden = true;
+        if(statusEl()) statusEl().textContent = ' — loading ' + fmtRange(ACTS[i].from, ACTS[i].to);
+        loadAct(i).then(() => { if(statusEl()) statusEl().textContent = ''; render(+scrub.value); })
+          .catch(err => { if(statusEl()) statusEl().textContent = ' — this act did not load'; console.warn('BORDERS: ' + err); });
+        return;
+      }
+      activate(o);
+    }
+    // the neighbouring act ahead of time, so play (either way) crosses a century boundary without a gap
+    if(y > A1 - 12 && i + 1 < ACTS.length && ACTS[i + 1].from === A1) loadAct(i + 1).catch(() => {});
+    if(y < A0 + 12 && i > 0 && ACTS[i - 1].to === A0) loadAct(i - 1).catch(() => {});
+    BORDERS.visible = true;
     const idx = eraIndexFromSlider(sliderVal);
-    if(BORDERS.visible && was && BORDERS.lastEra >= 0 && idx !== BORDERS.lastEra) eraBanner(idx);
-    BORDERS.lastEra = BORDERS.visible ? idx : -1;
-    if(!BORDERS.visible){ cv.style.display = 'none'; tip.hidden = true; return; }
+    if(was && BORDERS.lastEra >= 0 && idx !== BORDERS.lastEra) eraBanner(idx);
+    BORDERS.lastEra = idx;
     advanceTo(Math.floor((y - A0) * QPY));
     upload(sliderVal);
     draw();
@@ -4152,7 +4352,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     return false;
   }
   window.__bordersPace = function(pos0, pos1, dt, now){
-    if(BORDERS.state !== 'ready' || !layerState.borders) return pos1;
+    if(BORDERS.state !== 'ready' || !layerState.borders || !BORDERS.hdr) return pos1;
     if(BORDERS.holdUntil > now) return pos0;
     const y0 = 2026 - yearsAgoFromSlider(pos0), y1 = 2026 - yearsAgoFromSlider(pos1);
     if(y0 < A0 || y0 >= A1) return pos1;
@@ -4161,7 +4361,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     return Math.max(pos0, sliderAtYearsExact(2026 - (y0 + maxStep)));
   };
   BORDERS.map = map;
-  window.__borders = BORDERS;                 // inspection handle for the harness (present only with ?borders=1)
+  window.__borders = BORDERS;                 // inspection handle for the harness
 })();
 
 // Legend, in this mode only: the evidence line no longer says colour, and the layer says what it is.
@@ -4176,7 +4376,10 @@ if(BORDERS_ON){
   if(row){
     const note = document.createElement('span');
     note.className = 'legend-note'; note.style.flexBasis = '100%';
-    note.innerHTML = '<strong>Borders \u2014 a trial act, 1000\u20131100 CE only.</strong> Real polities from Cliopatria, one solid colour each; '
+    note.innerHTML = '<strong>Borders \u2014 Cliopatria\u2019s, drawn so far for 3000 BCE\u20131 CE and 1000\u20131100 CE.</strong> '
+      + 'At any other date inside the source\u2019s span a line under the HUD says borders are not drawn there; the rest follow once these have been looked at. '
+      + 'The sequence opens at 3000 BCE with the four polities the source has then \u2014 Egypt, Sumer, Elam and the Indus \u2014 and barely moves for a thousand years, because the source does not: '
+      + 'its first real spread is Akkad, around 2300 BCE. Real polities from Cliopatria, one solid colour each; '
       + 'eight colours, no two neighbours alike, and a polity keeps its colour for its whole life. Colour tells neighbours apart and names no one: '
       + 'hover to name them. Between two dated shapes <strong>the growth and retreat you watch is drawn, not recorded</strong> \u2014 each new shape grows '
       + 'out from the old one, or from where a route on this map lands, and is complete by the middle of its dates, or within ten years for a first appearance. Ground the source gives to two '
@@ -4184,6 +4387,9 @@ if(BORDERS_ON){
       + 'Each polity carries an insignia, and its tooltip says in one word whether it is <strong>ATTESTED</strong> (used by that polity within its dates) '
       + 'or <strong>ILLUSTRATIVE</strong> (designed for this map). Grand scale only: zoomed in, the cells are cells. Playback slows only while a polity that a route on this map delivers is spreading, '
       + 'the same at every zoom; dragging the slider never slows. A new name on the same ground changes colour in place. '
+      + '<strong>Where the source\u2019s own name for a polity contradicts its shapes or its dates, the popup says so</strong> \u2014 \u201cLater Zhou\u201d for the Eastern Zhou, '
+      + '\u201cGreat Yuan\u201d linked to the Mongol Yuan, a Macedonian \u201cEmpire\u201d three centuries early \u2014 and the map draws it as the source does. '
+      + 'Most of the ancient world carried no device of state, so most insignia here are ILLUSTRATIVE; that is the record, not a gap in it. '
       + '<span style="color:var(--parchment-dimmer)">Borders: Bennett, J.S., Mutch, E., Tollefson, A. <em>et al.</em> (2025), Cliopatria, <em>Scientific Data</em> 12, 247, '
       + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.0 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '
       + 'composite records not drawn, growth between dated shapes computed by this map.</span>';
