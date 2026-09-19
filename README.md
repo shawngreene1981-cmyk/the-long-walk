@@ -115,7 +115,7 @@ neighbour. Nothing was simplified, smoothed or removed.
 
 **1. Palaeo-shorelines — global pass built from the source raster itself; looked at, and on by default.** See above.
 
-**2. Border acts — the sequence 3000 BCE to 1 CE (thirty century acts) and the 1000–1100 CE trial, drawn behind `?borders=1`.**
+**2. Border acts — the sequence 3000 BCE to 1 CE (thirty century acts) and the 1000–1100 CE trial, drawn for everyone since 2026-09-18.**
 Each act is built into `data/borders/` as a timed grid of 0.1° cells (`act_<from>_<to>.bin` with its `.json`
 header; built by `geowork/borders/build_act.py`, listed in `data/borders/acts.json`), and the layer loads the act for
 the date on screen. Each act is built seeing a century either side, so two acts agree on the year they share, and the
@@ -124,8 +124,11 @@ century does not go dark at the next; `geowork/borders/check_boundaries.py` and 
 Cliopatria's own label contradicts its shapes or dates (“Later Zhou” for the Eastern Zhou, “Great Yuan” linked to the
 Mongol Yuan, a Macedonian “Empire” from 675 BCE, the “Athenian Coalition”), the popup says so and the map draws it as
 the source does (`geowork/borders/source_notes.json`). An insignia is ATTESTED only with a named object, its date
-inside the polity's dates and a source (20 of the ancient polities); the rest are ILLUSTRATIVE. The layer is drawn
-only when the page is opened with `?borders=1`. In that mode, and only in it, the evidence
+inside the polity's dates and a source (20 of the ancient polities); the rest are ILLUSTRATIVE. The layer and the tier
+change went live together, in one push: the anchor dots are one warm neutral, the evidence tier is in their tooltip and
+popup and still in their shape, and colour belongs to the borders. `?borders=0` opens the map without borders, with the
+tier colours on the dots. From 3000 BCE to 1 CE no route on this map can be shown to deliver a polity, so no spread is
+seeded and the stretch plays at one pace. In that mode, and only in it, the evidence
 tier leaves the anchor dots and goes into their tooltip and popup, so colour belongs to the
 borders; the dots are one warm neutral and the tier is still carried by shape. Between two
 dated Cliopatria shapes the growth and retreat you watch is drawn by the map, not recorded

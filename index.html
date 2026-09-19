@@ -1055,7 +1055,8 @@ const RELIEF = new URLSearchParams(location.search).get('relief') !== '0';
 // colour-blind-safe channel. Bone was tested at the 25% fade floor against the plain parchment #ece3cf, which read
 // grey there — and grey is this map's colour for dying routes. #f4e2a1 keeps a visible warmth at the floor and is
 // at least 15 (CIEDE2000) from every tier colour and the leader gold at full brightness (geowork/bone_test.py).
-const BORDERS_ON = new URLSearchParams(location.search).get('borders') === '1';
+// THE FLIP (2026-09-18): on for everyone. ?borders=0 is the map without borders, with the tier colours on the dots.
+const BORDERS_ON = new URLSearchParams(location.search).get('borders') !== '0';
 const ANCHOR_BONE = '#f4e2a1';
 // Routes that deliver a spread (C6): they fade to grey and disappear once delivered. Every other route is unchanged.
 const BORDER_SEED_ROUTES = new Set(BORDERS_ON ? ['r135', 'r136'] : []);
@@ -4390,6 +4391,7 @@ if(BORDERS_ON){
       + '<strong>Where the source\u2019s own name for a polity contradicts its shapes or its dates, the popup says so</strong> \u2014 \u201cLater Zhou\u201d for the Eastern Zhou, '
       + '\u201cGreat Yuan\u201d linked to the Mongol Yuan, a Macedonian \u201cEmpire\u201d three centuries early \u2014 and the map draws it as the source does. '
       + 'Most of the ancient world carried no device of state, so most insignia here are ILLUSTRATIVE; that is the record, not a gap in it. '
+      + 'From 3000 BCE to 1 CE no route on this map can be shown to deliver a polity, so that stretch plays at one pace: an undated route is not made to carry a seed. '
       + '<span style="color:var(--parchment-dimmer)">Borders: Bennett, J.S., Mutch, E., Tollefson, A. <em>et al.</em> (2025), Cliopatria, <em>Scientific Data</em> 12, 247, '
       + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.0 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '
       + 'composite records not drawn, growth between dated shapes computed by this map.</span>';
