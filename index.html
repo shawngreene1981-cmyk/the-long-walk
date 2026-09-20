@@ -3760,8 +3760,9 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   // INSIGNIA (amendment, C5). ATTESTED means attested in use by that polity WITHIN ITS DATES, and says what and
   // where. Everything else is ILLUSTRATIVE: a mark designed for this map, and the tooltip says so in one word.
   const INSIGNIA_ATTESTED = {
-    'Byzantine Empire': {glyph:'crosscrosslet', window:[945, 1092], what:'the cross-crosslet struck on the silver miliaresion from the mid-10th century until Alexios I\u2019s coin reform of 1092 (Grierson, <em>Byzantine Coinage</em>, Dumbarton Oaks 1999). The double-headed eagle is later — 13th–14th century — and is not used here'},
-    'Kingdom of England': {glyph:'longcross', window:[997, 1100], what:'the long cross, reaching the rim, on the reverse of Æthelred II’s Long Cross pennies, minted from the late 990s to the late 1000s'},
+    'Byzantine Empire': {glyph:'crosscrosslet', window:[945, 1100], what:'the cross-crosslet struck on the silver miliaresion from the mid-10th century into the 11th (Grierson, <em>Byzantine Coinage</em>, Dumbarton Oaks 1999). The double-headed eagle is later — 13th–14th century — and is not used here'},
+    'Kingdom of England': [{glyph:'longcross', window:[997, 1100], what:'the long cross, reaching the rim, on the reverse of Æthelred II’s Long Cross pennies, minted from the late 990s to the late 1000s'},
+      {glyph: "threelions", window: [1198, 1501], what: "second great seal of Richard I, three lions passant guardant \u2014 attested 1198. Ailes, 'The Origins of the Royal Arms of England' (Reading, 1982)"}],
     // ---- the ancient sequence, 3000 BCE to 1 CE (ruled 2026-09-18). Each: the object, its date, where it is.
     'Early Dynastic Period of Egypt': {glyph:'serekh', what:'the king’s Horus name in a serekh surmounted by a falcon, on the stela of King Raneb, Dynasty 2, about 2880 BCE (Metropolitan Museum of Art 60.144)'},
     'Old Kingdom of Egypt': {glyph:'serekh', what:'the royal titulary, the Horus name in a serekh, on a palm column from Sahure’s pyramid temple, Dynasty 5, about 2458–2446 BCE (Metropolitan Museum of Art 10.175.137)'},
@@ -3781,74 +3782,79 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     'Kingdom of Armenia': {glyph:'startiara', what:'the royal tiara with an eight-pointed star between two eagles, on the tetradrachms of Tigranes II, about 95–56 BCE, and still under Artavasdes II (Museum of Fine Arts, Boston, 01.5649 and 1989.192)'},
     'Roman Republic': {glyph:'aquila', what:'the legionary eagle, given to every legion by Marius in 104 BCE (Pliny, <em>Natural History</em> 10.5.16), shown between standards on a denarius of 82 BCE (Crawford, <em>Roman Republican Coinage</em> 365/1a)'},
     'Roman Empire': {glyph:'aquila', what:'the legionary eagle, on Augustus’s SIGNIS RECEPTIS denarius of 19 BCE (RIC I² Augustus 86A; American Numismatic Society 1944.100.39065)'},
-    'Indo-Scythians': {glyph:'horseman', what:'the king on horseback with a couched spear, shared by the coinage of Azes I, 35–20 BCE, and Azilises (American Numismatic Society 1991.3.118 and 1991.3.119; Senior, <em>Indo-Scythian Coins and History</em>, 2001)'},
+    "Abbasid Caliphate": {glyph: "banner", window: [750, 1258], what: "the black banner and black as the dynastic colour, in the primary sources \u2014 attested from 750. Sharon, 'Black Banners from the East' (Magnes, 1983); Ahsan, 'Social Life under the Abbasids' (1979)"},
+    "Chola Empire": {glyph: "tigerbow", window: [970, 1203], what: "copper-plate seal of Uttama Chola: seated tiger, two fish, bow \u2014 attested 10th century. Catalogue of the Copper-Plate Grants in the Government Museum, Madras (1918), Cholas 1; Subrahmanya Aiyer, Epigraphia Indica XXVII"},
+    "County of Barcelona": {glyph: "pallets", window: [1150, 1168], what: "equestrian seal of Ramon Berenguer IV, the pallets \u2014 attested c. 1150. Riquer, 'Her\u00e0ldica catalana des de l'any 1150 al 1550' (1983)"},
+    "County of Champagne": {glyph: "bendcotices", window: [1222, 1284], what: "great seal of Thibaud IV (SIGILLA sceau-type 29761), bend between two cotices potent \u2014 attested 1222. SIGILLA (IRHT-CNRS) sceau-type 29761 (Archives de l'Aube 27 H 3/44)"},
+    "County of Flanders": {glyph: "lionrampant", window: [1168, 1384], what: "great seal of Philip of Alsace (SIGILLA sceau-type 12962), lion \u2014 attested from 1168. SIGILLA (IRHT-CNRS) sceau-type 12962"},
+    "County of Toulouse": {glyph: "toulousecross", window: [1201, 1249], what: "seals of Raymond VI (SIGILLA 7969, 7970), Toulouse cross \u2014 attested 1201, 1204. SIGILLA (IRHT-CNRS) sceau-types 7969/7970; Dou\u00ebt d'Arcq no. 743"},
+    "Crimean Khanate": {glyph: "tarak", window: [1468, 1501], what: "tarak tamga of the Giray house on the akce of Mengli I Giray \u2014 attested from 1468. Retowski, 'Die M\u00fcnzen der Girei' (1901-1905)"},
+    "Crown of Aragon": {glyph: "pallets", window: [1169, 1501], what: "the pallets on the comital-royal seals and the arms of every count-king \u2014 attested from c. 1150. Riquer, 'Her\u00e0ldica catalana des de l'any 1150 al 1550' (1983)"},
+    "Crown of Castile": {glyph: "castlelion", window: [1236, 1501], what: "quarterly castle and lion, from Ferdinand III \u2014 attested 1230. Men\u00e9ndez Pidal de Navascu\u00e9s, 'Her\u00e1ldica medieval espa\u00f1ola' I (1982)"},
+    "Duchy of Brittany": {glyph: "ermine", window: [1366, 1491], what: "counter-seal of John IV (SIGILLA sceau-type 13937), plain ermine \u2014 attested 1366. SIGILLA (IRHT-CNRS) sceau-type 13937; Jones, Antiquaries Journal 55.2 (1975)"},
+    "Duchy of Opole": {glyph: "eagle", window: [1222, 1304], what: "seal of Casimir I of Opole-Racib\u00f3rz, shield with eagle \u2014 attested 1222. Gumowski, 'Piecz\u0119cie \u015bl\u0105skie do ko\u0144ca XIV wieku' (1939)"},
+    "Duchy of Silesia": {glyph: "eaglecrescent", window: [1224, 1304], what: "seal of Henry II the Pious, Silesian eagle with crescent \u2014 attested 1224-1240. Gumowski, 'Piecz\u0119cie \u015bl\u0105skie do ko\u0144ca XIV wieku' (1939)"},
+    "Eastern Ganga Kingdom": {glyph: "bull", window: [1058, 1135], what: "copper-plate seals with couchant Nandi, four dated plates 1058-1135 \u2014 attested 1058-1135. Catalogue of the Copper-Plate Grants in the Government Museum, Madras (1918), Gangas Eastern 13-16"},
+    "Eastern Kushans": {glyph: "kushantamga", window: [238, 346], what: "the same Kushan tamga on later Kushan coinage in Gandhara and the Punjab \u2014 attested c. 230-360. Jongeward & Cribb, 'Kushan, Kushano-Sasanian and Kidarite Coins' (ANS, 2015)"},
+    "Eastern Roman Empire": {glyph: "crosssteps", window: [578, 632], what: "solidus, cross potent on three steps, from Tiberius II \u2014 attested from 578. Bellinger, DOC 1 (1966); Grierson, DOC 2 (1968)"},
+    "Emirate of Granada": {glyph: "band", window: [1309, 1491], what: "Nasrid shield of the band, Tower of Ab\u016b al-Hajj\u0101j carving; Met tile \u2014 attested 1309-1314 onwards. UCM Base de datos de iconograf\u00eda medieval, 'Escudo nazar\u00ed de la banda'"},
+    "Galicia-Volhynia": {glyph: "lionrampant", window: [1316, 1351], what: "seals of Andriy and Lev II (1316) and Yuri II Boleslav (1325-1335), lion \u2014 attested 1316-1335. Odnorozhenko, 'Rodova heraldyka Rus'koho korolivstva' (2009)"},
+    "Grand Duchy of Lithuania": {glyph: "columns", window: [1392, 1449], what: "Columns of Gediminas on the denar of Vytautas and his seal of 1397 \u2014 attested 1392-1430. Ivanauskas & Douchis, 'Coins of Lithuania 1386-1707' (1999)"},
+    "Grand Principality of Moscow": {glyph: "horseman", window: [1389, 1501], what: "the horseman (ezdets) on the denga, across four grand princes; seal of 1497 \u2014 attested c. 1389-1501. Oreshnikov, 'Russkie monety do 1547 g.' (1896)"},
+    "Gupta Empire": {glyph: "garuda", window: [335, 500], what: "the Garuda standard on the gold dinars and the Gupta royal seal \u2014 attested from c. 335. Altekar, 'The Coinage of the Gupta Empire' (1957)"},
+    "Hafsid Dynasty": {glyph: "crescent", window: [1321, 1511], what: "red banner with white crescent on Dulcert's chart of 1339 (BnF GE B-696); also Sanudo c. 1321 and the Catalan Atlas 1385 \u2014 attested 1321-1385. Angelino Dulcert, portolan chart 1339, BnF Cartes et plans GE B-696 (RES)"},
+    "House of Jagiellon": {glyph: "columns", window: [1450, 1492], what: "Columns of Gediminas on the Lithuanian denars of Casimir IV \u2014 attested 1440-1492. Ivanauskas & Douchis, 'Coins of Lithuania 1386-1707' (1999)"},
+    "Kievan Rus'": {glyph: "trident", window: [980, 1240], what: "Rurikid bident/trident tamga on the srebrenik of Vladimir I and on Rurikid seals \u2014 attested c. 980-1019 coins; 11th-13th c. seals. Sotnikova & Spasski, 'Russian Coins of the X-XI Centuries' (BAR 136, 1982); Yanin, 'Aktovye pechati Drevnei Rusi' (1970)"},
+    "Kingdom of Asturias": {glyph: "jewelledcross", window: [808, 925], what: "Cruz de los \u00c1ngeles (808) and Cruz de la Victoria (908), C\u00e1mara Santa, Oviedo \u2014 attested 808, 908. Garc\u00eda de Castro Vald\u00e9s, Codex Aquilarensis 32 (2016)"},
+    "Kingdom of Axum": {glyph: "aksumcross", window: [340, 640], what: "the cross on Aksumite gold and silver from the later issues of Ezana (BM 1915,0108.81) \u2014 attested from c. 340. Munro-Hay, 'Catalogue of the Aksumite Coins in the British Museum' (1999)"},
+    "Kingdom of Bosnia": {glyph: "bendfleurs", window: [1385, 1463], what: "royal seals of Tvrtko I and II, Kotromani\u0107 arms; coinage from 1436 \u2014 attested 1377-1443. An\u0111eli\u0107, 'Srednjovjekovni pe\u010dati iz Bosne i Hercegovine' (ANUBiH, 1970)"},
+    "Kingdom of Castile": {glyph: "castle", window: [1170, 1235], what: "three-towered castle on the seal and coinage of Alfonso VIII \u2014 attested 1170. Men\u00e9ndez Pidal de Navascu\u00e9s, 'Her\u00e1ldica medieval espa\u00f1ola' I (1982)"},
+    "Kingdom of Denmark": {glyph: "threelions", window: [1194, 1406], what: "seal of Canute VI with three lions \u2014 attested c. 1194. Bartholdy, 'Det danske kongev\u00e5ben fra Valdemarerne til Frederik VI' (2021); Svane, 'Det danske Rigsv\u00e5ben og Kongev\u00e5ben' (1994)"},
+    "Kingdom of France": {glyph: "fleurdelis", window: [1180, 1501], what: "the fleur-de-lis on the great seal of Philip II Augustus; the sem\u00e9-de-lis shield follows in 1211 and three lis from about 1376 \u2014 attested 1180. SIGILLA (IRHT-CNRS) sceau-type 21782; Pastoureau, 'Trait\u00e9 d'h\u00e9raldique' (1979)"},
+    "Kingdom of Gwynedd": {glyph: "quarterlions", window: [1246, 1284], what: "shield of Dafydd ap Llywelyn in Matthew Paris, Chronica maiora (CCCC MS 16) \u2014 attested c. 1246-1255. Cambridge, Corpus Christi College MS 16 (Parker Library)"},
+    "Kingdom of Hungary": {glyph: "doublecross", window: [1190, 1520], what: "denar of B\u00e9la III with the double cross (CNH I.112 = Husz\u00e1r 67) \u2014 attested c. 1190. Husz\u00e1r, 'M\u00fcnzkatalog Ungarn' (1979) 67-68; R\u00e9thy, 'Corpus Nummorum Hungariae' I (1899) 112"},
+    "Kingdom of Kongo": {glyph: "kongoarms", window: [1512, 1661], what: "arms of the King of Kongo in Godinho's armorial (ANTT PT/TT/CR/D/A/1/20, fol. 7) \u2014 attested described 1512; armorial 1528-41. Godinho, 'Livro da nobreza e perfei\u00e7\u00e3o das armas', ANTT; Fromont, 'The Art of Conversion' (2014)"},
+    "Kingdom of Le\u00f3n": {glyph: "lionpassant", window: [1126, 1235], what: "lion on the coinage of Alfonso VII, then royal seals \u2014 attested 1126-1157. Men\u00e9ndez Pidal de Navascu\u00e9s, 'Her\u00e1ldica medieval espa\u00f1ola' I (1982)"},
+    "Kingdom of Navarre": {glyph: "chains", window: [1234, 1428], what: "validation seals of Theobald I, the chains device \u2014 attested 1234-1253. Men\u00e9ndez Pidal de Navascu\u00e9s & Mart\u00ednez de Aguirre, 'El escudo de armas de Navarra' (2000)"},
+    "Kingdom of Poland": {glyph: "crownedeagle", window: [1295, 1449], what: "majesty seal of Przemys\u0142 II, crowned eagle, on the document of 15 Aug 1295 (AGAD) \u2014 attested 1295. Polish State Archives 'Pami\u0119\u0107 Polski' record; Gumowski, 'Piecz\u0119cie kr\u00f3l\u00f3w polskich' (1919)"},
+    "Kingdom of Portugal": {glyph: "escutcheons", window: [1185, 1506], what: "seal of Sancho I with the five escutcheons (ANTT Gav. 15, M. 10, n\u00ba 14) \u2014 attested 1185-1211. Moruj\u00e3o, 'A sigilografia portuguesa em tempos de Afonso Henriques', Medievalista 11 (2012)"},
+    "Kingdom of Scotland": {glyph: "lionrampant", window: [1294, 1551], what: "great seal of Alexander II, lion rampant \u2014 attested 1222. McAndrew, 'Scotland's Historic Heraldry' (Boydell, 2006)"},
+    "Kingdom of Serbia": {glyph: "doubleeagle", window: [1321, 1351], what: "Nemanji\u0107 double-headed eagle: ring of Queen Teodora; Du\u0161an's stamps; Dulcert's chart of 1339 (BnF GE B-696) \u2014 attested 1321-1339. Solovjev, 'Istorija srpskog grba' (1958)"},
+    "Kingdom of Sweden": {glyph: "threecrowns", window: [1336, 1401], what: "three crowns in the 1336 Avignon armorial frieze \u2014 attested 1336. Nev\u00e9us, de W\u00e6rn & Eriksson, 'Ny svensk vapenbok' (Riksarkivet, 1992)"},
+    "Kingdom of the Franks": {glyph: "temple", window: [822, 849], what: "denier of the Christiana Religio type, temple fa\u00e7ade with cross \u2014 attested from c. 822. Grierson & Blackburn, 'Medieval European Coinage' 1 (1986); Coupland, Numismatic Chronicle 173 (2013)"},
+    "Kushan Empire": {glyph: "kushantamga", window: [113, 237], what: "the Kushan dynastic tamga on gold dinars and copper, from Vima Kadphises \u2014 attested from c. 113-127. Jongeward & Cribb, 'Kushan, Kushano-Sasanian and Kidarite Coins' (ANS, 2015); G\u00f6bl (1984)"},
+    "Late Pallava Empire": {glyph: "bull", window: [350, 805], what: "copper-plate seals with recumbent bull (Pallavas 1 and 5) \u2014 attested 4th and 7th centuries. Catalogue of the Copper-Plate Grants in the Government Museum, Madras (1918), Pallavas 1, 5, 6"},
+    "Ming Dynasty": {glyph: "dragon", window: [1403, 1501], what: "five-clawed dragon reserved to the throne; Yongle imperial workshop sutra box (Met 2001.584a-c) \u2014 attested 1403-1424. Metropolitan Museum of Art 2001.584a-c; Cammann, 'China's Dragon Robes' (1952) on the sumptuary reservation"},
+    "Old Kingdom of Norway": {glyph: "lionaxe", window: [1280, 1401], what: "royal banner and seal of Eirik Magnusson: crowned lion with axe \u2014 attested 1280-1285. Tr\u00e6tteberg, 'Norges statssymboler inntil 1814', Historisk tidsskrift 29 (1933)"},
+    "Pala Empire": {glyph: "wheeldeer", window: [800, 1161], what: "Pala royal seal on the copper-plate charters: wheel flanked by two deer (Nalanda plate of Devapaladeva) \u2014 attested 860. Sastri, 'The Nalanda Copper-plate of Devapaladeva', Epigraphia Indica XVII (1923-24)"},
+    "Principality of Moldavia": {glyph: "aurochs", window: [1377, 1506], what: "groschen of Petru I Mu\u0219at, aurochs head; his sigillum of 1387 \u2014 attested c. 1377-1391. Cernovodeanu, '\u0218tiin\u021ba \u0219i arta heraldic\u0103 \u00een Rom\u00e2nia' (1977)"},
+    "Rasulid Dynasty": {glyph: "rosette", window: [1250, 1454], what: "Rasulid five-petalled rosette on the brazier of al-Malik al-Muzaffar (Met 91.1.540) \u2014 attested later 13th century. Metropolitan Museum of Art 91.1.540; Kenney, Der Islam 98:1 (2021)"},
+    "Serbian Empire": {glyph: "doubleeagle", window: [1352, 1458], what: "double-headed eagle on Du\u0161an's state documents and stamps; readopted after 1402 \u2014 attested 1331-1355. Solovjev, 'Istorija srpskog grba' (1958)"},
+    "Teutonic Order": {glyph: "plaincross", window: [1236, 1520], what: "the Order's banner, white with a black cross, in the Banderia Prutenorum (BJ Rkp. 10001) \u2014 attested banners 1410; codex 1448. D\u0142ugosz, 'Banderia Prutenorum' (1448), Biblioteka Jagiello\u0144ska BJ Rkp. 10001"},
+    "Timurid Empire": {glyph: "threerings", window: [1375, 1405], what: "Timur's three-annulet tamgha on seal and coin, described by Clavijo at his court \u2014 attested c. 1370-1405. Clavijo, 'Embassy to Tamerlane 1403-1406', trans. Le Strange (1928)"},
+    "West Franks": {glyph: "karolus", window: [864, 923], what: "denier GRATIA DEI REX with the Karolus monogram \u2014 attested from 864. Grierson & Blackburn, 'Medieval European Coinage' 1 (1986); Sarah, 'Charlemagne, Charles the Bald and the Karolus monogram coinage'"},
+    "Western Satraps": {glyph: "chaitya", window: [78, 405], what: "three-arched hill with river, crescent and sun: the fixed drachm reverse \u2014 attested c. 78-405. Jha & Rajgor, 'Studies in the Coinage of the Western K\u1e63atrapas' (1994)"},
     'Satavahana Dynasty': {glyph:'elephant', what:'the elephant with raised trunk on Satavahana coinage, from issues dated 39 BCE–100 CE (American Numismatic Society 1944.100.59920) into those of later kings (1921.54.1184)'}
   };
-  // IDENTIFIED, NOT YET DRAWN: a device found for this polity, inside its dates, waiting on review. Nothing is
-  // drawn from this table - it exists so that a polity whose device is known is not told that none was found.
-  const INSIGNIA_PENDING = {
-    "Abbasid Caliphate": {window: [750, 1258], what: "the black banner and black as the dynastic colour, in the primary sources \u2014 attested from 750. Sharon, 'Black Banners from the East' (Magnes, 1983); Ahsan, 'Social Life under the Abbasids' (1979)"},
-    "Byzantine Empire": {window: [945, 1092], what: "silver miliaresion, cross crosslet on three steps (Harvard Art Museums 1951.31.4.1626) \u2014 attested type from c. 945. Harvard Art Museums 1951.31.4.1626; Grierson, DOC 3 (1973)"},
-    "Chola Empire": {window: [970, 1203], what: "copper-plate seal of Uttama Chola: seated tiger, two fish, bow \u2014 attested 10th century. Catalogue of the Copper-Plate Grants in the Government Museum, Madras (1918), Cholas 1; Subrahmanya Aiyer, Epigraphia Indica XXVII"},
-    "County of Barcelona": {window: [1150, 1168], what: "equestrian seal of Ramon Berenguer IV, the pallets \u2014 attested c. 1150. Riquer, 'Her\u00e0ldica catalana des de l'any 1150 al 1550' (1983)"},
-    "County of Champagne": {window: [1222, 1284], what: "great seal of Thibaud IV (SIGILLA sceau-type 29761), bend between two cotices potent \u2014 attested 1222. SIGILLA (IRHT-CNRS) sceau-type 29761 (Archives de l'Aube 27 H 3/44)"},
-    "County of Flanders": {window: [1168, 1384], what: "great seal of Philip of Alsace (SIGILLA sceau-type 12962), lion \u2014 attested from 1168. SIGILLA (IRHT-CNRS) sceau-type 12962"},
-    "County of Toulouse": {window: [1201, 1249], what: "seals of Raymond VI (SIGILLA 7969, 7970), Toulouse cross \u2014 attested 1201, 1204. SIGILLA (IRHT-CNRS) sceau-types 7969/7970; Dou\u00ebt d'Arcq no. 743"},
-    "Crimean Khanate": {window: [1468, 1501], what: "tarak tamga of the Giray house on the akce of Mengli I Giray \u2014 attested from 1468. Retowski, 'Die M\u00fcnzen der Girei' (1901-1905)"},
-    "Crown of Aragon": {window: [1169, 1501], what: "the pallets on the comital-royal seals and the arms of every count-king \u2014 attested from c. 1150. Riquer, 'Her\u00e0ldica catalana des de l'any 1150 al 1550' (1983)"},
-    "Crown of Castile": {window: [1236, 1501], what: "quarterly castle and lion, from Ferdinand III \u2014 attested 1230. Men\u00e9ndez Pidal de Navascu\u00e9s, 'Her\u00e1ldica medieval espa\u00f1ola' I (1982)"},
-    "Duchy of Brittany": {window: [1366, 1491], what: "counter-seal of John IV (SIGILLA sceau-type 13937), plain ermine \u2014 attested 1366. SIGILLA (IRHT-CNRS) sceau-type 13937; Jones, Antiquaries Journal 55.2 (1975)"},
-    "Duchy of Opole": {window: [1222, 1304], what: "seal of Casimir I of Opole-Racib\u00f3rz, shield with eagle \u2014 attested 1222. Gumowski, 'Piecz\u0119cie \u015bl\u0105skie do ko\u0144ca XIV wieku' (1939)"},
-    "Duchy of Silesia": {window: [1224, 1304], what: "seal of Henry II the Pious, Silesian eagle with crescent \u2014 attested 1224-1240. Gumowski, 'Piecz\u0119cie \u015bl\u0105skie do ko\u0144ca XIV wieku' (1939)"},
-    "Eastern Ganga Kingdom": {window: [1058, 1135], what: "copper-plate seals with couchant Nandi, four dated plates 1058-1135 \u2014 attested 1058-1135. Catalogue of the Copper-Plate Grants in the Government Museum, Madras (1918), Gangas Eastern 13-16"},
-    "Eastern Kushans": {window: [238, 346], what: "the same Kushan tamga on later Kushan coinage in Gandhara and the Punjab \u2014 attested c. 230-360. Jongeward & Cribb, 'Kushan, Kushano-Sasanian and Kidarite Coins' (ANS, 2015)"},
-    "Eastern Roman Empire": {window: [578, 632], what: "solidus, cross potent on three steps, from Tiberius II \u2014 attested from 578. Bellinger, DOC 1 (1966); Grierson, DOC 2 (1968)"},
-    "Emirate of Granada": {window: [1309, 1491], what: "Nasrid shield of the band, Tower of Ab\u016b al-Hajj\u0101j carving; Met tile \u2014 attested 1309-1314 onwards. UCM Base de datos de iconograf\u00eda medieval, 'Escudo nazar\u00ed de la banda'"},
-    "Galicia-Volhynia": {window: [1316, 1351], what: "seals of Andriy and Lev II (1316) and Yuri II Boleslav (1325-1335), lion \u2014 attested 1316-1335. Odnorozhenko, 'Rodova heraldyka Rus'koho korolivstva' (2009)"},
-    "Grand Duchy of Lithuania": {window: [1392, 1449], what: "Columns of Gediminas on the denar of Vytautas and his seal of 1397 \u2014 attested 1392-1430. Ivanauskas & Douchis, 'Coins of Lithuania 1386-1707' (1999)"},
-    "Grand Principality of Moscow": {window: [1389, 1501], what: "the horseman (ezdets) on the denga, across four grand princes; seal of 1497 \u2014 attested c. 1389-1501. Oreshnikov, 'Russkie monety do 1547 g.' (1896)"},
-    "Gupta Empire": {window: [335, 500], what: "the Garuda standard on the gold dinars and the Gupta royal seal \u2014 attested from c. 335. Altekar, 'The Coinage of the Gupta Empire' (1957)"},
-    "Hafsid Dynasty": {window: [1321, 1511], what: "red banner with white crescent on Dulcert's chart of 1339 (BnF GE B-696); also Sanudo c. 1321 and the Catalan Atlas 1385 \u2014 attested 1321-1385. Angelino Dulcert, portolan chart 1339, BnF Cartes et plans GE B-696 (RES)"},
-    "House of Jagiellon": {window: [1450, 1492], what: "Columns of Gediminas on the Lithuanian denars of Casimir IV \u2014 attested 1440-1492. Ivanauskas & Douchis, 'Coins of Lithuania 1386-1707' (1999)"},
-    "Indo-Parthians": {window: [19, 90], what: "the Gondopharid tamga on coins and countermarks \u2014 attested c. 19-90 CE. Senior, 'Indo-Scythian Coins and History' (CNG, 2001)"},
-    "Kidarites": {window: [358, 450], what: "the Kidarite tamga on gold dinars and silver drachms \u2014 attested 4th-5th century. Jongeward & Cribb (ANS, 2015); Cribb, 'The Kidarites, the numismatic evidence' (2010)"},
-    "Kievan Rus'": {window: [980, 1240], what: "Rurikid bident/trident tamga on the srebrenik of Vladimir I and on Rurikid seals \u2014 attested c. 980-1019 coins; 11th-13th c. seals. Sotnikova & Spasski, 'Russian Coins of the X-XI Centuries' (BAR 136, 1982); Yanin, 'Aktovye pechati Drevnei Rusi' (1970)"},
-    "Kingdom of Asturias": {window: [808, 925], what: "Cruz de los \u00c1ngeles (808) and Cruz de la Victoria (908), C\u00e1mara Santa, Oviedo \u2014 attested 808, 908. Garc\u00eda de Castro Vald\u00e9s, Codex Aquilarensis 32 (2016)"},
-    "Kingdom of Axum": {window: [340, 640], what: "the cross on Aksumite gold and silver from the later issues of Ezana (BM 1915,0108.81) \u2014 attested from c. 340. Munro-Hay, 'Catalogue of the Aksumite Coins in the British Museum' (1999)"},
-    "Kingdom of Bosnia": {window: [1385, 1463], what: "royal seals of Tvrtko I and II, Kotromani\u0107 arms; coinage from 1436 \u2014 attested 1377-1443. An\u0111eli\u0107, 'Srednjovjekovni pe\u010dati iz Bosne i Hercegovine' (ANUBiH, 1970)"},
-    "Kingdom of Castile": {window: [1170, 1235], what: "three-towered castle on the seal and coinage of Alfonso VIII \u2014 attested 1170. Men\u00e9ndez Pidal de Navascu\u00e9s, 'Her\u00e1ldica medieval espa\u00f1ola' I (1982)"},
-    "Kingdom of Denmark": {window: [1194, 1406], what: "seal of Canute VI with three lions \u2014 attested c. 1194. Bartholdy, 'Det danske kongev\u00e5ben fra Valdemarerne til Frederik VI' (2021); Svane, 'Det danske Rigsv\u00e5ben og Kongev\u00e5ben' (1994)"},
-    "Kingdom of England": {window: [1198, 1501], what: "second great seal of Richard I, three lions passant guardant \u2014 attested 1198. Ailes, 'The Origins of the Royal Arms of England' (Reading, 1982)"},
-    "Kingdom of France": {window: [1180, 1501], what: "the fleur-de-lis on the great seal of Philip II Augustus; the sem\u00e9-de-lis shield follows in 1211 and three lis from about 1376 \u2014 attested 1180. SIGILLA (IRHT-CNRS) sceau-type 21782; Pastoureau, 'Trait\u00e9 d'h\u00e9raldique' (1979)"},
-    "Kingdom of Georgia": {window: [1187, 1310], what: "Bagrationi badge on the copper coinage of Tamar and David Soslan (1200) and David VIII \u2014 attested 1200-1310. Dundua & Dundua, 'Catalogue of Georgian Numismatics' types 70, 56; Kapanadze, 'Gruzinskaya numizmatika' (1955)"},
-    "Kingdom of Gwynedd": {window: [1246, 1284], what: "shield of Dafydd ap Llywelyn in Matthew Paris, Chronica maiora (CCCC MS 16) \u2014 attested c. 1246-1255. Cambridge, Corpus Christi College MS 16 (Parker Library)"},
-    "Kingdom of Hungary": {window: [1190, 1520], what: "denar of B\u00e9la III with the double cross (CNH I.112 = Husz\u00e1r 67) \u2014 attested c. 1190. Husz\u00e1r, 'M\u00fcnzkatalog Ungarn' (1979) 67-68; R\u00e9thy, 'Corpus Nummorum Hungariae' I (1899) 112"},
-    "Kingdom of Kongo": {window: [1512, 1661], what: "arms of the King of Kongo in Godinho's armorial (ANTT PT/TT/CR/D/A/1/20, fol. 7) \u2014 attested described 1512; armorial 1528-41. Godinho, 'Livro da nobreza e perfei\u00e7\u00e3o das armas', ANTT; Fromont, 'The Art of Conversion' (2014)"},
-    "Kingdom of Le\u00f3n": {window: [1126, 1235], what: "lion on the coinage of Alfonso VII, then royal seals \u2014 attested 1126-1157. Men\u00e9ndez Pidal de Navascu\u00e9s, 'Her\u00e1ldica medieval espa\u00f1ola' I (1982)"},
-    "Kingdom of Navarre": {window: [1234, 1428], what: "validation seals of Theobald I, the chains device \u2014 attested 1234-1253. Men\u00e9ndez Pidal de Navascu\u00e9s & Mart\u00ednez de Aguirre, 'El escudo de armas de Navarra' (2000)"},
-    "Kingdom of Poland": {window: [1295, 1449], what: "majesty seal of Przemys\u0142 II, crowned eagle, on the document of 15 Aug 1295 (AGAD) \u2014 attested 1295. Polish State Archives 'Pami\u0119\u0107 Polski' record; Gumowski, 'Piecz\u0119cie kr\u00f3l\u00f3w polskich' (1919)"},
-    "Kingdom of Portugal": {window: [1185, 1506], what: "seal of Sancho I with the five escutcheons (ANTT Gav. 15, M. 10, n\u00ba 14) \u2014 attested 1185-1211. Moruj\u00e3o, 'A sigilografia portuguesa em tempos de Afonso Henriques', Medievalista 11 (2012)"},
-    "Kingdom of Scotland": {window: [1294, 1551], what: "great seal of Alexander II, lion rampant \u2014 attested 1222. McAndrew, 'Scotland's Historic Heraldry' (Boydell, 2006)"},
-    "Kingdom of Serbia": {window: [1321, 1351], what: "Nemanji\u0107 double-headed eagle: ring of Queen Teodora; Du\u0161an's stamps; Dulcert's chart of 1339 (BnF GE B-696) \u2014 attested 1321-1339. Solovjev, 'Istorija srpskog grba' (1958)"},
-    "Kingdom of Sweden": {window: [1336, 1401], what: "three crowns in the 1336 Avignon armorial frieze \u2014 attested 1336. Nev\u00e9us, de W\u00e6rn & Eriksson, 'Ny svensk vapenbok' (Riksarkivet, 1992)"},
-    "Kingdom of the Franks": {window: [822, 849], what: "denier of the Christiana Religio type, temple fa\u00e7ade with cross \u2014 attested from c. 822. Grierson & Blackburn, 'Medieval European Coinage' 1 (1986); Coupland, Numismatic Chronicle 173 (2013)"},
-    "Kushan Empire": {window: [113, 237], what: "the Kushan dynastic tamga on gold dinars and copper, from Vima Kadphises \u2014 attested from c. 113-127. Jongeward & Cribb, 'Kushan, Kushano-Sasanian and Kidarite Coins' (ANS, 2015); G\u00f6bl (1984)"},
-    "Late Pallava Empire": {window: [350, 805], what: "copper-plate seals with recumbent bull (Pallavas 1 and 5) \u2014 attested 4th and 7th centuries. Catalogue of the Copper-Plate Grants in the Government Museum, Madras (1918), Pallavas 1, 5, 6"},
-    "Ming Dynasty": {window: [1403, 1501], what: "five-clawed dragon reserved to the throne; Yongle imperial workshop sutra box (Met 2001.584a-c) \u2014 attested 1403-1424. Metropolitan Museum of Art 2001.584a-c; Cammann, 'China's Dragon Robes' (1952) on the sumptuary reservation"},
-    "Old Kingdom of Norway": {window: [1280, 1401], what: "royal banner and seal of Eirik Magnusson: crowned lion with axe \u2014 attested 1280-1285. Tr\u00e6tteberg, 'Norges statssymboler inntil 1814', Historisk tidsskrift 29 (1933)"},
-    "Pala Empire": {window: [800, 1161], what: "Pala royal seal on the copper-plate charters: wheel flanked by two deer (Nalanda plate of Devapaladeva) \u2014 attested 860. Sastri, 'The Nalanda Copper-plate of Devapaladeva', Epigraphia Indica XVII (1923-24)"},
-    "Parthian Empire": {window: [-36, 224], what: "seated archer, the invariant reverse of the Arsacid drachm \u2014 attested c. 238 BCE - 224 CE. Sellwood, 'An Introduction to the Coinage of Parthia' (1980); Sylloge Nummorum Parthicorum"},
-    "Principality of Moldavia": {window: [1377, 1506], what: "groschen of Petru I Mu\u0219at, aurochs head; his sigillum of 1387 \u2014 attested c. 1377-1391. Cernovodeanu, '\u0218tiin\u021ba \u0219i arta heraldic\u0103 \u00een Rom\u00e2nia' (1977)"},
-    "Rasulid Dynasty": {window: [1250, 1454], what: "Rasulid five-petalled rosette on the brazier of al-Malik al-Muzaffar (Met 91.1.540) \u2014 attested later 13th century. Metropolitan Museum of Art 91.1.540; Kenney, Der Islam 98:1 (2021)"},
-    "Serbian Empire": {window: [1352, 1458], what: "double-headed eagle on Du\u0161an's state documents and stamps; readopted after 1402 \u2014 attested 1331-1355. Solovjev, 'Istorija srpskog grba' (1958)"},
-    "Teutonic Order": {window: [1236, 1520], what: "the Order's banner, white with a black cross, in the Banderia Prutenorum (BJ Rkp. 10001) \u2014 attested banners 1410; codex 1448. D\u0142ugosz, 'Banderia Prutenorum' (1448), Biblioteka Jagiello\u0144ska BJ Rkp. 10001"},
-    "Timurid Empire": {window: [1375, 1405], what: "Timur's three-annulet tamgha on seal and coin, described by Clavijo at his court \u2014 attested c. 1370-1405. Clavijo, 'Embassy to Tamerlane 1403-1406', trans. Le Strange (1928)"},
-    "West Franks": {window: [864, 923], what: "denier GRATIA DEI REX with the Karolus monogram \u2014 attested from 864. Grierson & Blackburn, 'Medieval European Coinage' 1 (1986); Sarah, 'Charlemagne, Charles the Bald and the Karolus monogram coinage'"},
-    "Western Satraps": {window: [78, 405], what: "three-arched hill with river, crescent and sun: the fixed drachm reverse \u2014 attested c. 78-405. Jha & Rajgor, 'Studies in the Coinage of the Western K\u1e63atrapas' (1994)"},
+  // NAMED AND CITED, BUT NO RECORD OF ITS FORM: the device is attested, this map cannot say what it looked like,
+  // so it is not drawn. Inventing the shape would be a false claim on screen, the same error as a wrong identifier.
+  // WHERE THE SOURCE'S OWN LABEL CONTRADICTS ITS SHAPES, found after the acts were built and checked against the
+  // source's own records before being written.
+  const EXTRA_SOURCE_NOTES = {
+    "County of Ribagorza": [{"from": 866, "to": 1014, "short": "SOURCE LABEL DISPUTED", "html": "<strong>THE SOURCE'S NAME FOR THIS GROUND IS WRONG, AND THIS MAP DRAWS IT AS THE SOURCE DOES.</strong> Cliopatria v0.2.0 renames the Kingdom of Pamplona to <em>County of Ribagorza</em> in 866 and keeps that name on the same ground into the eleventh century. The ground is Pamplona's: the last Pamplona shape (860\u2013865) and the first Ribagorza shape (866\u2013874) share a centre at 42.9\u00b0N 2.0\u00b0W and the same radius, in the western Pyrenees and the upper Ebro. The county of Ribagorza lay about 200 km east, in the eastern Pyrenees around Graus, near 42.2\u00b0N 0.3\u00b0E. Pamplona did not end in 866: it is the kingdom that became Navarre, which this map draws again from 1139. The name on this ground between 866 and 1014 is the source's."}],
+    "Umayyad Caliphate": [{"from": 751, "to": 756, "short": "SOURCE LABEL DISPUTED", "html": "<strong>THE SOURCE'S NAME FOR THIS GROUND IS WRONG, AND THIS MAP DRAWS IT AS THE SOURCE DOES.</strong> Cliopatria v0.2.0 keeps the name <em>Umayyad Caliphate</em> on this ground until 757, then renames it Emirate of C\u00f3rdoba. Its own shapes contradict the label: the Umayyad shape for 750 is centred on Arabia (20.1\u00b0N 47.4\u00b0E, radius 5.8\u00b0), and the next two, for 751\u2013754 and 755\u2013756, are central Iberia (39.4\u00b0N 3.4\u00b0W, radius 2.5\u00b0). The caliphate crosses from Arabia to Spain in a single year and keeps its name. The Umayyad Caliphate fell to the Abbasids in 750 \u2014 the source draws the Abbasid Caliphate separately from that year \u2014 and Abd al-Rahman I founded the emirate at C\u00f3rdoba in 756. The five Iberian years drawn under the caliphate's name are the source's, not this map's."}]
   };
-  const pendAt = (name, y) => { const q = INSIGNIA_PENDING[name]; return q && y >= q.window[0] && y <= q.window[1] ? q : null; };
-  // ATTESTED only inside the device's window of use, where one is given: outside it the mark is ILLUSTRATIVE
-  const attAt = (name, y) => { const a = INSIGNIA_ATTESTED[name]; return a && (!a.window || (y >= a.window[0] && y <= a.window[1])) ? a : null; };
+  const INSIGNIA_NOFORM = {
+    "Indo-Parthians": {what: "the Gondopharid tamga on coins and countermarks \u2014 attested c. 19-90 CE. Senior, 'Indo-Scythian Coins and History' (CNG, 2001)"},
+    "Kidarites": {what: "the Kidarite tamga on gold dinars and silver drachms \u2014 attested 4th-5th century. Jongeward & Cribb (ANS, 2015); Cribb, 'The Kidarites, the numismatic evidence' (2010)"},
+    "Kingdom of Georgia": {what: "Bagrationi badge on the copper coinage of Tamar and David Soslan (1200) and David VIII \u2014 attested 1200-1310. Dundua & Dundua, 'Catalogue of Georgian Numismatics' types 70, 56; Kapanadze, 'Gruzinskaya numizmatika' (1955)"},
+  };
+  // a polity may hold more than one device across its life; ATTESTED only inside the window each device was in use
+  const DEVICES = name => { const a = INSIGNIA_ATTESTED[name]; return !a ? [] : (Array.isArray(a) ? a : [a]); };
+  const attAt = (name, y) => DEVICES(name).find(d => !d.window || (y >= d.window[0] && y <= d.window[1])) || null;
+  const deviceElsewhere = name => { const d = DEVICES(name); if(!d.length) return null;
+    return 'This polity\u2019s attested device is ' + d.map(x => x.what + (x.window ? ' \u2014 in use ' + fmtRange(x.window[0], x.window[1]) : '')).join('; and ')
+      + ' \u2014 not at this date, so it is not drawn here.'; };
   const MOTIFS = ['dots', 'chevrons', 'lozenge', 'rays', 'rings', 'bars', 'wave', 'nested'];
   const FRAMES = ['circle', 'square', 'diamond'];
   function hash(s){ let h = 2166136261; for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
@@ -3895,6 +3901,10 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       ACTS[i].carry ? fetch('data/borders/' + ACTS[i].carry).then(r => r.ok ? r.json() : null).catch(() => null) : Promise.resolve(null)
     ]).then(([hdr, buf, carry]) => {
       if(carry && carry.pairSince && !hdr.pairSince) hdr.pairSince = carry.pairSince;
+      // notes found after the acts were built: merged as the act loads, so no act's bytes change
+      Object.keys(EXTRA_SOURCE_NOTES).forEach(n => {
+        hdr.sourceNotes[n] = (hdr.sourceNotes[n] || []).concat(EXTRA_SOURCE_NOTES[n]);
+      });
       const t0 = performance.now(), o = {hdr, idx: i};
       o.W = hdr.w; o.H = hdr.h; o.WEST = hdr.west; o.NORTH = hdr.north; o.CELL = hdr.cell; o.QPY = hdr.qpy; o.A0 = hdr.act[0]; o.A1 = hdr.act[1];
       o.SETS = hdr.sets;
@@ -3964,7 +3974,18 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   fetch('data/borders/' + ACTS_FILE).then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(m => { ACTS = m.acts; BORDERS.acts = ACTS; BORDERS.spanText = m.drawn;
       const ln = [...document.querySelectorAll('.legend-note')].find(n => n.innerHTML.indexOf('drawn so far for') >= 0);
-      if(ln) ln.innerHTML = ln.innerHTML.replace(/drawn so far for [^.<]*\./, 'drawn so far for ' + m.drawn + '.'); BORDERS.state = 'ready'; if(statusEl()) statusEl().textContent = ''; render(+scrub.value); })
+      if(ln) ln.innerHTML = ln.innerHTML.replace(/drawn so far for [^.<]*\./, 'drawn so far for ' + m.drawn + '.');
+      const insEl = document.getElementById('insigniaLine');
+      if(insEl){
+        const nm = Object.keys(INSIGNIA_ATTESTED), devs = nm.reduce((n, k) => n + DEVICES(k).length, 0);
+        const held = Object.keys(INSIGNIA_NOFORM).length;
+        insEl.innerHTML = '<strong>Insignia: ' + (nm.length + held) + ' polities carry a device attested for them, with a named object, a date and a citation.</strong> '
+          + nm.length + ' are drawn — ' + devs + ' devices in all, because a polity could change its device and stay itself — and ' + held
+          + ' are named in the popup but not drawn, because no source read for this map records what they looked like. '
+          + 'Every other mark is ILLUSTRATIVE, designed for this map. That is a fact about this map’s search and not about the past: '
+          + 'of the 779 polities drawn between 1 CE and 1500 CE, 433 were looked at and 346 were never examined at all, '
+          + 'so an illustrative mark means no device was found for this map, not that the polity had none.';
+      } BORDERS.state = 'ready'; if(statusEl()) statusEl().textContent = ''; render(+scrub.value); })
     .catch(err => {
       BORDERS.state = 'failed';
       if(statusEl()) statusEl().textContent = ' — the borders data did not load';
@@ -4134,10 +4155,10 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       if(pt.x < -30 || pt.y < -30 || pt.x > s.x + 30 || pt.y > s.y + 30) continue;
       const rad = degToPx(r[3], r[4], r[5]);
       if(rad < 22) continue;                      // only where the ground is big enough to hold a mark without crowding
-      glyph(hdr.polities[pid - 1], pt.x, pt.y, Math.min(20, rad * 0.8));
+      glyph(hdr.polities[pid - 1], pt.x, pt.y, Math.min(20, rad * 0.8), ctx);
     }
   }
-  function glyph(name, x, y, size){
+  function glyph(name, x, y, size, ctx){
     const h = size / 2, att = attAt(name, BORDERS.year);
     ctx.save(); ctx.translate(x, y);
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
@@ -4152,6 +4173,68 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     ctx.lineWidth = 1.3; ctx.strokeStyle = BONE; ctx.globalAlpha = 0.95; path(); ctx.stroke();
     ctx.fillStyle = BONE; ctx.strokeStyle = BONE; ctx.lineWidth = Math.max(1.2, size / 11);
     const k = h * 0.58;
+    // shapes more than one device is built from, so a lion or an eagle is the same beast wherever it is borne
+    const circle = (cx, cy, r) => { ctx.moveTo(cx + r, cy); ctx.arc(cx, cy, r, 0, Math.PI * 2); };
+    const eagle = heads => {                            // eagle displayed: body, spread wings, one head or two
+      ctx.moveTo(0, -k * 0.3); ctx.lineTo(0, k * 0.55);
+      ctx.moveTo(0, -k * 0.15); ctx.lineTo(-k * 0.9, -k * 0.5); ctx.lineTo(-k * 0.5, k * 0.15);
+      ctx.moveTo(0, -k * 0.15); ctx.lineTo(k * 0.9, -k * 0.5); ctx.lineTo(k * 0.5, k * 0.15);
+      ctx.moveTo(-k * 0.3, k * 0.8); ctx.lineTo(0, k * 0.55); ctx.lineTo(k * 0.3, k * 0.8); ctx.stroke();
+      ctx.beginPath();
+      if(heads === 2){ circle(-k * 0.28, -k * 0.6, k * 0.16); circle(k * 0.28, -k * 0.6, k * 0.16); }
+      else circle(0, -k * 0.58, k * 0.18);
+      ctx.fill(); ctx.beginPath();
+    };
+    const lion = (rampant, sc, dx, dy) => {             // lion rearing (rampant) or walking (passant)
+      const m = k * (sc || 1), px = dx || 0, py = dy || 0;
+      const X = u => px + u * m, Y = v => py + v * m;
+      if(rampant){                                      // reared on the hind legs, tail sweeping up behind
+        ctx.moveTo(X(-0.18), Y(-0.42)); ctx.lineTo(X(0.06), Y(0.42));          // torso, leaning back
+        ctx.moveTo(X(-0.12), Y(-0.26)); ctx.lineTo(X(0.5), Y(-0.6));           // upper foreleg, striking
+        ctx.moveTo(X(-0.04), Y(-0.02)); ctx.lineTo(X(0.46), Y(-0.06));         // lower foreleg
+        ctx.moveTo(X(0.06), Y(0.42)); ctx.lineTo(X(-0.38), Y(0.9));            // hind legs
+        ctx.moveTo(X(0.06), Y(0.42)); ctx.lineTo(X(0.34), Y(0.9));
+        ctx.moveTo(X(0.1), Y(0.3)); ctx.quadraticCurveTo(X(0.92), Y(0.05), X(0.68), Y(-0.78)); // tail
+        ctx.stroke(); ctx.beginPath();
+        circle(X(-0.28), Y(-0.6), m * 0.19); ctx.fill(); ctx.beginPath();      // head
+        ctx.moveTo(X(-0.44), Y(-0.6)); ctx.lineTo(X(-0.66), Y(-0.52)); ctx.lineTo(X(-0.44), Y(-0.46));
+        ctx.closePath(); ctx.fill(); ctx.beginPath();                          // muzzle
+      } else {                                          // walking, tail up
+        ctx.moveTo(X(-0.52), Y(-0.02)); ctx.lineTo(X(0.42), Y(-0.02));
+        [-0.4, -0.12, 0.14, 0.4].forEach(u => { ctx.moveTo(X(u), Y(-0.02)); ctx.lineTo(X(u), Y(0.52)); });
+        ctx.moveTo(X(0.42), Y(-0.02)); ctx.quadraticCurveTo(X(0.85), Y(-0.2), X(0.66), Y(-0.66));
+        ctx.stroke(); ctx.beginPath();
+        circle(X(-0.62), Y(-0.24), m * 0.2); ctx.fill(); ctx.beginPath();
+        ctx.moveTo(X(-0.78), Y(-0.22)); ctx.lineTo(X(-0.98), Y(-0.14)); ctx.lineTo(X(-0.76), Y(-0.08));
+        ctx.closePath(); ctx.fill(); ctx.beginPath();
+      }
+    };
+    const lionHead = (cx, cy, r) => {                   // a lion's head, for quarters too small to hold a beast
+      ctx.moveTo(cx + r, cy); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.moveTo(cx - r * 1.35, cy - r * 0.55); ctx.arc(cx - r * 0.95, cy - r * 0.6, r * 0.4, 0, Math.PI * 2);
+      ctx.moveTo(cx + r * 1.35, cy - r * 0.55); ctx.arc(cx + r * 0.95, cy - r * 0.6, r * 0.4, 0, Math.PI * 2); };
+    const crown = (cx, cy, r) => { ctx.moveTo(cx - r, cy + r * 0.45); ctx.lineTo(cx - r, cy - r * 0.15);
+      ctx.lineTo(cx - r * 0.5, cy + r * 0.2); ctx.lineTo(cx, cy - r * 0.5); ctx.lineTo(cx + r * 0.5, cy + r * 0.2);
+      ctx.lineTo(cx + r, cy - r * 0.15); ctx.lineTo(cx + r, cy + r * 0.45); ctx.closePath(); };
+    const fleur = (cx, cy, r) => {                      // fleur-de-lis: centre petal, two side petals, band, foot
+      ctx.moveTo(cx, cy - r);                                                  // centre petal, pointed above
+      ctx.bezierCurveTo(cx + r * 0.3, cy - r * 0.55, cx + r * 0.34, cy - r * 0.1, cx + r * 0.2, cy + r * 0.24);
+      ctx.lineTo(cx - r * 0.2, cy + r * 0.24);
+      ctx.bezierCurveTo(cx - r * 0.34, cy - r * 0.1, cx - r * 0.3, cy - r * 0.55, cx, cy - r);
+      ctx.moveTo(cx - r * 0.18, cy - r * 0.06);                                // side petal, curling out and down
+      ctx.bezierCurveTo(cx - r * 0.62, cy - r * 0.5, cx - r * 0.98, cy + r * 0.02, cx - r * 0.62, cy + r * 0.24);
+      ctx.lineTo(cx - r * 0.2, cy + r * 0.24); ctx.closePath();
+      ctx.moveTo(cx + r * 0.18, cy - r * 0.06);
+      ctx.bezierCurveTo(cx + r * 0.62, cy - r * 0.5, cx + r * 0.98, cy + r * 0.02, cx + r * 0.62, cy + r * 0.24);
+      ctx.lineTo(cx + r * 0.2, cy + r * 0.24); ctx.closePath();
+      ctx.moveTo(cx - r * 0.72, cy + r * 0.3); ctx.lineTo(cx + r * 0.72, cy + r * 0.3);  // the band
+      ctx.lineTo(cx + r * 0.72, cy + r * 0.46); ctx.lineTo(cx - r * 0.72, cy + r * 0.46); ctx.closePath();
+      ctx.moveTo(cx - r * 0.34, cy + r * 0.52); ctx.lineTo(cx + r * 0.34, cy + r * 0.52);  // the foot
+      ctx.lineTo(cx, cy + r); ctx.closePath(); };
+    const tower = (cx, cy, w, hh) => {                  // a crenellated tower
+      ctx.moveTo(cx - w, cy + hh); ctx.lineTo(cx - w, cy - hh); ctx.lineTo(cx - w * 0.45, cy - hh);
+      ctx.lineTo(cx - w * 0.45, cy - hh * 0.55); ctx.lineTo(cx + w * 0.45, cy - hh * 0.55);
+      ctx.lineTo(cx + w * 0.45, cy - hh); ctx.lineTo(cx + w, cy - hh); ctx.lineTo(cx + w, cy + hh); };
     const motif = att ? att.glyph : MOTIFS[hv % MOTIFS.length];
     ctx.beginPath();
     switch(motif){
@@ -4173,6 +4256,287 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       case 'rings': ctx.arc(0, 0, k * 0.85, 0, Math.PI * 2); ctx.moveTo(k * 0.4, 0); ctx.arc(0, 0, k * 0.4, 0, Math.PI * 2); ctx.stroke(); break;
       case 'bars': [-0.55, 0, 0.55].forEach(v => { ctx.moveTo(-k * 0.8, v * k); ctx.lineTo(k * 0.8, v * k); }); ctx.stroke(); break;
       case 'wave': [-0.35, 0.35].forEach(v => { ctx.moveTo(-k, v * k); ctx.bezierCurveTo(-k * 0.4, v * k - k * 0.5, k * 0.4, v * k + k * 0.5, k, v * k); }); ctx.stroke(); break;
+
+      // ---- the devices of 1-1500 CE (ruled 2026-09-20). Silhouettes of what the object shows, not copies of it.
+      case 'threelions': {                                // three lions passant, one above another
+        ctx.lineWidth = Math.max(0.9, size / 20);
+        [-0.62, 0.02, 0.66].forEach(v => lion(false, 0.5, -k * 0.04, v * k)); ctx.stroke(); break;
+      }
+      case 'lionaxe': {                                   // crowned lion rearing, an axe held up
+        lion(true);
+        ctx.moveTo(k * 0.25, k * 0.3); ctx.lineTo(k * 0.6, -k * 0.75); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(k * 0.45, -k * 0.95); ctx.lineTo(k * 0.98, -k * 0.6);
+        ctx.lineTo(k * 0.45, -k * 0.45); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); crown(-k * 0.05, -k * 0.9, k * 0.26); ctx.fill(); break;
+      }
+      case 'threecrowns': {                               // three crowns, two below one
+        crown(0, -k * 0.5, k * 0.36); crown(-k * 0.52, k * 0.5, k * 0.36); crown(k * 0.52, k * 0.5, k * 0.36);
+        ctx.fill(); break;
+      }
+      case 'crownedeagle': { eagle(1); crown(0, -k * 0.95, k * 0.3); ctx.fill(); break; }
+      case 'eagle': { eagle(1); ctx.stroke(); break; }
+      case 'doubleeagle': { eagle(2); ctx.stroke(); break; }
+      case 'eaglecrescent': {                             // eagle with a crescent laid across its breast
+        eagle(1);
+        ctx.arc(0, -k * 0.05, k * 0.34, Math.PI * 0.85, Math.PI * 0.15, true);
+        ctx.stroke(); break;
+      }
+      case 'doublecross': {                               // patriarchal cross, two bars
+        ctx.moveTo(0, -k * 0.95); ctx.lineTo(0, k * 0.95);
+        ctx.moveTo(-k * 0.45, -k * 0.5); ctx.lineTo(k * 0.45, -k * 0.5);
+        ctx.moveTo(-k * 0.68, k * 0.12); ctx.lineTo(k * 0.68, k * 0.12); ctx.stroke(); break;
+      }
+      case 'plaincross': {                                // a plain cross throughout
+        ctx.lineWidth = Math.max(2, size / 7);
+        ctx.moveTo(0, -k * 0.95); ctx.lineTo(0, k * 0.95);
+        ctx.moveTo(-k * 0.95, 0); ctx.lineTo(k * 0.95, 0); ctx.stroke(); break;
+      }
+      case 'bendfleurs': {                                // a bend between six fleurs-de-lis
+        ctx.lineWidth = Math.max(2.5, size / 6);
+        ctx.moveTo(-k * 0.85, k * 0.72); ctx.lineTo(k * 0.72, -k * 0.85); ctx.stroke();
+        ctx.lineWidth = Math.max(1.2, size / 11); ctx.beginPath();
+        [[-0.72, -0.18], [-0.34, -0.6], [-0.06, -0.92]].forEach(q => { fleur(q[0] * k, q[1] * k, k * 0.24);
+          fleur(-q[0] * k, -q[1] * k, k * 0.24); });
+        ctx.fill(); break;
+      }
+      case 'aurochs': {                                   // aurochs head, a star between the horns
+        ctx.moveTo(-k * 0.45, -k * 0.1); ctx.lineTo(-k * 0.3, k * 0.55); ctx.lineTo(k * 0.3, k * 0.55);
+        ctx.lineTo(k * 0.45, -k * 0.1); ctx.closePath();
+        ctx.moveTo(-k * 0.45, -k * 0.1); ctx.quadraticCurveTo(-k * 0.95, -k * 0.5, -k * 0.6, -k * 0.9);
+        ctx.moveTo(k * 0.45, -k * 0.1); ctx.quadraticCurveTo(k * 0.95, -k * 0.5, k * 0.6, -k * 0.9); ctx.stroke();
+        ctx.beginPath(); for(let i = 0; i < 5; i++){ const a = -Math.PI / 2 + i * Math.PI * 0.4;
+          ctx.moveTo(0, -k * 0.55); ctx.lineTo(Math.cos(a) * k * 0.28, -k * 0.55 + Math.sin(a) * k * 0.28); }
+        ctx.stroke(); break;
+      }
+      case 'lionrampant': { lion(true); ctx.stroke(); break; }
+      case 'lionpassant': { lion(false); ctx.stroke(); break; }
+      case 'crescent': {                                  // a crescent
+        ctx.arc(0, 0, k * 0.9, Math.PI * 0.42, Math.PI * 1.58);
+        ctx.arc(-k * 0.3, 0, k * 0.78, Math.PI * 1.5, Math.PI * 0.5, true); ctx.closePath(); ctx.fill(); break;
+      }
+      case 'kongoarms': {                                 // a cross with sword-bearing arms around it
+        ctx.moveTo(0, -k * 0.5); ctx.lineTo(0, k * 0.5); ctx.moveTo(-k * 0.5, 0); ctx.lineTo(k * 0.5, 0);
+        for(let i = 0; i < 4; i++){ const a = Math.PI / 4 + i * Math.PI / 2;
+          ctx.moveTo(Math.cos(a) * k * 0.35, Math.sin(a) * k * 0.35);
+          ctx.lineTo(Math.cos(a) * k * 0.98, Math.sin(a) * k * 0.98); }
+        ctx.stroke(); break;
+      }
+      case 'temple': {                                    // temple facade, a cross above it
+        ctx.moveTo(-k * 0.85, k * 0.8); ctx.lineTo(-k * 0.7, -k * 0.1); ctx.lineTo(k * 0.7, -k * 0.1);
+        ctx.lineTo(k * 0.85, k * 0.8);
+        [-0.35, 0, 0.35].forEach(u => { ctx.moveTo(u * k, -k * 0.1); ctx.lineTo(u * k, k * 0.8); });
+        ctx.moveTo(-k * 0.8, -k * 0.1); ctx.lineTo(0, -k * 0.5); ctx.lineTo(k * 0.8, -k * 0.1);
+        ctx.moveTo(0, -k * 0.55); ctx.lineTo(0, -k * 0.95);
+        ctx.moveTo(-k * 0.2, -k * 0.78); ctx.lineTo(k * 0.2, -k * 0.78); ctx.stroke(); break;
+      }
+      case 'karolus': {                                   // the KAROLVS monogram: a cross with lettered terminals
+        ctx.moveTo(0, -k * 0.75); ctx.lineTo(0, k * 0.75); ctx.moveTo(-k * 0.75, 0); ctx.lineTo(k * 0.75, 0);
+        ctx.moveTo(-k * 0.2, k * 0.2); ctx.lineTo(0, -k * 0.15); ctx.lineTo(k * 0.2, k * 0.2); ctx.stroke();
+        ctx.beginPath(); [[0, -0.92], [0, 0.92], [-0.92, 0], [0.92, 0]].forEach(q => circle(q[0] * k, q[1] * k, k * 0.16));
+        ctx.fill(); break;
+      }
+      case 'fleurdelis': { fleur(0, 0, k * 0.98); ctx.fill(); break; }
+      case 'toulousecross': {                             // voided cross of Toulouse, twelve pommels
+        const a = k * 0.34, b = k * 0.9;
+        ctx.moveTo(-a, -a); ctx.lineTo(-a, -b); ctx.lineTo(a, -b); ctx.lineTo(a, -a); ctx.lineTo(b, -a);
+        ctx.lineTo(b, a); ctx.lineTo(a, a); ctx.lineTo(a, b); ctx.lineTo(-a, b); ctx.lineTo(-a, a);
+        ctx.lineTo(-b, a); ctx.lineTo(-b, -a); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); [[-a, -b], [a, -b], [-a, b], [a, b], [-b, -a], [-b, a], [b, -a], [b, a]]
+          .forEach(q => circle(q[0], q[1], k * 0.13)); ctx.fill(); break;
+      }
+      case 'bendcotices': {                               // a bend between two notched cotices
+        ctx.lineWidth = Math.max(2, size / 8);
+        ctx.moveTo(-k * 0.7, k * 0.7); ctx.lineTo(k * 0.7, -k * 0.7); ctx.stroke();
+        ctx.lineWidth = Math.max(1.2, size / 12); ctx.beginPath();
+        ctx.moveTo(-k * 0.95, k * 0.2); ctx.lineTo(-k * 0.2, k * 0.95);
+        ctx.moveTo(k * 0.2, -k * 0.95); ctx.lineTo(k * 0.95, -k * 0.2); ctx.stroke(); break;
+      }
+      case 'ermine': {                                    // three ermine spots
+        const spots = [[0, -0.5], [-0.52, 0.42], [0.52, 0.42]];
+        spots.forEach(q => {                              // the spot: a tail widening to a point, dots above it
+          const cx = q[0] * k, cy = q[1] * k, r = k * 0.42;
+          ctx.moveTo(cx, cy + r * 0.85); ctx.quadraticCurveTo(cx - r * 0.5, cy + r * 0.1, cx - r * 0.42, cy - r * 0.3);
+          ctx.lineTo(cx + r * 0.42, cy - r * 0.3);
+          ctx.quadraticCurveTo(cx + r * 0.5, cy + r * 0.1, cx, cy + r * 0.85); ctx.closePath(); });
+        ctx.fill(); ctx.beginPath();
+        spots.forEach(q => { [-0.42, 0, 0.42].forEach((u, j) =>
+          circle(q[0] * k + u * k * 0.34, q[1] * k - k * (j === 1 ? 0.5 : 0.36), k * 0.1)); });
+        ctx.fill(); break;
+      }
+      case 'quarterlions': {                              // a quartered field, a lion in each quarter
+        ctx.moveTo(0, -k * 0.95); ctx.lineTo(0, k * 0.95); ctx.moveTo(-k * 0.95, 0); ctx.lineTo(k * 0.95, 0);
+        [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]].forEach(q => {
+          ctx.moveTo(q[0] * k - k * 0.28, q[1] * k + k * 0.12); ctx.lineTo(q[0] * k + k * 0.26, q[1] * k + k * 0.12);
+          ctx.moveTo(q[0] * k + k * 0.26, q[1] * k + k * 0.12); ctx.lineTo(q[0] * k + k * 0.4, q[1] * k - k * 0.08); });
+        ctx.stroke(); ctx.beginPath();
+        [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]].forEach(q => circle(q[0] * k - k * 0.34, q[1] * k + k * 0.02, k * 0.11));
+        ctx.fill(); break;
+      }
+      case 'jewelledcross': {                             // a jewelled cross, alpha and omega hanging from the arms
+        ctx.moveTo(0, -k * 0.85); ctx.lineTo(0, k * 0.9); ctx.moveTo(-k * 0.8, -k * 0.2); ctx.lineTo(k * 0.8, -k * 0.2);
+        ctx.moveTo(-k * 0.5, k * 0.15); ctx.lineTo(-k * 0.5, -k * 0.2);
+        ctx.moveTo(k * 0.5, k * 0.15); ctx.lineTo(k * 0.5, -k * 0.2); ctx.stroke();
+        ctx.beginPath(); circle(0, -k * 0.2, k * 0.14); circle(0, -k * 0.62, k * 0.1);
+        circle(-k * 0.5, k * 0.32, k * 0.13); circle(k * 0.5, k * 0.32, k * 0.13); ctx.fill(); break;
+      }
+      case 'castle': {                                    // a three-towered castle with its gate
+        tower(0, -k * 0.25, k * 0.28, k * 0.3); tower(-k * 0.62, -k * 0.1, k * 0.25, k * 0.26);
+        tower(k * 0.62, -k * 0.1, k * 0.25, k * 0.26);
+        ctx.moveTo(-k * 0.85, k * 0.85); ctx.lineTo(-k * 0.85, k * 0.16); ctx.lineTo(k * 0.85, k * 0.16);
+        ctx.lineTo(k * 0.85, k * 0.85); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(-k * 0.2, k * 0.85); ctx.lineTo(-k * 0.2, k * 0.45);
+        ctx.arc(0, k * 0.45, k * 0.2, Math.PI, 0); ctx.lineTo(k * 0.2, k * 0.85); ctx.fill(); break;
+      }
+      case 'castlelion': {                                // quarterly, a castle and a lion
+        ctx.moveTo(0, -k * 0.95); ctx.lineTo(0, k * 0.95); ctx.moveTo(-k * 0.95, 0); ctx.lineTo(k * 0.95, 0);
+        tower(-k * 0.5, -k * 0.48, k * 0.3, k * 0.3); tower(k * 0.5, k * 0.52, k * 0.3, k * 0.3); ctx.stroke();
+        ctx.beginPath(); lionHead(k * 0.5, -k * 0.48, k * 0.24); lionHead(-k * 0.5, k * 0.52, k * 0.24);
+        ctx.fill(); break;
+      }
+      case 'chains': {                                    // the chains of Navarre, radiating to a boss
+        for(let i = 0; i < 8; i++){ const a = i * Math.PI / 4;
+          ctx.moveTo(Math.cos(a) * k * 0.3, Math.sin(a) * k * 0.3);
+          ctx.lineTo(Math.cos(a) * k * 0.95, Math.sin(a) * k * 0.95); }
+        ctx.moveTo(k * 0.62, 0); ctx.arc(0, 0, k * 0.62, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); circle(0, 0, k * 0.2); ctx.fill(); break;
+      }
+      case 'band': {                                      // a shield crossed by a diagonal band
+        ctx.moveTo(-k * 0.78, -k * 0.85); ctx.lineTo(k * 0.78, -k * 0.85); ctx.lineTo(k * 0.78, k * 0.2);
+        ctx.quadraticCurveTo(k * 0.78, k * 0.9, 0, k * 0.95);
+        ctx.quadraticCurveTo(-k * 0.78, k * 0.9, -k * 0.78, k * 0.2); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.lineWidth = Math.max(2, size / 8);
+        ctx.moveTo(-k * 0.55, -k * 0.6); ctx.lineTo(k * 0.5, k * 0.5); ctx.stroke(); break;
+      }
+      case 'pallets': {                                   // four pallets
+        ctx.lineWidth = Math.max(2, size / 8);
+        [-0.66, -0.22, 0.22, 0.66].forEach(u => { ctx.moveTo(u * k, -k * 0.9); ctx.lineTo(u * k, k * 0.9); });
+        ctx.stroke(); break;
+      }
+      case 'escutcheons': {                               // five small shields set in cross
+        [[0, 0], [0, -0.62], [0, 0.62], [-0.62, 0], [0.62, 0]].forEach(q => {
+          const cx = q[0] * k, cy = q[1] * k, w = k * 0.2, hh = k * 0.24;
+          ctx.moveTo(cx - w, cy - hh); ctx.lineTo(cx + w, cy - hh); ctx.lineTo(cx + w, cy + hh * 0.2);
+          ctx.quadraticCurveTo(cx + w, cy + hh, cx, cy + hh); ctx.quadraticCurveTo(cx - w, cy + hh, cx - w, cy + hh * 0.2);
+          ctx.closePath(); });
+        ctx.stroke(); break;
+      }
+      case 'crosssteps': {                                // a cross potent standing on three steps
+        ctx.moveTo(0, -k * 0.95); ctx.lineTo(0, k * 0.3); ctx.moveTo(-k * 0.5, -k * 0.42); ctx.lineTo(k * 0.5, -k * 0.42);
+        ctx.moveTo(-k * 0.5, -k * 0.62); ctx.lineTo(-k * 0.5, -k * 0.22);
+        ctx.moveTo(k * 0.5, -k * 0.62); ctx.lineTo(k * 0.5, -k * 0.22);
+        ctx.moveTo(-k * 0.18, -k * 0.95); ctx.lineTo(k * 0.18, -k * 0.95);
+        [[0.3, 0.3], [0.55, 0.55], [0.8, 0.85]].forEach(q => { ctx.moveTo(-k * q[1], k * q[0]); ctx.lineTo(k * q[1], k * q[0]); });
+        ctx.stroke(); break;
+      }
+      case 'trident': {                                   // the Rurikid trident tamga
+        ctx.moveTo(0, -k * 0.35); ctx.lineTo(0, k * 0.95);
+        ctx.moveTo(-k * 0.75, -k * 0.9); ctx.lineTo(-k * 0.75, k * 0.1);
+        ctx.quadraticCurveTo(-k * 0.7, k * 0.6, 0, k * 0.72);
+        ctx.quadraticCurveTo(k * 0.7, k * 0.6, k * 0.75, k * 0.1);
+        ctx.lineTo(k * 0.75, -k * 0.9);
+        ctx.moveTo(0, -k * 0.35); ctx.lineTo(0, -k * 0.95); ctx.stroke(); break;
+      }
+      case 'columns': {                                   // the Columns of Gediminas
+        ctx.moveTo(-k * 0.7, k * 0.9); ctx.lineTo(-k * 0.7, -k * 0.3);
+        ctx.quadraticCurveTo(-k * 0.7, -k * 0.85, 0, -k * 0.85);
+        ctx.quadraticCurveTo(k * 0.7, -k * 0.85, k * 0.7, -k * 0.3);
+        ctx.lineTo(k * 0.7, k * 0.9);
+        ctx.moveTo(0, k * 0.9); ctx.lineTo(0, -k * 0.5);
+        ctx.moveTo(-k * 0.7, k * 0.2); ctx.lineTo(k * 0.7, k * 0.2); ctx.stroke(); break;
+      }
+      case 'tarak': {                                     // the tarak (comb) tamga of the Girays
+        ctx.moveTo(-k * 0.85, k * 0.45); ctx.lineTo(k * 0.85, k * 0.45);
+        [-0.6, 0, 0.6].forEach(u => { ctx.moveTo(u * k, k * 0.45); ctx.lineTo(u * k, -k * 0.7); });
+        ctx.moveTo(-k * 0.85, k * 0.45); ctx.lineTo(-k * 0.85, k * 0.8);
+        ctx.moveTo(k * 0.85, k * 0.45); ctx.lineTo(k * 0.85, k * 0.8); ctx.stroke(); break;
+      }
+      case 'aksumcross': {                                // the Aksumite cross set in a roundel
+        ctx.arc(0, 0, k * 0.92, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); const a2 = k * 0.55, b2 = k * 0.18;
+        ctx.moveTo(-b2, -a2); ctx.lineTo(b2, -a2); ctx.lineTo(b2, -b2); ctx.lineTo(a2, -b2); ctx.lineTo(a2, b2);
+        ctx.lineTo(b2, b2); ctx.lineTo(b2, a2); ctx.lineTo(-b2, a2); ctx.lineTo(-b2, b2); ctx.lineTo(-a2, b2);
+        ctx.lineTo(-a2, -b2); ctx.lineTo(-b2, -b2); ctx.closePath(); ctx.fill(); break;
+      }
+      case 'rosette': {                                   // the Rasulid five-petalled rosette
+        for(let i = 0; i < 5; i++){ const a = -Math.PI / 2 + i * Math.PI * 0.4;
+          circle(Math.cos(a) * k * 0.5, Math.sin(a) * k * 0.5, k * 0.33); }
+        ctx.stroke(); ctx.beginPath(); circle(0, 0, k * 0.17); ctx.fill(); break;
+      }
+      case 'banner': {                                    // a plain banner on its staff
+        ctx.moveTo(-k * 0.6, -k * 0.95); ctx.lineTo(-k * 0.6, k * 0.95); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(-k * 0.6, -k * 0.85); ctx.lineTo(k * 0.85, -k * 0.85);
+        ctx.lineTo(k * 0.85, k * 0.1); ctx.lineTo(-k * 0.6, k * 0.1); ctx.closePath(); ctx.fill(); break;
+      }
+      case 'kushantamga': {                               // the Kushan dynastic tamga
+        ctx.moveTo(0, k * 0.95); ctx.lineTo(0, -k * 0.35);
+        ctx.moveTo(-k * 0.75, -k * 0.95); ctx.quadraticCurveTo(-k * 0.8, -k * 0.1, 0, -k * 0.35);
+        ctx.quadraticCurveTo(k * 0.8, -k * 0.1, k * 0.75, -k * 0.95);
+        ctx.moveTo(-k * 0.5, k * 0.45); ctx.lineTo(k * 0.5, k * 0.45); ctx.stroke();
+        ctx.beginPath(); circle(0, -k * 0.62, k * 0.2); ctx.stroke(); break;
+      }
+      case 'chaitya': {                                   // three-arched hill, a crescent and a disc above
+        ctx.moveTo(-k * 0.95, k * 0.7);
+        [-0.6, 0, 0.6].forEach(u => { ctx.moveTo(u * k - k * 0.33, k * 0.7);
+          ctx.arc(u * k, k * 0.7, k * 0.33, Math.PI, 0); });
+        ctx.moveTo(-k * 0.95, k * 0.7); ctx.lineTo(k * 0.95, k * 0.7);
+        ctx.moveTo(-k * 0.95, k * 0.9); ctx.lineTo(k * 0.95, k * 0.9); ctx.stroke();
+        ctx.beginPath(); ctx.arc(-k * 0.45, -k * 0.5, k * 0.3, Math.PI * 0.45, Math.PI * 1.55);
+        ctx.arc(-k * 0.6, -k * 0.5, k * 0.26, Math.PI * 1.5, Math.PI * 0.5, true); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); circle(k * 0.5, -k * 0.5, k * 0.26); ctx.fill(); break;
+      }
+      case 'garuda': {                                    // the Garuda standard on its pole
+        ctx.moveTo(0, k * 0.95); ctx.lineTo(0, -k * 0.3); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, -k * 0.25); ctx.lineTo(-k * 0.85, -k * 0.6); ctx.lineTo(-k * 0.45, -k * 0.05);
+        ctx.moveTo(0, -k * 0.25); ctx.lineTo(k * 0.85, -k * 0.6); ctx.lineTo(k * 0.45, -k * 0.05);
+        ctx.moveTo(0, -k * 0.25); ctx.lineTo(0, -k * 0.62); ctx.stroke();
+        ctx.beginPath(); circle(0, -k * 0.78, k * 0.17); ctx.fill(); break;
+      }
+      case 'wheeldeer': {                                 // the wheel of the law between two deer
+        ctx.arc(0, 0, k * 0.42, 0, Math.PI * 2);
+        for(let i = 0; i < 6; i++){ const a = i * Math.PI / 3;
+          ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * k * 0.42, Math.sin(a) * k * 0.42); }
+        [-1, 1].forEach(sx => {
+          ctx.moveTo(sx * k * 0.6, k * 0.75); ctx.lineTo(sx * k * 0.6, k * 0.2);
+          ctx.lineTo(sx * k * 0.92, k * 0.05); ctx.moveTo(sx * k * 0.92, k * 0.05); ctx.lineTo(sx * k * 0.98, -k * 0.3); });
+        ctx.stroke(); break;
+      }
+      case 'threerings': {                                // three rings set in a triangle
+        [[0, -0.48], [-0.5, 0.38], [0.5, 0.38]].forEach(q => { ctx.moveTo(q[0] * k + k * 0.34, q[1] * k);
+          ctx.arc(q[0] * k, q[1] * k, k * 0.34, 0, Math.PI * 2); });
+        ctx.stroke(); break;
+      }
+      case 'tigerbow': {                                  // the Chola tiger seated, a bow below it
+        ctx.moveTo(-k * 0.6, k * 0.2); ctx.lineTo(k * 0.3, k * 0.2);
+        ctx.moveTo(-k * 0.6, k * 0.2); ctx.lineTo(-k * 0.6, -k * 0.3);
+        ctx.moveTo(k * 0.3, k * 0.2); ctx.lineTo(k * 0.55, -k * 0.55);
+        ctx.moveTo(-k * 0.2, k * 0.2); ctx.lineTo(-k * 0.2, -k * 0.15); ctx.stroke();
+        ctx.beginPath(); circle(-k * 0.72, -k * 0.45, k * 0.2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(-k * 0.8, k * 0.55); ctx.quadraticCurveTo(0, k * 0.95, k * 0.8, k * 0.55);
+        ctx.moveTo(-k * 0.8, k * 0.55); ctx.lineTo(k * 0.8, k * 0.55); ctx.stroke(); break;
+      }
+      case 'bull': {                                      // a bull couchant
+        ctx.moveTo(-k * 0.7, k * 0.5); ctx.lineTo(k * 0.45, k * 0.5);
+        ctx.quadraticCurveTo(k * 0.75, k * 0.45, k * 0.6, k * 0.05);
+        ctx.moveTo(-k * 0.7, k * 0.5); ctx.quadraticCurveTo(-k * 0.95, k * 0.1, -k * 0.6, -k * 0.15);
+        ctx.moveTo(-k * 0.6, -k * 0.15); ctx.quadraticCurveTo(-k * 0.2, -k * 0.35, k * 0.2, k * 0.1); ctx.stroke();
+        ctx.beginPath(); circle(-k * 0.72, -k * 0.3, k * 0.18); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(-k * 0.88, -k * 0.45); ctx.quadraticCurveTo(-k * 0.72, -k * 0.75, -k * 0.5, -k * 0.5);
+        ctx.stroke(); break;
+      }
+      case 'dragon': {                                    // a dragon, serpentine, with its five claws
+        ctx.lineWidth = Math.max(1.4, size / 13);
+        ctx.moveTo(-k * 0.92, k * 0.82);                  // tail, through two bends, to the neck
+        ctx.bezierCurveTo(k * 0.05, k * 0.98, -k * 0.6, k * 0.1, k * 0.15, 0);
+        ctx.bezierCurveTo(k * 0.7, -k * 0.1, k * 0.15, -k * 0.62, k * 0.44, -k * 0.74);
+        [[-0.5, 0.66], [0.02, 0.2]].forEach(q => {         // two legs, three claws spread on each
+          for(let i = 0; i < 3; i++){ const a = Math.PI * (0.38 + i * 0.17);
+            ctx.moveTo(q[0] * k, q[1] * k);
+            ctx.lineTo(q[0] * k + Math.cos(a) * k * 0.38, q[1] * k + Math.sin(a) * k * 0.38); } });
+        ctx.moveTo(k * 0.66, -k * 0.9); ctx.lineTo(k * 0.92, -k * 0.99);   // horn
+        ctx.stroke(); ctx.beginPath();
+        circle(k * 0.56, -k * 0.74, k * 0.15); ctx.fill(); break;
+      }
       // ---- the attested devices, as small silhouettes: what the object shows, not a copy of it
       case 'serekh': {                                    // palace-facade panel with a falcon on it
         ctx.rect(-k * 0.6, -k * 0.2, k * 1.2, k * 1.15); ctx.stroke();
@@ -4294,11 +4658,30 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   const owner = pid => BORDERS.hdr.polities[pid - 1];
   function describe(latlng, full){
     if(BORDERS.state !== 'ready' || !BORDERS.visible) return null;
-    const c = cellAt(latlng.lat, latlng.lng); if(c < 0 || !cur[c]) return null;
+    const c = cellAt(latlng.lat, latlng.lng);
+    if(c < 0) return null;
+    if(!cur[c]){
+      // WATER AND EDGES. A reader who clicks Constantinople in 1050 finds nothing: the cell centre falls in the
+      // Bosphorus, and whether the source's outline reaches across a strait differs from one dated shape to the
+      // next. Silence there reads as a fault, so say what it is. Open sea and open ground stay silent.
+      if(!full) return null;
+      const W2 = BORDERS.hdr.w; let near = 0;
+      for(let dy = -3; dy <= 3; dy++) for(let dx = -3; dx <= 3; dx++){
+        const n = c + dy * W2 + dx;
+        if(n >= 0 && n < cur.length && cur[n]) near++;
+      }
+      if(near < 6) return null;
+      return `<p class="pop-title">No polity holds this cell</p>`
+        + `<p class="pop-note">Held ground is close by. The source’s outlines are cut to a 0.1° grid by the`
+        + ` centre of each cell, so a strait, a bay or a coast can fall between them — at Constantinople in 1050`
+        + ` the centre of this cell is in the Bosphorus, and the shape dated 1046–1055 does not reach across it,`
+        + ` while the one dated 1094–1098 does. It is where the grid and the outline fall, not a claim about who`
+        + ` held the water.</p>`;
+    }
     const ow = SETS[cur[c]], y = BORDERS.year;
     const parts = ow.map(pid => {
-      const name = owner(pid), rec = currentRecord(pid, y), att = attAt(name, y), later = !att && INSIGNIA_ATTESTED[name];
-      const pend = !att && !later ? pendAt(name, y) : null, pendOut = !att && !later && !pend ? INSIGNIA_PENDING[name] : null;
+      const name = owner(pid), rec = currentRecord(pid, y), att = attAt(name, y);
+      const later = att ? null : deviceElsewhere(name), noform = att || later ? null : INSIGNIA_NOFORM[name];
       const member = rec && rec[6] ? rec[6].replace(/^\(|\)$/g, '') : '';
       const sw = `<span class="tier-dot" style="background:${BORDERS.hdr.colour[pid - 1]}"></span>`;
       const srcNote = rec ? (BORDERS.hdr.sourceNotes[name] || []).find(n => rec[1] >= n.from && rec[2] <= n.to) : null;
@@ -4309,9 +4692,8 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
         + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + fmtRange(rec[1], rec[2]) : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
         + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
         + (att ? `In use by this polity within its dates: ${att.what}.`
-           : later ? `Designed for this map. This polity\u2019s attested device is ${later.what} \u2014 in use ${fmtRange(later.window[0], later.window[1])}, not at this date, so it is not drawn here.`
-           : pend ? `Designed for this map. A device of this polity has been identified \u2014 ${pend.what} \u2014 and is under review; it is not drawn until it is accepted.`
-           : pendOut ? `Designed for this map. A device of this polity has been identified, in use ${fmtRange(pendOut.window[0], pendOut.window[1])}, which is not this date; it is under review and is not drawn.`
+           : later ? `Designed for this map. ${later}`
+           : noform ? `Designed for this map. This polity\u2019s device is attested \u2014 ${noform.what} \u2014 but no source read for this map says what it looked like, so it is not drawn.`
            : `Designed for this map. It is not a symbol attested for this polity within its dates \u2014 none has been identified for this map \u2014 and the picture alone cannot say so.`) + `</p>`
         + (renamed ? `<p class="pop-note">In ${renamed.year} the source ends <strong>${owner(renamed.from)}</strong> and begins <strong>${name}</strong> on the same ground. A new name on the same ground is not a conquest, so this map changes the colour in place: no front, no retreat, no new border.</p>` : '')
         + (srcNote ? `<p class="pop-note" style="color:var(--rust)">${srcNote.html}</p>` : '');
@@ -4439,6 +4821,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     return Math.max(pos0, sliderAtYearsExact(2026 - (y0 + maxStep)));
   };
   BORDERS.map = map;
+  BORDERS.glyph = glyph; BORDERS.attested = INSIGNIA_ATTESTED; BORDERS.noform = INSIGNIA_NOFORM;
   window.__borders = BORDERS;                 // inspection handle for the harness
 })();
 
@@ -4467,7 +4850,7 @@ if(BORDERS_ON){
       + 'the same at every zoom; dragging the slider never slows. A new name on the same ground changes colour in place. '
       + '<strong>Where the source\u2019s own name for a polity contradicts its shapes or its dates, the popup says so</strong> \u2014 \u201cLater Zhou\u201d for the Eastern Zhou, '
       + '\u201cGreat Yuan\u201d linked to the Mongol Yuan, a Macedonian \u201cEmpire\u201d three centuries early \u2014 and the map draws it as the source does. '
-      + 'Most of the ancient world carried no device of state, so most insignia here are ILLUSTRATIVE; that is the record, not a gap in it. '
+      + '<span id="insigniaLine"></span> '
       + 'From 3000 BCE to 1 CE no route on this map can be shown to deliver a polity, so that stretch plays at one pace: an undated route is not made to carry a seed. '
       + '<span style="color:var(--parchment-dimmer)">Borders: Bennett, J.S., Mutch, E., Tollefson, A. <em>et al.</em> (2025), Cliopatria, <em>Scientific Data</em> 12, 247, '
       + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.0 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '
