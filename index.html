@@ -3981,6 +3981,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       const rangeEl = document.getElementById('bordersRange');
       if(rangeEl) rangeEl.textContent = '(Cliopatria: ' + m.drawn + ')';
       flagNote(m.drawn);
+      coverageLegend();
       const insEl = document.getElementById('insigniaLine');
       if(insEl){
         const nm = Object.keys(INSIGNIA_ATTESTED), devs = nm.reduce((n, k) => n + DEVICES(k).length, 0);
@@ -4671,6 +4672,10 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       // Bosphorus, and whether the source's outline reaches across a strait differs from one dated shape to the
       // next. Silence there reads as a fault, so say what it is. Open sea and open ground stay silent.
       if(!full) return null;
+      // BARE GROUND WHERE THE SOURCE IS THIN answers with the source's own limit, not silence (ruled 2026-09-21)
+      const thinKey = regionOf(latlng.lat, latlng.lng);
+      const fact = thinKey && isLand(latlng.lat, latlng.lng) ? thinFact([thinKey], BORDERS.year) : null;
+      if(fact) return `<p class="pop-title">No polity drawn here</p><p class="pop-note">${fact}</p>`;
       const W2 = BORDERS.hdr.w; let near = 0;
       for(let dy = -3; dy <= 3; dy++) for(let dx = -3; dx <= 3; dx++){
         const n = c + dy * W2 + dx;
@@ -4788,11 +4793,94 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     if(say) noteEl.textContent = 'BORDERS NOT DRAWN AT THIS DATE: this map draws Cliopatria\u2019s borders for ' + BORDERS.spanText
       + ' so far. The rest of the source follows once these have been looked at.';
   }
+  // WHERE THE SOURCE IS THIN (ruled 2026-09-21). Cliopatria maps a polity only where written sources give its
+  // location and extent, so it is dense where writing was and thin where it was not. A region counts as thin where the
+  // source's polities cover less than a tenth of its land at that date; the numbers come from data/borders/coverage.json.
+  let COVER = null, LAND05 = null;
+  const THIN = 10;
+  fetch('data/borders/coverage.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(cv => {
+      const L = cv.land05, a = new Uint8Array(L.w * L.h); let at = 0, v = 0;
+      L.runs.forEach(n => { if(v) a.fill(1, at, at + n); at += n; v = 1 - v; });
+      COVER = cv; LAND05 = a; coverageLegend(); thinNote();
+    })
+    .catch(err => console.warn('BORDERS: coverage did not load — ' + err));
+  const regionOf = (lat, lon) => {
+    if(!COVER) return null;
+    for(const r of COVER.regions) for(const b of r.boxes)
+      if(lat >= b[0] && lat < b[1] && lon >= b[2] && lon < b[3]) return r.key === 'skip' ? null : r.key;
+    return null;
+  };
+  const isLand = (lat, lon) => {                      // 0.5-degree land, so a click on the sea never reads as bare ground
+    if(!LAND05) return false;
+    const L = COVER.land05, x = ((lon + 180) % 360 + 360) % 360;
+    const iy = Math.floor((90 - lat) / 0.5), ix = Math.floor(x / 0.5);
+    return iy >= 0 && iy < L.h && LAND05[iy * L.w + ix] === 1;
+  };
+  const coverAt = y => { if(!COVER) return null; const i = actIndexAt(y); return i < 0 ? null : (COVER.acts[String(ACTS[i].from)] || null); };
+  const pctText = v => v < 10 ? v.toFixed(1) + '%' : Math.round(v) + '%';
+  // keys: the thin regions to name, most visible first. Returns null when none of them is thin at this date.
+  function thinFact(keys, y){
+    const row = coverAt(y); if(!row) return null;
+    const thin = keys.filter(k => row[k] && row[k].pct < THIN); if(!thin.length) return null;
+    let best = null; Object.keys(row).forEach(k => { if(!best || row[k].pct > row[best].pct) best = k; });
+    const parts = thin.map((k, i) => pctText(row[k].pct) + (i === 0 ? ' of the land in ' : ' in ') + COVER.names[k]);
+    const named = parts.length < 2 ? parts[0] : parts.slice(0, -1).join(', ') + ' and ' + parts[parts.length - 1];
+    const vs = row[best].pct >= THIN ? ', against ' + pctText(row[best].pct) + ' in ' + COVER.names[best]
+                                     : ' — at this date it covers less than a tenth of any region’s land';
+    return 'Cliopatria maps a polity only where written sources give its location and extent. At this date its polities cover '
+      + named + vs + '. Bare ground here is unrecorded in the source, not unpeopled.';
+  }
+  // WHICH THIN REGIONS ARE IN VIEW, by how much of their land is on screen. The map's centre is the wrong question: the
+  // view is kept inside 179 degrees, so a reader looking at Australia at zoom 3 has a centre in the Indian Ocean, and at
+  // the world view the centre sits in Africa while the Americas lie empty beside it.
+  function thinInView(y){
+    const row = coverAt(y); if(!row || !LAND05) return [];
+    const b = map.getBounds(), n = Math.min(84, b.getNorth()), s = Math.max(-84, b.getSouth());
+    const w = Math.max(-180, b.getWest()), e = Math.min(180, b.getEast());
+    const seen = {}; let total = 0;
+    for(let iy = 0; iy < 24; iy++) for(let ix = 0; ix < 48; ix++){
+      const la = n - (iy + 0.5) * (n - s) / 24, lo = w + (ix + 0.5) * (e - w) / 48;
+      if(!isLand(la, lo)) continue;
+      total++;
+      const k = regionOf(la, lo); if(k) seen[k] = (seen[k] || 0) + 1;
+    }
+    // a thin region is named when it holds at least a sixth of the land on screen
+    return Object.keys(seen).filter(k => row[k] && row[k].pct < THIN && seen[k] >= total / 6).sort((a, b2) => seen[b2] - seen[a]);
+  }
+  const thinEl = (() => {
+    const ice = document.getElementById('iceNote'); if(!ice) return null;
+    const el = document.createElement('div');
+    el.className = 'eranote shorenote bordersnote approx'; el.id = 'bordersThinNote'; el.setAttribute('role', 'status'); el.hidden = true;
+    (noteEl || ice).insertAdjacentElement('afterend', el);
+    return el;
+  })();
+  function thinNote(){
+    if(!thinEl) return;
+    const y = BORDERS.year;
+    const keys = (layerState.borders && ACTS && typeof y === 'number' && actIndexAt(y) >= 0) ? thinInView(y) : [];
+    const fact = keys.length ? thinFact(keys, y) : null;
+    thinEl.hidden = !fact;
+    if(fact) thinEl.textContent = 'BORDERS ARE THIN HERE, NOT EMPTY: ' + fact;
+  }
+  map.on('moveend zoomend', thinNote);
+  function coverageLegend(){
+    const el = document.getElementById('coverageLine'); if(!el || !COVER || !ACTS) return;
+    const last = ACTS[ACTS.length - 1], row = COVER.acts[String(last.from)]; if(!row) return;
+    const keys = Object.keys(row).sort((a, b) => row[a].pct - row[b].pct);
+    const thin = keys.filter(k => row[k].pct < THIN), top = keys.slice(-2).reverse();
+    const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+    el.textContent = 'The borders have the same shape of gap. Cliopatria includes a polity only where written sources give its location and extent, so in '
+      + (last.from + 50) + ' its polities cover ' + list(thin.map(k => pctText(row[k].pct) + ' of the land of ' + COVER.names[k]))
+      + ', against ' + list(top.map(k => pctText(row[k].pct) + ' of ' + COVER.names[k]))
+      + '. Wherever the source covers less than a tenth of a region’s land, a rust line under the HUD says so: bare ground there is unrecorded in the source, not unpeopled.';
+  }
   window.__bordersFrame = function(sliderVal, yearsAgo){
     if(BORDERS.state !== 'ready'){ return; }
     const y = 2026 - yearsAgo;
     BORDERS.year = y;
     hudNote(y);
+    thinNote();
     const was = BORDERS.visible;
     const i = layerState.borders ? actIndexAt(y) : -1;
     if(i < 0){ BORDERS.visible = false; BORDERS.lastEra = -1; cv.style.display = 'none'; tip.hidden = true; return; }
@@ -4870,7 +4958,7 @@ if(BORDERS_ON){
       + 'the same at every zoom; dragging the slider never slows. A new name on the same ground changes colour in place. '
       + '<strong>Where the source\u2019s own name for a polity contradicts its shapes or its dates, the popup says so</strong> \u2014 \u201cLater Zhou\u201d for the Eastern Zhou, '
       + '\u201cGreat Yuan\u201d linked to the Mongol Yuan, a Macedonian \u201cEmpire\u201d three centuries early \u2014 and the map draws it as the source does. '
-      + '<span id="insigniaLine"></span> '
+      + '<span id="insigniaLine"></span> <span id="coverageLine"></span> '
       + 'From 3000 BCE to 1 CE no route on this map can be shown to deliver a polity, so that stretch plays at one pace: an undated route is not made to carry a seed. '
       + '<span style="color:var(--parchment-dimmer)">Borders: Bennett, J.S., Mutch, E., Tollefson, A. <em>et al.</em> (2025), Cliopatria, <em>Scientific Data</em> 12, 247, '
       + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.0 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '

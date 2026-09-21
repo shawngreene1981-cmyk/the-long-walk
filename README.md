@@ -132,7 +132,11 @@ change went live together, in one push: the anchor dots are one warm neutral, th
 popup and still in their shape, and colour belongs to the borders. `?borders=0` opens the map without borders, with the
 tier colours on the dots. Only two routes on this map carry dated vertices — the Norman routes to Aversa and Pevensey, 1016–1072 — so no other
 route seeds a spread: an undated route is not made to carry one. `?borders=next` and `?borders=1` are flags from
-before the flip; they change nothing now, and the page says so on screen, as it does for any value it does not know. In that mode, and only in it, the evidence
+before the flip; they change nothing now, and the page says so on screen, as it does for any value it does not know.
+Cliopatria includes a polity only where written sources give its location and extent, so it is thin wherever writing
+was: the Americas, Oceania and Africa south of the Sahara are under a tenth of their land drawn in every century.
+Wherever a region the source barely covers is on screen, a rust line under the HUD says so, with numbers from
+`data/borders/coverage.json` (`geowork/borders/coverage.py`); nothing from any other source is drawn to fill it. In that mode, and only in it, the evidence
 tier leaves the anchor dots and goes into their tooltip and popup, so colour belongs to the
 borders; the dots are one warm neutral and the tier is still carried by shape. Between two
 dated Cliopatria shapes the growth and retreat you watch is drawn by the map, not recorded
