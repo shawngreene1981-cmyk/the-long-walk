@@ -115,7 +115,7 @@ neighbour. Nothing was simplified, smoothed or removed.
 
 **1. Palaeo-shorelines — global pass built from the source raster itself; looked at, and on by default.** See above.
 
-**2. Border acts — the sequence 3000 BCE to 1 CE (thirty century acts) and the 1000–1100 CE trial, drawn for everyone since 2026-09-18.**
+**2. Border acts — 3000 BCE to 1500 CE, forty-five century acts, drawn for everyone since 2026-09-21** (3000 BCE–1 CE and the 1000–1100 CE trial since 2026-09-18).
 Each act is built into `data/borders/` as a timed grid of 0.1° cells (`act_<from>_<to>.bin` with its `.json`
 header; built by `geowork/borders/build_act.py`, listed in `data/borders/acts.json`), and the layer loads the act for
 the date on screen. Each act is built seeing a century either side, so two acts agree on the year they share, and the
@@ -124,11 +124,15 @@ century does not go dark at the next; `geowork/borders/check_boundaries.py` and 
 Cliopatria's own label contradicts its shapes or dates (“Later Zhou” for the Eastern Zhou, “Great Yuan” linked to the
 Mongol Yuan, a Macedonian “Empire” from 675 BCE, the “Athenian Coalition”), the popup says so and the map draws it as
 the source does (`geowork/borders/source_notes.json`). An insignia is ATTESTED only with a named object, its date
-inside the polity's dates and a source (20 of the ancient polities); the rest are ILLUSTRATIVE. The layer and the tier
+inside the polity's dates and a source, and is drawn only where a source records what the device looked like; the
+legend counts them off the table the map draws from, and says how many polities were never examined, so an
+ILLUSTRATIVE mark is never read as a polity that had no device. A polity may hold more than one device, each in its own
+window of use (England: the long cross, then the three lions). The layer and the tier
 change went live together, in one push: the anchor dots are one warm neutral, the evidence tier is in their tooltip and
 popup and still in their shape, and colour belongs to the borders. `?borders=0` opens the map without borders, with the
-tier colours on the dots. From 3000 BCE to 1 CE no route on this map can be shown to deliver a polity, so no spread is
-seeded and the stretch plays at one pace. In that mode, and only in it, the evidence
+tier colours on the dots. Only two routes on this map carry dated vertices — the Norman routes to Aversa and Pevensey, 1016–1072 — so no other
+route seeds a spread: an undated route is not made to carry one. `?borders=next` and `?borders=1` are flags from
+before the flip; they change nothing now, and the page says so on screen, as it does for any value it does not know. In that mode, and only in it, the evidence
 tier leaves the anchor dots and goes into their tooltip and popup, so colour belongs to the
 borders; the dots are one warm neutral and the tier is still carried by shape. Between two
 dated Cliopatria shapes the growth and retreat you watch is drawn by the map, not recorded

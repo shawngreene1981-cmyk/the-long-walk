@@ -1,6 +1,6 @@
 {
  "about": "The borders acts this map draws so far (Cliopatria v0.2.0). Years CE, negative = BCE; an act holds years from..to-1.",
- "drawn": "3000 BCE–1 CE and 1000–1100 CE",
+ "drawn": "3000 BCE–1500 CE",
  "acts": [
   {
    "from": -3000,
@@ -153,9 +153,80 @@
    "file": "act_-100_0"
   },
   {
+   "from": 0,
+   "to": 100,
+   "file": "act_0_100"
+  },
+  {
+   "from": 100,
+   "to": 200,
+   "file": "act_100_200"
+  },
+  {
+   "from": 200,
+   "to": 300,
+   "file": "act_200_300"
+  },
+  {
+   "from": 300,
+   "to": 400,
+   "file": "act_300_400"
+  },
+  {
+   "from": 400,
+   "to": 500,
+   "file": "act_400_500"
+  },
+  {
+   "from": 500,
+   "to": 600,
+   "file": "act_500_600"
+  },
+  {
+   "from": 600,
+   "to": 700,
+   "file": "act_600_700"
+  },
+  {
+   "from": 700,
+   "to": 800,
+   "file": "act_700_800"
+  },
+  {
+   "from": 800,
+   "to": 900,
+   "file": "act_800_900"
+  },
+  {
+   "from": 900,
+   "to": 1000,
+   "file": "act_900_1000"
+  },
+  {
    "from": 1000,
    "to": 1100,
-   "file": "act_1000_1100"
+   "file": "act_1000_1100",
+   "carry": "act_1000_1100.carry.json"
+  },
+  {
+   "from": 1100,
+   "to": 1200,
+   "file": "act_1100_1200"
+  },
+  {
+   "from": 1200,
+   "to": 1300,
+   "file": "act_1200_1300"
+  },
+  {
+   "from": 1300,
+   "to": 1400,
+   "file": "act_1300_1400"
+  },
+  {
+   "from": 1400,
+   "to": 1500,
+   "file": "act_1400_1500"
   }
  ]
 }

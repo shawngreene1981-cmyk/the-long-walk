@@ -3880,7 +3880,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     const shore = document.getElementById('toggleShorelines');
     const label = document.createElement('label');
     label.className = 'toggle-item';
-    label.innerHTML = '<input type="checkbox" id="toggleBorders" checked> <span class="toggle-text">Borders <em>(Cliopatria: 3000 BCE–1 CE, and 1000–1100 CE)</em>'
+    label.innerHTML = '<input type="checkbox" id="toggleBorders" checked> <span class="toggle-text">Borders <em id="bordersRange">(Cliopatria)</em>'
       + '<span class="shore-status" id="bordersStatus" role="status" aria-live="polite"></span></span>';
     if(shore && shore.closest('label')) shore.closest('label').insertAdjacentElement('afterend', label);
     label.querySelector('input').addEventListener('change', e => { layerState.borders = e.target.checked; render(+scrub.value); if(typeof updateLayerCount === 'function') updateLayerCount(); });
@@ -3901,6 +3901,9 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       ACTS[i].carry ? fetch('data/borders/' + ACTS[i].carry).then(r => r.ok ? r.json() : null).catch(() => null) : Promise.resolve(null)
     ]).then(([hdr, buf, carry]) => {
       if(carry && carry.pairSince && !hdr.pairSince) hdr.pairSince = carry.pairSince;
+      // TWO PALETTE COLOURS READ AS WATER over the blue relief. Each is replaced in its slot, so every polity keeps
+      // its slot and every rule the palette keeps still holds; applied here so no act's bytes change.
+      hdr.colour = hdr.colour.map(c => ({'#b1c6fd': '#e0662e', '#347f67': '#00b860'})[c.toLowerCase()] || c);
       // notes found after the acts were built: merged as the act loads, so no act's bytes change
       Object.keys(EXTRA_SOURCE_NOTES).forEach(n => {
         hdr.sourceNotes[n] = (hdr.sourceNotes[n] || []).concat(EXTRA_SOURCE_NOTES[n]);
@@ -3969,12 +3972,15 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     BORDERS.decodeMs = o.decodeMs;
   }
   const actIndexAt = y => ACTS ? ACTS.findIndex(a => y >= a.from && y < a.to) : -1;
-  // ?borders=next: the acts not yet live (1-1500 CE), for the founder to look at before they go to everyone
+  // ?borders=next: kept after the flip (2026-09-21) so old links still work; acts_next.json is identical to acts.json
   const ACTS_FILE = new URLSearchParams(location.search).get('borders') === 'next' ? 'acts_next.json' : 'acts.json';
   fetch('data/borders/' + ACTS_FILE).then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(m => { ACTS = m.acts; BORDERS.acts = ACTS; BORDERS.spanText = m.drawn;
       const ln = [...document.querySelectorAll('.legend-note')].find(n => n.innerHTML.indexOf('drawn so far for') >= 0);
       if(ln) ln.innerHTML = ln.innerHTML.replace(/drawn so far for [^.<]*\./, 'drawn so far for ' + m.drawn + '.');
+      const rangeEl = document.getElementById('bordersRange');
+      if(rangeEl) rangeEl.textContent = '(Cliopatria: ' + m.drawn + ')';
+      flagNote(m.drawn);
       const insEl = document.getElementById('insigniaLine');
       if(insEl){
         const nm = Object.keys(INSIGNIA_ATTESTED), devs = nm.reduce((n, k) => n + DEVICES(k).length, 0);
@@ -4752,6 +4758,20 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     if(playing) BORDERS.holdUntil = performance.now() + 1800;
   }
 
+  // A FLAG IN THE ADDRESS IS NEVER IGNORED IN SILENCE. ?borders=0 turns the layer off and ?borders=preload is an
+  // inspection mode; anything else is either a flag from before the flip, which now changes nothing, or a value this
+  // map does not know. Both are said on screen, so nobody reviews one list believing it is another.
+  function flagNote(drawn){
+    const v = new URLSearchParams(location.search).get('borders');
+    if(v === null || v === '0' || v === 'preload') return;
+    const ice = document.getElementById('iceNote'); if(!ice) return;
+    const el = document.createElement('div');
+    el.className = 'eranote shorenote bordersnote approx'; el.id = 'bordersFlagNote'; el.setAttribute('role', 'status');
+    el.textContent = (v === '1' || v === 'next')
+      ? 'This address carries ?borders=' + v + ', a setting from before the borders became the default. It changes nothing: this is the map everyone sees, with borders for ' + drawn + '.'
+      : 'This address carries ?borders=' + v + ', which is not a setting this map knows, so it is showing the default: borders for ' + drawn + '. ?borders=0 turns them off.';
+    ice.insertAdjacentElement('afterend', el);
+  }
   // THE HUD SAYS WHERE BORDERS ARE NOT DRAWN, in the ice's grammar: inside Cliopatria's span (3400 BCE to 2024 CE) but
   // outside the acts built so far, a rust line says so. Before the source begins, nothing is said.
   const noteEl = (() => {
@@ -4837,7 +4857,7 @@ if(BORDERS_ON){
   if(row){
     const note = document.createElement('span');
     note.className = 'legend-note'; note.style.flexBasis = '100%';
-    note.innerHTML = '<strong>Borders \u2014 Cliopatria\u2019s, drawn so far for 3000 BCE\u20131 CE and 1000\u20131100 CE.</strong> '
+    note.innerHTML = '<strong>Borders \u2014 Cliopatria\u2019s, drawn so far for the centuries this map has built.</strong> '
       + 'At any other date inside the source\u2019s span a line under the HUD says borders are not drawn there; the rest follow once these have been looked at. '
       + 'The sequence opens at 3000 BCE with the four polities the source has then \u2014 Egypt, Sumer, Elam and the Indus \u2014 and barely moves for a thousand years, because the source does not: '
       + 'its first real spread is Akkad, around 2300 BCE. Real polities from Cliopatria, one solid colour each; '
