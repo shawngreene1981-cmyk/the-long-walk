@@ -4797,12 +4797,13 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   // location and extent, so it is dense where writing was and thin where it was not. A region counts as thin where the
   // source's polities cover less than a tenth of its land at that date; the numbers come from data/borders/coverage.json.
   let COVER = null, LAND05 = null;
-  const THIN = 10;
+  const THIN = 10;        // under a tenth of a region's land drawn
+  const CLAIMED = 50;     // over half of what IS drawn held by a power whose home is elsewhere
   fetch('data/borders/coverage.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(cv => {
       const L = cv.land05, a = new Uint8Array(L.w * L.h); let at = 0, v = 0;
       L.runs.forEach(n => { if(v) a.fill(1, at, at + n); at += n; v = 1 - v; });
-      COVER = cv; LAND05 = a; coverageLegend(); thinNote();
+      COVER = cv; LAND05 = a; BORDERS.coverage = cv; coverageLegend(); thinNote();
     })
     .catch(err => console.warn('BORDERS: coverage did not load — ' + err));
   const regionOf = (lat, lon) => {
@@ -4831,6 +4832,20 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     return 'Cliopatria maps a polity only where written sources give its location and extent. At this date its polities cover '
       + named + vs + '. Bare ground here is unrecorded in the source, not unpeopled.';
   }
+  // CLAIMED: drawn, but drawn as someone else's claim. Tested only where the region is not thin, so the two can
+  // never both be true of one region.
+  function claimedFact(keys, y){
+    const row = coverAt(y); if(!row) return null;
+    const hit = keys.filter(k => row[k] && row[k].pct >= THIN && row[k].claimed > CLAIMED);
+    if(!hit.length) return null;
+    const parts = hit.map((k, i) => pctText(row[k].claimed) + (i === 0 ? ' of the land drawn in ' : ' in ') + COVER.names[k]);
+    const named = parts.length < 2 ? parts[0] : parts.slice(0, -1).join(', ') + ' and ' + parts[parts.length - 1];
+    const who = [];
+    hit.forEach(k => (row[k].holders || []).forEach(h => { if(who.indexOf(h) < 0) who.push(h); }));
+    const byWhom = who.length ? ' \u2014 ' + (who.length < 2 ? who[0] : who.slice(0, -1).join(', ') + ' and ' + who[who.length - 1]) : '';
+    return 'at this date ' + named + ' is held by powers whose home is elsewhere' + byWhom
+      + '. Cliopatria maps a polity only where written sources give its location and extent, so inside a claim it draws the claimant and no one else. The people living under it are unrecorded here, not absent.';
+  }
   // WHICH THIN REGIONS ARE IN VIEW, by how much of their land is on screen. The map's centre is the wrong question: the
   // view is kept inside 179 degrees, so a reader looking at Australia at zoom 3 has a centre in the Indian Ocean, and at
   // the world view the centre sits in Africa while the Americas lie empty beside it.
@@ -4845,9 +4860,12 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       total++;
       const k = regionOf(la, lo); if(k) seen[k] = (seen[k] || 0) + 1;
     }
-    // a thin region is named when it holds at least a sixth of the land on screen
-    return Object.keys(seen).filter(k => row[k] && row[k].pct < THIN && seen[k] >= total / 6).sort((a, b2) => seen[b2] - seen[a]);
+    // a region is named when it holds at least a sixth of the land on screen
+    const enough = Object.keys(seen).filter(k => seen[k] >= total / 6).sort((a, b2) => seen[b2] - seen[a]);
+    window.__inView = enough;                       // the same sample serves the claimed test
+    return enough.filter(k => row[k] && row[k].pct < THIN);
   }
+  const inView = y => { thinInView(y); return window.__inView || []; };
   const thinEl = (() => {
     const ice = document.getElementById('iceNote'); if(!ice) return null;
     const el = document.createElement('div');
@@ -4858,10 +4876,13 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   function thinNote(){
     if(!thinEl) return;
     const y = BORDERS.year;
-    const keys = (layerState.borders && ACTS && typeof y === 'number' && actIndexAt(y) >= 0) ? thinInView(y) : [];
-    const fact = keys.length ? thinFact(keys, y) : null;
-    thinEl.hidden = !fact;
-    if(fact) thinEl.textContent = 'BORDERS ARE THIN HERE, NOT EMPTY: ' + fact;
+    const live = layerState.borders && ACTS && typeof y === 'number' && actIndexAt(y) >= 0;
+    const keys = live ? thinInView(y) : [];
+    const thin = keys.length ? thinFact(keys, y) : null;
+    const claimed = thin || !live ? null : claimedFact(inView(y), y);
+    thinEl.hidden = !(thin || claimed);
+    if(thin) thinEl.textContent = 'BORDERS ARE THIN HERE, NOT EMPTY: ' + thin;
+    else if(claimed) thinEl.textContent = 'WHAT IS DRAWN HERE IS A CLAIM: ' + claimed;
   }
   map.on('moveend zoomend', thinNote);
   function coverageLegend(){
