@@ -156,15 +156,25 @@ file-size cap. One act did: 1900–1950 became two 25-year acts.
 `SCOPE_Colonial_Act_1500_to_2024.md`. **C1:** a flag is drawn for a polity only where a flag is *attested in use at
 that date*, the same bar as the insignia; where none is attested the polity keeps insignia treatment. Measured, that
 makes the act an insignia act until about 1800 and a flag act after: under provisional first-flag dates, 0% of the
-colonial ground drawn in 1550 has a flagged holder, 2% in 1650, 3% in 1750, and 100% by 1850. **C2 and C3, ruled
-together from measurement** (`geowork/borders/c3_black_contrast.py`, against the forced-route black as actually drawn
-at Luanda): the flag wash is drawn at **0.6**, the same weight as the borders fill, and **no flag colour is ever drawn
-darker than L\* 38** — at 0.6 that means no source stripe below `#7b7b7b`. Black at any opacity sits 4–15 ΔE from the
-forced-route black, inside the palette's own 23 floor for two things that must never be confused; dark blue, which is
-in the Dutch, French and British flags, fails below 0.45 and is safe at 0.6. So a German or Belgian flag draws with a
-lifted grey where black would be, and **the forced routes keep the only true black on the map**. **C4:** the
-thin-source note extends past 1500 — where a region is drawn but more than half of that drawn land is held by a power
-whose home is elsewhere, the note says so instead of falling silent. **C5:** flag research is commissioned at the C1
+colonial ground drawn in 1550 has a flagged holder, 2% in 1650, 3% in 1750, and 100% by 1850. **C2 and C3 — measured, then withdrawn (2026-09-28): there is no flag wash.**
+The measurement (`geowork/borders/c3_black_contrast.py`, against the forced-route black as actually drawn at Luanda,
+RGB 3/9/15 on ground already only 13.1 ΔE away) found black failing in both directions at every weight — 4–15 ΔE from
+the route black, inside the palette's own floor of 23, and barely marking the ground — and dark blue, which is in the
+Dutch, French and British flags, failing below 0.45. A wash at 0.6 with a lightness floor was ruled and then
+**superseded**: a grey German flag is not the German flag. **The ground keeps the palette fill, and the flag is
+carried whole — unaltered colours, true black included — in the tooltip and in an insignia-sized badge**, in the
+grammar the insignia layer already uses. **The forced routes keep black to themselves.** **C4 — approved as measured:** the thin-source note extends past 1500. A region is
+**thin** where under a tenth of its land is drawn (the existing note, unchanged), and **claimed** where more than half
+of the land drawn there is held by a power whose home is elsewhere; the two are disjoint by construction. The
+possession share is read **from the polygons**, never from the source's `MemberOf` field, which undercounts badly:
+it misses **Portugal, Germany, Belgium, Denmark and Spain**, each of which holds colonies inside its own metropolitan
+polygon with the field left blank. Corrected shares of the drawn land — the Americas **97% in 1550, 94% in 1650, 96%
+in 1750**; South Asia **76% in 1850** and 82% in 1913; Africa south of the Sahara **85% in 1913**, 73% in 1950;
+Southeast Asia 75% in 1913; North Africa and the Near East 68% in 1913, 53% in 1950. The `MemberOf` figures in
+`SCOPE_Colonial_Act_1500_to_2024.md` are superseded and must not be read as current. **Occupier attribution has no
+ground truth in the source and was wrong twice in one pass, so it carries its own fixture
+(`geowork/borders/check_attribution.py`) that must fail on a broken rule before it is trusted; nothing is drawn until
+it passes.** **C5:** flag research is commissioned at the C1
 bar, about twenty occupiers, none drawn until cited. **C6:** a few sourced colonial routes, matched **by route id,
 never by proximity** — Point Comfort lands 0.6° from the English first shape, so a proximity match would bind the
 arrival of enslaved people to a colonial fill. **The three forced routes are untouched and exempt from every rule in
