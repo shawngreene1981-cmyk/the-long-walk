@@ -152,7 +152,27 @@ budget per act is 822,136 bytes — the map's own measured size, read literally 
 **an act that exceeds it is cut finer**: the budget is a density detector, not just a
 file-size cap. One act did: 1900–1950 became two 25-year acts.
 
-**3. Ice sheets — real margins where the evidence reaches, nothing where it does not.** North America
+**3. The Colonial Act, 1500–2024 — ruled 2026-09-28, not built.** Six rulings, against
+`SCOPE_Colonial_Act_1500_to_2024.md`. **C1:** a flag is drawn for a polity only where a flag is *attested in use at
+that date*, the same bar as the insignia; where none is attested the polity keeps insignia treatment. Measured, that
+makes the act an insignia act until about 1800 and a flag act after: under provisional first-flag dates, 0% of the
+colonial ground drawn in 1550 has a flagged holder, 2% in 1650, 3% in 1750, and 100% by 1850. **C2 and C3, ruled
+together from measurement** (`geowork/borders/c3_black_contrast.py`, against the forced-route black as actually drawn
+at Luanda): the flag wash is drawn at **0.6**, the same weight as the borders fill, and **no flag colour is ever drawn
+darker than L\* 38** — at 0.6 that means no source stripe below `#7b7b7b`. Black at any opacity sits 4–15 ΔE from the
+forced-route black, inside the palette's own 23 floor for two things that must never be confused; dark blue, which is
+in the Dutch, French and British flags, fails below 0.45 and is safe at 0.6. So a German or Belgian flag draws with a
+lifted grey where black would be, and **the forced routes keep the only true black on the map**. **C4:** the
+thin-source note extends past 1500 — where a region is drawn but more than half of that drawn land is held by a power
+whose home is elsewhere, the note says so instead of falling silent. **C5:** flag research is commissioned at the C1
+bar, about twenty occupiers, none drawn until cited. **C6:** a few sourced colonial routes, matched **by route id,
+never by proximity** — Point Comfort lands 0.6° from the English first shape, so a proximity match would bind the
+arrival of enslaved people to a colonial fill. **The three forced routes are untouched and exempt from every rule in
+this act, as before.** The occupier is read from the polygon, not from the source's `MemberOf` field: Portugal's
+Angola and Mozambique sit inside "Portuguese Republic" and "Estado Novo" with a blank `MemberOf`, and so do the German
+Empire's colonies, Belgium's, Denmark's Greenland and Spain's.
+
+**4. Ice sheets — real margins where the evidence reaches, nothing where it does not.** North America
 from **NADI-1** (Dalton *et al.* 2023, CC BY 4.0) from 25,000 years ago, every 500 years; Eurasia,
 including the Svalbard–Barents–Kara sheet, from **DATED-1** (Hughes *et al.* 2016, CC BY 3.0) from 38,000
 years ago; Patagonia from **PATICE** (Davies *et al.* 2020, **CC BY-NC 3.0 — see the licence table**) from
@@ -171,7 +191,7 @@ SAHARA polygon, public domain; its river centrelines name the modern perennial r
 terrain-shaped edge) and the rivers — drainage computed from ETOPO 2022 (CC0) by priority-flood and D8 flow
 accumulation, not mapped palaeochannels, none of which are released as licensed data.
 
-**4. A self-hosted shaded-relief basemap — the default.** Looked at on the live map and on a
+**5. A self-hosted shaded-relief basemap — the default.** Looked at on the live map and on a
 phone, and switched on; `?relief=0` still gives OpenStreetMap. The map used to sit on plain
 OpenStreetMap: a road map with prehistoric shapes on it. Every hosted alternative was
 rejected — Stamen retired and keyed, Esri's relief under a licence written for
