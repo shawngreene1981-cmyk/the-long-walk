@@ -182,6 +182,25 @@ this act, as before.** The occupier is read from the polygon, not from the sourc
 Angola and Mozambique sit inside "Portuguese Republic" and "Estado Novo" with a blank `MemberOf`, and so do the German
 Empire's colonies, Belgium's, Denmark's Greenland and Spain's.
 
+**Corrected 2026-09-28, shipped on its own: the region map.** The regions the thin-source note is measured over
+(`geowork/borders/regions.py`, written into `data/borders/coverage.json`) matched the Near East box **before** Europe,
+so **every place below 42°N — Iberia, southern Italy, Greece and Turkey-in-Europe — was counted as North Africa and
+the Near East**, and Tibet's box reached 73°E and took Delhi into Inner Asia. Both were live in the note and in the
+legend. The corrected map carves out Turkey-in-Europe, Crete and Malta first, separates the African coast from Iberia
+by longitude (latitude alone cannot: Tangier is 35.8°N and Seville 37.4°N at the same longitude), groups the Sahel
+south, and only then matches Europe. It is checked against 44 cities — **44 right, against 39 before** — by
+`python borders/regions.py`. The change moves Europe's land area **+11%**, the Near East's **−10.5%**, Africa south of
+the Sahara's **+5.4%** and South Asia's **+3.9%**; the thin note stops firing in three act-regions it should never
+have covered (South Asia at 2300 BCE, Europe at 500 BCE and 100 BCE) and starts firing in none.
+
+**The limits of occupier attribution, recorded so they are findable later.** Whether ground is held by a power whose
+home is elsewhere is decided by `geowork/borders/check_attribution.py`, which carries a fixture of known cases and
+must fail on a deliberately broken rule before it is trusted. Two things it cannot see, by construction:
+**a possession inside the holder's own region** — the rule compares regions, so **Korea under Japan, 1910–1945**, is
+invisible to it; and **Russian America (Alaska, 1741–1867)**, because Russia is deliberately left out of the
+home-region table so that Siberia is never called a colony, and Alaska goes with it. Both are limits of the rule, not
+oversights.
+
 **4. Ice sheets — real margins where the evidence reaches, nothing where it does not.** North America
 from **NADI-1** (Dalton *et al.* 2023, CC BY 4.0) from 25,000 years ago, every 500 years; Eurasia,
 including the Svalbard–Barents–Kara sheet, from **DATED-1** (Hughes *et al.* 2016, CC BY 3.0) from 38,000
