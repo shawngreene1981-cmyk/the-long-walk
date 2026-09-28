@@ -188,7 +188,7 @@ so **every place below 42°N — Iberia, southern Italy, Greece and Turkey-in-Eu
 the Near East**, and Tibet's box reached 73°E and took Delhi into Inner Asia. Both were live in the note and in the
 legend. The corrected map carves out Turkey-in-Europe, Crete and Malta first, separates the African coast from Iberia
 by longitude (latitude alone cannot: Tangier is 35.8°N and Seville 37.4°N at the same longitude), groups the Sahel
-south, and only then matches Europe. It is checked against 44 cities — **44 right, against 39 before** — by
+south, and only then matches Europe. It is checked against 44 cities — **44 right, against 29 before**: twelve European cities from Lisbon to Istanbul, Delhi and Amritsar, and Timbuktu — by
 `python borders/regions.py`. The change moves Europe's land area **+11%**, the Near East's **−10.5%**, Africa south of
 the Sahara's **+5.4%** and South Asia's **+3.9%**; the thin note stops firing in three act-regions it should never
 have covered (South Asia at 2300 BCE, Europe at 500 BCE and 100 BCE) and starts firing in none.
