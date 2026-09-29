@@ -3849,6 +3849,20 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     "Kidarites": {what: "the Kidarite tamga on gold dinars and silver drachms \u2014 attested 4th-5th century. Jongeward & Cribb (ANS, 2015); Cribb, 'The Kidarites, the numismatic evidence' (2010)"},
     "Kingdom of Georgia": {what: "Bagrationi badge on the copper coinage of Tamar and David Soslan (1200) and David VIII \u2014 attested 1200-1310. Dundua & Dundua, 'Catalogue of Georgian Numismatics' types 70, 56; Kapanadze, 'Gruzinskaya numizmatika' (1955)"},
   };
+  // THE FLAG WHOLE, IN THE POPUP: the same bands, drawn large enough to read, from the same data the badge uses.
+  const flagSvg = dev => {
+    const bands = dev.bands || [], vert = dev.dir === 'v';
+    const total = bands.reduce((t, b) => t + (b[1] || 1), 0) || 1;
+    let at = 0, rects = '';
+    bands.forEach(b => {
+      const run = 100 * ((b[1] || 1) / total);
+      rects += `<rect x="${vert ? at : 0}" y="${vert ? 0 : at * 0.667}" width="${vert ? run : 100}" height="${vert ? 66.7 : run * 0.667}" fill="${b[0]}"/>`;
+      at += run;
+    });
+    if(dev.canton) rects += `<rect x="0" y="0" width="${100 * (dev.canton[1] || 0.4)}" height="${66.7 * (dev.canton[2] || 0.5)}" fill="${dev.canton[0]}"/>`;
+    return `<svg viewBox="-1 -1 102 68.7" width="108" height="72" role="img" aria-label="the flag, drawn from its own colours" style="display:block;margin:0 0 6px 0">`
+      + rects + `<rect x="-0.5" y="-0.5" width="101" height="67.7" fill="none" stroke="var(--bone, #f4e2a1)" stroke-width="1"/></svg>`;
+  };
   // a polity may hold more than one device across its life; ATTESTED only inside the window each device was in use
   const DEVICES = name => { const a = INSIGNIA_ATTESTED[name]; return !a ? [] : (Array.isArray(a) ? a : [a]); };
   const attAt = (name, y) => DEVICES(name).find(d => !d.window || (y >= d.window[0] && y <= d.window[1])) || null;
@@ -4165,8 +4179,31 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       glyph(hdr.polities[pid - 1], pt.x, pt.y, Math.min(20, rad * 0.8), ctx);
     }
   }
+  // A FLAG DRAWS AS ITSELF: its own bands, in its own colours, in a 3:2 rectangle the size of an insignia mark.
+  // Nothing here touches the ground - this is the mark, and the fill underneath stays the polity's palette colour.
+  function flagBadge(ctx, dev, x, y, size){
+    const w = size * 1.15, h = w / 1.5, bands = dev.bands || [], vert = dev.dir === 'v';
+    const total = bands.reduce((t, b) => t + (b[1] || 1), 0) || 1;
+    ctx.save(); ctx.translate(x - w / 2, y - h / 2);
+    let at = 0;
+    bands.forEach(b => {
+      const share = (b[1] || 1) / total, run = (vert ? w : h) * share;
+      ctx.fillStyle = b[0];
+      if(vert) ctx.fillRect(at, 0, Math.ceil(run + 0.5), h);
+      else ctx.fillRect(0, at, w, Math.ceil(run + 0.5));
+      at += run;
+    });
+    if(dev.canton){                                   // a canton, where a flag has one
+      ctx.fillStyle = dev.canton[0];
+      ctx.fillRect(0, 0, w * (dev.canton[1] || 0.4), h * (dev.canton[2] || 0.5));
+    }
+    ctx.lineWidth = 1.2; ctx.strokeStyle = BONE; ctx.globalAlpha = 0.95;
+    ctx.strokeRect(-0.5, -0.5, w + 1, h + 1);         // the bone frame the rest of the layer uses
+    ctx.restore();
+  }
   function glyph(name, x, y, size, ctx){
     const h = size / 2, att = attAt(name, BORDERS.year);
+    if(att && att.kind === 'flag'){ flagBadge(ctx, att, x, y, size); return; }
     ctx.save(); ctx.translate(x, y);
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     const hv = hash(name), frame = att ? 'circle' : FRAMES[(hv >>> 8) % FRAMES.length];
@@ -4702,6 +4739,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       return `<p class="pop-title">${sw}${name}</p>`
         + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + fmtRange(rec[1], rec[2]) : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
         + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
+        + (att && att.kind === 'flag' ? flagSvg(att) : '')
         + (att ? `In use by this polity within its dates: ${att.what}.`
            : later ? `Designed for this map. ${later}`
            : noform ? `Designed for this map. This polity\u2019s device is attested \u2014 ${noform.what} \u2014 but no source read for this map says what it looked like, so it is not drawn.`
