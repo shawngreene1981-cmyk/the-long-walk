@@ -3868,9 +3868,16 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       at += run;
     });
     // the same marks as the badge, at the size the popup can actually show them
+    const uid = (flagSvg.n = (flagSvg.n || 0) + 1);
+    if((dev.marks || []).length) rects +=
+        `<defs><clipPath id="fc${uid}all" clipPathUnits="userSpaceOnUse"><rect x="0" y="0" width="100" height="66.7"/></clipPath>`
+      + `<clipPath id="fc${uid}hoist" clipPathUnits="userSpaceOnUse"><rect x="0" y="0" width="50" height="66.7"/></clipPath>`
+      + `<clipPath id="fc${uid}fly" clipPathUnits="userSpaceOnUse"><rect x="50" y="0" width="50" height="66.7"/></clipPath></defs>`;
     (dev.marks || []).forEach(m => {
       const H = 66.7, W = 100, t = H * m.w, ft = m.fim ? H * m.fim.w : 0, sh = (m.shift || 0) * H;
-      const clip = m.half ? ` clip-path="inset(0 ${m.half === 'hoist' ? '50% 0 0' : '0 0 50%'})"` : '';
+      // clipped to the FLAG, exactly as on the canvas. An inset() would clip to each polygon's own box, which
+      // is not the flag and would do nothing useful, so these are real clip paths in user space.
+      const clip = ` clip-path="url(#fc${uid}${m.half || 'all'})"`;
       if(m.type === 'saltire'){
         const band = (down, th, col, dy) => {
           const pts = down ? `0,${dy - th/2} 0,${dy + th/2} ${W},${H + dy + th/2} ${W},${H + dy - th/2}`
@@ -4315,12 +4322,15 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     });
     // THE CROSS AND THE SALTIRE, over the field, in the order the blazon gives them. Widths are shares of the
     // hoist because that is how the blazons and the Danish ordinance measure them.
+    // EVERY mark is clipped to the flag's own rectangle. A saltire is a band laid along a diagonal and its
+    // polygon runs past the corners; without this the badge stops being a rectangle and flares at the corners,
+    // which is visible at the popup's size and was found by looking at it, not by the pixel check.
     (dev.marks || []).forEach(m => {
       const t = h * m.w, ft = m.fim ? h * m.fim.w : 0, sh = (m.shift || 0) * h;
       const clipHalf = () => {
-        if(!m.half) return;
         ctx.beginPath();
-        ctx.rect(m.half === 'hoist' ? 0 : w / 2, 0, w / 2, h);
+        if(m.half) ctx.rect(m.half === 'hoist' ? 0 : w / 2, 0, w / 2, h);
+        else ctx.rect(0, 0, w, h);
         ctx.clip();
       };
       if(m.type === 'saltire'){
@@ -4345,6 +4355,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       } else {
         const cx = w * (0.5 + (m.offset || 0)), cy = h / 2;
         ctx.save(); clipHalf();
+        // an upright cross never overflows, but it is clipped with the rest so the rule has no exceptions
         if(ft){ ctx.fillStyle = m.fim.colour;
           ctx.fillRect(0, cy - t / 2 - ft, w, t + 2 * ft);
           ctx.fillRect(cx - t / 2 - ft, 0, t + 2 * ft, h); }
@@ -5168,7 +5179,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   };
   BORDERS.map = map;
   BORDERS.glyph = glyph; BORDERS.attested = INSIGNIA_ATTESTED; BORDERS.noform = INSIGNIA_NOFORM;
-  BORDERS.attAt = attAt; BORDERS.deviceElsewhere = deviceElsewhere; BORDERS.flagBadge = flagBadge;
+  BORDERS.attAt = attAt; BORDERS.deviceElsewhere = deviceElsewhere; BORDERS.flagBadge = flagBadge; BORDERS.flagSvg = flagSvg;
   BORDERS.undrawnAt = (n, y) => windowed(INSIGNIA_UNDRAWN, n, y);
   BORDERS.noformAt = (n, y) => windowed(INSIGNIA_NOFORM_AT, n, y);
   window.__borders = BORDERS;                 // inspection handle for the harness
