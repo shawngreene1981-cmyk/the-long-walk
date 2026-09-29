@@ -3865,7 +3865,26 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   };
   // a polity may hold more than one device across its life; ATTESTED only inside the window each device was in use
   const DEVICES = name => { const a = INSIGNIA_ATTESTED[name]; return !a ? [] : (Array.isArray(a) ? a : [a]); };
-  const attAt = (name, y) => DEVICES(name).find(d => !d.window || (y >= d.window[0] && y <= d.window[1])) || null;
+  // WHICH DEVICE AT THIS DATE. Of the devices whose window covers it: a flag beats an insignia, and after that the
+  // window that starts later wins. A polity that took a flag shows it from the flag's first attested year, not from
+  // whenever its older device stopped being used - see edit_module_c1table.py for why that date is the weaker one.
+  const DEVICE_RANK = d => (d.kind === 'flag' ? 1 : 0);
+  const attAt = (name, y) => {
+    const fit = DEVICES(name).filter(d => !d.window || (y >= d.window[0] && y <= d.window[1]));
+    if(!fit.length) return null;
+    return fit.sort((a, b) => (DEVICE_RANK(b) - DEVICE_RANK(a))
+      || ((b.window ? b.window[0] : -1e9) - (a.window ? a.window[0] : -1e9)))[0];
+  };
+  // WHAT THIS POLITY CARRIES, IN ORDER: shown whenever there is more than one device, so the change from an
+  // insignia to a flag is legible at any date rather than appearing from nowhere on the year it happens.
+  const deviceSequence = name => {
+    const d = DEVICES(name).filter(x => x.window).sort((a, b) => a.window[0] - b.window[0]);
+    if(d.length < 2) return '';
+    return `<p class="pop-note" style="color:var(--parchment-dimmer)">This polity carries `
+      + d.map(x => (x.kind === 'flag' ? 'a flag' : 'an insignia') + ', ' + fmtRange(x.window[0], x.window[1])).join(', then ')
+      + (d.some(x => x.kind === 'flag') && d.some(x => x.kind !== 'flag')
+          ? `. Where the two overlap the flag is shown, from the first year it is attested.` : `.`) + `</p>`;
+  };
   const deviceElsewhere = name => { const d = DEVICES(name); if(!d.length) return null;
     return 'This polity\u2019s attested device is ' + d.map(x => x.what + (x.window ? ' \u2014 in use ' + fmtRange(x.window[0], x.window[1]) : '')).join('; and ')
       + ' \u2014 not at this date, so it is not drawn here.'; };
@@ -4739,6 +4758,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       return `<p class="pop-title">${sw}${name}</p>`
         + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + fmtRange(rec[1], rec[2]) : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
         + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
+        + deviceSequence(name)
         + (att && att.kind === 'flag' ? flagSvg(att) : '')
         + (att ? `In use by this polity within its dates: ${att.what}.`
            : later ? `Designed for this map. ${later}`
