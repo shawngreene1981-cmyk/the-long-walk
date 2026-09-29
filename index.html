@@ -3861,17 +3861,76 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   const flagSvg = dev => {
     const bands = dev.bands || [], vert = dev.dir === 'v';
     const total = bands.reduce((t, b) => t + (b[1] || 1), 0) || 1;
-    let at = 0, rects = '';
+    let at = 0, rects = dev.field ? `<rect x="0" y="0" width="100" height="66.7" fill="${dev.field}"/>` : '';
     bands.forEach(b => {
       const run = 100 * ((b[1] || 1) / total);
       rects += `<rect x="${vert ? at : 0}" y="${vert ? 0 : at * 0.667}" width="${vert ? run : 100}" height="${vert ? 66.7 : run * 0.667}" fill="${b[0]}"/>`;
       at += run;
+    });
+    // the same marks as the badge, at the size the popup can actually show them
+    (dev.marks || []).forEach(m => {
+      const H = 66.7, W = 100, t = H * m.w, ft = m.fim ? H * m.fim.w : 0, sh = (m.shift || 0) * H;
+      const clip = m.half ? ` clip-path="inset(0 ${m.half === 'hoist' ? '50% 0 0' : '0 0 50%'})"` : '';
+      if(m.type === 'saltire'){
+        const band = (down, th, col, dy) => {
+          const pts = down ? `0,${dy - th/2} 0,${dy + th/2} ${W},${H + dy + th/2} ${W},${H + dy - th/2}`
+                           : `0,${H + dy + th/2} 0,${H + dy - th/2} ${W},${dy - th/2} ${W},${dy + th/2}`;
+          rects += `<polygon points="${pts}" fill="${col}"${clip}/>`;
+        };
+        [true, false].forEach(down => { const dy = sh * (down ? 1 : -1);
+          if(ft) band(down, t + 2 * ft, m.fim.colour, dy);
+          band(down, t, m.colour, dy); });
+      } else {
+        const cx = W * (0.5 + (m.offset || 0));
+        if(ft){ rects += `<rect x="0" y="${H/2 - t/2 - ft}" width="${W}" height="${t + 2*ft}" fill="${m.fim.colour}"${clip}/>`
+                       + `<rect x="${cx - t/2 - ft}" y="0" width="${t + 2*ft}" height="${H}" fill="${m.fim.colour}"${clip}/>`; }
+        rects += `<rect x="0" y="${H/2 - t/2}" width="${W}" height="${t}" fill="${m.colour}"${clip}/>`
+               + `<rect x="${cx - t/2}" y="0" width="${t}" height="${H}" fill="${m.colour}"${clip}/>`;
+      }
     });
     if(dev.canton) rects += `<rect x="0" y="0" width="${100 * (dev.canton[1] || 0.4)}" height="${66.7 * (dev.canton[2] || 0.5)}" fill="${dev.canton[0]}"/>`;
     return `<svg viewBox="-1 -1 102 68.7" width="108" height="72" role="img" aria-label="the flag, drawn from its own colours" style="display:block;margin:0 0 6px 0">`
       + rects + `<rect x="-0.5" y="-0.5" width="101" height="67.7" fill="none" stroke="var(--bone, #f4e2a1)" stroke-width="1"/></svg>`;
   };
   // a polity may hold more than one device across its life; ATTESTED only inside the window each device was in use
+  // THE CROSS FLAGS, promoted out of INSIGNIA_UNDRAWN because the badge can now draw a cross.
+  (INSIGNIA_UNDRAWN["Kingdom of Great Britain"] || []).forEach(e => { if(e.window[0] === 1801 && e.window[1] === 2023) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1801, 2023], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British Colonial Empire"] || []).forEach(e => { if(e.window[0] === 1801 && e.window[1] === 1999) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1801, 1999], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British Empire"] || []).forEach(e => { if(e.window[0] === 1801 && e.window[1] === 1858) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1801, 1858], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British Raj"] || []).forEach(e => { if(e.window[0] === 1859 && e.window[1] === 1947) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1859, 1947], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British Africa"] || []).forEach(e => { if(e.window[0] === 1885 && e.window[1] === 1960) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1885, 1960], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British Cape Colony"] || []).forEach(e => { if(e.window[0] === 1801 && e.window[1] === 1884) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1801, 1884], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British Ceylon"] || []).forEach(e => { if(e.window[0] === 1801 && e.window[1] === 1814) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1801, 1814], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British East Africa"] || []).forEach(e => { if(e.window[0] === 1961 && e.window[1] === 1968) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [1961, 1968], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  (INSIGNIA_UNDRAWN["British Overseas Territories"] || []).forEach(e => { if(e.window[0] === 2000 && e.window[1] === 2024) e.dev = {"kind": "flag", "field": "#012169", "marks": [{"type": "saltire", "colour": "#ffffff", "w": 0.2}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "hoist", "shift": 0.05}, {"type": "saltire", "colour": "#c8102e", "w": 0.1, "fim": {"colour": "#ffffff", "w": 0.033}, "half": "fly", "shift": -0.05}, {"type": "cross", "colour": "#c8102e", "w": 0.2, "fim": {"colour": "#ffffff", "w": 0.0667}}], "bands": [], "window": [2000, 2024], "what": "the Union Flag of the proclamation of 1 January 1801 — “azure, the Crosses Saltires of St Andrew and St Patrick Quarterly per Saltire, counterchanged Argent and Gules; the latter fimbriated of the Second, surmounted by the Cross of St George of the Third, fimbriated as the Saltire” (Perrin, British Flags, p. 72, quoting the proclamation). The blazon does not say which arm of the counterchange sits uppermost at the hoist; that came from Sir Isaac Heard’s drawing, approved by Order in Council of 5 November 1800, and the widths drawn here are the conventional ones"}; });
+  INSIGNIA_ATTESTED["Kingdom of England"] = (INSIGNIA_ATTESTED["Kingdom of England"] || []).concat([{"kind": "flag", "field": "#ffffff", "marks": [{"type": "cross", "colour": "#ce1124", "w": 0.2}], "bands": [], "window": [1634, 1706], "what": "the cross of St George — English ships to “carry the Red-Crosse, commonly called S. George his Crosse, as of olde time hath beene used” (proclamation of 5 May 1634, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 61) The proclamation fixes the arrangement and not the widths, as blazons do; the widths drawn here are the conventional ones and are this map’s, not the source’s."}]);
+  if(INSIGNIA_UNDRAWN["Kingdom of England"]) INSIGNIA_UNDRAWN["Kingdom of England"] = INSIGNIA_UNDRAWN["Kingdom of England"].filter(e => !(e.window[0] === 1634 && e.window[1] === 1706));
+  INSIGNIA_ATTESTED["English Colonial Empire"] = (INSIGNIA_ATTESTED["English Colonial Empire"] || []).concat([{"kind": "flag", "field": "#ffffff", "marks": [{"type": "cross", "colour": "#ce1124", "w": 0.2}], "bands": [], "window": [1634, 1706], "what": "the cross of St George — English ships to “carry the Red-Crosse, commonly called S. George his Crosse, as of olde time hath beene used” (proclamation of 5 May 1634, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 61) The proclamation fixes the arrangement and not the widths, as blazons do; the widths drawn here are the conventional ones and are this map’s, not the source’s."}]);
+  if(INSIGNIA_UNDRAWN["English Colonial Empire"]) INSIGNIA_UNDRAWN["English Colonial Empire"] = INSIGNIA_UNDRAWN["English Colonial Empire"].filter(e => !(e.window[0] === 1634 && e.window[1] === 1706));
+  INSIGNIA_ATTESTED["Republic of Genoa"] = (INSIGNIA_ATTESTED["Republic of Genoa"] || []).concat([{"kind": "flag", "field": "#ffffff", "marks": [{"type": "cross", "colour": "#ce1124", "w": 0.2}], "bands": [], "window": [1453, 1631], "what": "the red cross of St George on white — “Croce rossa su campo bianco… il cui uso è attestato — almeno — dal 1113”, Comune di Genova, La Bandiera di San Giorgio, on the authority of Aldo Agosto of the Archivio di Stato di Genova. That 1113 is asserted there without a document behind it, and the often-quoted 1218 attestation could not be found outside Wikipedia, so it is not used. The proclamation fixes the arrangement and not the widths, as blazons do; the widths drawn here are the conventional ones and are this map’s, not the source’s."}]);
+  if(INSIGNIA_UNDRAWN["Republic of Genoa"]) INSIGNIA_UNDRAWN["Republic of Genoa"] = INSIGNIA_UNDRAWN["Republic of Genoa"].filter(e => !(e.window[0] === 1453 && e.window[1] === 1631));
+  INSIGNIA_ATTESTED["Denmark"] = (INSIGNIA_ATTESTED["Denmark"] || []).concat([{"kind": "flag", "field": "#c60c30", "marks": [{"type": "cross", "colour": "#ffffff", "w": 0.1429, "offset": -0.088}], "bands": [], "window": [1946, 2024], "what": "the Dannebrog — Forordning of 11 July 1748, still in force: “Det danske Coffardi-Flag skal være rødt med hvidt Kors uden Split”, the cross a seventh of the hoist and the quarters 3:1:3 by 3:1:4.5, which is the only geometry in this table stated by the object’s own source. Its earliest secure depiction is the Armorial Gelre of about 1380; the story of a flag falling from the sky in 1219 is first told by Christiern Pedersen three centuries later and is not a record"}]);
+  if(INSIGNIA_UNDRAWN["Denmark"]) INSIGNIA_UNDRAWN["Denmark"] = INSIGNIA_UNDRAWN["Denmark"].filter(e => !(e.window[0] === 1946 && e.window[1] === 2024));
+  INSIGNIA_ATTESTED["Danish India"] = (INSIGNIA_ATTESTED["Danish India"] || []).concat([{"kind": "flag", "field": "#c60c30", "marks": [{"type": "cross", "colour": "#ffffff", "w": 0.1429, "offset": -0.088}], "bands": [], "window": [1748, 1852], "what": "the Dannebrog — Forordning of 11 July 1748, still in force: “Det danske Coffardi-Flag skal være rødt med hvidt Kors uden Split”, the cross a seventh of the hoist and the quarters 3:1:3 by 3:1:4.5, which is the only geometry in this table stated by the object’s own source. Its earliest secure depiction is the Armorial Gelre of about 1380; the story of a flag falling from the sky in 1219 is first told by Christiern Pedersen three centuries later and is not a record"}]);
+  if(INSIGNIA_UNDRAWN["Danish India"]) INSIGNIA_UNDRAWN["Danish India"] = INSIGNIA_UNDRAWN["Danish India"].filter(e => !(e.window[0] === 1748 && e.window[1] === 1852));
+  INSIGNIA_ATTESTED["Swedish Empire"] = (INSIGNIA_ATTESTED["Swedish Empire"] || []).concat([{"kind": "flag", "field": "#005293", "marks": [{"type": "cross", "colour": "#fecc00", "w": 0.2, "offset": -0.125}], "bands": [], "window": [1653, 1814], "what": "blue with a yellow cross — first described in the royal letter of 19 April 1562, “gult udi korssvijs fördeelt påå blott”, printed in Nordisk familjebok, Uggleupplagan vol. 8 (1908). The three-tailed naval ensign was reserved to the crown by the plakat of 6 November 1663, which allowed private ships the yellow cross only “fyrkantige och jämnt afskurna” — square and evenly cut, which is what is drawn here. The proclamation fixes the arrangement and not the widths, as blazons do; the widths drawn here are the conventional ones and are this map’s, not the source’s."}]);
+  if(INSIGNIA_UNDRAWN["Swedish Empire"]) INSIGNIA_UNDRAWN["Swedish Empire"] = INSIGNIA_UNDRAWN["Swedish Empire"].filter(e => !(e.window[0] === 1653 && e.window[1] === 1814));
+  INSIGNIA_UNDRAWN["Kingdom of England"] = (INSIGNIA_UNDRAWN["Kingdom of England"] || []).filter(e => !(e.window[0] === 1606 && e.window[1] === 1706));
+  INSIGNIA_NOFORM_AT["Kingdom of England"] = (INSIGNIA_NOFORM_AT["Kingdom of England"] || []).concat([{window: [1606, 1706], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
+  INSIGNIA_UNDRAWN["English Colonial Empire"] = (INSIGNIA_UNDRAWN["English Colonial Empire"] || []).filter(e => !(e.window[0] === 1609 && e.window[1] === 1779));
+  INSIGNIA_NOFORM_AT["English Colonial Empire"] = (INSIGNIA_NOFORM_AT["English Colonial Empire"] || []).concat([{window: [1609, 1779], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
+  INSIGNIA_UNDRAWN["Kingdom of Great Britain"] = (INSIGNIA_UNDRAWN["Kingdom of Great Britain"] || []).filter(e => !(e.window[0] === 1794 && e.window[1] === 1800));
+  INSIGNIA_NOFORM_AT["Kingdom of Great Britain"] = (INSIGNIA_NOFORM_AT["Kingdom of Great Britain"] || []).concat([{window: [1794, 1800], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
+  INSIGNIA_UNDRAWN["British Colonial Empire"] = (INSIGNIA_UNDRAWN["British Colonial Empire"] || []).filter(e => !(e.window[0] === 1706 && e.window[1] === 1800));
+  INSIGNIA_NOFORM_AT["British Colonial Empire"] = (INSIGNIA_NOFORM_AT["British Colonial Empire"] || []).concat([{window: [1706, 1800], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
+  INSIGNIA_UNDRAWN["British Empire"] = (INSIGNIA_UNDRAWN["British Empire"] || []).filter(e => !(e.window[0] === 1757 && e.window[1] === 1800));
+  INSIGNIA_NOFORM_AT["British Empire"] = (INSIGNIA_NOFORM_AT["British Empire"] || []).concat([{window: [1757, 1800], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
+  INSIGNIA_UNDRAWN["Freetown Colony"] = (INSIGNIA_UNDRAWN["Freetown Colony"] || []).filter(e => !(e.window[0] === 1788 && e.window[1] === 1796));
+  INSIGNIA_NOFORM_AT["Freetown Colony"] = (INSIGNIA_NOFORM_AT["Freetown Colony"] || []).concat([{window: [1788, 1796], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
+  INSIGNIA_UNDRAWN["British Cape Colony"] = (INSIGNIA_UNDRAWN["British Cape Colony"] || []).filter(e => !(e.window[0] === 1796 && e.window[1] === 1800));
+  INSIGNIA_NOFORM_AT["British Cape Colony"] = (INSIGNIA_NOFORM_AT["British Cape Colony"] || []).concat([{window: [1796, 1800], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
+  INSIGNIA_UNDRAWN["British Ceylon"] = (INSIGNIA_UNDRAWN["British Ceylon"] || []).filter(e => !(e.window[0] === 1796 && e.window[1] === 1800));
+  INSIGNIA_NOFORM_AT["British Ceylon"] = (INSIGNIA_NOFORM_AT["British Ceylon"] || []).concat([{window: [1796, 1800], what: "the flag of the 1606 proclamation, the two crosses joined “according to a form made by our Heralds” (12 April 1606, in W. G. Perrin, British Flags, Cambridge University Press, 1922, p. 55) — but that form is lost. Perrin reports the heralds’ pattern and the later drafts and patterns all disappeared, and whether the white about the red cross was a broad border or a narrow fimbriation is disputed and settled by no surviving 1606 record. The arrangement is recorded; the widths are not, so nothing is drawn rather than a chosen one"}]);
   // C5 BATCH 1: the flags whose bands a source states outright. Every citation here was opened and read.
   INSIGNIA_ATTESTED["Dutch Republic"] = (INSIGNIA_ATTESTED["Dutch Republic"] || []).concat([{"kind": "flag", "dir": "h", "bands": [["#ae1c28", 1], ["#ffffff", 1], ["#21468b", 1]], "window": [1667, 1795], "what": "the red, white and blue tricolour of the Netherlands — horizontal, equal bands. The earliest dated depiction opened for this map is the flag book of 1667–1670, Rijksmuseum NG-2018-301-75, “three horizontal bands in red, white and blue”. The colours are those named by the Koninklijk Huis: helder vermiljoen, helder wit, kobaltblauw"}]);
   INSIGNIA_ATTESTED["Dutch Cape Coast"] = (INSIGNIA_ATTESTED["Dutch Cape Coast"] || []).concat([{"kind": "flag", "dir": "h", "bands": [["#ae1c28", 1], ["#ffffff", 1], ["#21468b", 1]], "window": [1667, 1795], "what": "the red, white and blue tricolour of the Netherlands — horizontal, equal bands. The earliest dated depiction opened for this map is the flag book of 1667–1670, Rijksmuseum NG-2018-301-75, “three horizontal bands in red, white and blue”. The colours are those named by the Koninklijk Huis: helder vermiljoen, helder wit, kobaltblauw"}]);
@@ -4242,6 +4301,8 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   // Nothing here touches the ground - this is the mark, and the fill underneath stays the polity's palette colour.
   function flagBadge(ctx, dev, x, y, size){
     const w = size * 1.15, h = w / 1.5, bands = dev.bands || [], vert = dev.dir === 'v';
+    if(dev.field){ ctx.save(); ctx.translate(x - w / 2, y - h / 2); ctx.fillStyle = dev.field;
+                   ctx.fillRect(0, 0, w, h); ctx.restore(); }
     const total = bands.reduce((t, b) => t + (b[1] || 1), 0) || 1;
     ctx.save(); ctx.translate(x - w / 2, y - h / 2);
     let at = 0;
@@ -4251,6 +4312,47 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       if(vert) ctx.fillRect(at, 0, Math.ceil(run + 0.5), h);
       else ctx.fillRect(0, at, w, Math.ceil(run + 0.5));
       at += run;
+    });
+    // THE CROSS AND THE SALTIRE, over the field, in the order the blazon gives them. Widths are shares of the
+    // hoist because that is how the blazons and the Danish ordinance measure them.
+    (dev.marks || []).forEach(m => {
+      const t = h * m.w, ft = m.fim ? h * m.fim.w : 0, sh = (m.shift || 0) * h;
+      const clipHalf = () => {
+        if(!m.half) return;
+        ctx.beginPath();
+        ctx.rect(m.half === 'hoist' ? 0 : w / 2, 0, w / 2, h);
+        ctx.clip();
+      };
+      if(m.type === 'saltire'){
+        // a band of vertical thickness t laid along a diagonal, corner to corner, optionally displaced across
+        // itself by `shift` - which is what counterchanging one saltire against another comes to
+        const band = (down, th, col, dy) => {
+          ctx.fillStyle = col; ctx.beginPath();
+          if(down){ ctx.moveTo(0, dy - th / 2); ctx.lineTo(0, dy + th / 2);
+                    ctx.lineTo(w, h + dy + th / 2); ctx.lineTo(w, h + dy - th / 2); }
+          else    { ctx.moveTo(0, h + dy + th / 2); ctx.lineTo(0, h + dy - th / 2);
+                    ctx.lineTo(w, dy - th / 2); ctx.lineTo(w, dy + th / 2); }
+          ctx.closePath(); ctx.fill();
+        };
+        [true, false].forEach(down => {
+          ctx.save(); clipHalf();
+          // one diagonal is displaced one way and the other the other way: that is the counterchange
+          const dy = sh * (down ? 1 : -1);
+          if(ft){ band(down, t + 2 * ft, m.fim.colour, dy); }
+          band(down, t, m.colour, dy);
+          ctx.restore();
+        });
+      } else {
+        const cx = w * (0.5 + (m.offset || 0)), cy = h / 2;
+        ctx.save(); clipHalf();
+        if(ft){ ctx.fillStyle = m.fim.colour;
+          ctx.fillRect(0, cy - t / 2 - ft, w, t + 2 * ft);
+          ctx.fillRect(cx - t / 2 - ft, 0, t + 2 * ft, h); }
+        ctx.fillStyle = m.colour;
+        ctx.fillRect(0, cy - t / 2, w, t);
+        ctx.fillRect(cx - t / 2, 0, t, h);
+        ctx.restore();
+      }
     });
     if(dev.canton){                                   // a canton, where a flag has one
       ctx.fillStyle = dev.canton[0];
@@ -4802,13 +4904,20 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
         + `<p class="pop-age">${rec ? 'Cliopatria shape dated ' + fmtRange(rec[1], rec[2]) : 'Receding — no dated shape of this polity covers this date'}${member && member !== name ? ' · part of ' + member : ''}</p>`
         + `<p class="pop-note"><strong>Insignia: ${att ? 'ATTESTED' : 'ILLUSTRATIVE'}.</strong> `
         + deviceSequence(name)
-        + (att && att.kind === 'flag' ? flagSvg(att) : '')
+        + (att && att.kind === 'flag' ? flagSvg(att) : (undrawn && undrawn.dev ? flagSvg(undrawn.dev) : ''))
         + (att ? `In use by this polity within its dates: ${att.what}.`
              + (att.charge ? ` <strong>The badge draws the bands only.</strong> Not drawn: ${att.charge}.` : '')
              + (att.colourNote ? ` The source names its colours rather than specifying them — ${att.colourNote}.` : '')
-           : undrawn ? `Designed for this map. This polity’s flag is attested and its form is recorded — `
-             + `${undrawn.what} — but it is a cross, not a set of bands, and this map’s badge draws bands. `
-             + `The limit is this map’s, not the record’s, so no flag is drawn rather than a wrong one.`
+           : undrawn ? (undrawn.dev
+             ? `This polity’s flag is attested and its form is recorded: ${undrawn.what}. `
+               + `<strong>It is drawn here and not on the map.</strong> Measured at the 20 pixels the map gives a `
+               + `badge, its fimbriations come to one pixel and half a pixel and do not survive; the counterchange `
+               + `resolves at 40 pixels and the whole flag at 52. So the ground carries no mark rather than a `
+               + `wrong one, and this panel carries the object itself.`
+             : `Designed for this map. This polity’s flag is attested and its form is recorded — `
+               + `${undrawn.what} — but its charge is not a cross or a band, and this map’s badge draws `
+               + `fields, bands and crosses. The limit is this map’s, not the record’s, so no flag is `
+               + `drawn rather than a wrong one.`)
            : noformAt ? `Designed for this map. This polity’s device is attested — ${noformAt.what} — so `
              + `this map does not draw it.`
            : later ? `Designed for this map. ${later}`
@@ -5059,7 +5168,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   };
   BORDERS.map = map;
   BORDERS.glyph = glyph; BORDERS.attested = INSIGNIA_ATTESTED; BORDERS.noform = INSIGNIA_NOFORM;
-  BORDERS.attAt = attAt; BORDERS.deviceElsewhere = deviceElsewhere;
+  BORDERS.attAt = attAt; BORDERS.deviceElsewhere = deviceElsewhere; BORDERS.flagBadge = flagBadge;
   BORDERS.undrawnAt = (n, y) => windowed(INSIGNIA_UNDRAWN, n, y);
   BORDERS.noformAt = (n, y) => windowed(INSIGNIA_NOFORM_AT, n, y);
   window.__borders = BORDERS;                 // inspection handle for the harness
