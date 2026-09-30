@@ -201,6 +201,21 @@ invisible to it; and **Russian America (Alaska, 1741–1867)**, because Russia i
 home-region table so that Siberia is never called a colony, and Alaska goes with it. Both are limits of the rule, not
 oversights.
 
+**Ruled 2026-09-29: an openly labelled convention is honest; a conflict in the record is not.** Flags are drawn
+from their blazons, and a blazon fixes the arrangement and leaves the widths to the artist — that is what heraldry
+is. Of the objects this map draws, **only the Dannebrog has its geometry stated by its own source**: the Danish
+Forordning of 11 July 1748 gives the cross as a seventh of the hoist and the quarters as 3:1:3 by 3:1:4.5. The cross
+of St George, Sweden's yellow cross and Genoa's cross are drawn at **conventional widths**, and each of those popups
+says so in its own words — *"the widths drawn here are the conventional ones and are this map's, not the source's"*.
+
+That is **not** the same as the cases this map leaves blank, and the difference is the whole rule. Portugal's
+blue-and-white monarchy flag is not drawn because two decrees of **18 October 1830 give two different proportions**,
+blue a third and blue a half; the 1606 Union Flag is not drawn because Perrin reports the heralds' own pattern
+**lost** and the width of the white about the red **disputed**. In both, the record contains a contradiction, and
+choosing between them on the map would be this map settling a question its sources leave open. Where a source is
+merely silent on a width, a stated convention leaves the reader able to see what is the map's and what is the
+source's. Where a source disagrees with itself, nothing is drawn.
+
 **4. Ice sheets — real margins where the evidence reaches, nothing where it does not.** North America
 from **NADI-1** (Dalton *et al.* 2023, CC BY 4.0) from 25,000 years ago, every 500 years; Eurasia,
 including the Svalbard–Barents–Kara sheet, from **DATED-1** (Hughes *et al.* 2016, CC BY 3.0) from 38,000
