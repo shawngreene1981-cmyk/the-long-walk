@@ -444,6 +444,11 @@
       <div class="controls">
         <button class="ctrl-btn" id="btnPlay">Play ▶</button>
         <button class="ctrl-btn" id="btnRestart">Restart ↺</button>
+        <span class="dated-step" style="display:inline-flex;align-items:center;gap:4px;margin-left:10px">
+          <button class="ctrl-btn" id="btnDatedPrev" title="Step back to the previous dated moment in view">|◀</button>
+          <span style="font-size:11px;letter-spacing:.06em;opacity:.75">DATED MOMENT</span>
+          <button class="ctrl-btn" id="btnDatedNext" title="Step on to the next dated moment in view">▶|</button>
+        </span>
       </div>
     </div>
   </div>
@@ -553,6 +558,8 @@ const ERA = [
   {yearsAgo:2800,    label:"The Alphabet Returns", note:"Greece had writing and lost it: Linear B vanished with the Mycenaean palaces and Greek went unwritten for three or four centuries. Around 800 BCE it comes back \u2014 borrowed from Phoenician traders and improved with vowels. Knowledge recovered from outside rather than reinvented from within."},
   {yearsAgo:2500,    label:"The Amazon Is Not Wilderness", note:"Terra preta \u2014 deep black soil built by people \u2014 is accumulating along the lower Amazon, and earthworks are being dug across Acre that nobody will see again until modern deforestation exposes them. The forest floor is an artefact."},
   {yearsAgo:2500,    label:"Iron Age & the First Empires", note:"Cyrus, Chandragupta, Qin Shi Huang. Also Gunung Padang's real Iron Age sanctuary — the actual site under the retracted claim."},
+  {yearsAgo:2152,   label:"The Corridor West", note:"Zhang Qian gets back to Chang’an after thirteen years, most of them spent as a Xiongnu captive, having failed at the thing he was sent for — there is no alliance with the Yuezhi and there is not going to be one. What he brings back instead is the first Chinese account of Ferghana, Bactria and the roads between them, and one detail that unsettles the court: Sichuan cloth and bamboo already on sale in Bactria, arriving by way of India along a route nobody in Chang’an knew existed. The corridor west was not opened by the mission. The mission found out it was already there."},
+  {yearsAgo:1860,   label:"Daqin at the Han Court", note:"An embassy reaches Emperor Huan saying it comes from Andun, king of Daqin — Marcus Aurelius Antoninus, at the far end of the continent. They arrive by sea through Rinan, in what is now central Vietnam, not overland through Parthia, and the gifts they present — ivory, rhinoceros horn, tortoiseshell — are Southeast Asian goods rather than Roman ones. Whether they were the emperor’s envoys or merchants from Rome’s eastern provinces saying that they were is still argued, and no Roman source mentions the journey at all. The Han court wrote them down regardless, and that entry is the first end-to-end contact between the two ends of Eurasia that anybody troubled to date."},
   {yearsAgo:1500,    label:"The Bantu Arrival", note:"Mapungubwe, the Llanos de Mojos, Cahokia's first settlement. The Bantu expansion reaches South Africa before the Zimbabwe plateau's own complex societies exist."},
   {yearsAgo:1200,    label:"Madagascar", note:"Sailors from Borneo cross roughly 7,500 km of open Indian Ocean and settle the last major landmass on Earth \u2014 while the African mainland sits 400 km away and has nothing to do with who got there first. The same branch that reaches Hawaii, going the other way."},
   {yearsAgo:1005,   label:"Vinland", note:"1021 CE, dated exactly by the 993 CE cosmic-ray spike in the settlement's own timbers. Norse ships reach Newfoundland — and the walk that began in the Rift Valley closes its circle: people arriving from the east meet the descendants of people who came the long way round. Then the Norse leave, and it is forgotten for four and a half centuries."},
@@ -3029,6 +3036,102 @@ document.getElementById('btnPlay').addEventListener('click', ()=>{
 // Restart returns to the exact state the page loads in, including the camera and
 // the untouched-map latch — so a restart really is a restart, not "wherever you
 // happened to leave the viewport, replayed".
+// ===================== THE NEXT DATED MOMENT =====================
+// The timeline's step is set by pixels: at 1607 one pixel of drag is 7.7 years, so a four-month crossing cannot
+// be selected and is never rendered, even in playback. These instants are already in the data - a route's dated
+// vertices, a spread's first and last moment - so this steps between them instead of making the bar finer, which
+// would cost the century-scale reading the bar exists for. See borders/patch_dated_steps.py.
+function datedInstants(){
+  const B = window.__borders, m = B && B.map;
+  if(!m) return [];
+  const bb = m.getBounds(), out = [];
+  const ptIn = (la, lo) => bb.contains(L.latLng(la, lo));
+  const boxIn = b => bb.intersects(L.latLngBounds([b[1], b[0]], [b[3], b[2]]));
+  ROUTES.forEach(r => {
+    if(!r.times) return;
+    r.times.forEach((t, i) => {
+      const p = r.pts[i];
+      if(t === null || !p || !ptIn(p[0], p[1])) return;
+      out.push({ya: t, what: r.name});
+    });
+  });
+  (typeof FORCED !== 'undefined' ? FORCED : []).forEach(f => {
+    const a = (f.transit || [])[0], z = (f.arrival || f.transit || []).slice(-1)[0];
+    if(a && ptIn(a[0], a[1])) out.push({ya: f.from, what: f.label + ' \u2014 sets out'});
+    if(z && ptIn(z[0], z[1])) out.push({ya: f.to, what: f.label + ' \u2014 arrives'});
+  });
+  const H = B.hdr;
+  if(H && H.spreads && B.visible) H.spreads.forEach(sp => {
+    if(!sp.bb || !boxIn(sp.bb)) return;
+    const n = (H.polities || [])[sp.pid - 1] || 'a polity';
+    out.push({ya: 2026 - sp.lo, what: n + ' \u2014 ' + sp.kind + ' begins'});
+    out.push({ya: 2026 - sp.hi, what: n + ' \u2014 ' + sp.kind + ' complete'});
+  });
+  out.sort((a, b) => b.ya - a.ya);            // earliest first, as the slider runs
+  const seen = [];                            // moments closer than a day are one moment
+  out.forEach(o => { const l = seen[seen.length - 1];
+    if(l && Math.abs(l.ya - o.ya) < 1 / 365) { if(l.what.indexOf(o.what) < 0) l.what += '; ' + o.what; }
+    else seen.push(o); });
+  return seen;
+}
+let datedPos = null;                          // the exact fractional slider position we last stepped to
+function datedHere(){
+  const v = +scrub.value;
+  if(datedPos !== null && Math.abs(Math.round(datedPos) - v) < 0.5) return yearsAgoFromSlider(datedPos);
+  datedPos = null;
+  return yearsAgoFromSlider(v);
+}
+function datedNeighbour(dir){                 // dir -1 = later in time, +1 = earlier in time
+  const now = datedHere(), all = datedInstants(), eps = 1 / 3650;
+  if(dir > 0){ for(let i = 0; i < all.length; i++) if(all[i].ya < now - eps) return all[i]; return null; }
+  for(let i = all.length - 1; i >= 0; i--) if(all[i].ya > now + eps) return all[i];
+  return null;
+}
+function datedGo(dir){
+  const t = datedNeighbour(dir);
+  if(!t) return;
+  pause();
+  const v = sliderAtYearsExact(t.ya);
+  datedPos = v; scrub.value = v; render(v);   // render takes the float; the input rounds its own display
+  datedRefresh();
+}
+function datedLabel(t){
+  if(!t) return null;
+  const ce = 2026 - t.ya, y = Math.floor(ce), frac = ce - y;
+  const mth = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const cum = [0,31,59,90,120,151,181,212,243,273,304,334];
+  const doy = Math.round(frac * 365); let mi = 11; while(mi > 0 && cum[mi] > doy) mi--;
+  const day = doy - cum[mi] + 1;
+  const when = frac > 0.002 ? (day + ' ' + mth[mi] + ' ' + y) : String(y);
+  return t.what + ' \u2014 ' + when + (y > 0 ? ' CE' : ' BCE');
+}
+function datedRefresh(){
+  const nb = document.getElementById('btnDatedNext'), pb = document.getElementById('btnDatedPrev');
+  if(!nb || !pb) return;
+  const n = datedNeighbour(+1), p = datedNeighbour(-1);
+  const none = datedInstants().length === 0;
+  [[nb, n, 'on to'], [pb, p, 'back to']].forEach(([b, t, word]) => {
+    b.disabled = !t;
+    b.style.opacity = t ? '' : '0.35';
+    b.style.cursor = t ? '' : 'default';
+    b.title = t ? ('Step ' + word + ': ' + datedLabel(t))
+      : (none ? 'No dated moment is in view here \u2014 the routes and borders on screen carry no dated instant'
+              : 'No ' + (word === 'on to' ? 'later' : 'earlier') + ' dated moment in view');
+  });
+}
+document.getElementById('btnDatedNext').addEventListener('click', () => datedGo(+1));
+document.getElementById('btnDatedPrev').addEventListener('click', () => datedGo(-1));
+window.addEventListener('keydown', e => {
+  if(e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if(e.key === ']') { e.preventDefault(); datedGo(+1); }
+  if(e.key === '[') { e.preventDefault(); datedGo(-1); }
+});
+scrub.addEventListener('input', () => { datedPos = null; datedRefresh(); });
+setTimeout(() => { if(window.__borders && window.__borders.map){
+  window.__borders.map.on('moveend zoomend', datedRefresh); } datedRefresh(); }, 2500);
+window.__dated = {instants: datedInstants, go: datedGo, neighbour: datedNeighbour, label: datedLabel,
+                  here: datedHere, refresh: datedRefresh};
+
 document.getElementById('btnRestart').addEventListener('click', ()=>{
   pause(); camBusy=false; userDriven=false;
   camZoom = worldZoom();
