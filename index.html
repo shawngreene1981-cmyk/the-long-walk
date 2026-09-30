@@ -595,7 +595,16 @@ const ERA_POS = (function(){
   AGES.forEach((a,k)=>{
     const share = a.weight/total;
     const idxs = ERA.map((e,i)=>i).filter(i=>AGE_OF_ERA[i]===k);
-    idxs.forEach((i,j)=>{ pos[i] = acc + (idxs.length ? (j/idxs.length)*share : 0); });
+    // ANCHORS THAT SHARE A DATE SHARE A SLOT (2026-09-30). Spacing by index gave every anchor its own step even
+    // when two sat on the same year, so the step between them carried zero years and the slider moved without
+    // the map changing: 87.3 units at 474 BCE, 42.7 at 100,000 years ago, 3.5% of the bar doing nothing. Two
+    // anchors on one date are one moment and now get one slot. No date moves; see borders/patch_era_tie.py.
+    const groups = [];
+    idxs.forEach(i => {
+      const g = groups[groups.length-1];
+      if(g && ERA[g[0]].yearsAgo === ERA[i].yearsAgo) g.push(i); else groups.push([i]);
+    });
+    groups.forEach((g,j)=>{ g.forEach(i=>{ pos[i] = acc + (groups.length ? (j/groups.length)*share : 0); }); });
     acc += share;
   });
   pos[ERA.length-1] = 1;
