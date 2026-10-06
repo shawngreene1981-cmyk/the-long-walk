@@ -235,6 +235,20 @@ figure as the per-act size limit. It is **below `act_1200_1300`, which is 899,78
 for weeks**, so it was never a ceiling anything was held to. The measured envelope is the largest act already
 shipping; the 1500–1600 act, at 840,319 bytes raw and about 345,000 gzipped, sits inside it.
 
+**Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
+`G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
+throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.
+
+**This rule exists because it was broken on 2026-10-06.** The 1500–1600 act had been built twice on
+Cliopatria v0.2.0 — once with the whole-field convergence criterion, at 840,319 bytes, and once with a
+faster target-only criterion, at 840,341 — to test whether the two agreed. They did not, so the act was
+held; and when the v0.2.1 review then showed its source window had changed, **both builds were deleted from the
+working tree** on the reasoning that an act nobody would ship was clutter. That was wrong twice over: the
+whole-field build was the reference the convergence question would be re-argued from, and the pair together
+were the only existing measurement of what that criterion is worth. They survived only because copies had been
+made earlier for the byte comparison, and they are now in `_Archive` as
+`ARCHIVE_2026-10-06_act_1500_1600_v020_wholefield.bin` and `..._targetonly.bin`. The next one might not survive.
+
 **4. Ice sheets — real margins where the evidence reaches, nothing where it does not.** North America
 from **NADI-1** (Dalton *et al.* 2023, CC BY 4.0) from 25,000 years ago, every 500 years; Eurasia,
 including the Svalbard–Barents–Kara sheet, from **DATED-1** (Hughes *et al.* 2016, CC BY 3.0) from 38,000
