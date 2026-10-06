@@ -216,6 +216,25 @@ choosing between them on the map would be this map settling a question its sourc
 merely silent on a width, a stated convention leaves the reader able to see what is the map's and what is the
 source's. Where a source disagrees with itself, nothing is drawn.
 
+**Cliopatria v0.2.1, released 3 October 2026 — reviewed, and the map does not draw it yet.** The release
+addresses all six faults this project reported on 23 September, and the fixes were checked against the file
+rather than against the release notes: the Northern Song now runs to 1138 with its SeshatID restored and the
+Southern Song begins in 1139; *Dutch Cape Coast* is split into **Dutch Cape Colony** (Q4807130, the Cape) and
+**Dutch Gold Coast** (Q770776, the forts), each verified by coordinate; the British Cape and Freetown records,
+which were drawn on each other's ground, are now each on their own; *French Equatorial Africa* is renamed French
+Algeria and carries Q218272 throughout; *Danish India* on the Gold Coast becomes **Danish Gold Coast** (Q770833);
+and Portugal's overseas possessions regain their `MemberOf` while the Portuguese Republic's identifier is
+corrected from Q45 to Q167360. **This map still draws v0.2.0**, because adopting the new release is not a
+file swap: 130 records straddle the 1500 act boundary and five of them — including the Habsburg Monarchy
+— are removed or retimed in v0.2.1, so an act built on the new release beside an act built on the old one
+would draw different shapes for the same polity on either side of the join. Adoption means re-cutting the
+slices and rebuilding every act, and it is a planned migration rather than an edit.
+
+**Withdrawn 2026-10-05: the “822,136 B budget ceiling”.** The scope for the colonial acts named that
+figure as the per-act size limit. It is **below `act_1200_1300`, which is 899,788 bytes raw and has been live
+for weeks**, so it was never a ceiling anything was held to. The measured envelope is the largest act already
+shipping; the 1500–1600 act, at 840,319 bytes raw and about 345,000 gzipped, sits inside it.
+
 **4. Ice sheets — real margins where the evidence reaches, nothing where it does not.** North America
 from **NADI-1** (Dalton *et al.* 2023, CC BY 4.0) from 25,000 years ago, every 500 years; Eurasia,
 including the Svalbard–Barents–Kara sheet, from **DATED-1** (Hughes *et al.* 2016, CC BY 3.0) from 38,000
@@ -319,7 +338,8 @@ clearance, and it is the only one:**
 | Natural Earth 10m geography regions and river centrelines (the Sahara polygon; the modern rivers the drawn channels avoid) | public domain | none (credited anyway) | yes |
 | OpenStreetMap basemap tiles | ODbL, tiles © OSM contributors | attribution on the map | yes |
 | De Groeve *et al.* 2022 shoreline raster | CC BY 4.0 | credit, licence link, state changes | yes |
-| Cliopatria v0.2.0 (Bennett *et al.* 2025) | CC BY 4.0 | credit, licence link, state changes | yes |
+| Cliopatria v0.2.0 (Bennett *et al.* 2025) — **the version this map draws** | CC BY 4.0 | credit, licence link, state changes | yes |
+| Cliopatria v0.2.1, 3 October 2026 — reviewed, **not yet adopted** | CC BY 4.0 | same | yes |
 | NADI-1 ice margins, Dalton *et al.* 2023 | CC BY 4.0 | credit, licence link, state changes | yes |
 | DATED-1 ice margins, Hughes *et al.* 2016 | CC BY 3.0 | credit, licence link, state changes | yes |
 | **PATICE — Patagonian Ice Sheet, Davies *et al.* 2020** | **CC BY-NC 3.0** | **credit, licence link, state changes** | **NO — NON-COMMERCIAL ONLY** |
