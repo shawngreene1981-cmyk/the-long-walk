@@ -120,7 +120,24 @@ Each act is built into `data/borders/` as a timed grid of 0.1° cells (`act_<fro
 header; built by `geowork/borders/build_act.py`, listed in `data/borders/acts.json`), and the layer loads the act for
 the date on screen. Each act is built seeing a century either side, so two acts agree on the year they share, and the
 date two powers first met is carried from act to act (`geowork/borders/postpass_pairs.py`), so a frontier lit in one
-century does not go dark at the next; `geowork/borders/check_boundaries.py` and `check_seams.py` test both. Where
+century does not go dark at the next; `geowork/borders/check_boundaries.py` and `check_seams.py` test both.
+
+**Ruled 2026-10-11: the bar those two checks are held to is "no worse than the set already live", not zero.** A
+boundary is a join between two independently built acts, and some disagreement is inherent: they are cut from the
+same release but converge separately, and a cell can change hands in the year they share. The live set has never
+scored zero — when the check was first run across it on 2026-10-09 it returned 44 boundaries, 9 of them clean,
+2,041 cells absent at a start, 1,993 absent at an end and 53 date-disagreements. Demanding zero of a rebuild would
+hold it to a standard the thing it replaces has never met, and would stop the map moving forever. So the question
+asked of any staged set is the comparative one, boundary by boundary, and a rebuild ships when no boundary is worse
+than the live set's equivalent.
+
+**What "worse" means is a count of what a visitor could see, not of cells that differ.** The disagreements that
+matter are the ones that change a line's weight: a pair of owners dated to an act's own floor when the previous act
+knows they met centuries earlier is drawn at full brightness instead of at the fade floor, and because the fade's
+live window is wider than a single century, it stays wrong for the whole act. The useful figure is therefore the
+share of the full-brightness seam cells in an act's opening frame that are wrong — at boundary 1700 of the
+first v0.2.1 rebuild that was 265 of 269, against at most 1 anywhere in the live set. Where
+
 Cliopatria's own label contradicts its shapes or dates (“Later Zhou” for the Eastern Zhou, “Great Yuan” linked to the
 Mongol Yuan, a Macedonian “Empire” from 675 BCE, the “Athenian Coalition”), the popup says so and the map draws it as
 the source does (`geowork/borders/source_notes.json`). An insignia is ATTESTED only with a named object, its date
@@ -224,16 +241,39 @@ Southern Song begins in 1139; *Dutch Cape Coast* is split into **Dutch Cape Colo
 which were drawn on each other's ground, are now each on their own; *French Equatorial Africa* is renamed French
 Algeria and carries Q218272 throughout; *Danish India* on the Gold Coast becomes **Danish Gold Coast** (Q770833);
 and Portugal's overseas possessions regain their `MemberOf` while the Portuguese Republic's identifier is
-corrected from Q45 to Q167360. **This map still draws v0.2.0**, because adopting the new release is not a
+corrected from Q45 to Q167360. **This map drew v0.2.0 until 2026-10-11 and now draws v0.2.1.** Adopting the new release was not a
 file swap: 130 records straddle the 1500 act boundary and five of them — including the Habsburg Monarchy
 — are removed or retimed in v0.2.1, so an act built on the new release beside an act built on the old one
-would draw different shapes for the same polity on either side of the join. Adoption means re-cutting the
-slices and rebuilding every act, and it is a planned migration rather than an edit.
+would draw different shapes for the same polity on either side of the join. So adoption meant re-cutting
+the slices and rebuilding all fifty acts on the new release, which ran from 6 to 9 October 2026, and
+shipping them in one push rather than act by act.
 
 **Withdrawn 2026-10-05: the “822,136 B budget ceiling”.** The scope for the colonial acts named that
 figure as the per-act size limit. It is **below `act_1200_1300`, which is 899,788 bytes raw and has been live
 for weeks**, so it was never a ceiling anything was held to. The measured envelope is the largest act already
 shipping; the 1500–1600 act, at 840,319 bytes raw and about 345,000 gzipped, sits inside it.
+
+**A frontier that re-lit at a century boundary, 2026-10-11.** Investigating boundary 1700 before the v0.2.1
+set shipped turned up a real fault, not an artefact of the check. `postpass_pairs.py` carries "when did these two
+powers first meet" from act to act by the polity's name after renames, and it was building that rename map **as it
+walked the acts in order**, so an act could never see a rename that happens in a later one. Each act loads a
+century either side, so act 1700–1800 sees `Bessarabia → Principality of Moldavia at 1814` and roots that
+polity to *Bessarabia*, while act 1600–1700 does not and roots it to *Principality of Moldavia*. The two acts
+then keyed the same pair of owners under different names, the carry missed, and the pair was dated to the next
+act's floor — drawn at full brightness, which on this map means "these two have just met", for the whole of
+the following century. At boundary 1700 that was **265 of the 269 full-brightness seam cells in the act's opening
+frame**, on the Spain–Portugal, Spain–France, Moldavia–Poland and Moldavia–Ottoman frontiers.
+Opened at 1699 and 1704 on the Moldavia frontier, the line visibly went from half strength to full and stayed
+there.
+
+**Collecting the renames up front was not enough, and the first attempt moved the fault rather than fixing it.**
+A name can be the target of more than one rename: `Angevin Empire → Kingdom of England` at 1210 and
+`Commonwealth of England → Kingdom of England` at 1662 are both real, so a name-to-name map keeps whichever it
+read last, and the acts either side of 1400 resolved England to opposite ends of the chain — boundary 1400
+gained exactly the 36 cells boundary 1500 lost. The renames are now **unioned**: every name a rename ever links is
+one component and the component's representative is the carry name, so every act agrees whatever part of a chain
+its own window happens to show. Across the 49 boundaries the cells that light wrongly at a join fell from **304 to
+3**, and on every one of the 44 boundaries the live set also has, the rebuilt set is now identical to it or better.
 
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
@@ -352,8 +392,8 @@ clearance, and it is the only one:**
 | Natural Earth 10m geography regions and river centrelines (the Sahara polygon; the modern rivers the drawn channels avoid) | public domain | none (credited anyway) | yes |
 | OpenStreetMap basemap tiles | ODbL, tiles © OSM contributors | attribution on the map | yes |
 | De Groeve *et al.* 2022 shoreline raster | CC BY 4.0 | credit, licence link, state changes | yes |
-| Cliopatria v0.2.0 (Bennett *et al.* 2025) — **the version this map draws** | CC BY 4.0 | credit, licence link, state changes | yes |
-| Cliopatria v0.2.1, 3 October 2026 — reviewed, **not yet adopted** | CC BY 4.0 | same | yes |
+| Cliopatria v0.2.1, 3 October 2026 (Bennett *et al.* 2025) — **the version this map draws**, since 2026-10-11 | CC BY 4.0 | credit, licence link, state changes | yes |
+| Cliopatria v0.2.0 — drawn until 2026-10-11, superseded | CC BY 4.0 | same | yes |
 | NADI-1 ice margins, Dalton *et al.* 2023 | CC BY 4.0 | credit, licence link, state changes | yes |
 | DATED-1 ice margins, Hughes *et al.* 2016 | CC BY 3.0 | credit, licence link, state changes | yes |
 | **PATICE — Patagonian Ice Sheet, Davies *et al.* 2020** | **CC BY-NC 3.0** | **credit, licence link, state changes** | **NO — NON-COMMERCIAL ONLY** |

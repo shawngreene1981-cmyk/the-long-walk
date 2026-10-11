@@ -3954,7 +3954,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
   // WHERE THE SOURCE'S OWN LABEL CONTRADICTS ITS SHAPES, found after the acts were built and checked against the
   // source's own records before being written.
   const EXTRA_SOURCE_NOTES = {
-    "County of Ribagorza": [{"from": 866, "to": 1014, "short": "SOURCE LABEL DISPUTED", "html": "<strong>THE SOURCE'S NAME FOR THIS GROUND IS WRONG, AND THIS MAP DRAWS IT AS THE SOURCE DOES.</strong> Cliopatria v0.2.0 renames the Kingdom of Pamplona to <em>County of Ribagorza</em> in 866 and keeps that name on the same ground into the eleventh century. The ground is Pamplona's: the last Pamplona shape (860\u2013865) and the first Ribagorza shape (866\u2013874) share a centre at 42.9\u00b0N 2.0\u00b0W and the same radius, in the western Pyrenees and the upper Ebro. The county of Ribagorza lay about 200 km east, in the eastern Pyrenees around Graus, near 42.2\u00b0N 0.3\u00b0E. Pamplona did not end in 866: it is the kingdom that became Navarre, which this map draws again from 1139. The name on this ground between 866 and 1014 is the source's."}],
+    "County of Ribagorza": [{"from": 866, "to": 1014, "short": "SOURCE LABEL DISPUTED", "html": "<strong>THE SOURCE'S NAME FOR THIS GROUND IS WRONG, AND THIS MAP DRAWS IT AS THE SOURCE DOES.</strong> Cliopatria v0.2.1 renames the Kingdom of Pamplona to <em>County of Ribagorza</em> in 866 and keeps that name on the same ground into the eleventh century. The ground is Pamplona's: the last Pamplona shape (860\u2013865) and the first Ribagorza shape (866\u2013874) share a centre at 42.9\u00b0N 2.0\u00b0W and the same radius, in the western Pyrenees and the upper Ebro. The county of Ribagorza lay about 200 km east, in the eastern Pyrenees around Graus, near 42.2\u00b0N 0.3\u00b0E. Pamplona did not end in 866: it is the kingdom that became Navarre, which this map draws again from 1139. The name on this ground between 866 and 1014 is the source's."}],
     "Umayyad Caliphate": [{"from": 751, "to": 756, "short": "SOURCE LABEL DISPUTED", "html": "<strong>THE SOURCE'S NAME FOR THIS GROUND IS WRONG, AND THIS MAP DRAWS IT AS THE SOURCE DOES.</strong> Cliopatria v0.2.0 keeps the name <em>Umayyad Caliphate</em> on this ground until 757, then renames it Emirate of C\u00f3rdoba. Its own shapes contradict the label: the Umayyad shape for 750 is centred on Arabia (20.1\u00b0N 47.4\u00b0E, radius 5.8\u00b0), and the next two, for 751\u2013754 and 755\u2013756, are central Iberia (39.4\u00b0N 3.4\u00b0W, radius 2.5\u00b0). The caliphate crosses from Arabia to Spain in a single year and keeps its name. The Umayyad Caliphate fell to the Abbasids in 750 \u2014 the source draws the Abbasid Caliphate separately from that year \u2014 and Abd al-Rahman I founded the emirate at C\u00f3rdoba in 756. The five Iberian years drawn under the caliphate's name are the source's, not this map's."}]
   };
   // ATTESTED, ITS FORM RECORDED, AND THIS MAP CANNOT DRAW IT. The badge fills bands; these flags are crosses and
@@ -4139,7 +4139,7 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
     if(typeof updateLayerCount === 'function') updateLayerCount();
   })();
   const statusEl = () => document.getElementById('bordersStatus');
-  map.attributionControl.addAttribution('Borders: <a href="https://github.com/Seshat-Global-History-Databank/cliopatria">Cliopatria</a> v0.2.0 (CC BY 4.0)');
+  map.attributionControl.addAttribution('Borders: <a href="https://github.com/Seshat-Global-History-Databank/cliopatria">Cliopatria</a> v0.2.1 (CC BY 4.0)');
 
   // ---- one act: fetch, decode, keep. The decoded act holds everything that belongs to it; activate() makes it current.
   function loadAct(i){
@@ -5326,7 +5326,7 @@ if(BORDERS_ON){
       + '<span id="insigniaLine"></span> <span id="coverageLine"></span> '
       + 'From 3000 BCE to 1 CE no route on this map can be shown to deliver a polity, so that stretch plays at one pace: an undated route is not made to carry a seed. '
       + '<span style="color:var(--parchment-dimmer)">Borders: Bennett, J.S., Mutch, E., Tollefson, A. <em>et al.</em> (2025), Cliopatria, <em>Scientific Data</em> 12, 247, '
-      + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.0 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '
+      + 'https://doi.org/10.1038/s41597-025-04516-9 \u2014 v0.2.1 from GitHub, CC BY 4.0. Changes were made: simplified at 0.25\u00b0, rasterised to 0.1\u00b0 cells, '
       + 'composite records not drawn, growth between dated shapes computed by this map.</span>';
     row.appendChild(note);
   }

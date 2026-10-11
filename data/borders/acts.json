@@ -1,6 +1,6 @@
 {
- "about": "The borders acts this map draws so far (Cliopatria v0.2.0). Years CE, negative = BCE; an act holds years from..to-1.",
- "drawn": "3000 BCE–1500 CE",
+ "about": "The borders acts this map draws so far (Cliopatria v0.2.1). Years CE, negative = BCE; an act holds years from..to-1.",
+ "drawn": "3000 BCE–2000 CE",
  "acts": [
   {
    "from": -3000,
@@ -227,6 +227,31 @@
    "from": 1400,
    "to": 1500,
    "file": "act_1400_1500"
+  },
+  {
+   "from": 1500,
+   "to": 1600,
+   "file": "act_1500_1600"
+  },
+  {
+   "from": 1600,
+   "to": 1700,
+   "file": "act_1600_1700"
+  },
+  {
+   "from": 1700,
+   "to": 1800,
+   "file": "act_1700_1800"
+  },
+  {
+   "from": 1800,
+   "to": 1900,
+   "file": "act_1800_1900"
+  },
+  {
+   "from": 1900,
+   "to": 2000,
+   "file": "act_1900_2000"
   }
  ]
 }
