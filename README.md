@@ -275,6 +275,49 @@ one component and the component's representative is the carry name, so every act
 its own window happens to show. Across the 49 boundaries the cells that light wrongly at a join fell from **304 to
 3**, and on every one of the 44 boundaries the live set also has, the rebuilt set is now identical to it or better.
 
+**The male-line bottleneck, 2026-10-15 — and the first layer whose shape is a map of its own evidence.**
+Across the mid-Holocene the number of men leaving male-line descendants collapsed while the number of women doing
+so did not. The bottleneck is well supported; **the cause is not**, and the two are drawn apart: Karmin et al.
+2015 report it from 456 whole Y chromosomes and date it to “the last 10 ky”, with “a reduction at
+around 8–4 kya” in the Results, which is the window the layer runs on. Zeng, Aw & Feldman 2018 propose
+competing patrilineal kin groups, and that paper is **a mathematical model, not new genetic data**; it addresses
+“5000–7000 years ago”, a narrower window than the evidence paper it sets out to explain. The
+popular “17 women for every man” figure is **not drawn on this map**: it could not be traced past a
+blog summary to anything Karmin et al. actually write.
+
+**The shading is a sampling footprint, not a territory, and it is computed rather than drawn.** It is one halo
+around each of the 128 population coordinates published in the paper's own Supplemental Table S1, for the 320
+samples in its nine geographically explicit regions; the parser refuses to emit anything unless it reproduces
+that table exactly. There is deliberately **no outline joining the halos**, because an outline asserts that the
+ground between two samples was sampled. The first build did hull them, and the hulls lied — nine
+populations strung from Nigeria to Tanzania produced a shape that swallowed the Sahara, and eighteen Siberian
+populations produced a wedge across the Arctic Ocean. So the whole of the Americas is three villages in
+north-western Argentina, Oceania is two in highland New Guinea, and Australia is absent, its two samples having
+been excluded from the paper's own geographically explicit analyses. **Where the layer is blank the finding has
+not been tested there, which is not the same as the finding being false there.**
+
+Four markers carry the same thread at human scale: Shum Laka, where an adolescent boy buried about 7,900 years
+ago carried A00, the oldest known branch of the Y tree; Bronze Age Iberia, where close to 100% of Y chromosomes
+were replaced against about 40% of overall ancestry; Iceland, settled by Norse men and largely Gaelic women; and
+Leicester, where Richard III's mitochondrial DNA matched his sister's descendants and his Y chromosome matched
+none of five male-line relatives. Every date was checked against the paper making the claim before it was
+placed, and three of the dates first proposed for this layer moved as a result.
+
+**Deferred, with a trigger: a dedicated genetic-event grammar.** The layer currently borrows `TERRITORIES`,
+which is the only timed polygon this map has but which means “a population held this ground”. The
+popup says plainly that it does not mean that here. **When a second genetic event is added — the Bell
+Beaker turnover is the one in view — the two together earn their own layer, toggle and legend entry**, and
+the borrowed grammar is retired rather than stretched a second time.
+
+**A note-rendering fault, found by building on top of it and fixed map-wide the same day.** Notes on this map
+have been written with blank lines between paragraphs since the first anchors, and **not one of them ever
+drew**: the text ran together into a single block. 208 objects were affected, 189 of them anchors. The fault was
+invisible in the data, which looked correct, and only ever showed on screen. It is fixed at the single
+chokepoint every popup and tooltip already passes through — the patched `L.DivOverlay.prototype.setContent`
+— so no call site can miss it, and single newlines are left alone because the popup templates themselves
+wrap across lines. Two existing notes were photographed before and after, and two unaffected popups came back
+byte-for-byte identical.
+
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
 throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.
