@@ -241,7 +241,12 @@ Southern Song begins in 1139; *Dutch Cape Coast* is split into **Dutch Cape Colo
 which were drawn on each other's ground, are now each on their own; *French Equatorial Africa* is renamed French
 Algeria and carries Q218272 throughout; *Danish India* on the Gold Coast becomes **Danish Gold Coast** (Q770833);
 and Portugal's overseas possessions regain their `MemberOf` while the Portuguese Republic's identifier is
-corrected from Q45 to Q167360. **This map drew v0.2.0 until 2026-10-11 and now draws v0.2.1.** Adopting the new release was not a
+corrected from Q45 to Q167360. **Two faults this project found IN v0.2.1 went back upstream and were filed on
+2026-10-12 as [#22](https://github.com/Seshat-Global-History-Databank/cliopatria/issues/22)** — Freetown Colony
+still carrying Q3780, the city, after its geometry was fixed — **and [#23](https://github.com/Seshat-Global-History-Databank/cliopatria/issues/23)** — Danish India
+ending in 1808 when the settlements were sold in 1845, a date this project checked before suggesting it, and which
+v0.2.0's own 1848 also got wrong. Both were open with no replies when last checked on 2026-10-16. The drafting
+rule stands: this project writes the issue, the founder files it. **This map drew v0.2.0 until 2026-10-11 and now draws v0.2.1.** Adopting the new release was not a
 file swap: 130 records straddle the 1500 act boundary and five of them — including the Habsburg Monarchy
 — are removed or retimed in v0.2.1, so an act built on the new release beside an act built on the old one
 would draw different shapes for the same polity on either side of the join. So adoption meant re-cutting
