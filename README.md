@@ -367,6 +367,45 @@ chokepoint every popup and tooltip already passes through — the patched `L.Div
 wrap across lines. Two existing notes were photographed before and after, and two unaffected popups came back
 byte-for-byte identical.
 
+**Neighbouring powers you could not tell apart, 2026-10-17 — and the fix was already written.**
+The map has had adjacency-aware colouring since the ancient acts: `geowork/borders/palette_assign.py` runs
+DSATUR over the polity graph with a hard rule (records overlapping in time and within 0.1° never share a
+colour) and a soft one at 1°. **It was only ever run on the acts before 1500.** One line —
+`if a['from'] >= 1500: continue` — and everything after it fell through to `PALETTE[0]`, so **607 of the
+743 polities appearing from 1500 onward were drawn in the same olive.** Measured by the source's own
+adjacency rule: **0% of bordering pairs shared a colour at 1500, 60% at 1750, 88% at 1850, 94% at 1950.** At
+1850 France, Austria, Russia, Prussia and Britain were one green separated only by frontier lines.
+
+**Eight colours were tried first, and eight does not fit.** The hard-adjacency graph contains an **8-clique**
+— Rome, Parthia, the Seleucids, the Ptolemies, Pontus, Cappadocia, Armenia and the Greek city-states all
+bordering one another at once — so eight is the floor. Four methods failed to reach it: DSATUR, a
+depth-1 Kempe swap, real Kempe-chain interchange, and tabu search keeping its best state, all stalling at the
+same two pairs. **Nine fits, but only by recolouring 557 pre-1500 polities.** Founder-ruled: take **ten**,
+because screenshots and show footage of the ancient map already exist and stability of what is published
+beats one fewer colour. **Ten fits with zero conflicts and moves 23 of the 929 pre-1500 polities.** Soft
+(1°) same-colour pairs fell from 244 to 72. After: **0% at 1500, 1750, 1850 and 1950.**
+
+**And the palette had never been checked for colour vision deficiency.** It was comfortable for normal
+vision — worst pair 23.3 ΔE composited at the map's own 0.6 fill opacity, nothing under 12 — and
+it failed badly otherwise: the olive and the orange were **4.8 ΔE apart under deuteranopia**, one colour
+to roughly one man in twelve, and the tan against the green was 5.4 under protanopia. Retuned the same
+surgical way as the September “reads as water” fix: **five of the eight shipped colours are
+untouched**, three are retuned and two are new.
+
+| | before | after |
+|---|---|---|
+| normal vision, worst pair | 23.3 | 18.1 |
+| deuteranopia, worst pair | **4.8** | **14.2** |
+| protanopia, worst pair | **5.4** | **13.8** |
+| pairs under ΔE 12, any vision | 6 | **0** |
+
+Two things the optimiser had to be stopped from doing. Left free it went to the corners of the gamut and
+returned electric yellow and bright cyan — maximal separation, nothing like this map — so the reward
+is **capped** once every vision clears 18 and the search is held inside a sepia style band. And it picked
+straight back the **water-blues** the September fix removed for reading as sea, so that hue band is excluded
+outright. **No act was rebuilt**: the table is applied as each act loads, through the same hook that already
+swapped two slots.
+
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
 throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.

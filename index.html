@@ -4169,7 +4169,16 @@ const BORDERS = {state:'idle', hdr:null, visible:false, holdUntil:0, lastEra:-1}
       if(carry && carry.pairSince && !hdr.pairSince) hdr.pairSince = carry.pairSince;
       // TWO PALETTE COLOURS READ AS WATER over the blue relief. Each is replaced in its slot, so every polity keeps
       // its slot and every rule the palette keeps still holds; applied here so no act's bytes change.
+      // THE WHOLE PALETTE, not two slots. A polity with an assigned slot takes its colour from the
+      // table; anything the table has never seen keeps whatever the act was built with, so a new
+      // polity appearing in a later data release degrades to the old behaviour rather than vanishing.
       hdr.colour = hdr.colour.map(c => ({'#b1c6fd': '#e0662e', '#347f67': '#00b860'})[c.toLowerCase()] || c);
+      if(PALCOL && PALCOL.palette && hdr.polities){
+        hdr.colour = hdr.polities.map((n, i) => {
+          const slot = PALCOL.assignment[n];
+          return (slot === undefined) ? hdr.colour[i] : PALCOL.palette[slot];
+        });
+      }
       // notes found after the acts were built: merged as the act loads, so no act's bytes change
       Object.keys(EXTRA_SOURCE_NOTES).forEach(n => {
         hdr.sourceNotes[n] = (hdr.sourceNotes[n] || []).concat(EXTRA_SOURCE_NOTES[n]);
@@ -5470,6 +5479,12 @@ window.__nesibFrame = function(yearsAgo){
 // as the shoreline floor: North America from 25,000 ya, Eurasia from 38,000, Patagonia from 35,000. The blank is not
 // an absence of ice - it is an absence of anyone who mapped it - and it is stated where the evidence stops: a tick
 // on the timeline where drawing begins, a line under the HUD, and the popups.
+// ---- THE POLITY PALETTE, for the whole timeline. Loaded once; applied to every act as it loads.
+// Before this, only pre-1500 polities had an assigned colour and everything later shared one olive.
+let PALCOL = null;
+fetch('data/borders/palette.json').then(r => r.ok ? r.json() : null).then(d => { PALCOL = d; })
+  .catch(err => console.warn('PALETTE: ' + err));
+
 const ICEDATA = {state:'idle', srcs:[], T:null, drawn:[]};
 (function iceMargins(){
   const SRC = [
