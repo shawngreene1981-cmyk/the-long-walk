@@ -308,11 +308,55 @@ Leicester, where Richard III's mitochondrial DNA matched his sister's descendant
 none of five male-line relatives. Every date was checked against the paper making the claim before it was
 placed, and three of the dates first proposed for this layer moved as a result.
 
-**Deferred, with a trigger: a dedicated genetic-event grammar.** The layer currently borrows `TERRITORIES`,
-which is the only timed polygon this map has but which means “a population held this ground”. The
-popup says plainly that it does not mean that here. **When a second genetic event is added — the Bell
-Beaker turnover is the one in view — the two together earn their own layer, toggle and legend entry**, and
-the borrowed grammar is retired rather than stretched a second time.
+**The trigger fired on 2026-10-16, and the borrowed grammar is retired.** This entry used to say that the
+bottleneck borrowed `TERRITORIES` — the only timed polygon the map had, meaning “a population held
+this ground” — and that a **second** genetic event would earn the two of them a layer of their own.
+Bell Beaker is the second. `t_y_bottleneck` is cut out of `TERRITORIES` entirely, 30,401 characters of it, and
+the geometry now lives in `data/genetics/events.json` (built by `geowork/genetics/build_genetics.py`), which
+makes `index.html` 24 KB smaller into the bargain. The bottleneck's popup no longer has to spend a paragraph
+denying its own grammar.
+
+**Every event declares what its own shape means, and the popup prints that before anything else**, because the
+two shapes are opposite kinds of claim and nothing else on screen tells them apart. The bottleneck's is a
+**sampling footprint** — one halo per sampled population, so the blanks are visible. The Beaker event's is
+**the ground the finding is about** — the island of Great Britain, from Natural Earth, because the 90% is
+Britain's gene pool. Ireland is deliberately not shaded: the abstract has the complex reaching Britain *and*
+Ireland, but the figure belongs to Britain.
+
+**The Beaker turnover, 2450–2000 BCE, WELL-SUPPORTED; its mechanism CONTESTED.** Olalde *et al.* 2018,
+*Nature* 555:190–196. The abstract's “replacement of approximately 90% of Britain's gene pool within a
+few hundred years”, and the body's more precise and longer-horizon **“a minimum of 90±2% local
+population turnover by the Middle Bronze Age (~1500–1000 BCE)”**, with the authors' own caveat kept:
+“the exact turnover rate and its geographic pattern will be refined with more ancient samples.” The
+drawn window is the paper's own for the first centuries after contact; **there is no single arrival year in
+the paper and the map does not invent one.** Its erratum (*Nature* 555:543) corrects one author's surname and
+touches no figure — checked, because an erratum on a paper you are about to quote has to be read.
+
+**The half that makes it worth a layer: it travelled as an idea, then as people.** Between Iberia and central
+Europe the authors found “limited genetic affinity” and “exclude migration as an important
+mechanism of spread between these two regions”. From central Europe onward “migration had a key
+role”, carrying steppe-related ancestry into Britain. The same archaeological culture spread one way in
+one place and the other way in another, which is why pots have never been a safe proxy for people.
+
+**And the mechanism is contested because the paper names none.** Olalde *et al.* write that the results
+“motivate further archaeological research” and list pathogen exposure among the things to examine.
+Violence, disease and social advantage are all live and none of them is this paper's finding. The popup says
+so: do not read the 90% as a massacre, read it as an unexplained replacement.
+
+**Stonehenge is cited separately, as two dated facts side by side.** Olalde does not mention Stonehenge once.
+The `a27` anchor now carries Parker Pearson *et al.* 2007, *Antiquity* 81:617–639, which dates the
+**sarsen circle and trilithons to 2620–2480 BC** and the first phase to **3015–2935 cal BC**, and
+which notes independently “the presence of Beaker pottery in Britain before 2500 BC”. The great
+stones went up and within a few generations the people who raised them were largely replaced. **The map puts
+the two dates next to each other and leaves the inference to the reader**, rather than attributing a
+connection to a paper that does not make one. `yb02` points the other way: close to 100% of Iberia's Y
+chromosomes and about 90% of Britain's whole gene pool, contemporary, both steppe-related, reported by the
+same lead author a year apart.
+
+**An arithmetic error of mine, caught before it shipped.** The window was first written 4,400–3,950 years
+ago. This map counts years-ago from 2026, so 2450 BCE is **4,476** and 2000 BCE is **4,026** — out by 76
+years. Corrected, and the build now prints the BCE conversion beside the years-ago figure so the next one is
+caught by reading the output rather than by noticing.
 
 **A note-rendering fault, found by building on top of it and fixed map-wide the same day.** Notes on this map
 have been written with blank lines between paragraphs since the first anchors, and **not one of them ever
