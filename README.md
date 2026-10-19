@@ -406,6 +406,88 @@ straight back the **water-blues** the September fix removed for reading as sea, 
 outright. **No act was rebuilt**: the table is applied as each act loads, through the same hook that already
 swapped two slots.
 
+**The Southeastern nations, and a Louisiana with no outline, 2026-10-19.**
+Two things went on together, and one of them is mostly an argument about what may be drawn.
+
+**LOUISIANA IS FOUR DATED MOMENTS AND NO SHAPE, because the shape does not exist.** The plan was a
+hatched “claimed, not controlled” outline over the National Atlas territorial-acquisitions
+layer. That layer is gone: `nationalatlas.gov` no longer resolves, the USGS `dds.cr.usgs.gov` and
+`prd-tnm` endpoints return 404, ScienceBase returns no such item, and the Wayback Machine holds no
+snapshot of the file. Cliopatria is not a substitute — its *French Louisiana* is a narrow
+corridor along the Mississippi of about three square degrees, because it maps where France was
+rather than what France claimed. So the sequence is drawn as **1682, 1762, 1800, 1803** and nothing
+else, and **the absence is the history rather than a hole in the research**: not one of those four
+transfers had an agreed boundary, and two of them were secret. The only mapped extent ever
+published for this ground is the United States’ own 1803 Purchase boundary, drawn afterwards;
+putting it around La Salle’s 1682 ceremony would have given the reader a line none of the
+signatories had.
+
+**A DEFECT IN THE BORDER DATA, STATED AND NOT CORRECTED.** Cliopatria v0.2.1 keeps a French strip
+along the Mississippi from **1763 to 1779**, sixteen years after France left the continental
+interior, and carries *New France* on as a vanishing sliver to **1791**. The handoff recorded this
+as a 1779 end-date typo; measured against the shipped data it is not that — the 1763 collapse
+is already modelled (area 19.4 in 1757–61, 5.6 in 1762, 3.0 in 1763–79), and what is wrong
+is the sixteen-year tail. Ruled 2026-10-18: **draft the issue, say so on the map, touch nothing.**
+An issue is drafted for the maintainers to file; no act is rebuilt and no upstream record is edited
+to make this map’s picture tidier.
+
+**THE NATIONS LAYER: CESSION, REMOVAL, AND WHAT IS STILL THERE.** The Southeastern five
+— Cherokee, Chickasaw, Choctaw, Muscogee (Creek), Seminole — in three parts and one toggle.
+**Seventy-six of Charles C. Royce’s numbered cessions**, each appearing in the year the treaty,
+statute or executive order took the ground and each staying, because the ground stayed taken; every
+popup names the instrument and links to Royce’s own Schedule entry and the treaty text.
+**Five of the seventy-six are named and not drawn** — Royce 65, 128, 129, 130 and 543 —
+because the Forest Service records them as having no shape in the dataset, and a gap is drawn as a
+gap. The **1838–39 Cherokee removal** is in the forced-route grammar as ruled: black, dotted, no
+arrowhead, and it never fades. **The Roundup and Disbandment routes are drawn thinner and labelled
+as what they are** — the roads to the stockades, and where the detachments broke up on arrival
+— because neither is a removal route and the source names them separately.
+
+**The present-day lands are drawn at every date, which breaks this map’s first rule on
+purpose.** Nothing here exists until the scrubber reaches its date, except the basemap, which is
+modern and sits under every year of the last 1.8 million. The present-day outline is that same kind
+of object: a reference to now, not a claim about then. Ruling: the nations are not a historical
+layer that ends, and there is no other way to honour that without inventing dates the Census Bureau
+does not give. So it is drawn always, drawn as a **thin dashed outline and never a fill** so it
+cannot read as territory, and it says what it is in the tooltip, the popup and the legend. These are
+2025 boundaries and this timeline stops in 1999; the twenty-six-year gap is stated rather than hidden.
+Each shape also carries **the Census Bureau’s own word for what it is**, because a reservation
+and an Oklahoma tribal statistical area are not the same kind of thing and one shape must not imply
+the other.
+
+**Three measurements that changed the build rather than decorating it.**
+**One.** Matching tribe names by substring inflated the cession count from 36 to 112: “Creek”
+catches Crow Creek Sioux, Cow Creek Umpqua, Berry Creek Rancheria, Dry Creek Pomo, Grave Creek, Hog
+Creek Shawnee and the Swan Creek and Black River Chippewa. It is the same fault as matching a route
+by proximity instead of by id and it got the same answer: **the names are named**, the real figure is
+**76**, and the builder aborts on any name its allow-list has not ruled on. The Eastern Band was
+missed entirely by the same kind of error in the other direction — its land is filed as
+**Qualla Boundary**, which contains no string a Cherokee-keyed search would find.
+**Two.** **One colour per nation does not fit.** Fourteen hill-climbs from fourteen random starts all
+stopped at a worst pair of **10.1 ΔE** against the border palette under protanopia, against the
+bar of 12 that the palette ruling set. Six colour families do not fit this gamut with the water-blues
+excluded. The five barely overlap on the ground, so **geography separates them and the tooltip names
+them**; the layer uses two colours, ceded and today, worst pair **13.8**.
+**Three.** A first pass labelled two off-reservation trust lands as **Hawaiian home land**, from a
+hand-written class table. The source already knew — its own `NAMELSAD` field spells out what each
+area is — and had not been asked. The table is gone; the labels are the Census Bureau’s words.
+
+**The licence question that gated all of this, answered by opening the records.** Works of the US
+federal government are not subject to copyright (17 U.S.C. §105), and an agency attribution line
+names the author rather than imposing a restriction. **Trail of Tears** (NPS DataStore **2238914**):
+the FGDC originator is “National Park Service, National Trails Intermountain Region, GIS”,
+additional use constraints are blank, access is Open/Public, and **every one of the 2,006 features
+carries ORIGINATOR = National Park Service**. The Trail of Tears Association appears on 74 segments
+in the `MAPSOURCE` field, as material the Park Service digitised from — a credit, not an
+authorship, and credited here as one. The source does set a real bound that is **not** a licence term:
+*“This data set should not be displayed or used at scales that exceed 1:100,000”*, which the
+map honours and states in the popup. **Royce cessions** (USFS `S_USA.TRIBALCEDEDLANDS`, 2018): access
+constraints “None”, and the 2018 revision was a collaboration of the USFS Office of Tribal
+Relations, the NPS National NAGPRA Program, the EPA American Indian Environmental Office and
+Dr. Claudio Saunt of the University of Georgia — who, the lineage says, **digitised the Royce maps
+independently of the Forest Service**. The polygons drawn here are the Forest Service’s own; the
+collaboration is credited. **Native Land Digital is not used**, as ruled.
+
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
 throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.
