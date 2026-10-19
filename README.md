@@ -443,14 +443,15 @@ arrowhead, and it never fades. **The Roundup and Disbandment routes are drawn th
 as what they are** — the roads to the stockades, and where the detachments broke up on arrival
 — because neither is a removal route and the source names them separately.
 
-**The present-day lands are drawn at every date, which breaks this map’s first rule on
-purpose.** Nothing here exists until the scrubber reaches its date, except the basemap, which is
-modern and sits under every year of the last 1.8 million. The present-day outline is that same kind
-of object: a reference to now, not a claim about then. Ruling: the nations are not a historical
-layer that ends, and there is no other way to honour that without inventing dates the Census Bureau
-does not give. So it is drawn always, drawn as a **thin dashed outline and never a fill** so it
-cannot read as territory, and it says what it is in the tooltip, the popup and the legend. These are
-2025 boundaries and this timeline stops in 1999; the twenty-six-year gap is stated rather than hidden.
+**The present-day lands appear in the timeline’s final act, and nowhere before it.** They are
+labelled **present-day (Census TIGER 2025)** in the tooltip, the popup and the legend, and drawn as
+a **thin dashed outline and never a fill** so they cannot read as territory. The first version drew
+them at every date, on the argument that they were a reference to now like the basemap underneath;
+the argument was available, but it made this one layer exempt from the rule the whole map runs on
+— that nothing exists until the scrubber reaches its date. **Founder-ruled 2026-10-19: the final
+act only.** Ruling 7 is honoured by their arriving at all: scrub to the end and the ground the
+cessions took is still taken, and these nations are still there. These are 2025 boundaries and this
+timeline stops in 1999; the twenty-six-year gap is stated rather than hidden.
 Each shape also carries **the Census Bureau’s own word for what it is**, because a reservation
 and an Oklahoma tribal statistical area are not the same kind of thing and one shape must not imply
 the other.
