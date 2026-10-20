@@ -597,8 +597,9 @@ freely, including commercially, with credit and a note of any changes. See
 
 ### Licence obligations, dataset by dataset
 
-Every dataset drawn or shipped here, and what its licence requires of this map. **One entry is a debt, not a
-clearance, and it is the only one:**
+Every dataset drawn or shipped here, and what its licence requires of this map. **There is no longer a debt on
+this list.** The one that was on it, PATICE, was cleared on 2026-10-20 by written permission from its author; the
+row below says how, and the paragraph under the table says what that does and does not mean.
 
 | Dataset | Licence | Obligation | Commercial use |
 |---|---|---|---|
@@ -610,13 +611,25 @@ clearance, and it is the only one:**
 | Cliopatria v0.2.0 — drawn until 2026-10-11, superseded | CC BY 4.0 | same | yes |
 | NADI-1 ice margins, Dalton *et al.* 2023 | CC BY 4.0 | credit, licence link, state changes | yes |
 | DATED-1 ice margins, Hughes *et al.* 2016 | CC BY 3.0 | credit, licence link, state changes | yes |
-| **PATICE — Patagonian Ice Sheet, Davies *et al.* 2020** | **CC BY-NC 3.0** | **credit, licence link, state changes** | **NO — NON-COMMERCIAL ONLY** |
+| **PATICE — Patagonian Ice Sheet, Davies *et al.* 2020** | **CC BY-NC 3.0** (as published, unchanged) | **credit, licence link, state changes** | **yes — commercial use permitted by the author, written permission, 19 Oct 2026 (email on file with the founder)** |
 
-**PATICE MUST BE REMOVED OR RELICENSED BEFORE ANY COMMERCIAL USE OF THIS MAP, THE SHOW OR THE GAME.**
-It was taken knowingly, as a deliberate exception to the rule that has already excluded three datasets
-(Esri's basemap, `historical-basemaps`, CShapes). It is the only non-commercial asset here and it should stay
-the only one. It covers the Patagonian ice sheet alone; removing it means dropping that sheet or replacing it
-with a differently licensed reconstruction, and nothing else on the map depends on it.
+**THE PATICE DEBT IS CLEARED, AND THE LICENCE IS STILL CC BY-NC 3.0.** Both halves of that matter.
+**Professor Bethan Davies (Newcastle University) granted written permission by email on 19 October 2026** to
+use the PATICE shapefiles on this map, including if the project later becomes commercial, with the same credit
+it carries now: *“I am happy to grant you permission to use the shapefiles in this way.”* The email is
+on file with the founder. **The published deposit is unchanged** — it is still CC BY-NC 3.0 on
+Mendeley Data, and anyone else taking it is bound by that. A private grant from a rights holder is not a
+relicensing, and this map does not present it as one: the permission sits beside the licence, named and dated,
+rather than replacing it.
+
+**Every credit stays exactly as it was**, which was the condition of the permission and is what CC BY-NC 3.0
+requires in any case: the citation, the data DOI, the licence link and the statement of changes are untouched.
+
+From 2026-09-17 to 2026-10-20 this was the only entry on the list that was a debt rather than a clearance, and
+it was taken knowingly as a deliberate exception to the rule that has already excluded three datasets (Esri's
+basemap, `historical-basemaps`, CShapes). **The exception has now been resolved the right way round** — by asking the author — rather than by dropping the data or quietly relying on it.
+The removal instructions below are kept anyway: a dataset that can still be found and removed is one whose
+provenance stays legible.
 **Where it is:** `data/ice/patice.json` (built by `geowork/ice/build_ice.py` from the Mendeley deposit's
 `Shapefiles/Reconstruction/Icesheet*.shp`). To remove it: delete that file and the `patice` entry in the ice
 module's source list in `index.html`; Patagonia then has no ice drawn at any date until a differently licensed
