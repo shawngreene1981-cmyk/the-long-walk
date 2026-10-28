@@ -714,6 +714,87 @@ resolution and the margins read as fuzzy ovals over Syria and Iraq. The same rul
 layer follows applies — do not draw a precision the source does not have — so it fades out
 rather than being sharpened into a lie.
 
+**The rest of the Taş Tepeler network, and the leg that could not be sourced, 2026-10-28.**
+
+**THE THREE HELD ANCHORS SHIP, AND WIKIDATA WAS WHAT UNBLOCKED THEM.** The excavation reports
+publish no coordinates and PPND is still returning a server error, so the positions come from
+**Wikidata (CC0)** and **every one was checked against its paper’s own verbal description**:
+**Karahan Tepe** `Q5996986` 37.0916, 39.3027 — 45 km east-southeast of Şanlıurfa,
+and Karul puts it in the Tek Tek mountains east of the city; **Nevalı Çori** `Q1151606`
+37.5183, 38.6056 — 43 km north-northwest, on the middle Euphrates under the Atatürk
+reservoir; **Çakmaktepe** `Q119166486` 37.0863, 38.6302 — 17 km out, and Wikidata’s own
+Turkish description reads *“Eyyübiye’de höyük, ören yeri”*, a tell
+in a Şanlıurfa district.
+
+**The check earned its keep twice.** It rejected `Q6497856`, a *mahalle* in **Nizip, Gaziantep**,
+94 km west — the same wrong site a travel-site coordinate table had offered — and
+`Q134960934`, a real tell near **Bandırma**, 986 km away. **And it caught an error of my own:**
+my first filter required a bearing of 60–180° from Şanlıurfa because the other digs
+lie east, which is my generalisation and not anything a paper says. Eyyübiye is WEST of the
+city centre, so the filter threw away the right answer. It now tests province, district and radius.
+**A filter that silently discards the truth is worse than no filter.**
+
+**THE DATES ARE PERIOD ATTRIBUTIONS AND EVERY ANCHOR SAYS SO.** Only Sayburç has radiocarbon
+behind it (11 dates). **Karahan Tepe**: Late PPNA to Early PPNB *on architecture alone*, **no
+radiocarbon published**, and the anchor states flatly that the popular “older than
+Göbekli” claim has no verified basis. **Çakmaktepe**: *“MÖ. 9600-8800?”*
+— **the question mark is the excavators’ own**, and their paper says there is as yet no
+radiocarbon dating. **Nevalı Çori**: drawn solid, but its radiocarbon range is **not
+carried**, because PPND — the database that holds it — answers with a server error rather
+than its records. The anchor says that, and says the range should be filled in when PPND returns.
+
+**THE NORTHERN LEVANT TO ŞANLIURFA LEG IS DRAWN, AS A CONTACT LINK AND NOT AS A ROUTE.**
+Founder-ruled 2026-10-28, after the first pass left it blank. **The amber trail still ends where
+its sourced `ROUTES` end**, 276 km short of Göbekli Tepe, because a `ROUTES` entry on this map
+asserts that people walked a line and the literature does not support that claim here. What the
+literature does support is **contact** — a Pre-Pottery Neolithic interaction sphere with shared
+symbolism and long-distance exchange. That is a different claim, so it is a different object with
+a different grammar, and the Anatolia branch now reaches Göbekli honestly instead of stopping in
+empty country.
+
+**Its vertices are six excavated sites, not waypoints on anybody's journey.** Tell Qaramel
+`Q4178402`, Mureybet `Q1427189`, Jerf el Ahmar `Q928706`, Tell Halula `Q7697400`, Nevalı Çori
+`Q1151606`, Göbekli Tepe `Q214944` — 299 km end to end, every coordinate from its **Wikidata item
+(CC0)**, every site carrying a line in `data/trail/contact_link.json` saying what has been dug
+there. **No point on that line is a place nobody has dug.**
+
+**It is drawn so a viewer reads "different kind of thing" before reading the legend.** 2.6 px
+against the trail's 6, a `[1,9]` dash against the trail's `[2,13]`, a cool `#8fd3c8` the amber
+trail never uses, **small open rings at the digs** rather than the trail's filled dots, and its own
+legend row: **"Contact / shared culture (not a migration)"**.
+
+**And the critique travels with it.** **Asouti 2006** (*Journal of World Prehistory*), the standard
+review of exactly this question, argues that the PPNB interaction sphere and the diffusion model
+built on it are *"too abstractly defined to enable meaningful insights into the dynamics of Early
+Neolithic societies"*, and that the distribution of sites is *"very equivocal about the cultural
+prominence of any particular area"*. Both quotes sit in the data file under `why_not_a_route`. The
+link therefore claims contact and **refuses to claim direction**.
+
+**In the intro it has its own clock.** It is not a segment of the trail and does not share the
+trail's progress: it runs 0 to 1 across the network beat's camera move and completes exactly as the
+camera lands, then holds through the full-trail reveal. The renderer loads it from its own file and
+aborts if that file will not load, the same as it does for the trail.
+
+**The desert blobs are gone from the close beats, and the fix is measured.** The field is 0.1°
+cells blurred at 0.6°, so past zoom 4 in a 1920-wide frame it is drawn far beyond its own
+resolution and Syria and Iraq read as two soft ovals. **Presentation mode now fades the deserts out
+across zoom 4–5** while the site keeps its wider 5–7 window; measured at the Göbekli
+camera, `zfade` runs **1 → 0 → 0** at zoom 4, 5 and 6. The two close beats also drop
+`deserts` from their layer list, so **the legend does not advertise a layer that is not on screen**.
+
+**And the guard that broke the build is worth recording.** `patch_present.py` refused to run,
+reporting that presentation mode was already in the page, because the deserts module had begun
+reading `window.__present` and is injected EARLIER in the chain — so the bare substring was in
+the page before the patch that writes it. **An idempotency guard must look for the thing it writes,
+not for any mention of it.** The guard is now the assignment itself. The desert module’s own test
+also moved to the body class, after a measurement showed `window.__present` reading false from
+inside that module while reading true at page scope.
+
+**The music needs no attribution.** The founder checked the Audio Library: “Getaway” by
+Benjamin Andrews carries the **standard YouTube licence**, not the Creative Commons attribution
+icon. The placeholder is gone from the credits card, `CREDITS.txt` and the shot file, replaced by a
+plain courtesy line.
+
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
 throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.

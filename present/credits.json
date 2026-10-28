@@ -94,6 +94,15 @@
    "note": null
   },
   {
+   "name": "Wikidata",
+   "used_for": "the six excavated sites the contact link runs through",
+   "source": "Site coordinates from Wikidata, items Q4178402, Q1427189, Q928706, Q7697400, Q1151606, Q214944. https://www.wikidata.org/",
+   "licence": "CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/",
+   "data": null,
+   "changes": "Changes were made: the coordinates were joined into one line and the distances along it computed by this map. The line asserts CONTACT between these places and not a migration along it, and is drawn in its own grammar to say so.",
+   "note": "Wikidata is CC0 and requires no attribution. It is credited because a reader is entitled to know where a coordinate on this map came from."
+  },
+  {
    "name": "USDA Forest Service / Royce 1899",
    "used_for": "the Southeastern land cessions",
    "source": "USDA Forest Service, Tribal Land Cessions in the United States (S_USA.TRIBALCEDEDLANDS), 2018-05-29, from Charles C. Royce, Indian Land Cessions in the United States, 18th Annual Report of the Bureau of American Ethnology, 1896-97.",

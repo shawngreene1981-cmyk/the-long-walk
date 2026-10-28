@@ -8,9 +8,16 @@
   "music": {
     "file": "renders/music/Getaway - Benjamin Andrews.mp3",
     "use_seconds": 109.4,
-    "fade_in": [0.0, 5.0],
-    "fade_out": [103.0, 109.4],
-    "attribution": "Music: Getaway — Benjamin Andrews [attribution line pending]",
+    "fade_in": [
+      0.0,
+      5.0
+    ],
+    "fade_out": [
+      103.0,
+      109.4
+    ],
+    "attribution": "Music: Getaway — Benjamin Andrews (YouTube Audio Library)",
+    "licence": "Standard YouTube Audio Library licence — free to use in any video. NOT one of the Creative Commons attribution tracks, so no attribution is required; the credit line is a courtesy. Checked in the Audio Library by the founder, 2026-10-28.",
     "measured": "Analysed by geowork/present/analyse_music.py. Near silence at 0 s, up to -20 dBFS by 2 s, building to -10.7 dBFS by 18 s. Swells where the 4 s loudness rises fastest: 6.0, 12.5, 19.5, 30.0, 51.0, 64.0, 92.5 and 101.0 s. A local ease at 46 s. Autocorrelation of the onset envelope gives 76.0 BPM, which is the dotted/half level of the ~112 BPM the founder measured by ear — the same pulse counted differently, not a disagreement.",
     "snapped": "Beat boundaries sit on measured onsets: 5.76, 18.92, 29.98 (the strongest hit in the first 110 s, strength 0.961), 39.96, 52.60, 64.96, 77.86, 92.06. The full-trail reveal opens on 92.06 so the 92.5 s swell carries it."
   },
@@ -25,134 +32,450 @@
       "id": "title",
       "seconds": 5.76,
       "card": "<div class=\"big\">Eleven thousand six hundred years ago, someone built this.<br>They had no farms, no writing, no metal.</div><div class=\"gap\">EDITOR&rsquo;S GAP &mdash; Göbekli Tepe pillar footage or stills go here. Deliberately left empty: no image of unknown licence has been pulled into this render.</div>",
-      "cardFade": [0.0, 0.6, 4.9, 5.76],
+      "cardFade": [
+        0.0,
+        0.6,
+        4.9,
+        5.76
+      ],
       "year": 21000,
-      "camera": [20, -20, 2],
+      "camera": [
+        20,
+        -20,
+        2
+      ],
       "layers": [],
-      "trail": [0.0, 0.0]
+      "trail": [
+        0.0,
+        0.0
+      ]
     },
     {
       "id": "lgm_world",
       "seconds": 13.16,
-      "year": [21000, 21000],
-      "camera": [[26, -22, 3], [26, -14, 3]],
+      "year": [
+        21000,
+        21000
+      ],
+      "camera": [
+        [
+          26,
+          -22,
+          3
+        ],
+        [
+          26,
+          -14,
+          3
+        ]
+      ],
       "easing": "linear",
-      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors"],
+      "layers": [
+        "shorelines",
+        "ice",
+        "tundra",
+        "deserts",
+        "corridor",
+        "anchors"
+      ],
       "line": "To understand who, you have to see the world they walked out of.",
-      "lineFade": [1.2, 2.4, 11.2, 12.8],
+      "lineFade": [
+        1.2,
+        2.4,
+        11.2,
+        12.8
+      ],
       "fadeIn": 0.8,
-      "trail": [0.0, 0.10]
+      "trail": [
+        0.0,
+        0.1
+      ]
     },
     {
       "id": "ice_retreat",
       "seconds": 11.06,
-      "year": [21000, 17000],
-      "camera": [[26, -14, 3], [52, -96, 3]],
+      "year": [
+        21000,
+        17000
+      ],
+      "camera": [
+        [
+          26,
+          -14,
+          3
+        ],
+        [
+          52,
+          -96,
+          3
+        ]
+      ],
       "easing": "inOut",
-      "layers": ["shorelines", "ice", "tundra", "deserts", "anchors"],
+      "layers": [
+        "shorelines",
+        "ice",
+        "tundra",
+        "deserts",
+        "anchors"
+      ],
       "line": "The ice begins to let go of North America.",
-      "lineFade": [1.0, 2.0, 8.8, 10.2],
-      "callout": {"anchor": "ic02", "at": 5.4, "out": 10.4},
-      "expect": {"ic02": 17000},
-      "trail": [0.10, 0.26]
+      "lineFade": [
+        1.0,
+        2.0,
+        8.8,
+        10.2
+      ],
+      "callout": {
+        "anchor": "ic02",
+        "at": 5.4,
+        "out": 10.4
+      },
+      "expect": {
+        "ic02": 17000
+      },
+      "trail": [
+        0.1,
+        0.26
+      ]
     },
     {
       "id": "corridor",
       "seconds": 9.98,
-      "year": [17000, 15600],
-      "camera": [[52, -96, 3], [57, -114, 4]],
+      "year": [
+        17000,
+        15600
+      ],
+      "camera": [
+        [
+          52,
+          -96,
+          3
+        ],
+        [
+          57,
+          -114,
+          4
+        ]
+      ],
       "easing": "inOut",
-      "layers": ["shorelines", "ice", "tundra", "deserts", "anchors"],
+      "layers": [
+        "shorelines",
+        "ice",
+        "tundra",
+        "deserts",
+        "anchors"
+      ],
       "line": "A corridor opens between the two ice sheets.",
-      "lineFade": [0.8, 1.8, 7.8, 9.2],
+      "lineFade": [
+        0.8,
+        1.8,
+        7.8,
+        9.2
+      ],
       "hold": 2.6,
-      "callout": {"anchor": "ic01", "at": 3.0, "out": 9.5},
-      "expect": {"ic01": 15600},
-      "trail": [0.26, 0.40]
+      "callout": {
+        "anchor": "ic01",
+        "at": 3.0,
+        "out": 9.5
+      },
+      "expect": {
+        "ic01": 15600
+      },
+      "trail": [
+        0.26,
+        0.4
+      ]
     },
     {
       "id": "sahara_greens",
       "seconds": 12.64,
-      "year": [15600, 14800],
-      "camera": [[57, -114, 4], [22, 14, 3]],
+      "year": [
+        15600,
+        14800
+      ],
+      "camera": [
+        [
+          57,
+          -114,
+          4
+        ],
+        [
+          22,
+          14,
+          3
+        ]
+      ],
       "easing": "inOut",
-      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors"],
+      "layers": [
+        "shorelines",
+        "ice",
+        "tundra",
+        "deserts",
+        "corridor",
+        "anchors"
+      ],
       "line": "The rains return to the Sahara, and its rivers fill.",
-      "lineFade": [2.0, 3.0, 10.8, 12.2],
+      "lineFade": [
+        2.0,
+        3.0,
+        10.8,
+        12.2
+      ],
       "hold": 3.5,
-      "trail": [0.40, 0.56]
+      "trail": [
+        0.4,
+        0.56
+      ]
     },
     {
       "id": "monte_verde",
       "seconds": 12.36,
-      "year": [14800, 14500],
-      "camera": [[22, 14, 3], [-41.5, -73.0, 5]],
+      "year": [
+        14800,
+        14500
+      ],
+      "camera": [
+        [
+          22,
+          14,
+          3
+        ],
+        [
+          -41.5,
+          -73.0,
+          5
+        ]
+      ],
       "easing": "inOut",
-      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors", "routes"],
+      "layers": [
+        "shorelines",
+        "ice",
+        "tundra",
+        "deserts",
+        "corridor",
+        "anchors",
+        "routes"
+      ],
       "line": "And possibly already at the far end of the Americas.",
-      "lineFade": [2.2, 3.2, 10.4, 11.9],
+      "lineFade": [
+        2.2,
+        3.2,
+        10.4,
+        11.9
+      ],
       "hold": 3.6,
-      "callout": {"anchor": "a16", "at": 4.0, "out": 12.0},
-      "expect": {"a16": 14500},
-      "trail": [0.56, 1.0]
+      "callout": {
+        "anchor": "a16",
+        "at": 4.0,
+        "out": 12.0
+      },
+      "expect": {
+        "a16": 14500
+      },
+      "trail": [
+        0.56,
+        1.0
+      ]
     },
     {
       "id": "gobekli",
-      "seconds": 12.90,
-      "year": [14500, 11526],
-      "camera": [[-41.5, -73.0, 5], [37.22, 38.92, 5]],
+      "seconds": 12.9,
+      "year": [
+        14500,
+        11526
+      ],
+      "camera": [
+        [
+          -41.5,
+          -73.0,
+          5
+        ],
+        [
+          37.22,
+          38.92,
+          5
+        ]
+      ],
       "easing": "inOut",
-      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors"],
+      "layers": [
+        "shorelines",
+        "ice",
+        "tundra",
+        "corridor",
+        "anchors"
+      ],
       "hold": 4.0,
-      "callout": {"anchor": "a33", "at": 6.4, "out": 12.6},
-      "expect": {"a33": 11526},
-      "trail": [1.0, 1.0]
+      "callout": {
+        "anchor": "a33",
+        "at": 6.4,
+        "out": 12.6
+      },
+      "expect": {
+        "a33": 11526
+      },
+      "trail": [
+        1.0,
+        1.0
+      ],
+      "deserts_note": "Deserts are NOT listed for this beat. At this camera the field is stretched past its own 0.1 degree cells and reads as soft ovals over Syria and Iraq, so presentation mode fades it out across zoom 4-5. Leaving it in the layer list would put a row in the legend for something not on screen."
     },
     {
       "id": "network",
-      "seconds": 14.20,
-      "year": [11526, 10526],
-      "camera": [[37.22, 38.92, 5], [37.12, 38.94, 5]],
+      "seconds": 14.2,
+      "year": [
+        11526,
+        10526
+      ],
+      "camera": [
+        [
+          37.22,
+          38.92,
+          5
+        ],
+        [
+          37.12,
+          38.94,
+          5
+        ]
+      ],
       "easing": "inOut",
-      "layers": ["shorelines", "deserts", "corridor", "anchors"],
+      "layers": [
+        "shorelines",
+        "corridor",
+        "anchors",
+        "contact"
+      ],
       "line": "It wasn’t one site. It was a network.",
-      "lineFade": [1.0, 2.2, 11.6, 13.4],
+      "lineFade": [
+        1.0,
+        2.2,
+        11.6,
+        13.4
+      ],
       "hold": 5.0,
-      "callout": {"anchor": "tt01", "at": 5.0, "out": 13.4},
-      "expect": {"tt01": 10526},
-      "trail": [1.0, 1.0],
-      "note": "Sayburç is the only one of the four Taş Tepeler anchors on the map. Karahan Tepe, Çakmaktepe and Nevalı Çori are held: their cited publications give no coordinates, the PPND database is erroring, and the official project pages carry no coordinate list. Founder-ruled 2026-10-28: ship Sayburç, hold the rest. None was invented."
+      "callout": {
+        "anchor": "tt01",
+        "at": 5.0,
+        "out": 13.4
+      },
+      "expect": {
+        "tt01": 10526
+      },
+      "trail": [
+        1.0,
+        1.0
+      ],
+      "note": "Sayburç is the only one of the four Taş Tepeler anchors on the map. Karahan Tepe, Çakmaktepe and Nevalı Çori are held: their cited publications give no coordinates, the PPND database is erroring, and the official project pages carry no coordinate list. Founder-ruled 2026-10-28: ship Sayburç, hold the rest. None was invented.",
+      "deserts_note": "Deserts are NOT listed for this beat. At this camera the field is stretched past its own 0.1 degree cells and reads as soft ovals over Syria and Iraq, so presentation mode fades it out across zoom 4-5. Leaving it in the layer list would put a row in the legend for something not on screen.",
+      "contact": [
+        0.0,
+        1.0
+      ]
     },
     {
       "id": "trail_reveal",
       "seconds": 5.94,
-      "year": [10526, 10500],
-      "camera": [[37.12, 38.94, 5], [24, 28, 2]],
+      "year": [
+        10526,
+        10500
+      ],
+      "camera": [
+        [
+          37.12,
+          38.94,
+          5
+        ],
+        [
+          24,
+          28,
+          2
+        ]
+      ],
       "easing": "inOut",
-      "layers": ["shorelines", "deserts", "corridor", "anchors"],
+      "layers": [
+        "shorelines",
+        "deserts",
+        "corridor",
+        "anchors",
+        "contact"
+      ],
       "line": "Both branches, end to end.",
-      "lineFade": [2.6, 3.6, 5.0, 5.9],
-      "trail": [1.0, 1.0]
+      "lineFade": [
+        2.6,
+        3.6,
+        5.0,
+        5.9
+      ],
+      "trail": [
+        1.0,
+        1.0
+      ],
+      "contact": [
+        1.0,
+        1.0
+      ]
     },
     {
       "id": "mostly_gone",
       "seconds": 4.0,
       "year": 10500,
-      "camera": [24, 28, 2],
-      "layers": ["shorelines", "deserts", "corridor"],
+      "camera": [
+        24,
+        28,
+        2
+      ],
+      "layers": [
+        "shorelines",
+        "deserts",
+        "corridor"
+      ],
       "card": "<div class=\"huge\">MOSTLY GONE</div>",
-      "cardFade": [0.0, 1.0, 3.0, 4.0],
-      "trail": [1.0, 1.0]
+      "cardFade": [
+        0.0,
+        1.0,
+        3.0,
+        4.0
+      ],
+      "trail": [
+        1.0,
+        1.0
+      ],
+      "contact": [
+        1.0,
+        1.0
+      ]
     },
     {
       "id": "credits",
       "seconds": 7.4,
       "year": 10500,
-      "camera": [24, 28, 2],
+      "camera": [
+        24,
+        28,
+        2
+      ],
       "layers": [],
       "card": "@CREDITS@",
-      "cardFade": [0.0, 1.0, 6.4, 7.4],
-      "trail": [1.0, 1.0]
+      "cardFade": [
+        0.0,
+        1.0,
+        6.4,
+        7.4
+      ],
+      "trail": [
+        1.0,
+        1.0
+      ],
+      "contact": [
+        1.0,
+        1.0
+      ]
     }
-  ]
+  ],
+  "contact": {
+    "file": "data/trail/contact_link.json",
+    "claim": "CONTACT, NOT MIGRATION. Six excavated Pre-Pottery Neolithic sites between the northern Levant and the Urfa plateau -- Tell Qaramel, Mureybet, Jerf el Ahmar, Tell Halula, Nevali Cori, Gobekli Tepe -- joined to say that these places were in contact with one another. It does NOT say a population walked the line.",
+    "why_separate": "The amber trail is built from ROUTES, which on this map assert that people walked. Asouti 2006 (Journal of World Prehistory) argues the PPNB interaction sphere and its diffusion model are too abstractly defined to support that reading here, and that the site distribution is very equivocal about the cultural prominence of any particular area. So the link is drawn thinner, fainter and differently dashed, in a colour the trail never uses, with its own legend row.",
+    "pace": "It arrives on the network beat. Its progress runs 0 to 1 across that beat's camera move and completes exactly as the camera lands, so the Anatolia branch is seen to reach Gobekli Tepe honestly rather than by an invented route."
+  }
 }
