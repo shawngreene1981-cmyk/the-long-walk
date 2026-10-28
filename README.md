@@ -489,6 +489,79 @@ Dr. Claudio Saunt of the University of Georgia — who, the lineage says, **digi
 independently of the Forest Service**. The polygons drawn here are the Forest Service’s own; the
 collaboration is credited. **Native Land Digital is not used**, as ruled.
 
+**The deserts, and the tundra that moves, 2026-10-28.** Two layers built the way the Green Sahara
+was built: an offline script in `geowork/`, a field in `data/`, a canvas pane under everything drawn
+on the land, and a line in the legend saying which parts are sourced and which parts this map drew.
+
+**NINE DESERTS AT TODAY’S EXTENT, AND ONLY ARABIA MOVES.** Arabia, the Thar, the Taklamakan, the
+Gobi, the Kalahari, the Namib, the Australian deserts, the Atacama, and the American Southwest with
+the Great Basin, in the Sahara’s own sand and at the Sahara’s own pane depth. **The Sahara
+is not among them** — it keeps its own field, its own build and its own toggle, and the build
+script asserts that none of its nineteen component polygons leaked into the new one.
+
+**The fade at the margins is a source’s answer, not an eye’s, and that is the whole point of
+it.** Natural Earth draws deserts generously: its KALAHARI polygon covers wooded savanna, as its
+SAHARA polygon reaches into the Sahel. Painting them flat would paint semi-arid land as sand. So
+every cell is weighted by the present-day BIOME4 class in **Beyer, Krapp &amp; Manica 2020** (CC BY
+4.0) — full on *Desert*, 0.75 on *Barren*, 0.45 on the xerophytic shrublands, 0.30 and 0.25 on the
+grasslands, 0.15 on tropical savanna, nothing greener — with a floor of 0.12 inside the polygon so
+a desert never develops holes the source did not intend. What this map drew is the 0.6° blur and
+those weights.
+
+**ARABIA GREENS ON DATED WET WINDOWS, and one of the dates in the brief was wrong.** The ruling
+offered the Nefud stacked lakebeds at *~400, 300, 200, 100 and 55 ka*. The paper
+(**Groucutt *et al.* 2021, *Nature* 597:376**) says, verbatim, *“approximately 400, 300, 200,
+130-75 and 55 thousand years ago”* — **130,000–75,000, not 100,000**, and it is a range rather
+than a point. The paper’s figures are used. **Only that one window has dated ends**: for the other
+four the paper gives an age and publishes no duration, so the ±4,000-year width drawn here is
+this map’s, and the popup says so at every one of them rather than implying a duration nobody
+published.
+
+**The Holocene window is 10,500–6,300 years ago, and northern Arabia disagrees with it.** The
+southeastern record (Oman speleothems, Hoti and Qunf, **Fleitmann *et al.***) has the monsoon rising
+~10,600–10,100 and holding until ~6,300. The varved lake at Tayma in northern Arabia gives a much
+shorter wet phase, **8,800–7,900 years ago** (**Neugebauer *et al.* 2022**, *Communications Earth
+&amp; Environment* 3:47). This map draws the southeastern window across the whole peninsula and
+**does not interpolate between two sites to invent a front**. The disagreement is stated on the page,
+not resolved. The old caveat that “this map draws only the Sahara, so a bare Arabia is a limit of
+the drawing” is gone, because it no longer is.
+
+**THE TUNDRA MOVES WITH TIME, AND IT IS A PUBLISHED VEGETATION CLASS RATHER THAN A TINT.** Beyer,
+Krapp &amp; Manica 2020 (*Scientific Data* 7:236, CC BY 4.0; data `pastclim_Beyer2020` v1.1.0,
+Zenodo 10.5281/zenodo.7062281) give a BIOME4 class per half-degree cell at **72 timesteps from
+120,000 years ago to the present** — 2,000-year steps to 22 ka, 1,000-year steps after. Drawn:
+classes 22 *Steppe tundra*, 23 *Shrub tundra*, 24 *Dwarf shrub tundra*, 25 *Prostrate shrub tundra*,
+26 *Cushion forb lichen moss tundra*. **Steppe tundra is in deliberately** — it is the open
+mammoth-steppe ground people actually crossed — and is drawn a shade greyer so a reader can see how
+much of the north is steppe rather than true tundra. **This map did not classify a climate field
+itself**: BIOME4 did, and this draws its answer. All that is added is a half-degree blur and the
+interpolation between the source’s own timesteps.
+
+**CHELSA-TraCE21k was evaluated first, as ruled, and is not used.** Two reasons, either sufficient.
+It is about **4 TB**, and no confirmed subset carries what is needed. And **its own records state its
+licence inconsistently** — CC BY 2.0 in the paper and in one EnviDat field, **CC BY-SA 4.0 in the
+EnviDat metadata licence field**. This map has already turned down CShapes for being ShareAlike, so a
+dataset whose record cannot say whether it is ShareAlike does not ship here. Beyer is unambiguous:
+one licence, CC BY 4.0, one record. It also **answers the question the ruling asked about dates
+before 21 ka without anything being invented**, because it reaches 120,000 years ago. Before that
+nothing is drawn, as the ice draws nothing before its sources begin.
+
+**Never painted on ice, twice over, and measured rather than asserted:** the source’s own *Land
+ice* class is cut from the field when it is built, and the pane sits beneath the ice layer. Measured
+on the live frames by toggling the layer and differencing the pixels — at 21 ka over Europe the
+tundra touched **0.084% of ice pixels**, over Beringia **0.222%**, both of them antialiasing at the
+margin. The ice also stays the brightest thing in the north by a wide margin: painted tundra averages
+**RGB 73, 84, 94** against the ice fills’ **201, 211, 219**. The two are different reconstructions
+— Beyer here, NADI-1, DATED-1 and PATICE there — and will not agree at the edges; the legend
+says so.
+
+**What could not be sourced, and is therefore not drawn.** The **Mojave**: Natural Earth has no
+Mojave polygon at all, so the American Southwest field is Sonoran, Chihuahuan, Great Basin, Great
+Salt Lake, Black Rock and White Sands, with a Mojave-shaped absence between them. The Central Asian
+and Iranian drylands (Garagum, Qizilqum, Betpaqdala, Kavir, Lut, Margo, Rigestan), the Danakil, the
+Chalbi, the Negev and the Caatingas are in the source and are not drawn, because the ruling named
+nine regions and these were not among them.
+
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
 throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.

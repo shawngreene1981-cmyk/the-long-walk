@@ -369,6 +369,8 @@
     <label class="toggle-item"><input type="checkbox" id="toggleRoutes" checked> <span class="toggle-text">Migration routes</span></label>
     <label class="toggle-item"><input type="checkbox" id="toggleGhosts" checked> <span class="toggle-text">Ghost branches &amp; reconvergence</span></label>
     <label class="toggle-item"><input type="checkbox" id="toggleCorridor" checked> <span class="toggle-text">Green Sahara corridor</span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleDeserts" checked> <span class="toggle-text">Deserts <em>(and Arabia greening)</em></span></label>
+    <label class="toggle-item"><input type="checkbox" id="toggleTundra"> <span class="toggle-text">Tundra <em>(the open ground, moving with the ice)</em></span></label>
     <label class="toggle-item"><input type="checkbox" id="toggleNodes" checked> <span class="toggle-text">Origin nodes</span></label>
     <label class="toggle-item"><input type="checkbox" id="toggleAnchors" checked> <span class="toggle-text">Researched anchors (<span data-count="nonLeaderAnchors">518</span>)</span></label>
     <label class="toggle-item"><input type="checkbox" id="toggleLeaders" checked> <span class="toggle-text">Leader pins &amp; walk-backs (<span data-count="leaders">34</span> + <span data-count="walkbacks">15</span>)</span></label>
@@ -485,13 +487,18 @@
     <span class="legend-note" style="flex-basis:100%"><strong>Genetic events — a change in who a population descends from, which is not the same as a change in who lived somewhere.</strong> Two so far: the <em>male-line bottleneck</em> (8,000–4,000 ya) and the <em>Beaker turnover</em> in Britain (2450–2000 BCE). <strong>EACH ONE SAYS WHAT ITS OWN SHAPE MEANS, because they are not the same kind of shape.</strong> The bottleneck’s shape is a SAMPLING FOOTPRINT — one halo per sampled population, so you can see that the whole of the Americas in that study is three villages in Argentina. The Beaker shape is THE GROUND THE FINDING IS ABOUT — the island of Great Britain, where the 90% applies. In both, the event is well supported and its CAUSE is not: the popups keep those apart and name who proposed what. This layer used to be drawn on the territories grammar, which means “a population held this ground” and was the wrong thing to say; it got its own grammar on 2026-10-16 when the second event arrived.</span>
     <span class="legend-note" style="flex-basis:100%"><strong>Louisiana is four dated moments and no outline, on purpose.</strong> France claimed the Mississippi basin in 1682, gave it to Spain in secret in 1762, took it back in secret in 1800 and sold it to the United States in 1803 — and <strong>not one of those four transfers had an agreed boundary</strong>. The only mapped extent ever published for this ground is the United States’ own 1803 Purchase boundary, drawn afterwards; and the dataset that carried it has itself gone offline. Rather than put a nineteenth-century American outline around a seventeenth-century French ceremony, the map draws the four dates and says what is missing. <strong>A claim with no edge is the historical fact here, not a hole in the research.</strong></span>
     <span class="legend-note" style="flex-basis:100%"><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.5" y="3" width="11" height="8" fill="#701d5a" fill-opacity="0.55" stroke="#701d5a" stroke-width="1.1"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.5" y="3" width="11" height="8" fill="none" stroke="#cdd18a" stroke-width="1.4" stroke-dasharray="3,2"/></svg> <strong>The Southeastern nations: land taken on dated instruments, and land still held.</strong> The filled shapes are <strong>cessions, numbered as Charles C. Royce numbered them in 1899</strong> — seventy-six of them, each appearing in the year the treaty, statute or executive order took it, and each staying, because the ground stayed taken. Every popup names the instrument and links to Royce’s own Schedule entry and to the treaty text. <strong>Five of the seventy-six are named and not drawn:</strong> the Forest Service records them as having no shape in the dataset, and a gap is drawn as a gap. The <strong>1838–39 Cherokee removal</strong> is in the forced-route grammar <strong>— black, dotted, no arrowhead, and it never fades</strong> — the same language as the three Atlantic routes, for the same reason. <strong>The dashed outline is <em>present-day (Census TIGER 2025)</em>, and it appears in the timeline’s final act</strong> — because that is the date it belongs to, and because <strong>the nations are not a historical layer that ends</strong>. Scrub to the end and the ground the cessions took is still taken, and they are still there. These are 2025 boundaries and this timeline stops in 1999, so they run twenty-six years ahead of its last date. What the Census draws is a statistical and legal boundary, not sovereignty and not where a people live, and each shape carries the Census Bureau’s own word for what it is. <strong>The Trail of Tears trail data covers the Cherokee removal only</strong> — the Choctaw, Muscogee, Chickasaw and Seminole removals have no equivalent mapped route, and none is invented here.</span>
+    <span class="legend-note" style="flex-basis:100%"><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="3.5" width="12" height="7" fill="rgb(214,178,120)" fill-opacity="0.44" stroke="none"/></svg> <strong>The deserts are painted at today’s extent, and only Arabia moves.</strong> Nine regions — Arabia, the Thar, the Taklamakan, the Gobi, the Kalahari, the Namib, the Australian deserts, the Atacama, and the American Southwest with the Great Basin — in the same sand as the Sahara and at the same depth, under everything drawn on the land. <strong>Where they are is sourced</strong> from Natural Earth’s own polygons, unedited. <strong>So is the fade at their margins:</strong> Natural Earth draws deserts generously, so each cell is weighted by the present-day vegetation class in Beyer <em>et al.</em> 2020 (CC BY 4.0) — full on desert, part on the shrubland and grassland that rings it, nothing on anything greener — <strong>so semi-arid land is not painted as sand. The fade is a source’s answer, not an eye’s.</strong> What this map draws is the 0.6° blur and the weights given to those part-desert classes.
+    <strong>ARABIA GREENS ON DATED WET WINDOWS and goes back to sand.</strong> Five of them are the Nefud palaeolakes at Khall Amayshan 4 and Jubbah: <strong>approximately 400,000, 300,000, 200,000, 130,000–75,000 and 55,000 years ago</strong> (Groucutt <em>et al.</em> 2021, <em>Nature</em> 597:376). <strong>Only the 130,000–75,000 window has dated ends.</strong> For the other four the paper gives an age and no duration, so the width drawn here is this map’s and not the paper’s, and the popup says so at every one of them. The sixth is the Holocene, <strong>10,500–6,300 years ago</strong>, from the Oman speleothems (Fleitmann <em>et al.</em>) — and <strong>northern Arabia disagrees with it</strong>: the varved lake at Tayma gives a much shorter wet phase, 8,800–7,900 years ago (Neugebauer <em>et al.</em> 2022). This map draws the southeastern window across the whole peninsula and does not interpolate between two sites; <strong>the disagreement is stated, not resolved.</strong> <strong>Not drawn:</strong> the Sahara, which has its own field and its own toggle; dune fields as distinct from stony desert; the Mojave, which Natural Earth has no polygon for; and the Central Asian, Iranian, Levantine and Brazilian drylands, which are in the source and were not among the nine.</span>
+    <span class="legend-note" style="flex-basis:100%"><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="3.5" width="12" height="7" fill="rgb(142,171,196)" fill-opacity="0.30" stroke="none"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="3.5" width="12" height="7" fill="rgb(126,158,188)" fill-opacity="0.30" stroke="none"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="3.5" width="12" height="7" fill="rgb(206,228,246)" fill-opacity="0.95" stroke="none"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="3.5" width="12" height="7" fill="rgb(226,240,251)" fill-opacity="0.95" stroke="none"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="3.5" width="12" height="7" fill="rgb(248,252,255)" fill-opacity="0.95" stroke="none"/></svg> <strong>The tundra moves with time, and the ice stays the brightest thing in the north.</strong> The first two swatches are this layer — tundra, and the greyer one steppe tundra; the three pale ones after them are the ice fills it must never be confused with. The tint is cooler, greyer and fainter than all three on purpose.
+    <strong>Every cell is a published vegetation class, not a tint chosen for the look of it.</strong> Beyer, Krapp &amp; Manica 2020 (<em>Scientific Data</em> 7:236, CC BY 4.0) give a BIOME4 class per half-degree cell at <strong>72 timesteps from 120,000 years ago to now</strong> — 2,000-year steps to 22,000 ya and 1,000-year steps after it. What is drawn is their classes <em>Steppe tundra, Shrub tundra, Dwarf shrub tundra, Prostrate shrub tundra</em> and <em>Cushion forb lichen moss tundra</em>. <strong>Steppe tundra is in deliberately</strong> — it is the open mammoth-steppe ground people actually crossed, and it is drawn a shade greyer so you can see how much of the north is steppe rather than true tundra. <strong>This map did not classify a climate field itself:</strong> BIOME4 did the classifying and this draws its answer. All this map adds is a half-degree blur on the class boundaries and the interpolation between the source’s own timesteps.
+    <strong>It is never painted on ice, twice over:</strong> the source’s own <em>Land ice</em> class is cut from the field when it is built, and the layer is drawn underneath the ice. The two are different reconstructions — Beyer here, NADI-1, DATED-1 and PATICE there — and <strong>they will not agree at the edges.</strong> <strong>Before 120,000 years ago nothing is drawn</strong>, because the reconstruction begins there and the HUD says so. The blank is not an absence of tundra; it is an absence of anyone who reconstructed it. <strong>CHELSA-TraCE21k was evaluated first and not used:</strong> about 4 TB, and its own records state its licence inconsistently — CC BY 2.0 in the paper, CC BY-SA 4.0 in the repository metadata. This map has already turned down CShapes for being ShareAlike, and a dataset whose record cannot say whether it is ShareAlike does not ship here. <strong>Off by default</strong>, because it covers half the northern hemisphere and the map is busy enough; tick it to watch Beringia, the corridor and the Fennoscandian margin open and close.</span>
     <span class="legend-note" style="flex-basis:100%"><strong>The ice sheets are drawn where the evidence reaches, and nowhere else.</strong> From <strong>25,000 years ago</strong> North America is drawn from <strong>NADI-1</strong> (Dalton <em>et al.</em> 2023, CC BY 4.0) every 500 years; from <strong>38,000 years ago</strong> Eurasia, including the Svalbard–Barents–Kara sheet, from <strong>DATED-1</strong> (Hughes <em>et al.</em> 2016, CC BY 3.0); from <strong>35,000 years ago</strong> Patagonia from <strong>PATICE</strong> (Davies <em>et al.</em> 2020). Each is drawn in its source's own time slices, the nearest slice to the date, never interpolated. Each carries its source's uncertainty: <strong>whitest is the minimum</strong> the evidence requires, <strong>the body is the best estimate</strong>, and <strong>the faint feathered band reaches the maximum</strong> — ice that may have been there. PATICE publishes one extent per slice and rates its margin by confidence, which is not drawn yet. <strong>NADI-1 draws mountain glaciers and ice sheets as one complex</strong> and this map does not separate them: the icefields on the Brooks Range, the Alaska Range and the St Elias are in the same extents as the Laurentide and the Cordilleran, because that is how the source dissolves them. Telling them apart would mean sorting polygons by hand, which is drawing by eye, so it is not done. What the ice layer does show, and it is worth looking at, is the unglaciated ground BETWEEN those Alaskan ranges: interior Alaska, the Yukon flats and the land bridge carry no ice at any slice. <strong>NE Siberia and Kamchatka are a separate layer, off by default</strong>, because their source is a maximum rather than a moment — see its own popup. <strong>Before those dates no ice is drawn at all</strong>, as the shorelines draw nothing before 90,000 years ago. The sources begin roughly where the record does — that is when we probably discovered ice with our own eyes. <strong>The blank is not an absence of ice; it is an absence of anyone who mapped it.</strong> A tick on the timeline marks where each source's drawing begins, and a line under the HUD says which ice is not drawn and when it starts. The HUD's ice words follow the drawing: they come from the sources' own mapped area, and where nothing is drawn nothing is claimed. <span style="color:var(--rust)"><strong>PATICE is published CC BY-NC 3.0, and its author has given this map written permission to use it commercially.</strong> Professor Bethan Davies (Newcastle University) granted that permission by email on 19 October 2026, on the condition that the credit stays as it is — which it does. The published licence is unchanged; the grant sits beside it, not instead of it. It was carried as a recorded debt from 2026-09-17 until that date.</span> <span style="color:var(--parchment-dimmer)">Ice data: Dalton, A.S. et al. (2023) NADI-1, <em>Quaternary Science Reviews</em> 321, 108345, doi:10.1016/j.quascirev.2023.108345, data doi:10.5281/zenodo.8161764, CC BY 4.0; Hughes, A.L.C. et al. (2016) DATED-1, <em>Boreas</em> 45, 1–45, doi:10.1111/bor.12142, data doi:10.1594/PANGAEA.848117, CC BY 3.0; Davies, B.J. et al. (2020) PATICE, <em>Earth-Science Reviews</em> 204, 103152, doi:10.1016/j.earscirev.2020.103152, data doi:10.17632/rjnw46vbdw, CC BY-NC 3.0. Changes were made: reprojected to WGS84, simplified (NADI-1 0.05°, DATED-1 3 km, PATICE 1 km) and rounded; nothing else.</span></span>
     <span class="legend-note" style="flex-basis:100%"><strong>Palaeo-shorelines</strong> — exposed continental shelf, land that is sea today, drawn <strong>as land</strong> in the basemap's own land colour, <strong>for the whole world</strong>. The source is De Groeve et al. 2022, the only global shoreline reconstruction with a real glacial-isostatic correction, <strong>drawn at its own resolution and in its own 0.5 kyr steps</strong>: nothing simplified or removed. Zoomed past level 5 its square 2-arc-minute cells show, because that is the reconstruction's real resolution. As the slider moves toward the present the sea takes the land back step by step, on the source's own dates. <strong>The HUD's walkable and drowning words for the five named shelves follow what is drawn</strong>; where a shelf's research dates differ from the source, its popup states both and picks neither. <strong>The source and this map's global sea-level curve disagree</strong>: in De Groeve's raster the shelves flood while the curve still reads the sea tens of metres lower — 18–38 m in Sunda, 22–36 m in Sahul, 15–33 m in the Persian Gulf, less at high latitude — and every popup gives the figure measured for its own place, observed in the raster and not explained in the paper. Before the glacial lowstand the raster records only the most recent coastline, so ground exposed only at the lowstand shows a little early. <strong>From 26,000 years ago to the present this is a reconstruction</strong>, and its coastline is drawn <strong>solid</strong>. <strong>From 26,000 back to 90,000 years ago it is an APPROXIMATION, not a reconstruction</strong>, and its coastline is drawn <strong>dotted</strong>. No reconstruction exists there, so the map draws the source's coast for the date its own sea-level curve last stood at the same depth, with <strong>no glacial-isostatic correction</strong> — most wrong near the ice, which across the world means <strong>most of the northern shelves</strong>. The curve is coarse there too: four points between 26,500 and 130,000 years ago, with straight lines across the 50,000 years from 120,000 to 70,000 and the 40,000 years from 70,000 to 30,000. The switch happens at exactly 26,000 years ago with no blending; the HUD says which side of it you are on, and a mark on the timeline shows where it falls. <strong>Before 90,000 years ago nothing is drawn, anywhere</strong>: that is the oldest researched shelf window on this map, applied to every shelf at once, because a time limit draws no edges. <strong>The layer is on by default; untick it to see today's coastline alone.</strong> <span style="color:var(--parchment-dimmer)">Shoreline data: De Groeve, J. et al. (2022), <em>Global Ecology and Biogeography</em> 31(11): 2162–2171, <a href="https://doi.org/10.1111/geb.13573" style="color:inherit">doi:10.1111/geb.13573</a>; raster via <a href="https://doi.org/10.21942/uva.c.5754779.v1" style="color:inherit">Figshare</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/" style="color:inherit">CC BY 4.0</a>. Changes were made: re-encoded as one byte per cell and reprojected to Web Mercator tiles by nearest neighbour; nothing simplified, smoothed or removed.</span></span>
   </div>
 
   <h2 class="sec">What this prototype is actually showing</h2>
   <div class="panel">
-    <p><span class="lead">The Green Sahara opens and closes instead of sitting on the map as a static line, because it wasn't a static line.</span> A 2023 <em>Nature Communications</em> palaeoclimate study (Armstrong <em>et al.</em>) counts 20 North African Humid Periods over the past 800,000 years, <strong>paced by precession, about every 21,000 years</strong> — and not at every beat: when the ice sheets are large, glacial cooling suppresses the monsoon, so some precession minima bring no humid period at all. That is why the long glacial stretch after ~67,000 ya shows none. The older windows keep the dates of this project's own Correction 3 research — broadly viable 246,000–96,000 ya, with two final pulses around 78,000 and 67,000 ya — and inside them the map shows the 21,000-year rhythm, anchored at the Last Interglacial, ~125,000 ya; the individual older peaks are not dated by the source, and the map draws nothing finer. That includes not knowing which of them the penultimate glacial (~190,000–130,000 ya) suppressed: the window draws every beat in it, and some of those may never have come. <strong>Then the Sahara greens again.</strong> The African Humid Period runs from ~14,800 to ~5,500 ya (Shanahan <em>et al.</em> 2015, <em>Nature Geoscience</em>) — the Green Sahara of the rock art — and it ends later the further south you go: ~5,000 ya at 20°N, ~3,000 ya at 6.5°N. <strong>The land itself turns from sand to green and back.</strong> What is sourced: <em>when</em>, as above; <em>how far</em> at full — the Green Sahara reached <strong>31°N</strong> (Tierney, Pausata &amp; deMenocal 2017, <em>Science Advances</em>); and <em>where the desert is</em> — Natural Earth's Sahara (public domain), its southern edge faded out between ~16.5° and ~14.5°N so the Sahel is not painted as sand. <strong>What is drawn by this map, not reconstructed:</strong> the shape of the greening — green south of a front that moves with the date, a little further on over high ground and along valleys, with a soft irregular edge — and <strong>the rivers</strong>, which are the drainage the terrain still holds, computed by this map from ETOPO 2022 (CC0), not mapped palaeochannels. No licensed map of the ancient channels exists that this map may use; the famous ones are figures in papers. A channel carries water only where the ground under it is green, so the rivers fill as the green arrives. Rivers fed mostly from outside the desert — the Nile, the Niger, the Senegal, named from Natural Earth's river lines — are not drawn: this map draws no modern rivers. The Holocene front walks south on the dated ends, 20°N at ~5,000 ya and 6.5°N at ~3,000 ya; the older windows use the Holocene's reach, scaled by the beat. The two humid-gated African corridors follow the field: while any of a corridor's desert crossing is green, it is drawn over the green ground, so it reaches the sand and stops there; while the whole crossing is sand it is not drawn. <strong>Not drawn, and not claimed:</strong> <strong>Green Arabia</strong> — Arabia had humid periods of its own, and this map draws only the Sahara, so a green Sahara beside a bare Arabia is a limit of the drawing, not a claim about Arabia; <strong>the Younger Dryas</strong> — a dry interruption inside the Holocene humid period, around ~12,900–11,700 ya, which the front does not show; <strong>a latitude-by-latitude onset</strong> — the Holocene start is drawn as abrupt, everywhere at once, and only its end walks south; and <strong>two sources that would do better than a drawing</strong> — the climate-model output behind Armstrong <em>et al.</em> 2023, and Hoelzmann <em>et al.</em> 1998's mid-Holocene map of North African vegetation and lakes — which this map does not use because their licences could not be verified, not because they do not exist.</p>
+    <p><span class="lead">The Green Sahara opens and closes instead of sitting on the map as a static line, because it wasn't a static line.</span> A 2023 <em>Nature Communications</em> palaeoclimate study (Armstrong <em>et al.</em>) counts 20 North African Humid Periods over the past 800,000 years, <strong>paced by precession, about every 21,000 years</strong> — and not at every beat: when the ice sheets are large, glacial cooling suppresses the monsoon, so some precession minima bring no humid period at all. That is why the long glacial stretch after ~67,000 ya shows none. The older windows keep the dates of this project's own Correction 3 research — broadly viable 246,000–96,000 ya, with two final pulses around 78,000 and 67,000 ya — and inside them the map shows the 21,000-year rhythm, anchored at the Last Interglacial, ~125,000 ya; the individual older peaks are not dated by the source, and the map draws nothing finer. That includes not knowing which of them the penultimate glacial (~190,000–130,000 ya) suppressed: the window draws every beat in it, and some of those may never have come. <strong>Then the Sahara greens again.</strong> The African Humid Period runs from ~14,800 to ~5,500 ya (Shanahan <em>et al.</em> 2015, <em>Nature Geoscience</em>) — the Green Sahara of the rock art — and it ends later the further south you go: ~5,000 ya at 20°N, ~3,000 ya at 6.5°N. <strong>The land itself turns from sand to green and back.</strong> What is sourced: <em>when</em>, as above; <em>how far</em> at full — the Green Sahara reached <strong>31°N</strong> (Tierney, Pausata &amp; deMenocal 2017, <em>Science Advances</em>); and <em>where the desert is</em> — Natural Earth's Sahara (public domain), its southern edge faded out between ~16.5° and ~14.5°N so the Sahel is not painted as sand. <strong>What is drawn by this map, not reconstructed:</strong> the shape of the greening — green south of a front that moves with the date, a little further on over high ground and along valleys, with a soft irregular edge — and <strong>the rivers</strong>, which are the drainage the terrain still holds, computed by this map from ETOPO 2022 (CC0), not mapped palaeochannels. No licensed map of the ancient channels exists that this map may use; the famous ones are figures in papers. A channel carries water only where the ground under it is green, so the rivers fill as the green arrives. Rivers fed mostly from outside the desert — the Nile, the Niger, the Senegal, named from Natural Earth's river lines — are not drawn: this map draws no modern rivers. The Holocene front walks south on the dated ends, 20°N at ~5,000 ya and 6.5°N at ~3,000 ya; the older windows use the Holocene's reach, scaled by the beat. The two humid-gated African corridors follow the field: while any of a corridor's desert crossing is green, it is drawn over the green ground, so it reaches the sand and stops there; while the whole crossing is sand it is not drawn. <strong>Not drawn, and not claimed:</strong> <strong>the Younger Dryas</strong> — a dry interruption inside the Holocene humid period, around ~12,900–11,700 ya, which the front does not show; <strong>a latitude-by-latitude onset</strong> — the Holocene start is drawn as abrupt, everywhere at once, and only its end walks south; and <strong>two sources that would do better than a drawing</strong> — the climate-model output behind Armstrong <em>et al.</em> 2023, and Hoelzmann <em>et al.</em> 1998's mid-Holocene map of North African vegetation and lakes — which this map does not use because their licences could not be verified, not because they do not exist.</p>
     <p><span class="lead">The <span data-count="nodesWord">four</span> origin nodes replace the single fixed Rift Valley pin from the old schematic build,</span> each keyed to its own dated evidence: Jebel Irhoud, Morocco (~315,000 ya); the Rift/Horn, Ethiopia (~250,000 ya, this project's own long-running anchor); the Kalahari/Makgadikgadi, Botswana (~200,000 ya, the Chan et al. 2019 claim — shown <strong>CONTESTED</strong>, per Correction #6, not as a settled single origin); and the Ituri Forest, DRC (~170,000 ya). None of the four is "the" start. The Khoisan lineage's first split (~135,000 ya) appears as a persisting branch — it never ghosts, because it's a living population today — and a brief pulse around ~100,000 ya marks the merger that forms the ancestors of eastern and western African populations (Ragsdale et al. 2023).</p>
     <p><span class="lead"><span data-count="ghostChainsWordCap">Three</span> ghost/reconvergence chains show the same visual grammar Shawn asked for, in two honest variants.</span> <strong>Same exact ground:</strong> Jebel Faya's older occupation layer (~125,000–100,000 ya) fades to a ghost and leaves a faint marker — then the identical coordinates light back up around 65,000 ya when the Southern Route's successful pulse actually arrives. Dorset culture in the eastern Arctic does the same at the same coordinates around 1300 CE, replaced by Thule with "virtually no evidence of genetic or cultural interaction" between them — same spot, unrelated population. <strong>Same broader ground, not the same point:</strong> Tianyuan man's own lineage near Beijing (~40,000 ya) is a genuine dead end — nobody alive today descends from him — and fades to a ghost accordingly; the marker that lights up later, around 9,000 ya, sits nearby in the Yellow River valley and represents the Neolithic farmers whose ancestry actually became dominant across China. That's a different population arriving in the same region generations later, not the same line returning — worth keeping that distinction honest on-air rather than letting "reconvergence" imply a bloodline reunion it isn't.</p>
     <p><span class="lead">Known limitation, stated plainly:</span> the routes now carry the full researched multi-stage paths from <code>human_spread_map_2.html</code>, but the dedicated Kelp Highway, Southern Road and African Migrations maps still hold detail this one doesn't — landmark-level stops, then-and-now tables, and per-route discussion. This map answers "when, and in what order"; those answer "where, exactly, and what's there now." Route date windows are drawn from the project's own sourced research; where a window is genuinely disputed the underlying anchor carries the CONTESTED tag, but the line itself does not yet visually distinguish a contested window from a settled one. That's the next honest improvement to make here.</p>
@@ -2233,10 +2240,12 @@ function buildFog(yearsAgo, drawnByRoute, sliderVal){
 }
 
 // ===================== TOGGLES =====================
-const layerState = {shorelines:true, routes:true, ghosts:true, corridor:true, nodes:true, anchors:true, leaders:true, connectors:true, presapiens:false, fog:true, ice:true, camera:false, diffusion:true, territory:true, capability:true, trade:true, forced:true, textlineage:true, nesib:false, genetics:true, nations:true};
+const layerState = {shorelines:true, routes:true, ghosts:true, corridor:true, nodes:true, anchors:true, leaders:true, connectors:true, presapiens:false, fog:true, ice:true, camera:false, diffusion:true, territory:true, capability:true, trade:true, forced:true, textlineage:true, nesib:false, genetics:true, nations:true, deserts:true, tundra:false};
 document.getElementById('toggleRoutes').addEventListener('change', e=>{ layerState.routes=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleGhosts').addEventListener('change', e=>{ layerState.ghosts=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleCorridor').addEventListener('change', e=>{ layerState.corridor=e.target.checked; render(+scrub.value); });
+document.getElementById('toggleDeserts').addEventListener('change', e=>{ layerState.deserts=e.target.checked; render(+scrub.value); if(typeof updateLayerCount==='function') updateLayerCount(); });
+document.getElementById('toggleTundra').addEventListener('change', e=>{ layerState.tundra=e.target.checked; render(+scrub.value); if(typeof updateLayerCount==='function') updateLayerCount(); });
 document.getElementById('toggleNodes').addEventListener('change', e=>{ layerState.nodes=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleAnchors').addEventListener('change', e=>{ layerState.anchors=e.target.checked; render(+scrub.value); });
 document.getElementById('toggleLeaders').addEventListener('change', e=>{ layerState.leaders=e.target.checked; render(+scrub.value); });
@@ -2562,6 +2571,8 @@ function render(sliderVal){
 
   // The Green Sahara: the land greens and its rivers fill, then sand again (the field module, below)
   if(window.__sahara) window.__sahara.frame(yearsAgo);
+  if(window.__deserts) window.__deserts.frame(yearsAgo);
+  if(window.__tundra) window.__tundra.frame(yearsAgo);
 
   // Origin nodes
   NODES.forEach(n=>{
@@ -2645,6 +2656,8 @@ function render(sliderVal){
     // maximum within 5% of the source's largest, else growing or shrinking against the next older slice. Where no
     // source has a slice, nothing is drawn and nothing is claimed; the line under the HUD says why.
     if(window.__ice && layerState.ice) window.__ice.hud(yearsAgo).forEach(b => bits.push(b));
+    if(window.__deserts){ const dw = window.__deserts.hud(yearsAgo); if(dw) bits.push(dw); }
+    if(window.__tundra){ const tw = window.__tundra.hud(yearsAgo); if(tw) bits.push(tw); }
     const saharaWords = window.__sahara && window.__sahara.hud(yearsAgo);   // the HUD follows the drawing
     if(saharaWords) bits.push(saharaWords);
     if(window.__nesibFrame) window.__nesibFrame(yearsAgo);
@@ -5544,6 +5557,326 @@ window.__nationsFrame = function(yearsAgo){
     o.poly.setStyle({opacity: (on && yearsAgo <= o.ya) ? 0.95 : 0});
   });
 };
+
+// ===================== THE DESERTS — SAND AT EVERY DATE, EXCEPT ARABIA =====================
+// Nine desert regions painted in the Sahara's own sand, on the Sahara's own pane depth, under the
+// shelf, the borders, the ice and every mark. The Sahara is NOT here: it has its own field, its own
+// build and its own toggle, and the build script asserts that none of its polygons leaked in.
+//
+//   WHERE   sourced: Natural Earth 10m geography regions (public domain), the named polygons,
+//           unedited. Today's extent, at every date.
+//   MARGINS sourced: Beyer, Krapp & Manica 2020 (CC BY 4.0), present-day BIOME4 class at 0.5°.
+//           Natural Earth draws deserts generously, so each cell is weighted by what the
+//           reconstruction says is actually there — full on Desert, part on the shrubland,
+//           grassland and barren classes around it. The fade is a source's answer, not an eye's.
+//   COAST   sourced: ETOPO 2022 (CC0), so no desert is painted on water.
+//   DRAWN   the ~0.6° blur, and the weights given to the part-desert classes.
+//
+// ARABIA GREENS ON DATED WET WINDOWS and goes back to sand, the one region here that moves with
+// time. The windows are in ARABIA_WINDOWS below, each carrying its own citation and its own
+// statement of what is dated and what is not. Every other desert is sand at every date.
+// Built offline by geowork/deserts/build_deserts.py into data/deserts/.
+const DESERTS = {state:'idle', T:null, green:0};
+(function deserts(){
+  const SAND = [214, 178, 120], GREEN = [111, 174, 82];
+
+  // ---- THE ARABIAN WET WINDOWS -------------------------------------------------------------
+  // from: years ago the window opens; to: years ago it closes. `dated` says which ends the source
+  // actually dates. A window whose ends are NOT dated is drawn as a brief pulse around the age the
+  // paper gives, and the page says so rather than implying a duration nobody published.
+  const PULSE = 4000;          // DRAWN, not sourced: the half-width given to an undated pulse
+  const G = (age) => ({from: age + PULSE, to: age - PULSE, ramp: PULSE * 0.6, dated: 'age only'});
+  const ARABIA_WINDOWS = [
+    Object.assign(G(400000), {label: '~400,000 ya'}),
+    Object.assign(G(300000), {label: '~300,000 ya'}),
+    Object.assign(G(200000), {label: '~200,000 ya'}),
+    {from: 130000, to: 75000, ramp: 6000, dated: 'both ends', label: '130,000–75,000 ya'},
+    Object.assign(G(55000), {label: '~55,000 ya'}),
+    {from: 10500, to: 6300, ramp: 500, dated: 'both ends', label: '10,500–6,300 ya (Holocene)'}
+  ];
+  // greenness 0..1 at a date: 1 inside a window, ramping at each edge
+  DESERTS.greenAt = function(T){
+    let g = 0;
+    for(const w of ARABIA_WINDOWS){
+      if(T > w.from || T < w.to) continue;
+      const a = Math.min(1, (w.from - T) / w.ramp), b = Math.min(1, (T - w.to) / w.ramp);
+      g = Math.max(g, Math.max(0, Math.min(a, b)));
+    }
+    return g;
+  };
+  DESERTS.windowAt = T => ARABIA_WINDOWS.find(w => T <= w.from && T >= w.to) || null;
+
+  const pane = map.createPane('desertPane');
+  pane.style.zIndex = '345';            // the Sahara's depth: on the land, under everything drawn on it
+  pane.style.pointerEvents = 'none';
+  const cv = document.createElement('canvas');
+  cv.style.position = 'absolute'; cv.style.top = '0'; cv.style.left = '0'; cv.style.pointerEvents = 'none';
+  pane.appendChild(cv);
+  const ctx = cv.getContext('2d');
+  let DOC = null, bin = null, flds = [], zooming = false, paintedGreen = null;
+
+  function load(){
+    DESERTS.state = 'loading';
+    Promise.all([fetch('data/deserts/fields.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+                 fetch('data/deserts/fields.bin').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })])
+      .then(([doc, buf]) => {
+        DOC = doc; bin = new Uint8Array(buf);
+        flds = doc.fields.map(f => {
+          const mask = bin.subarray(f.off, f.off + f.len);
+          // laid out in Mercator rows so one drawImage lands it on the map, as the Sahara does
+          const [W, S, E, N] = f.box, my = la => Math.log(Math.tan(Math.PI / 4 + la * Math.PI / 360));
+          const rows = Math.max(8, Math.round(f.ny * 1.15)), rowSrc = new Int32Array(rows);
+          for(let r = 0; r < rows; r++){
+            const y = my(N) - (r + 0.5) / rows * (my(N) - my(S));
+            const la = (2 * Math.atan(Math.exp(y)) - Math.PI / 2) * 180 / Math.PI;
+            rowSrc[r] = Math.min(f.ny - 1, Math.max(0, Math.floor((N - la) / doc.cell)));
+          }
+          const off = document.createElement('canvas');
+          off.width = f.nx; off.height = rows;
+          const octx = off.getContext('2d');
+          return {f, mask, rowSrc, off, octx, img: octx.createImageData(f.nx, rows), painted: null};
+        });
+        DESERTS.state = 'ready';
+        render(+scrub.value);
+      })
+      .catch(err => { DESERTS.state = 'failed'; console.warn('DESERTS: ' + err); });
+  }
+
+  function paint(o, green){
+    const {f, mask, rowSrc, img} = o, d = img.data, nx = f.nx;
+    const g = f.arabia ? green : 0;
+    const R = SAND[0] + (GREEN[0] - SAND[0]) * g,
+          Gc = SAND[1] + (GREEN[1] - SAND[1]) * g,
+          B = SAND[2] + (GREEN[2] - SAND[2]) * g;
+    for(let r = 0; r < rowSrc.length; r++){
+      const base = rowSrc[r] * nx;
+      for(let x = 0; x < nx; x++){
+        const m = mask[base + x], p = (r * nx + x) * 4;
+        if(!m){ d[p + 3] = 0; continue; }
+        d[p] = R; d[p + 1] = Gc; d[p + 2] = B;
+        d[p + 3] = m * (0.34 + 0.10 * g);     // the Sahara's own opacity treatment
+      }
+    }
+    o.octx.putImageData(img, 0, 0);
+    o.painted = g;
+  }
+
+  function draw(){
+    if(!layerState.deserts || zooming || DESERTS.state !== 'ready'){ cv.style.display = 'none'; return; }
+    const T = DESERTS.T;
+    const green = T === null ? 0 : Math.round(DESERTS.greenAt(T) * 40) / 40;
+    cv.style.display = '';
+    const size = map.getSize(), dpr = window.devicePixelRatio || 1;
+    if(cv.width !== size.x * dpr || cv.height !== size.y * dpr){
+      cv.width = size.x * dpr; cv.height = size.y * dpr;
+      cv.style.width = size.x + 'px'; cv.style.height = size.y + 'px';
+    }
+    L.DomUtil.setPosition(cv, map.containerPointToLayerPoint([0, 0]));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, size.x, size.y);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    const vb = map.getBounds();
+    flds.forEach(o => {
+      const [W, S, E, N] = o.f.box;
+      if(E < vb.getWest() || W > vb.getEast() || N < vb.getSouth() || S > vb.getNorth()) return;
+      const want = o.f.arabia ? green : 0;
+      if(o.painted !== want) paint(o, green);
+      const a = map.latLngToContainerPoint([N, W]), b = map.latLngToContainerPoint([S, E]);
+      ctx.drawImage(o.off, a.x, a.y, b.x - a.x, b.y - a.y);
+    });
+    paintedGreen = green;
+  }
+
+  map.on('move resize', () => { if(DESERTS.state === 'ready') draw(); });
+  map.on('zoomstart', () => { zooming = true; cv.style.display = 'none'; });
+  map.on('zoomend', () => { zooming = false; draw(); });
+
+  DESERTS.frame = function(yearsAgo){
+    if(layerState.deserts && DESERTS.state === 'idle') load();
+    DESERTS.T = yearsAgo;
+    draw();
+  };
+  // what the HUD says about Arabia, if anything
+  DESERTS.hud = function(yearsAgo){
+    if(!layerState.deserts || DESERTS.state !== 'ready') return null;
+    const w = DESERTS.windowAt(yearsAgo);
+    if(!w) return null;
+    return 'Arabia green · ' + w.label;
+  };
+  DESERTS.note = function(yearsAgo){
+    const w = DESERTS.windowAt(yearsAgo);
+    if(!w) return null;
+    return w.dated === 'both ends'
+      ? 'Arabia is in a wet window the source dates at both ends: ' + w.label + '.'
+      : 'Arabia is in a wet window the source dates only as an age, ' + w.label
+        + ' — it publishes no start or end, so the width drawn here is this map’s, not the paper’s.';
+  };
+  window.__deserts = DESERTS;
+})();
+
+// ===================== THE TUNDRA — THE OPEN GROUND PEOPLE WALKED, MOVING WITH TIME ==========
+// The cold open country of Europe, Siberia and Beringia, and how its edges moved as the ice came
+// and went. Not a tint invented for the look of it: every cell is a vegetation class from a
+// published reconstruction, at that reconstruction's own timesteps.
+//
+//   SOURCE  Beyer, Krapp & Manica 2020, Scientific Data 7, 236 (CC BY 4.0); data pastclim_Beyer2020
+//           v1.1.0, Zenodo 10.5281/zenodo.7062281. BIOME4 vegetation class, 0.5°, 72 timesteps from
+//           120,000 years ago to the present — 2,000-year steps to 22 ka, 1,000-year steps after.
+//   TUNDRA  BIOME4 classes 22 Steppe tundra, 23 Shrub tundra, 24 Dwarf shrub tundra, 25 Prostrate
+//           shrub tundra, 26 Cushion forb lichen moss tundra. Steppe tundra is in deliberately —
+//           it is the open mammoth-steppe ground people actually crossed — and is kept flagged so
+//           the HUD can say how much of what is on screen is steppe rather than true tundra.
+//   DRAWN   a half-degree blur on the class boundaries, and the interpolation between the source's
+//           own timesteps. THE VEGETATION IS NOT THIS MAP'S ARITHMETIC: no Köppen rule was applied
+//           to a temperature field here; BIOME4 did the classifying and this draws its answer.
+//   NOT DRAWN  anything before 120,000 years ago, because the reconstruction begins there. The
+//           blank is not an absence of tundra; it is an absence of anyone who reconstructed it.
+//
+// NEVER ON ICE, TWICE OVER: class 28 Land ice is cut from the field in the build, and this pane
+// sits beneath the ice layer. The two are different reconstructions (Beyer here, NADI-1/DATED-1/
+// PATICE there) and will not agree at the edges; the layers text says so.
+const TUNDRA = {state:'idle', T:null};
+(function tundra(){
+  // A COOLER, GREYER BLUE THAN ANY OF THE ICE FILLS, at low opacity, so the ice stays the
+  // brightest thing in the north. The ice fills are rgb(206,228,246) "may have been ice",
+  // rgb(226,240,251) margin and rgb(248,252,255) minimum — all pale and warm-ish. This is darker
+  // and greyer, and it never approaches their brightness.
+  const TINT = [142, 171, 196], STEPPE_TINT = [126, 158, 188];
+  // 0.30 read as haze rather than a layer: the relief under it is near-black at glacial dates,
+  // so a pale tint at that opacity barely lifted it. Measured at 21 ka over Europe, the painted
+  // pixels averaged RGB 58,63,68 against the ice at 203,212,221. 0.42 lifts it to a readable
+  // blue-grey and still leaves the ice roughly twice as bright, which is the ruling.
+  const A_MAX = 0.42;
+
+  const pane = map.createPane('tundraPane');
+  pane.style.zIndex = '347';          // over the deserts, under the shelf (350), borders, ICE (370)
+  pane.style.pointerEvents = 'none';
+  const cv = document.createElement('canvas');
+  cv.style.position = 'absolute'; cv.style.top = '0'; cv.style.left = '0'; cv.style.pointerEvents = 'none';
+  pane.appendChild(cv);
+  const ctx = cv.getContext('2d');
+
+  let DOC = null, idx = null, vals = null, off = null, octx = null, img = null, rowSrc = null;
+  let zooming = false, paintedKey = null, frameBuf = null;
+
+  function load(){
+    TUNDRA.state = 'loading';
+    Promise.all([fetch('data/tundra/field.json').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+                 fetch('data/tundra/field.bin').then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })])
+      .then(([doc, buf]) => {
+        DOC = doc;
+        idx = new Uint32Array(buf, 0, doc.ncell);
+        vals = new Uint8Array(buf, doc.ncell * 4, doc.nstep * doc.ncell);
+        frameBuf = new Uint8Array(doc.nx * doc.ny);
+        const [W, S, E, N] = doc.box, my = la => Math.log(Math.tan(Math.PI / 4 + la * Math.PI / 360));
+        // Mercator is unusable at the pole, so the drawn band stops at 84°N — north of every cell
+        // the source actually fills — and the canvas is built for that band only.
+        const NTOP = Math.min(84, N), SBOT = Math.max(-60, S);
+        const rows = 900;
+        rowSrc = new Int32Array(rows);
+        for(let r = 0; r < rows; r++){
+          const y = my(NTOP) - (r + 0.5) / rows * (my(NTOP) - my(SBOT));
+          const la = (2 * Math.atan(Math.exp(y)) - Math.PI / 2) * 180 / Math.PI;
+          rowSrc[r] = Math.min(doc.ny - 1, Math.max(0, Math.floor((N - la) / doc.cell)));
+        }
+        TUNDRA.band = [W, SBOT, E, NTOP];
+        off = document.createElement('canvas'); off.width = doc.nx; off.height = rows;
+        octx = off.getContext('2d'); img = octx.createImageData(doc.nx, rows);
+        TUNDRA.state = 'ready';
+        render(+scrub.value);
+      })
+      .catch(err => { TUNDRA.state = 'failed'; console.warn('TUNDRA: ' + err); });
+  }
+
+  // THE SOURCE'S OWN TIMESTEPS, interpolated between. yearsAgo[] descends 120000 -> 0.
+  function stepsFor(T){
+    const ya = DOC.yearsAgo, n = ya.length;
+    if(T >= ya[0]) return null;                       // before the reconstruction begins
+    if(T <= ya[n - 1]) return {a: n - 1, b: n - 1, f: 0};
+    let i = 0;
+    while(i < n - 1 && ya[i + 1] > T) i++;            // ya[i] > T >= ya[i+1]
+    const span = ya[i] - ya[i + 1] || 1;
+    return {a: i, b: i + 1, f: (ya[i] - T) / span};
+  }
+
+  function paint(st){
+    const n = DOC.ncell, base_a = st.a * n, base_b = st.b * n, f = st.f;
+    frameBuf.fill(0);
+    const steppeBuf = paint.steppe || (paint.steppe = new Uint8Array(DOC.nx * DOC.ny));
+    steppeBuf.fill(0);
+    for(let k = 0; k < n; k++){
+      const va = vals[base_a + k], vb = vals[base_b + k];
+      const w = ((va & 0xFE) * (1 - f) + (vb & 0xFE) * f);
+      if(w < 3) continue;
+      const c = idx[k];
+      frameBuf[c] = w > 254 ? 254 : w;
+      steppeBuf[c] = (f < 0.5 ? (va & 1) : (vb & 1));
+    }
+    const d = img.data, nx = DOC.nx;
+    for(let r = 0; r < rowSrc.length; r++){
+      const rowBase = rowSrc[r] * nx;
+      for(let x = 0; x < nx; x++){
+        const c = rowBase + x, p = (r * nx + x) * 4, w = frameBuf[c];
+        if(!w){ d[p + 3] = 0; continue; }
+        const t = steppeBuf[c] ? STEPPE_TINT : TINT;
+        d[p] = t[0]; d[p + 1] = t[1]; d[p + 2] = t[2];
+        d[p + 3] = Math.round(w / 254 * A_MAX * 255);
+      }
+    }
+    octx.putImageData(img, 0, 0);
+    paintedKey = st.a + ':' + st.b + ':' + Math.round(f * 20);
+  }
+
+  function draw(){
+    if(!layerState.tundra || zooming || TUNDRA.state !== 'ready' || TUNDRA.T === null){ cv.style.display = 'none'; return; }
+    const st = stepsFor(TUNDRA.T);
+    if(!st){ cv.style.display = 'none'; return; }     // before 120,000 ya: nothing is drawn
+    const key = st.a + ':' + st.b + ':' + Math.round(st.f * 20);
+    if(key !== paintedKey) paint(st);
+    cv.style.display = '';
+    const size = map.getSize(), dpr = window.devicePixelRatio || 1;
+    if(cv.width !== size.x * dpr || cv.height !== size.y * dpr){
+      cv.width = size.x * dpr; cv.height = size.y * dpr;
+      cv.style.width = size.x + 'px'; cv.style.height = size.y + 'px';
+    }
+    L.DomUtil.setPosition(cv, map.containerPointToLayerPoint([0, 0]));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, size.x, size.y);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    const [W, S, E, N] = TUNDRA.band;
+    const a = map.latLngToContainerPoint([N, W]), b = map.latLngToContainerPoint([S, E]);
+    ctx.drawImage(off, a.x, a.y, b.x - a.x, b.y - a.y);
+  }
+
+  map.on('move resize', () => { if(TUNDRA.state === 'ready') draw(); });
+  map.on('zoomstart', () => { zooming = true; cv.style.display = 'none'; });
+  map.on('zoomend', () => { zooming = false; draw(); });
+
+  TUNDRA.frame = function(yearsAgo){
+    if(layerState.tundra && TUNDRA.state === 'idle') load();
+    TUNDRA.T = yearsAgo;
+    draw();
+  };
+  // THE HUD FOLLOWS THE DRAWING: it counts the cells actually painted, and says when there are none
+  // because the reconstruction has not begun rather than because there was no tundra.
+  TUNDRA.hud = function(yearsAgo){
+    if(!layerState.tundra || TUNDRA.state !== 'ready') return null;
+    if(yearsAgo >= DOC.yearsAgo[0]) return 'tundra not reconstructed before ' + DOC.yearsAgo[0].toLocaleString() + ' ya';
+    const st = stepsFor(yearsAgo);
+    if(!st) return null;
+    const n = DOC.ncell, base = st.a * n;
+    let tot = 0, stp = 0;
+    for(let k = 0; k < n; k++){
+      const v = vals[base + k];
+      if((v & 0xFE) >= 128){ tot++; if(v & 1) stp++; }
+    }
+    if(!tot) return null;
+    const km2 = Math.round(tot * 55.6 * 55.6 / 1e5) * 1e5;   // 0.5° cells, cos-weighted on average
+    return 'tundra ~' + (km2 / 1e6).toFixed(1) + 'M km²'
+           + (stp ? ', ' + Math.round(100 * stp / tot) + '% steppe tundra' : '');
+  };
+  window.__tundra = TUNDRA;
+})();
 
 // ===================== NE SIBERIAN AND KAMCHATKAN MOUNTAIN GLACIERS =====================
 // A DIFFERENT KIND OF OBJECT FROM THE THREE ICE SHEETS ABOVE, which is why it is a separate layer with its own
