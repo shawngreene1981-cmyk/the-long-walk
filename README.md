@@ -781,6 +781,23 @@ not in that beat's layer list and has no legend row. The 276 km gap it closes is
 scale: neither the gap nor the link is resolvable there. **The beat where this link can be read is
 the network beat.** Both numbers are recorded in `shots/intro.json` beside the beats they describe.
 
+**AND THE NOTE IS ON SCREEN, NOT ONLY IN THE DATA FILE.** The ruling said the link's own note
+must state the evidence plainly, so it does, in the frame, while the line is being drawn: a block
+headed **"Contact, not migration"** reading *"Shared symbolism, shared material culture and
+long-distance exchange across a Pre-Pottery Neolithic interaction sphere. Asouti 2006 finds the
+diffusion model built on it 'too abstractly defined' — so this line claims contact, and refuses to
+claim direction."* A viewer is told what is attested and what is disputed at the moment the line
+appears, not in a credits roll afterwards.
+
+**Its position was measured, and the first position was wrong.** The note began as a sub-line under
+its legend row. That lifted the legend box to `top 576` while the beat's callout box runs to
+`bottom 640` — 64 px of overlap — and the rule that hides the legend whenever a callout is up then
+blanked the note **at the exact second the link arrives**. It now sits in the opposite corner,
+`[1354, 577, 1824, 760]`, clear of the callout at `[96, 232, 736, 640]` and the legend at
+`[96, 676, 599, 848]`, and it is not hidden with the legend. The check measures all three boxes
+with the callout up, because the only moment this note has to be readable is the moment something
+else is covering that corner.
+
 **And the critique travels with it.** **Asouti 2006** (*Journal of World Prehistory*), the standard
 review of exactly this question, argues that the PPNB interaction sphere and the diffusion model
 built on it are *"too abstractly defined to enable meaningful insights into the dynamics of Early

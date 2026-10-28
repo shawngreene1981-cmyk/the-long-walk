@@ -6520,6 +6520,17 @@ if(!applyUrlState()) writeUrl(false);
     text-shadow:0 2px 16px rgba(0,0,0,.95);}
   #pLegend .sw{display:inline-block;width:30px;height:15px;border-radius:3px;margin-right:14px;
     vertical-align:middle;}
+  /* A LEGEND ROW CAN CARRY ITS OWN NOTE. The contact link is the only row on this map that
+     asserts something a viewer could misread as a migration, so it says what it claims and
+     what the literature will not carry, under its own swatch, for as long as it is drawn. */
+  /* Measured: a sub-line inside the legend lifted its box to top 576 while the callout box
+     runs to bottom 640, so the legend-hiding rule blanked this note at the exact second the
+     link arrived. It lives in the opposite corner instead, and no callout covers it. */
+  #pNote{position:absolute;right:96px;bottom:320px;width:470px;color:#cfc6b4;font-size:20px;
+    line-height:1.5;opacity:0;text-align:right;
+    text-shadow:0 2px 16px rgba(0,0,0,.95);}
+  #pNote b{display:block;color:#8fd3c8;font-weight:600;margin-bottom:6px;font-size:18px;
+    letter-spacing:.06em;text-transform:uppercase;}
   /* THE SCRIPT LINE GETS ITS OWN GROUND. A text shadow alone was not enough over the ice and
      the desert sand; a soft dark band behind it keeps it readable over any layer without
      putting a hard box on the frame. */
@@ -6553,6 +6564,7 @@ if(!applyUrlState()) writeUrl(false);
   const ov = document.createElement('div');
   ov.id = 'pOverlay';
   ov.innerHTML = '<div id="pDate"></div><div id="pDateSub"></div><div id="pLegend"></div>'
+    + '<div id="pNote"></div>'
                + '<div id="pCall"></div><div id="pLineWrap"></div><div id="pLine"></div>'
                + '<div id="pCard"><div class="inner"></div></div><div id="pFade"></div>';
   document.body.appendChild(ov);
@@ -6613,6 +6625,11 @@ if(!applyUrlState()) writeUrl(false);
   const SWATCH = {ice:'#e2effb', tundra:'#8eabc4', deserts:'#d6b278', corridor:'#6fae52',
                   shorelines:'#7d8f74', anchors:'#e5a75f', routes:'#c9a06f', borders:'#c3cf36',
                   nations:'#701d5a', genetics:'#b6479c', contact:'#8fd3c8'};
+  // THE CONNECTOR NOTE, ON SCREEN AND NOT ONLY IN THE DATA FILE. Founder-ruled: the link's
+  // note states the evidence AND the critique, so a viewer is told what is attested and what
+  // is disputed at the moment the line is drawn, not in a credits roll afterwards.
+  const SUB = {contact: 'Shared symbolism, shared material culture and long-distance exchange across a Pre-Pottery Neolithic interaction sphere. Asouti 2006 finds the diffusion model built on it “too abstractly defined” — so this line claims contact, and refuses to claim direction.'};
+  const SUBHEAD = {contact: 'Contact, not migration'};
 
   // THE TOGGLES ARE DRIVEN, NOT layerState. The page's layerState lives in a scope this module
   // cannot reach, and reaching into it would also skip the handlers that do the repaint. Setting
@@ -6645,6 +6662,11 @@ if(!applyUrlState()) writeUrl(false);
     $('pLegend').innerHTML = (on || []).filter(k => NICE[k]).map(k =>
       '<div><span class="sw" style="background:' + (SWATCH[k] || '#9a927f') + '"></span>'
       + NICE[k] + '</div>').join('');
+    // the connector note rides with the row, but not inside the legend box
+    const notes = (on || []).filter(k => SUB[k]);
+    $('pNote').innerHTML = notes.map(k =>
+      '<b>' + (SUBHEAD[k] || 'What this claims') + '</b>' + SUB[k]).join('');
+    $('pNote').style.opacity = notes.length ? 1 : 0;
     if(PRESENT.ya !== null) PRESENT.setYear(PRESENT.ya);
   };
 
