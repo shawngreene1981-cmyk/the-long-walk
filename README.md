@@ -555,9 +555,33 @@ margin. The ice also stays the brightest thing in the north by a wide margin: pa
 — Beyer here, NADI-1, DATED-1 and PATICE there — and will not agree at the edges; the legend
 says so.
 
-**What could not be sourced, and is therefore not drawn.** The **Mojave**: Natural Earth has no
-Mojave polygon at all, so the American Southwest field is Sonoran, Chihuahuan, Great Basin, Great
-Salt Lake, Black Rock and White Sands, with a Mojave-shaped absence between them. The Central Asian
+**THE MOJAVE, ADDED 2026-10-28 FROM A SECOND FEDERAL SOURCE.** Natural Earth has no Mojave polygon
+at all, so the first build left a Mojave-shaped hole between the Sonoran and the Great Basin. Rather
+than draw one by hand, the gap is filled from the **US EPA, *Level III Ecoregions of the Conterminous
+United States*** (2013-04-16), ecoregion **“Mojave Basin and Range”**. Its own FGDC record:
+originator **US Environmental Protection Agency**, access constraints **“None”**, use
+constraints **“None”** with an acknowledgement of the EPA requested — which, under the
+licence ruling, names the author rather than imposing a restriction. **Public domain, 17 U.S.C.
+§105.** Reprojected from USA Contiguous Albers Equal Area Conic to WGS84 and otherwise
+unaltered, and given the same margin fade as every other polygon. Measured after the build:
+**1,268 of the 1,276 field cells inside the ecoregion are painted**, mean weight 185 of 255.
+
+**THE DESERTS NO LONGER VANISH AT MODERN DATES, AND THE FIX IS A STIPPLE RATHER THAN A LIFT.** Under
+the polity fills they disappeared at “today”; lifted above them as a wash they would have
+hidden the countries instead. **Measured before choosing:** a sand wash over a polity fill drops the
+worst polity pair from **13.9 to 8.4 ΔE** at this layer’s own alpha, against the **bar of 12**
+the palette work of 2026-10-17 was built to meet, and a wash faint enough to clear that bar
+(≤0.10 alpha, 10% of the final colour) is invisible. **A wash cannot do both jobs.** So wherever
+the border layer is actually drawing, the desert pane moves to z-index 361 — above the polity
+fills, still under the ice and every mark — and the sand is drawn as a **25% stipple**: one
+device pixel in four keeps its sand, and the other three keep the country’s colour untouched, so
+two polities stay exactly as far apart as the palette made them. Below the borders nothing changed;
+it is the same solid wash that was approved.
+
+**The tundra is now on by default**, with the rest of the layers. It still loads lazily, so it costs
+nothing until a date it covers is reached.
+
+**What could not be sourced, and is therefore not drawn.** The Central Asian
 and Iranian drylands (Garagum, Qizilqum, Betpaqdala, Kavir, Lut, Margo, Rigestan), the Danakil, the
 Chalbi, the Negev and the Caatingas are in the source and are not drawn, because the ruling named
 nine regions and these were not among them.
