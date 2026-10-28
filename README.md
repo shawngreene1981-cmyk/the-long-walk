@@ -644,6 +644,76 @@ to say so rather than add unsourced anchors, and that is what has been done: the
 network” beat is carried by the two anchors that do exist, `a33` Göbekli Tepe (reference) and
 `a05` Turkey (Anatolia), both dated 11,526 ya. Adding the rest is a research job, not a rendering one.
 
+**The branching trail, the Taş Tepeler network, and a cut timed to the music, 2026-10-28.**
+
+**THE TRAIL IS JOINED FROM THE MAP’S OWN ROUTES AND NOT DRAWN BY HAND.** Two branches, built by
+`geowork/present/build_trail.py` into `data/trail/intro_trail.json`. **To the Americas:** `r01`
+(Rift to India) + `r03` + `r05` (South China through Siberia and Beringia and down the Pacific
+coast to Monte Verde). **To Anatolia:** `r92` (Horn to Nile to Levant) + `r97`. A leg may be
+truncated at a vertex it SHARES EXACTLY with the next route — that is a join, not a redraw,
+because every point kept is a point the map already has, in the order the map has it. **Both
+branches came out with no gaps at all.**
+
+**One leg has no route, and is not drawn.** From `r97`’s last vertex heading into southeast
+Turkey to Göbekli Tepe is **276 km**, and no route on this map covers it. The trail head stops
+at the last sourced vertex; nothing is invented to close it, and the field records the gap.
+
+**THE TRAIL’S PACE IS PRESENTATIONAL AND NOT A DATED CLAIM.** It grows on the intro’s
+narrative clock so a viewer can follow it to the show. The routes it is made of span **250,000 to
+13,000 years ago**, are not contemporaneous with each other, and are not tied to the date on the
+slider. The shot file says so, the field says so, and it is said here.
+
+**THE NETWORK BEAT SHIPS WITH ONE NEW ANCHOR, NOT FOUR, AND THE REASON IS POSITIONS RATHER THAN
+DATES.** The dating for all four was found in the cited publications. The coordinates were not.
+**Sayburç ships** (`tt01`): Özdoğan 2024, *Documenta Praehistorica* 51: 44–58,
+doi:10.4312/dp.51.23, places it in its own words **“20km southeast of the Şanlıurfa
+city centre”** and reports that **“11 radiocarbon dates were obtained”** on charcoal
+from above the building floors, giving **“a date in the middle of the 9th millennium BC”**,
+Early PPNB. That is about **a thousand years YOUNGER than Göbekli Tepe**, and the anchor says
+so: it is not an older rival, it is the tradition continuing. **The coordinate is DERIVED from the
+paper’s own sentence**, 20 km on a 135° bearing from the city centre, and the anchor says
+that too.
+
+**Karahan Tepe, Çakmaktepe and Nevalı Çori are held.** Karul 2021 and Şahin &
+Miyake 2025 publish no coordinates; the PPND radiocarbon database at exoriente returns a database
+error; the official `tastepeler.org` pages carry no coordinate list. The only coordinate table
+found was a travel site, and one of its figures puts Çakmaktepe near Gaziantep, about 100 km
+west of where it belongs. **Founder-ruled 2026-10-28: ship Sayburç, hold the rest.** A site
+this map cannot cite a position for is a site this map does not place. Çakmaktepe’s own
+paper, incidentally, dates it **“(MÖ. 9600-8800?)”** — the question mark is the
+source’s, not this map’s.
+
+**`presentNote`, so the video does not have to quote page furniture.** Göbekli Tepe’s note
+opens “every megalith **below** is thousands of years younger”, where “below”
+means further down the page. An optional `presentNote` field was added to the anchor and the
+presentation layer prefers it. **The site text is unchanged.**
+
+**THE CUT IS TIMED TO THE TRACK BY MEASUREMENT.** `geowork/present/analyse_music.py` decodes the
+first 115 s and reports a loudness envelope, an onset-strength curve, a tempo estimate and the
+swells. Measured: near silence at 0 s, up to **-20 dBFS by 2 s**, building to **-10.7 dBFS by
+18 s**; a local ease at **46 s**; swells at **6.0, 12.5, 19.5, 30.0, 51.0, 64.0, 92.5 and
+101.0 s**. **All three things the founder measured by ear are confirmed.** Tempo came out at
+**76.0 BPM**, which is the same pulse as the ‘112’ counted at a different metrical level,
+not a disagreement. Beat boundaries now sit on measured onsets — **5.76, 18.92, 29.98** (the
+strongest hit in the first 110 s), **39.96, 52.60, 64.96, 77.86, 92.06** — and the full-trail
+reveal opens on 92.06 so that **the 92.5 s swell carries it**. Audio is AAC 320 kbps stereo,
+two-pass loudnorm to **-14 LUFS with a -1.5 dBTP ceiling**, and the encoder **aborts rather than
+looping** if the cut outruns the seconds the shot file allows.
+
+**The music credit is a marked placeholder.** “Music: Getaway — Benjamin Andrews
+[attribution line pending]” appears on the credits card and in `CREDITS.txt` with a note that
+the exact Audio Library wording is unconfirmed and must be settled before publication.
+
+**Three fixes the draft earned.** Monte Verde’s line contradicted its own CONTESTED card and is
+now “**and possibly** already at the far end of the Americas”, with the camera framed on
+southern Chile. Every callout now **highlights its own marker** with a ring, and **the legend hides
+while a card is up** rather than sitting under it; the script line got a soft gradient band so it
+reads over ice and sand alike. And **the deserts now fade out across zoom 5 to 7**: the field is
+0.1° cells blurred at 0.6°, so past zoom 5 it was being stretched far beyond its own
+resolution and the margins read as fuzzy ovals over Syria and Iraq. The same rule the shoreline
+layer follows applies — do not draw a precision the source does not have — so it fades out
+rather than being sharpened into a lie.
+
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
 throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.
