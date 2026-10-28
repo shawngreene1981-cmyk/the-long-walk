@@ -370,7 +370,8 @@
       "contact": [
         0.0,
         1.0
-      ]
+      ],
+      "contact_note": "MEASURED AT THIS CAMERA, NOT SUPPOSED. The whole 299 km corridor is 77 px long here, so the dash is a fraction of the drawn length (period 3.85 px, about twenty stitches) rather than a fixed [1,9], which would have given eight dots. The open rings at the digs need about 22 px of path each and do NOT draw at 77 px: six of them would overlap into one cyan clump. 111 px of cyan ink in a 38x43 box, fill ratio 0.068 -- a thread, not a blob."
     },
     {
       "id": "trail_reveal",
@@ -396,8 +397,7 @@
         "shorelines",
         "deserts",
         "corridor",
-        "anchors",
-        "contact"
+        "anchors"
       ],
       "line": "Both branches, end to end.",
       "lineFade": [
@@ -413,7 +413,8 @@
       "contact": [
         1.0,
         1.0
-      ]
+      ],
+      "contact_note": "The contact link is COMPLETE on this beat and still drawn, but it is NOT in the layer list and so has no legend row. At this camera (zoom 2) the corridor measures 6 px end to end and leaves 8 pixels of ink. The 276 km gap it closes is 9 px at the same scale, so neither the gap nor the link is resolvable here. A legend row for eight pixels is advertising, which is the fault the desert fade was built to remove. The beat where this link can actually be read is `network`."
     },
     {
       "id": "mostly_gone",

@@ -759,9 +759,27 @@ empty country.
 there. **No point on that line is a place nobody has dug.**
 
 **It is drawn so a viewer reads "different kind of thing" before reading the legend.** 2.6 px
-against the trail's 6, a `[1,9]` dash against the trail's `[2,13]`, a cool `#8fd3c8` the amber
-trail never uses, **small open rings at the digs** rather than the trail's filled dots, and its own
-legend row: **"Contact / shared culture (not a migration)"**.
+against the trail's 6, a cool `#8fd3c8` the amber trail never uses, open rings at the digs rather
+than the trail's filled dots, and its own legend row: **"Contact / shared culture (not a
+migration)"**.
+
+**AND THE DASH IS A FRACTION OF THE DRAWN LENGTH, BECAUSE A DASH IN PIXELS IS A DASH FOR ONE
+ZOOM.** This was measured before it was rendered, and the measurement overruled the first design.
+299 km is **77 px** at the network beat's camera and **9 px** at the full-trail reveal, so a fixed
+`[1,9]` would have drawn eight dots at one camera and a single dot at the other. The period is now
+`along / 20`, about twenty stitches whatever the zoom, a third of each inked — finer and denser
+than the trail's fixed `[2,13]` at every camera in this intro. **The open rings do not draw in this
+intro at all.** Six of them need about 22 px of path each; on a 77 px line they overlapped into one
+cyan clump of 614 inked pixels in a 54x58 box — the same defect the desert fade was built to
+remove. They now appear only when the corridor is big enough to be read as six digs, which no beat
+here reaches. After the fix the network beat measures **111 px of ink in a 38x43 box, fill ratio
+0.068**: a thread, not a blob.
+
+**And the legend does not advertise eight pixels.** At the full-trail reveal's zoom 2 the link is
+complete and still drawn, but it measures 6 px end to end and leaves **8 pixels of ink**, so it is
+not in that beat's layer list and has no legend row. The 276 km gap it closes is 9 px at the same
+scale: neither the gap nor the link is resolvable there. **The beat where this link can be read is
+the network beat.** Both numbers are recorded in `shots/intro.json` beside the beats they describe.
 
 **And the critique travels with it.** **Asouti 2006** (*Journal of World Prehistory*), the standard
 review of exactly this question, argues that the PPNB interaction sphere and the diffusion model

@@ -6884,20 +6884,41 @@ if(!applyUrlState()) writeUrl(false);
         break;
       }
       if(cs.length > 1){
+        // A DASH IN PIXELS IS A DASH FOR ONE ZOOM, AND THIS LINK IS SHORT. 299 km measures 77 px
+        // at the network beat's camera and 9 px at the full-trail reveal, so a fixed [1,9] draws
+        // eight dots at one and a single dot at the other -- measured, not supposed. The dash is
+        // therefore a fraction of the drawn length: about twenty stitches, a third of each inked.
+        // Against the trail's fixed [2,13] it is finer and denser at every camera in the intro,
+        // which is the distinction the ruling asked for.
+        let alongPx = 0;
+        for(let i = 1; i < cs.length; i++){
+          alongPx += Math.hypot(cs[i].x - cs[i-1].x, cs[i].y - cs[i-1].y);
+        }
+        const per = Math.max(2.4, Math.min(10, alongPx / 20));
         tctx.lineCap = 'butt'; tctx.lineJoin = 'round';
-        tctx.setLineDash([1, 9]);
-        tctx.strokeStyle = 'rgba(143,211,200,0.80)';
+        tctx.setLineDash([per * 0.34, per * 0.66]);
+        tctx.strokeStyle = 'rgba(143,211,200,0.86)';
         tctx.lineWidth = 2.6;
         tctx.beginPath();
         cs.forEach((q, i) => i ? tctx.lineTo(q.x, q.y) : tctx.moveTo(q.x, q.y));
         tctx.stroke();
         tctx.setLineDash([]);
-        tctx.strokeStyle = 'rgba(143,211,200,0.92)';
-        tctx.lineWidth = 2;
-        for(let i = 0; i < C.pts.length && C.cum_km[i] <= want; i++){
-          const q = m.latLngToContainerPoint(C.pts[i]);
-          tctx.beginPath(); tctx.arc(q.x, q.y, 7, 0, 6.2832); tctx.stroke();
+        // THE RINGS ONLY WHEN THE PATH CAN HOLD THEM. Six rings of radius 7 need about 22 px of
+        // path each; on a 77 px line they overlap into one cyan clump, which is the same defect
+        // the desert fade was built to remove. They appear when the corridor is actually big
+        // enough to be read as six digs, and not before.
+        const nsite = C.pts.length;
+        if(alongPx >= 22 * (nsite - 1)){
+          const rad = Math.max(3, Math.min(7, alongPx / 22));
+          tctx.strokeStyle = 'rgba(143,211,200,0.92)';
+          tctx.lineWidth = 2;
+          for(let i = 0; i < C.pts.length && C.cum_km[i] <= want; i++){
+            const q = m.latLngToContainerPoint(C.pts[i]);
+            tctx.beginPath(); tctx.arc(q.x, q.y, rad, 0, 6.2832); tctx.stroke();
+          }
         }
+        PRESENT.lastContactPx = {along: Math.round(alongPx), per: +per.toFixed(2),
+                                 rings: alongPx >= 22 * (nsite - 1)};
       }
     }
   };
