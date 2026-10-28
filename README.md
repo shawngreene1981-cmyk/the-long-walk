@@ -586,6 +586,64 @@ and Iranian drylands (Garagum, Qizilqum, Betpaqdala, Kavir, Lut, Margo, Rigestan
 Chalbi, the Negev and the Caatingas are in the source and are not drawn, because the ruling named
 nine regions and these were not among them.
 
+**Presentation mode and a deterministic shot renderer, 2026-10-28.** The map can now be filmed.
+`?present=1` hides every piece of page furniture, fills a fixed 1920×1080 frame, and adds an
+overlay of its own: a large date, a legend of **only the layers in the shot**, a callout card in
+place of popups, and one line of script text. Title-safe margins all round, and **the top-right and
+bottom-right corners are kept clear** for YouTube’s end-screen cards and its subscribe button, so
+the legend sits bottom-left and the callout sits left. Without the parameter the site is byte-for-byte
+what it was: nothing is removed, no default changed, no handler rebound.
+
+**Shots are a file, and playback is deterministic.** `shots/intro.json` gives each shot its start and
+end year, start and end camera, layers, duration, easing, a hold, callouts keyed to anchor ids, and a
+text line with in and out times. The renderer owns the clock: for frame *i* it computes *t = i/fps*,
+sets every piece of state explicitly and captures. **Nothing is driven by a wall clock and no frame is
+dropped**, so the same file gives the same frames every time.
+
+**The shot file cannot drift from the map.** Any shot carrying an `expect` block has each anchor
+re-read from the live page before a single frame is rendered, and a disagreement aborts the render
+rather than filming a date the map does not hold. The intro’s four dated anchors are checked this
+way on every run.
+
+**THE BRIEF HAD FOUR STALE PREMISES ABOUT THIS MACHINE, AND THEY ARE WORTH RECORDING.** *CARTO* was
+said to be the basemap: it is not, and has not been since commit `6ef6262`. The page serves its own
+relief tiles from `tiles/relief` (ETOPO 2022, NOAA NCEI, **CC0**, 1,365 tiles, 15 MB) whenever
+`RELIEF` is on, which is the default; OpenStreetMap is the `?relief=0` fallback only. **The video
+therefore has no third-party tile dependency at all** and the “basemap we own” the ruling
+asked for already existed. *Playwright* was said to be in use: it is not, and is not installed
+— this project drives headless Edge over the DevTools protocol through `geowork/shoot.py`, and the
+renderer reuses that rather than adding a dependency. *Python* was said to be absent: the venv at
+`geowork/.venv` is what every build in this repository runs on. And **ffmpeg was genuinely missing**;
+it is named in the brief as the encoder, so it was installed with winget (Gyan.FFmpeg 9.0.2). That is
+a change to the machine and is reported as one.
+
+**`?present=1` was being eaten by the page itself.** `writeUrl()` rebuilds the query string on the
+first render and keeps only a named set of viewing overrides, so the parameter was stripped before
+the module could read it and the mode silently never started. `present` and `aspect` now join that
+list, which is what the list is for. Two more faults found the same way: Leaflet never re-measures on
+a CSS change, so the map stayed at its page size of 1024×600 and drew into the corner of the frame
+until it was told to `invalidateSize`; and the page’s top-level `const` declarations are not
+visible from the script block this module is appended to, so the layers are driven through **the
+toggles themselves, with a dispatched change event** — the same path a click takes, which also means
+a shot cannot reach a state a viewer could not.
+
+**The credits are generated, not written.** `geowork/present/build_credits.py` reads each dataset’s
+own source record out of the data file the map actually loads and emits both the end-frame card and
+the plain-text description block, so neither can drift from what is drawn. **A dataset without a
+source record aborts the generator** rather than shipping a credit roll that is quietly incomplete.
+Thirteen datasets are in the roll.
+
+**The intro’s beats run in DATE order, which is not the order the brief listed them in.** The brief
+put Monte Verde before the Sahara greening; the map dates Monte Verde to **14,500 ya** and the
+Sahara’s Holocene onset to **14,800 ya**, so the Sahara comes first. Arabia’s only post-glacial
+wet window opens at **10,500 ya**, which is later than Göbekli Tepe at **11,526 ya**, so Arabia
+follows the Göbekli landing instead of preceding it. The clock never runs backwards.
+
+**Karahan Tepe and Taş Tepeler are not on this map**, so they are not in the intro. The ruling said
+to say so rather than add unsourced anchors, and that is what has been done: the “it was a
+network” beat is carried by the two anchors that do exist, `a33` Göbekli Tepe (reference) and
+`a05` Turkey (Anatolia), both dated 11,526 ya. Adding the rest is a research job, not a rendering one.
+
 **Ruled 2026-10-06: nothing built is deleted, even when it can be rebuilt.** Outputs go to
 `G:\My Drive\The Reset\_Archive` as `ARCHIVE_YYYY-MM-DD_description`. "It is reproducible" is not a reason to
 throw something away: reproducing it costs hours, and the thing being compared against is gone while you do.

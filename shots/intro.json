@@ -1,0 +1,122 @@
+{
+  "name": "Mostly Gone — intro",
+  "about": "The opening of the Mostly Gone intro. Every date here is the date the MAP holds, not a date written for the script; the renderer re-reads each anchor at run time and aborts if a date in this file disagrees with the page. Playback is deterministic: every value is a pure function of the frame index, nothing is driven by a wall clock, and the same file gives the same frames every time.",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "scale": 2,
+  "beat_order_note": "The beats run in DATE order, as ruled, which is not the order the brief listed them in. The brief put Monte Verde before the Sahara greening, but the map dates Monte Verde to 14,500 ya and the Sahara's Holocene onset to 14,800 ya, so the Sahara comes first. Arabia's only post-glacial wet window opens at 10,500 ya, which is LATER than Göbekli Tepe at 11,526, so Arabia follows the Göbekli landing instead of preceding it. The clock never runs backwards.",
+  "shots": [
+    {
+      "id": "title",
+      "seconds": 6.0,
+      "card": "<div class=\"big\">Eleven thousand six hundred years ago, someone built this.<br>They had no farms, no writing, no metal.</div><div class=\"gap\">EDITOR&rsquo;S GAP &mdash; Göbekli Tepe pillar footage or stills go here. Deliberately left empty: no image of unknown licence has been pulled into this render.</div>",
+      "cardFade": [0.0, 0.6, 5.2, 6.0],
+      "year": 21000,
+      "camera": [20, -20, 2],
+      "layers": []
+    },
+    {
+      "id": "lgm_world",
+      "seconds": 11.0,
+      "year": [21000, 21000],
+      "camera": [[26, -22, 3], [26, -14, 3]],
+      "easing": "linear",
+      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors"],
+      "line": "To understand who, you have to see the world they walked out of.",
+      "lineFade": [1.2, 2.4, 9.4, 10.6],
+      "fadeIn": 0.8
+    },
+    {
+      "id": "ice_retreat",
+      "seconds": 12.0,
+      "year": [21000, 17000],
+      "camera": [[26, -14, 3], [52, -96, 3]],
+      "easing": "inOut",
+      "layers": ["shorelines", "ice", "tundra", "deserts", "anchors"],
+      "line": "The ice begins to let go of North America.",
+      "lineFade": [1.0, 2.0, 9.6, 11.0],
+      "callout": {"anchor": "ic02", "at": 6.0, "out": 11.4},
+      "expect": {"ic02": 17000}
+    },
+    {
+      "id": "corridor",
+      "seconds": 11.0,
+      "year": [17000, 15600],
+      "camera": [[52, -96, 3], [57, -114, 4]],
+      "easing": "inOut",
+      "layers": ["shorelines", "ice", "tundra", "deserts", "anchors"],
+      "line": "A corridor opens between the two ice sheets.",
+      "lineFade": [0.8, 1.8, 8.6, 10.0],
+      "hold": 3.0,
+      "callout": {"anchor": "ic01", "at": 3.4, "out": 10.6},
+      "expect": {"ic01": 15600}
+    },
+    {
+      "id": "sahara_greens",
+      "seconds": 12.0,
+      "year": [15600, 14800],
+      "camera": [[57, -114, 4], [22, 14, 3]],
+      "easing": "inOut",
+      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors"],
+      "line": "The rains return to the Sahara, and its rivers fill.",
+      "lineFade": [2.0, 3.0, 10.2, 11.6],
+      "hold": 3.5
+    },
+    {
+      "id": "monte_verde",
+      "seconds": 12.0,
+      "year": [14800, 14500],
+      "camera": [[22, 14, 3], [-41.5, -73, 4]],
+      "easing": "inOut",
+      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors", "routes"],
+      "line": "And people are already at the far end of the Americas.",
+      "lineFade": [2.2, 3.2, 10.0, 11.4],
+      "hold": 3.5,
+      "callout": {"anchor": "a16", "at": 4.0, "out": 11.6},
+      "expect": {"a16": 14500}
+    },
+    {
+      "id": "gobekli",
+      "seconds": 14.0,
+      "year": [14500, 11526],
+      "camera": [[-41.5, -73, 4], [37.22, 38.92, 6]],
+      "easing": "inOut",
+      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors"],
+      "line": "It wasn’t one site. It was a network.",
+      "lineFade": [8.0, 9.0, 12.4, 13.6],
+      "hold": 4.0,
+      "callout": {"anchor": "a33", "at": 7.0, "out": 13.6},
+      "expect": {"a33": 11526}
+    },
+    {
+      "id": "arabia_greens",
+      "seconds": 9.0,
+      "year": [11526, 10500],
+      "camera": [[37.22, 38.92, 6], [26, 44, 4]],
+      "easing": "inOut",
+      "layers": ["shorelines", "ice", "tundra", "deserts", "corridor", "anchors"],
+      "line": "Then the rain reaches Arabia, and the desert is briefly a country.",
+      "lineFade": [1.6, 2.6, 7.2, 8.6],
+      "hold": 2.5
+    },
+    {
+      "id": "mostly_gone",
+      "seconds": 6.0,
+      "year": 10500,
+      "camera": [26, 44, 4],
+      "layers": ["shorelines", "deserts", "corridor"],
+      "card": "<div class=\"huge\">MOSTLY GONE</div>",
+      "cardFade": [0.0, 1.2, 4.8, 6.0]
+    },
+    {
+      "id": "credits",
+      "seconds": 9.0,
+      "year": 10500,
+      "camera": [26, 44, 4],
+      "layers": [],
+      "card": "@CREDITS@",
+      "cardFade": [0.0, 1.0, 8.0, 9.0]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+ "generated": "2026-10-28",
+ "generated_by": "geowork/present/build_credits.py, from the data files own records",
+ "basemap": "Self-hosted ETOPO 2022 relief tiles (CC0). No third-party tile service.",
+ "roll": [
+  {
+   "name": "ETOPO 2022 relief (the basemap this video uses)",
+   "used_for": "the land and sea relief under everything",
+   "source": "ETOPO 2022 Global Relief Model, NOAA National Centers for Environmental Information. doi:10.25921/fd45-gt74",
+   "licence": "CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/",
+   "data": "Self-hosted as tiles/relief in this repository; no third-party tile service is used.",
+   "changes": "Changes were made: hillshaded and tinted for this map, cut to Web Mercator tiles at zoom 0-5.",
+   "note": null
+  },
+  {
+   "name": "Cliopatria v0.2.1",
+   "used_for": "every political border drawn after 3000 BCE",
+   "source": "Bennett, J.S., Mutch, E., Tollefson, A. et al. (2025). Cliopatria — A geospatial database of world-wide political entities from 3400BCE to 2024CE. Scientific Data 12, 247. https://doi.org/10.1038/s41597-025-04516-9",
+   "licence": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+   "data": "GitHub tag v0.2.1 — https://github.com/Seshat-Global-History-Databank/cliopatria/releases/tag/v0.2.1",
+   "changes": "Changes were made: cut into century acts, simplified, invalid geometries repaired, rasterised to 0.1 degree cells; composite records not drawn; the growth between dated shapes computed by this map.",
+   "note": null
+  },
+  {
+   "name": "DATED-1",
+   "used_for": "the Eurasian ice sheets",
+   "source": "Hughes, A.L.C., Gyllencreutz, R., Lohne, Ø.S., Mangerud, J. & Svendsen, J.I. (2016). The last Eurasian ice sheets — a chronological database and time-slice reconstruction, DATED-1. Boreas 45(1), 1–45. https://doi.org/10.1111/bor.12142",
+   "licence": "CC BY 3.0 — https://creativecommons.org/licenses/by/3.0/",
+   "data": "DATED-1 time-slice shapefiles, PANGAEA https://doi.org/10.1594/PANGAEA.848117",
+   "changes": "Changes were made: time-slice extents reprojected from north-pole Lambert equal-area to WGS84, simplified at 3 km and rounded to 0.01 degrees; the 27, 28–29 and 30–32 ka single extents are carried as most-credible; the 35–38 ka slice has only maximum and minimum; nothing else.",
+   "note": null
+  },
+  {
+   "name": "PATICE",
+   "used_for": "the Patagonian ice sheet",
+   "source": "Davies, B.J. et al. (2020). The evolution of the Patagonian Ice Sheet from 35 ka to the present day (PATICE). Earth-Science Reviews 204, 103152. https://doi.org/10.1016/j.earscirev.2020.103152",
+   "licence": "CC BY-NC 3.0 — https://creativecommons.org/licenses/by-nc/3.0/",
+   "data": "Data for: The evolution of the Patagonian Ice Sheet from 35 ka to the Present Day (PATICE), Mendeley Data https://doi.org/10.17632/rjnw46vbdw",
+   "changes": "Changes were made: the Icesheet time-slice polygons (35, 30, 25, 20, 15, 13, 10, 5 and 0.2 ka) were reprojected from UTM zone 18S to WGS84, simplified at 1 km and rounded to 0.001 degrees; the margin-confidence lines and glacial lakes are not drawn; nothing else.",
+   "note": "Published CC BY-NC 3.0, and the author has given this map written permission to use it commercially. Professor Bethan Davies (Newcastle University) granted that permission by email on 19 October 2026, on the condition that the credit stays as it is. The published deposit is unchanged and anyone else taking it is bound by CC BY-NC 3.0; this grant sits beside the licence, not instead of it. Carried as a recorded licence debt from 2026-09-17 until 2026-10-20. Email on file with the founder."
+  },
+  {
+   "name": "GLACIMONTIS",
+   "used_for": "the NE Siberian and Kamchatkan mountain glaciers",
+   "source": "Lima, A.C., Dulfer, H.E., Hughes, A.L.C., Margold, M., Barr, I., Laabs, B.J.C. & Flantua, S.G.A. (2026). Mountain glacier extents at the Last Glacial Maximum. Scientific Data 13, 629. https://doi.org/10.1038/s41597-026-06841-z",
+   "licence": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+   "data": "GLACIMONTIS, Zenodo https://doi.org/10.5281/zenodo.15600659",
+   "changes": "Changes were made: the Filtered Reconstructed Paleoglaciers layer was restricted to the records the database itself classifies as East Siberian Mountains, reprojected from Web Mercator to WGS84, simplified at 1 km and rounded to 0.001 degrees; nothing else.",
+   "note": null
+  },
+  {
+   "name": "NADI-1",
+   "used_for": "the North American ice sheets",
+   "source": "Dalton, A.S. et al. (2023). Deglaciation of the north American ice sheet complex in calendar years based on a comprehensive database of chronological data: NADI-1. Quaternary Science Reviews 321, 108345. https://doi.org/10.1016/j.quascirev.2023.108345",
+   "licence": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+   "data": "NADI-1, Zenodo https://doi.org/10.5281/zenodo.8161764",
+   "changes": null,
+   "note": null
+  },
+  {
+   "name": "De Groeve et al. 2022 palaeo-shorelines",
+   "used_for": "the lowered sea and the exposed continental shelf",
+   "source": "De Groeve, J., Kusumoto, B., Koene, E. et al. (2022). Global raster dataset on historical coastline positions and shelf sea extents since the Last Glacial Maximum. Global Ecology and Biogeography 31(11): 2162-2171. https://doi.org/10.1111/geb.13573",
+   "licence": "CC BY 4.0 - https://creativecommons.org/licenses/by/4.0/",
+   "data": "Historic coastline age raster (AGE 2021), Figshare https://doi.org/10.21942/uva.c.5754779.v1",
+   "changes": "Changes were made: the coastline-age raster was re-encoded as one byte per cell (0.5 kyr step, modern land, open sea) and reprojected to Web Mercator tiles at zoom 0-5 by nearest neighbour. Nothing was simplified, smoothed or removed.",
+   "note": null
+  },
+  {
+   "name": "Natural Earth",
+   "used_for": "the desert outlines, including the Sahara",
+   "source": "Natural Earth 10m geography regions (public domain), polygon SAHARA; ETOPO 2022 60 arc-second, NOAA NCEI (CC0)",
+   "licence": "Public domain — https://www.naturalearthdata.com/about/terms-of-use/",
+   "data": null,
+   "changes": null,
+   "note": null
+  },
+  {
+   "name": "Beyer, Krapp & Manica 2020",
+   "used_for": "the tundra, and the fade at every desert margin",
+   "source": "Beyer, R.M., Krapp, M. & Manica, A. (2020). High-resolution terrestrial climate, bioclimate and vegetation for the last 120,000 years. Scientific Data 7, 236. doi:10.1038/s41597-020-0552-1; data pastclim_Beyer2020 v1.1.0, Zenodo doi:10.5281/zenodo.7062281, CC BY 4.0. BIOME4 vegetation class at 0.5 degrees, 72 timesteps from 120,000 years ago to the present.",
+   "licence": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+   "data": null,
+   "changes": "A 1.0-cell blur on the class boundaries, and the interpolation between the source’s own timesteps at render time. Nothing else. The vegetation classes are the source’s; this map did not classify a climate field itself.",
+   "note": null
+  },
+  {
+   "name": "US Environmental Protection Agency",
+   "used_for": "the Mojave outline",
+   "source": "US Environmental Protection Agency, Level III Ecoregions of the Conterminous United States, 2013-04-16, ecoregion \"Mojave Basin and Range\". Originator: US Environmental Protection Agency; access constraints None; use constraints None, with acknowledgement of the EPA requested. Public domain, 17 U.S.C. 105. Natural Earth has no Mojave polygon at all, so this one boundary comes from a second federal source rather than being hand-drawn; it is reprojected from USA Contiguous Albers Equal Area Conic to WGS84 and otherwise unaltered, and it takes the same margin fade as every other polygon here.",
+   "licence": "Public domain, 17 U.S.C. §105",
+   "data": null,
+   "changes": null,
+   "note": null
+  },
+  {
+   "name": "USDA Forest Service / Royce 1899",
+   "used_for": "the Southeastern land cessions",
+   "source": "USDA Forest Service, Tribal Land Cessions in the United States (S_USA.TRIBALCEDEDLANDS), 2018-05-29, from Charles C. Royce, Indian Land Cessions in the United States, 18th Annual Report of the Bureau of American Ethnology, 1896-97.",
+   "licence": "Public domain, 17 U.S.C. 105 (work of the US federal government). Access constraints: None. The 2018 revision was a collaboration of the USDA Forest Service Office of Tribal Relations, the NPS National NAGPRA Program, the EPA American Indian Environmental Office and Dr. Claudio Saunt of the University of Georgia; the Forest Service and Dr. Saunt digitised the Royce maps independently, and the polygons drawn here are the Forest Service ones.",
+   "data": null,
+   "changes": null,
+   "note": null
+  },
+  {
+   "name": "National Park Service",
+   "used_for": "the Trail of Tears removal routes",
+   "source": "National Park Service, National Trails Intermountain Region, Trail of Tears National Historic Trail, 2021-07-21. NPS DataStore reference 2238914.",
+   "licence": "Public domain, 17 U.S.C. 105 (work of the US federal government). Originator, per the FGDC metadata and per every feature in the data: National Park Service, National Trails Intermountain Region, GIS. No third-party copyright holder, no partner or contractor with retained rights, no additional use constraints.",
+   "data": null,
+   "changes": null,
+   "note": "The Trail of Tears Association appears in the MAPSOURCE field of 74 segments, as material the Park Service digitised from. It is credited here for that; it is not the author of any line."
+  },
+  {
+   "name": "US Census Bureau TIGER/Line",
+   "used_for": "present-day tribal lands",
+   "source": "US Census Bureau, TIGER/Line Shapefile 2025, American Indian / Alaska Native / Native Hawaiian Areas (tl_2025_us_aiannh).",
+   "licence": "Public domain, 17 U.S.C. 105 (work of the US federal government).",
+   "data": null,
+   "changes": null,
+   "note": null
+  }
+ ]
+}

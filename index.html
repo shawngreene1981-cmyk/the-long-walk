@@ -3425,7 +3425,7 @@ function writeUrl(push){
   // opened to look at something does not quietly lose it on the first click. They are never
   // added to a copied citation link.
   const keep = new URLSearchParams(location.search);
-  ['relief','sea','borders'].forEach(k => { if(keep.has(k)) q += '&' + k + '=' + encodeURIComponent(keep.get(k)); });
+  ['relief','sea','borders','present','aspect'].forEach(k => { if(keep.has(k)) q += '&' + k + '=' + encodeURIComponent(keep.get(k)); });
   const next = baseUrl() + q;
   if(next === location.href) return;
   try{
@@ -6453,6 +6453,230 @@ if(!applyUrlState()) writeUrl(false);
     + head + detail + '</div>';
   console.error('the_long_walk_interactive map init failed:', e);
 }
+// ===================== PRESENTATION MODE (?present=1) =====================
+// The map, full frame, with every piece of page furniture gone and a small overlay of its own:
+// a big date, a compact legend of only the layers actually on, a callout card in place of popups,
+// and one line of script text. Built for video, so EVERY PIECE OF STATE IS SET EXPLICITLY and
+// nothing moves on a wall clock. The renderer sets a frame's state, waits for the map to settle,
+// and captures; the same shot file therefore gives the same frames every time.
+//
+// It changes nothing when ?present=1 is absent. The site is untouched.
+(function presentMode(){
+  const Q = new URLSearchParams(location.search);
+  if(Q.get('present') !== '1') return;
+
+  const W = 1920, H = 1080;                     // the logical frame; the renderer scales it up
+  document.body.classList.add('present');
+
+  // ---- the frame: a fixed 16:9 stage, everything else gone --------------------------------
+  const css = document.createElement('style');
+  css.textContent = `
+  html,body.present{margin:0;padding:0;background:#000;overflow:hidden;width:${W}px;height:${H}px;}
+  body.present > .wrap > *{display:none !important;}
+  body.present .stage{display:block !important;position:fixed;inset:0;width:${W}px;height:${H}px;
+    margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:#000;}
+  body.present .wrap{display:block !important;margin:0;padding:0;max-width:none;width:${W}px;height:${H}px;}
+  body.present #map{position:absolute;inset:0;width:${W}px !important;height:${H}px !important;
+    margin:0;border:0;border-radius:0;}
+  body.present .hud,body.present .readout,body.present .scrubrow,body.present .controls,
+  body.present .legend-row,body.present .panel,body.present .ticks,body.present .eranote,
+  body.present .agebanner,body.present .leaflet-control-container,body.present .leaflet-popup,
+  body.present .protoflag,body.present .searchbar{display:none !important;}
+  body.present *{cursor:none !important;}
+
+  /* TITLE-SAFE. 5% all round, and the two right-hand corners are left clear for YouTube's
+     end-screen cards and its subscribe button, so nothing of ours is ever covered. */
+  #pOverlay{position:fixed;inset:0;pointer-events:none;font-family:ui-sans-serif,system-ui,
+    "Segoe UI",Roboto,Helvetica,Arial,sans-serif;z-index:9000;}
+  #pDate{position:absolute;left:96px;top:54px;color:#f3ead8;font-weight:650;letter-spacing:.012em;
+    font-size:68px;line-height:1.04;text-shadow:0 2px 22px rgba(0,0,0,.92),0 0 6px rgba(0,0,0,.8);}
+  #pDateSub{position:absolute;left:98px;top:132px;color:#c9bca2;font-size:27px;letter-spacing:.14em;
+    text-transform:uppercase;text-shadow:0 2px 18px rgba(0,0,0,.95);}
+  /* the legend sits bottom LEFT: the bottom-right corner is YouTube's */
+  /* the legend sits ABOVE the script line, not on top of it */
+  #pLegend{position:absolute;left:96px;bottom:232px;color:#e8dfcc;font-size:25px;line-height:1.72;
+    text-shadow:0 2px 16px rgba(0,0,0,.95);}
+  #pLegend .sw{display:inline-block;width:30px;height:15px;border-radius:3px;margin-right:14px;
+    vertical-align:middle;}
+  #pLine{position:absolute;left:96px;right:620px;bottom:96px;color:#f6efe0;font-size:38px;
+    line-height:1.34;font-weight:450;text-shadow:0 3px 26px rgba(0,0,0,.96);opacity:0;}
+  /* the callout card: left-hand side, clear of both right corners */
+  #pCall{position:absolute;left:96px;top:232px;width:640px;padding:26px 30px;opacity:0;
+    background:rgba(12,14,18,.88);border-left:5px solid #e5a75f;border-radius:4px;
+    box-shadow:0 10px 50px rgba(0,0,0,.6);}
+  #pCall .nm{color:#f6efe0;font-size:36px;font-weight:650;line-height:1.16;}
+  #pCall .dt{color:#cdbfa4;font-size:25px;margin-top:10px;letter-spacing:.05em;}
+  #pCall .tr{font-size:21px;margin-top:14px;letter-spacing:.11em;text-transform:uppercase;font-weight:650;}
+  #pCall .nt{color:#ddd3bf;font-size:24px;margin-top:14px;line-height:1.46;}
+  /* full-frame cards: the opening title and the credits */
+  #pCard{position:absolute;inset:0;background:#000;opacity:0;display:flex;align-items:center;
+    justify-content:center;}
+  #pCard .inner{max-width:1360px;padding:0 96px;color:#f6efe0;}
+  #pCard .big{font-size:58px;line-height:1.3;font-weight:500;}
+  #pCard .huge{font-size:132px;line-height:1.05;font-weight:700;letter-spacing:.03em;}
+  #pCard .gap{margin-top:40px;font-size:26px;color:#8e8778;letter-spacing:.08em;
+    border:2px dashed #4a463e;padding:22px 26px;border-radius:5px;}
+  #pCard .cred{font-size:22px;line-height:1.62;color:#ddd3bf;}
+  #pCard .cred h3{font-size:30px;margin:0 0 18px 0;color:#f6efe0;letter-spacing:.04em;}
+  #pFade{position:absolute;inset:0;background:#000;opacity:0;}
+  `;
+  document.head.appendChild(css);
+
+  const ov = document.createElement('div');
+  ov.id = 'pOverlay';
+  ov.innerHTML = '<div id="pDate"></div><div id="pDateSub"></div><div id="pLegend"></div>'
+               + '<div id="pCall"></div><div id="pLine"></div>'
+               + '<div id="pCard"><div class="inner"></div></div><div id="pFade"></div>';
+  document.body.appendChild(ov);
+  const $ = id => document.getElementById(id);
+
+  // ---- the date readout ---------------------------------------------------------------------
+  // BCE/CE at the same threshold the site uses: fmtYears switches to a CE gloss under 1,000 years
+  // ago, so this does the same rather than inventing a second rule.
+  function dateText(ya){
+    if(ya <= 0) return ['PRESENT DAY', ''];
+    if(ya >= 1000) return [Math.round(ya / 100) * 100 >= 1000
+      ? (Math.round(ya / 100) * 100).toLocaleString() : String(Math.round(ya)), 'YEARS AGO'];
+    const yr = 2026 - Math.round(ya);
+    return [yr > 0 ? yr + ' CE' : Math.abs(yr) + ' BCE', Math.round(ya).toLocaleString() + ' years ago'];
+  }
+
+  const PRESENT = {W: W, H: H, ya: null};
+
+  PRESENT.setYear = function(ya){
+    // the slider is the page's own clock; find the position for this date and render from it
+    const scrub = document.getElementById('scrub');
+    let lo = 0, hi = +scrub.max;
+    for(let i = 0; i < 40; i++){
+      const mid = (lo + hi) / 2;
+      if(yearsAgoFromSlider(mid) > ya) lo = mid; else hi = mid;
+    }
+    const v = (lo + hi) / 2;
+    scrub.value = v;
+    render(v);
+    PRESENT.ya = yearsAgoFromSlider(v);
+    const [a, b] = dateText(PRESENT.ya);
+    $('pDate').textContent = a;
+    $('pDateSub').textContent = b;
+    return PRESENT.ya;
+  };
+
+  // THE MAP HANDLE IS RESOLVED, NOT ASSUMED. Top-level `const` in this page's first script block
+  // is not visible from the second, which is where this module lives; `window.__borders.map` is
+  // the handle the project already keeps for exactly this. Function declarations (render,
+  // yearsAgoFromSlider) are global and can be called directly.
+  const MAP = () => (window.__borders && window.__borders.map) || null;
+
+  PRESENT.setCamera = function(lat, lon, zoom){
+    const m = MAP();
+    if(m) m.setView([lat, lon], zoom, {animate: false});
+  };
+
+  // ---- layers: set the whole state explicitly, so a shot cannot inherit the last one ---------
+  const ALL = ['shorelines','routes','ghosts','corridor','nodes','anchors','leaders','connectors',
+               'presapiens','fog','ice','diffusion','territory','capability','trade','forced',
+               'textlineage','nesib','genetics','nations','deserts','tundra','borders'];
+  const NICE = {shorelines:'Palaeo-shoreline', corridor:'Green Sahara', ice:'Ice sheets',
+                tundra:'Tundra and steppe tundra', deserts:'Deserts', anchors:'Dated sites',
+                routes:'Migration routes', borders:'Political borders', nations:'Southeastern nations',
+                genetics:'Genetic events', nesib:'NE Siberian glaciers', forced:'Forced routes',
+                trade:'Trade routes', territory:'Territories', nodes:'Origin nodes'};
+  const SWATCH = {ice:'#e2effb', tundra:'#8eabc4', deserts:'#d6b278', corridor:'#6fae52',
+                  shorelines:'#7d8f74', anchors:'#e5a75f', routes:'#c9a06f', borders:'#c3cf36',
+                  nations:'#701d5a', genetics:'#b6479c'};
+
+  // THE TOGGLES ARE DRIVEN, NOT layerState. The page's layerState lives in a scope this module
+  // cannot reach, and reaching into it would also skip the handlers that do the repaint. Setting
+  // the checkbox and dispatching a change event is the same path a click takes, so a shot cannot
+  // end up in a state a viewer could not also reach.
+  const TID = {shorelines:'toggleShorelines', routes:'toggleRoutes', ghosts:'toggleGhosts',
+               corridor:'toggleCorridor', nodes:'toggleNodes', anchors:'toggleAnchors',
+               leaders:'toggleLeaders', connectors:'toggleConnectors', presapiens:'togglePresapiens',
+               fog:'toggleFog', ice:'toggleIce', camera:'toggleCamera', diffusion:'toggleDiffusion',
+               territory:'toggleTerritory', capability:'toggleCapability', trade:'toggleTrade',
+               forced:'toggleForced', textlineage:'toggleTextLineage', nesib:'toggleNesib',
+               genetics:'toggleGenetics', nations:'toggleNations', deserts:'toggleDeserts',
+               tundra:'toggleTundra', borders:'toggleBorders'};
+
+  PRESENT.setLayers = function(on){
+    const want = new Set(on || []);
+    const miss = [];
+    ALL.forEach(k => {
+      const el = document.getElementById(TID[k] || '');
+      if(!el){ miss.push(k); return; }
+      const should = want.has(k);
+      if(el.checked !== should){
+        el.checked = should;
+        el.dispatchEvent(new Event('change', {bubbles: true}));
+      }
+    });
+    PRESENT.missingToggles = miss;
+    // the legend shows ONLY what is in the shot, in the order the shot named them
+    $('pLegend').innerHTML = (on || []).filter(k => NICE[k]).map(k =>
+      '<div><span class="sw" style="background:' + (SWATCH[k] || '#9a927f') + '"></span>'
+      + NICE[k] + '</div>').join('');
+    if(PRESENT.ya !== null) PRESENT.setYear(PRESENT.ya);
+  };
+
+  // ---- the callout card, in place of a popup -------------------------------------------------
+  PRESENT.callout = function(id, opacity){
+    const el = $('pCall');
+    if(!id){ el.style.opacity = 0; return null; }
+    const a = (typeof ANCHORS !== 'undefined' ? ANCHORS : []).find(x => x.id === id);
+    if(!a){ el.style.opacity = 0; return {missing: id}; }
+    const tier = (typeof TIER_LABEL !== 'undefined' && TIER_LABEL[a.status]) || a.status;
+    const col = (typeof TIER_COLOR !== 'undefined' && TIER_COLOR[a.status]) || '#e5a75f';
+    // the one-line note is the anchor's OWN first sentence, stripped of markdown; nothing is
+    // written for the video that the map does not already say.
+    let note = String(a.note || '').split('\n')[0].replace(/\*\*/g, '').replace(/[*`]/g, '');
+    const cut = note.indexOf('. ');
+    if(cut > 60) note = note.slice(0, cut + 1);
+    if(note.length > 230) note = note.slice(0, 227).replace(/\s+\S*$/, '') + '…';
+    el.style.borderLeftColor = col;
+    el.innerHTML = '<div class="nm">' + a.label + '</div>'
+      + '<div class="dt">' + (a.age || '') + '</div>'
+      + '<div class="tr" style="color:' + col + '">' + tier + '</div>'
+      + '<div class="nt">' + note + '</div>';
+    el.style.opacity = (opacity === undefined ? 1 : opacity);
+    return {id: a.id, label: a.label, age: a.age, tier: tier, lat: a.lat, lon: a.lon};
+  };
+
+  PRESENT.line = function(text, opacity){
+    $('pLine').textContent = text || '';
+    $('pLine').style.opacity = text ? (opacity === undefined ? 1 : opacity) : 0;
+  };
+  PRESENT.card = function(html, opacity){
+    $('pCard').querySelector('.inner').innerHTML = html || '';
+    $('pCard').style.opacity = html ? (opacity === undefined ? 1 : opacity) : 0;
+  };
+  PRESENT.fade = function(o){ $('pFade').style.opacity = o || 0; };
+  PRESENT.chrome = function(show){ ov.style.display = show === false ? 'none' : ''; };
+
+  // the renderer waits on this: every tile in the viewport loaded, and no pending work
+  PRESENT.settled = function(){
+    const imgs = document.querySelectorAll('.leaflet-tile-pane img');
+    for(const i of imgs){ if(!i.complete) return false; }
+    const pend = document.querySelectorAll('.leaflet-tile-loaded').length;
+    return imgs.length > 0 && pend >= 0;
+  };
+  // LEAFLET DOES NOT NOTICE CSS. The stage is restyled to the full 1920x1080 frame above, but the
+  // map keeps whatever size it measured when the page laid out — 1024x600 — and draws into the
+  // top-left corner with the page background around it. It has to be told.
+  PRESENT.resize = function(){
+    const m = MAP();
+    if(m) m.invalidateSize({animate: false, pan: false});
+    return m ? [m.getSize().x, m.getSize().y] : null;
+  };
+  let tries = 0;
+  const settle = setInterval(() => {
+    if(PRESENT.resize() || ++tries > 60) clearInterval(settle);
+  }, 150);
+
+  window.__present = PRESENT;
+  // start clean: no page furniture, nothing showing until the shot file says so
+  PRESENT.line(''); PRESENT.callout(null); PRESENT.card('');
+})();
+
 </script>
 </body>
 </html>
