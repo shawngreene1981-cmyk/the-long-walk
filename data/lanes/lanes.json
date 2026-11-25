@@ -99,7 +99,17 @@
    "caption": "Kali Yuga epoch, 3102 BCE",
    "tradition": "Hindu",
    "reckoning": "yuga cycle",
-   "reckoningStart": -3102,
+   "reckoningStart": -867102,
+   "mythology": {
+    "from": -867102,
+    "to": -3102,
+    "label": "Dvāpara Yuga",
+    "anchor": -3102,
+    "anchorApprox": false,
+    "anchorNote": "THE ANCHOR IS THE TRADITION’S OWN, not ours: 18 February 3102 BC is a computed date, the epoch classical Indian astronomers fixed for the start of the Kali Yuga. The yuga drawn to its left is the tradition’s own arithmetic counted back from it.",
+    "note": "CULTURAL MYTHOLOGY, drawn from the tradition’s own arithmetic. The Dvāpara Yuga runs 864,000 years and ends at the Kali epoch, so it begins 867,102 BCE. The two older yugas do not fit: Tretā (1,296,000 years) would begin 2,163,102 BCE and Kr̥ta (1,728,000) earlier still, both off the left edge of a map that reaches 1.8 million years. Āryabhaṭa gives four EQUAL yugas of 1,080,000 instead, which would move this bar.",
+    "source": "Yuga lengths from the Sūrya-Siddhānta tradition; epoch per Britannica, Eras based on astronomical speculation."
+   },
    "note": "An astronomical reckoning computed by classical Indian astronomers (attested from Āryabhaṭa onward). The epoch is a theoretical planetary conjunction on 18 February 3102 BC that, as Britannica puts it, could not have been observed.",
    "source": "Britannica, Eras based on astronomical speculation; Fleet, JRAS 1911 on the Sūrya-Siddhānta and the Āryabhaṭa schools.",
    "offscale": {
@@ -221,14 +231,19 @@
    "caption": "Dynasty 1: Aha, 3111–3045 BCE",
    "tradition": "Egyptian",
    "reckoning": "Manetho and the king lists",
-   "reckoningStart": -3111,
+   "reckoningStart": -28011,
+   "mythology": {
+    "from": -28011,
+    "to": -3111,
+    "label": "gods and demigods (Manetho, as written)",
+    "anchor": -3111,
+    "anchorApprox": true,
+    "anchorNote": "OUR PLACEMENT, NOT MANETHO’S. The date itself is sound — the start of Dynasty 1 is radiocarbon-dated to 3111–3045 BCE (Dee et al. 2013) — but hanging the divine reigns on it is an editorial decision by this map. Manetho gives the gods a length, not a date; nothing in the text says when they ended.",
+    "note": "CULTURAL MYTHOLOGY. Eusebius, quoting Manetho: gods 13,900 years, demigods 1,255, other kings 1,817, thirty Memphite kings 1,790, ten Thinite 350, spirits and demigods 5,813 — 24,900 in all. He calls them LUNAR years and gives 2,206 solar as the equivalent, which would shorten this bar to start at 5,317 BCE. The totals also vary by who is quoting: Syncellus gives the gods 11,985, and another set of his figures gives 11,984 for gods and 2,646 for demigods. The bar is drawn at the written 24,900 and every other reading is recorded here.",
+    "source": "Manetho via Eusebius (Waddell, Loeb 350) and via Syncellus; Dee et al. 2013 for the Dynasty 1 radiocarbon range."
+   },
    "note": "Egyptian king-list tradition, from the Old Kingdom annals to Manetho in the 3rd century BCE. The lane is drawn from Dynasty 1, whose start is radiocarbon-dated to 3111–3045 BCE (Dee et al. 2013) — the only point in this tradition the ground can place.",
    "source": "Manetho, surviving in quotation; Palermo Stone; Abydos king list (76 kings from Menes); Dee et al. 2013 for the radiocarbon date.",
-   "offscale": {
-    "label": "gods and demigods, before the dynasties",
-    "note": "Manetho puts reigns of gods and demigods before the human kings, and the totals do not agree between the people quoting him: Eusebius gives the gods 13,900 years and the demigods 1,255, a grand total of 24,900 \"lunar years\"; Syncellus gives the gods 11,985. Read as lunar months those 24,900 come to roughly 2,014 solar years — which WOULD fit on this map. It is not drawn because the unit, the totals and the recension all disagree, not because the span is too long.",
-    "source": "Eusebius and Syncellus, quoting Manetho."
-   },
    "items": [
     {
      "id": "eg-aha",
@@ -263,19 +278,40 @@
    "id": "trad-skl",
    "group": "traditions",
    "label": "Sumerian — the King List",
-   "caption": "the list itself, c. 2084–2037 BCE",
+   "caption": "the Flood, placed by us at c. 2900 BCE",
    "tradition": "Sumerian",
    "reckoning": "Sumerian King List",
-   "reckoningStart": -2084,
-   "unanchored": true,
-   "note": "A Mesopotamian royal tradition with reigns before and after the Flood. ALONE AMONG THESE SIX, IT HAS NO ZERO POINT: it counts 241,200 years before a Flood to which it gives no date, so unlike the other five clocks it cannot be placed on this axis by its own arithmetic. The lane is drawn from the oldest version we have instead.",
-   "source": "16+ manuscripts; the Ur III copy under Shulgi (2084–2037 BCE); the Weld-Blundell Prism, c. 1800 BCE. Text: ETCSL 2.1.1.",
-   "offscale": {
-    "label": "241,200 years, and nowhere to put them",
-    "note": "\"After the kingship descended from heaven, the kingship was in Eridug.\" Alulim reigns 28,800 years, Alaljar 36,000; \"5 cities, 8 kings … 241,200 years\"; \"Then the flood swept over … the kingship was in Kish.\" That 241,200 years would COMFORTABLY fit on this map — it is well inside the 1.8 million years the axis covers. It is not drawn because the list gives no date to anchor it to, which is a different problem from being too long.",
-    "source": "ETCSL 2.1.1, the Sumerian King List."
+   "reckoningStart": -244100,
+   "mythology": {
+    "from": -244100,
+    "to": -2900,
+    "label": "the antediluvian reigns — 8 kings, 241,200 years",
+    "anchor": -2900,
+    "anchorApprox": true,
+    "anchorNote": "OUR PLACEMENT, NOT THE LIST’S. The Sumerian King List gives the Flood no date at all. This map hangs it on the flood deposit at Shuruppak (Tell Fara), excavated by Erich Schmidt in 1931: a band of water-laid clay between Jemdet Nasr and Early Dynastic I levels, c. 2900 BCE. The range runs 2900–2750 BCE and some place it at the END of ED I, nearer 2750. The association is contested — the List puts Ziusudra’s kingship BEFORE the flood, which several scholars read as ruling the 2900 deposit out. Shuruppak is used because it is Ziusudra’s own city and the one place the two records touch.",
+    "note": "CULTURAL MYTHOLOGY, drawn back from an anchor we chose. \"After the kingship descended from heaven, the kingship was in Eridug.\" Alulim reigns 28,800 years, Alaljar 36,000; \"5 cities, 8 kings … 241,200 years\"; \"Then the flood swept over.\" Counted back from c. 2900 BCE that reaches 244,100 BCE — which fits on this map with room to spare. The length was never the problem; the missing date was.",
+    "source": "ETCSL 2.1.1 for the reigns; Schmidt’s 1931 Fara excavation and the Jemdet Nasr / ED I flood horizon for the anchor."
    },
+   "note": "A Mesopotamian royal tradition with reigns before and after the Flood. ALONE AMONG THESE SIX IT NAMES NO ZERO POINT — it counts 241,200 years before a Flood it never dates — so the position of everything left of Kish is an anchor this map chose, not a date the text gives. See the anchor marker.",
+   "source": "16+ manuscripts; the Ur III copy under Shulgi (2084–2037 BCE); the Weld-Blundell Prism, c. 1800 BCE. Text: ETCSL 2.1.1.",
    "items": [
+    {
+     "id": "skl-kish",
+     "kind": "span",
+     "start": -2900,
+     "end": -2600,
+     "label": "kingship at Kish, after the flood — still legendary",
+     "tier": "tradition",
+     "note": "The List resumes at Kish with reigns still in the hundreds of years. Its right-hand end here is where the List first touches something dug up, not a date the List gives."
+    },
+    {
+     "id": "skl-enmebaragesi",
+     "kind": "point",
+     "start": -2600,
+     "label": "Enmebaragesi of Kish — the first king on the List anyone has dug up",
+     "tier": "solid",
+     "note": "Attested by his own inscriptions, c. 2600 BCE. THE LIST JOINS THE DATED RECORD HERE: everything to the left of this point is tradition, and everything to the right can be checked."
+    },
     {
      "id": "skl-shulgi",
      "kind": "span",

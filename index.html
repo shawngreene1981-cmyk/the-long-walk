@@ -458,11 +458,43 @@
      notes were sliced into "S MAP", "STIES" and "THEM". Inside the hatch is both
      visible and right -- the hatch is the ground before the reckoning, and this is
      a claim about ground even further back. */
-  .lanes-offscale{position:absolute;left:5px;top:50%;transform:translateY(-50%);
-    font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.05em;
-    text-transform:uppercase;color:#8aa39c;white-space:nowrap;cursor:help;
-    opacity:.9;z-index:2;}
+  .lanes-offscale{margin-left:10px;font-size:7.5px;letter-spacing:.05em;
+    color:#9a93c4;white-space:nowrap;cursor:help;opacity:.95;}
   .lanes-offscale:hover{opacity:1;color:#b9d8d0;}
+
+  /* --- CULTURAL MYTHOLOGY (founder-ruled 2026-11-25) ------------------------- */
+  /* Three things have to be told apart at a glance and none may be mistaken for
+     another: the HATCH is ground before a tradition says anything at all; the
+     MYTHOLOGY span is what a tradition says about time it did not witness, placed
+     here on an anchor we chose; the INKED BAND is the reckoning proper. So the
+     mythology gets its own hue -- a dusty indigo used nowhere else on this map,
+     deliberately not the pre-sapiens violet, which is an evidence tier -- its own
+     dotted rule, and a sparse stipple that is visibly not the hatch's diagonals. */
+  .lanes-myth{position:absolute;top:1px;bottom:1px;
+    border:1px dotted rgba(141,139,184,.8);border-radius:1px;
+    background:radial-gradient(rgba(141,139,184,.5) 0.9px, rgba(0,0,0,0) 1px)
+      0 0/6px 6px, linear-gradient(rgba(141,139,184,.1), rgba(141,139,184,.05));
+    cursor:help;}
+  .lanes-myth .cap{position:absolute;left:7px;top:50%;transform:translateY(-50%);
+    font-family:'Spectral',serif;font-size:10.5px;font-style:italic;color:#c3c0e4;
+    white-space:nowrap;text-shadow:0 1px 5px rgba(0,0,0,.9);pointer-events:none;}
+  /* THE ANCHOR IS DRAWN AS A JOINT, NOT A DATE. An approximate one gets the wobble
+     mark; an exact one (the Kali epoch is the tradition's own computed date) does
+     not, because marking it approximate would be its own small lie. */
+  .lanes-anchor{position:absolute;top:-2px;bottom:-2px;width:0;
+    border-left:1px solid #c3c0e4;cursor:help;z-index:4;}
+  .lanes-anchor::before{content:"";position:absolute;left:-3px;top:-3px;width:6px;
+    height:6px;background:#c3c0e4;transform:rotate(45deg);}
+  .lanes-anchor.approx{border-left-style:dashed;}
+  /* The literal character, not a CSS escape. Written as "\\2248" it went through
+     Python as a doubled backslash and the page printed "\\2248" on screen, twice. */
+  .lanes-anchor.approx::after{content:"≈";position:absolute;left:-7px;
+    bottom:-13px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+    color:#c3c0e4;}
+  /* When a mythology span starts before the left edge of the map, say so there. */
+  .lanes-offedge{position:absolute;left:0;top:0;bottom:0;width:9px;
+    background:linear-gradient(90deg, rgba(141,139,184,.55), rgba(141,139,184,0));
+    cursor:help;z-index:3;}
   /* Failures get their OWN element. The first version wrote the message into the
      track with innerHTML, which deleted the age bands, the grid, the rows and the
      now line -- so the panel could never come back even when the data loaded on a
@@ -6821,9 +6853,51 @@ window.__lanes = (function(){
               + "and older still than every other clock here.";
       row.appendChild(h);
 
+      // THE MYTHOLOGY SPAN, between the hatch and the reckoning proper.
+      // Founder-ruled 2026-11-25: a tradition's mythic era is drawn, on an
+      // approximate anchor, rather than left off-scale for want of a date.
+      const M = L.mythology;
+      if(M){
+        const m0 = f(ya(M.from)), m1 = f(ya(M.to));
+        const mv = document.createElement("div");
+        mv.className = "lanes-myth";
+        mv.style.left = (m0 * 100).toFixed(4) + "%";
+        mv.style.width = Math.max(0, (m1 - m0) * 100).toFixed(4) + "%";
+        mv.innerHTML = '<span class="cap"></span>';
+        mv.querySelector(".cap").textContent = M.label;
+        mv.title = "CULTURAL MYTHOLOGY \u2014 " + M.label + "\n\n" + M.note
+                 + "\n\nSource: " + M.source;
+        row.appendChild(mv);
+
+        // IF IT RUNS PAST THE LEFT EDGE, SAY SO THERE. f() clamps to 0, so without
+        // this a span that overruns the map would look as though it began exactly
+        // at the edge. The Hindu lane does overrun: the Dvapara Yuga reaches
+        // 867,102 BCE, which is behind the default pre-sapiens floor.
+        if(sliderAtYearsExact(ya(M.from)) < lo() - 0.5){
+          const oe = document.createElement("div");
+          oe.className = "lanes-offedge";
+          oe.title = "This span begins at " + fmtYear(M.from) + ", which is off the "
+                   + "left edge of the timeline as it is currently set. Turn on the "
+                   + "pre-sapiens tier to pull the floor back, or read the note on "
+                   + "the lane.";
+          row.appendChild(oe);
+        }
+
+        const an = document.createElement("div");
+        an.className = "lanes-anchor" + (M.anchorApprox ? " approx" : "");
+        an.style.left = pct(ya(M.anchor));
+        an.title = (M.anchorApprox ? "APPROXIMATE ANCHOR \u2014 " : "ANCHOR \u2014 ")
+                 + fmtYear(M.anchor) + "\n\n" + M.anchorNote;
+        row.appendChild(an);
+      }
+
+      // The inked band is the RECKONING PROPER, so where a lane has a mythology
+      // span the band starts at the anchor, not at reckoningStart -- which is now
+      // the start of the mythology. Getting this wrong would draw the band straight
+      // over the mythology and merge the two claims into one bar.
       const b = document.createElement("div");
       b.className = "lanes-band-trad";
-      b.style.left = pct(start);
+      b.style.left = pct(M ? ya(M.anchor) : start);
       b.style.right = "0%";
       b.title = L.label + " \u2014 " + L.caption + "\n\n" + L.note
               + "\n\nSource: " + L.source;
@@ -6832,13 +6906,17 @@ window.__lanes = (function(){
       // AN OFF-SCALE NOTE AT THE LEFT EDGE, NOT A DRAWN BAND (ruled 2026-11-25).
       // Drawing a band for a claim this axis cannot hold would be the exact lie the
       // standing scale note warns about.
+      // IT RIDES THE LANE-NAME LINE, not the track. Placed on the track it landed on
+      // top of the mythology caption on the one lane that has both -- the Hindu lane,
+      // whose mythology span starts at the left edge, exactly where the note was. The
+      // name line carries nothing positioned by date, so nothing there can collide.
       if(L.offscale){
-        const o = document.createElement("div");
+        const o = document.createElement("span");
         o.className = "lanes-offscale";
         o.textContent = "\u25c0 " + L.offscale.label;
         o.title = L.offscale.note + (L.offscale.source
                   ? "\n\nSource: " + L.offscale.source : "");
-        row.appendChild(o);
+        name.appendChild(o);
       }
 
       clusterItems(L.items || [], trackW).forEach(function(g){
@@ -6877,6 +6955,20 @@ window.__lanes = (function(){
 
       rowsEl.appendChild(row);
     });
+
+    // A CAPTION ONLY WHERE THE HATCH CAN HOLD IT, MEASURED AFTER THE ROWS ARE IN
+    // THE DOCUMENT. Once the mythology spans moved three reckoningStarts far to the
+    // left, those hatches became narrow -- and the Hindu one zero-width, since its
+    // span overruns the map -- so the right-aligned caption spilled past the panel
+    // edge. The first fix measured inside the build loop, before the row had been
+    // appended: both widths were 0, 0 > -10 is true, and it silently deleted the
+    // caption from EVERY lane. An element not yet in the document has no geometry.
+    rowsEl.querySelectorAll(".lanes-hatch").forEach(function(h){
+      const cap = h.querySelector(".cap");
+      if(!cap) return;
+      if(cap.getBoundingClientRect().width > h.getBoundingClientRect().width - 10)
+        cap.remove();
+    });
     paint(+scrub.value);
   }
 
@@ -6890,7 +6982,13 @@ window.__lanes = (function(){
     rowsEl.querySelectorAll(".lanes-row").forEach(function(row){
       const L = DOC.lanes.find(function(x){ return x.id === row.dataset.lane; });
       if(!L) return;
-      const lit = !revealing || nowYa <= ya(L.reckoningStart);
+      // A CLOCK SWITCHES ON AT ITS EPOCH, NOT AT THE START OF ITS MYTHOLOGY.
+      // The episode wants the six to light one after another as the scrubber
+      // passes 4004, 3114, 3111, 3102, 2900, 2698. If the Sumerian lane lit at
+      // 244,100 BCE -- where its mythology now begins -- that staircase would be
+      // gone and the beat with it.
+      const epoch = L.mythology ? ya(L.mythology.anchor) : ya(L.reckoningStart);
+      const lit = !revealing || nowYa <= epoch;
       row.classList.toggle("lanes-dark", !lit);
     });
   }
