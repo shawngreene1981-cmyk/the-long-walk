@@ -347,5 +347,87 @@
     }
    ]
   }
+ ],
+ "alignments": [
+  {
+   "id": "al10",
+   "from": -9600,
+   "to": -8200,
+   "label": "Before all six clocks",
+   "tier": "solid",
+   "note": "Göbekli Tepe. Monumental building roughly 5,600 years before the oldest of these six reckonings begins, and older still than the other five. THIS IS THE POINT OF THE PANEL: everything the clocks were built to explain starts long after this."
+  },
+  {
+   "id": "al02",
+   "from": -4004,
+   "to": -3102,
+   "label": "Three beginnings",
+   "tier": "tradition",
+   "note": "Ussher 4004, the Long Count 3114, the Kali Yuga 3102 — and Egypt’s Dynasty 1 radiocarbon-dated 3111–3045 in the same window. READ AS A SHARED EVENT THIS HAS NO VERIFIED EVIDENCE. Three of the four are reckonings computed centuries or millennia later by people who could not have consulted one another, and the fourth is a radiocarbon range. c. 3100 BCE is when writing and states appear, which is a reason for clocks to START there, not evidence that anything happened."
+  },
+  {
+   "id": "al04",
+   "from": -2900,
+   "to": -2084,
+   "label": "Two king lists, two floods",
+   "tier": "contested",
+   "note": "The Sumerian King List is copied under Shulgi with a flood in it; Manetho, much later, puts gods before his kings. THE DOCUMENTS ARE SOLID. A single shared Flood behind them has no verified evidence, and the Mesopotamian flood tradition is a known literary inheritance rather than independent testimony."
+  },
+  {
+   "id": "al01",
+   "from": -2600,
+   "to": -2450,
+   "label": "The pyramid age",
+   "tier": "solid",
+   "note": "Khufu, the Stonehenge sarsens c. 2500, Caral, the Mature Harappan and Early Dynastic Sumer are all going on at once. No contact is implied between any of them; this is simply what the dated record shows."
+  },
+  {
+   "id": "al03",
+   "from": -2348,
+   "to": -2348,
+   "label": "Ussher’s Flood, against two continuous records",
+   "tier": "solid",
+   "note": "A solid divergence, and presented as one rather than as a gotcha. 2348 BCE falls inside Egypt’s Old Kingdom and inside Early Dynastic and Akkadian Mesopotamia, both of which were keeping continuous king-lists through it and recorded no interruption."
+  },
+  {
+   "id": "al05",
+   "from": -1800,
+   "to": -1750,
+   "label": "Hammurabi’s century",
+   "tier": "contested",
+   "note": "Middle chronology. High, low and ultra-low chronologies move this by 60 to 100 years either way, so the uncertainty is about as wide as the bar."
+  },
+  {
+   "id": "al06",
+   "from": -1250,
+   "to": -1200,
+   "label": "The thirteenth-century horizon",
+   "tier": "solid",
+   "note": "Wu Ding’s oracle bones, the Mycenaean destructions, the Merneptah stele with the first mention of Israel, and San Lorenzo. Four unconnected parts of the world leaving hard evidence inside one fifty-year window."
+  },
+  {
+   "id": "al07",
+   "from": -911,
+   "to": -753,
+   "label": "The world becomes datable",
+   "tier": "solid",
+   "note": "Assyrian dates go year-accurate from 911 BCE, fixed by the eclipse of 763. Rome’s traditional founding is 753. From here on the arguments are about what happened, not about when."
+  },
+  {
+   "id": "al08",
+   "from": -550,
+   "to": -221,
+   "label": "The axial-age empires",
+   "tier": "solid",
+   "note": "Cyrus, Chandragupta, Qin Shi Huang. Three imperial consolidations across Eurasia inside three centuries."
+  },
+  {
+   "id": "al09",
+   "from": -36,
+   "to": 37,
+   "label": "The Long Count goes to stone, beside Augustus and the Han",
+   "tier": "solid",
+   "note": "The earliest carved Long Count dates fall in the same decades as Augustus and the Han — three thousand years after the calendar’s own zero."
+  }
  ]
 }
