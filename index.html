@@ -495,6 +495,35 @@
   .lanes-offedge{position:absolute;left:0;top:0;bottom:0;width:9px;
     background:linear-gradient(90deg, rgba(141,139,184,.55), rgba(141,139,184,0));
     cursor:help;z-index:3;}
+
+  /* --- step 7: collapsible groups -------------------------------------------- */
+  /* A real <button>, because this has to work from the keyboard and announce its
+     own state. aria-expanded is the only thing that tells a screen reader whether
+     a group is open; a div with a click handler tells it nothing. */
+  .lanes-group{margin:14px 0 2px;}
+  .lanes-group:first-child{margin-top:0;}
+  .lanes-grouphead{display:flex;align-items:baseline;gap:8px;width:100%;
+    background:none;border:0;border-bottom:1px solid rgba(61,79,107,.6);
+    padding:0 0 4px;cursor:pointer;text-align:left;font:inherit;}
+  .lanes-grouphead:hover .gl{color:var(--parchment);}
+  .lanes-grouphead:focus-visible{outline:2px solid var(--amber-bright);
+    outline-offset:3px;}
+  .lanes-grouphead .tw{color:var(--amber-bright);font-size:10px;line-height:1;}
+  .lanes-grouphead .gl{font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--parchment-dim);}
+  .lanes-grouphead .gn{font-family:'IBM Plex Mono',monospace;font-size:9px;
+    color:var(--parchment-dimmer);margin-left:auto;}
+  /* Region lanes are marks and nothing else, so they do not need a tradition
+     lane's height. Thirteen full-height lanes would push the legend off the
+     bottom of most screens. */
+  /* The caption rides the name line, and on a compact row its 11 px italic
+     made the line box tall enough to hang into the marks below it -- the check
+     caught marks drawn through four region names. Same size as the name here. */
+  .lanes-row.compact{height:15px;margin-top:17px;}
+  .lanes-row.compact .lanes-rowname{top:-14px;}
+  .lanes-row.compact .lanes-rowname .cap{font-size:9px;font-style:normal;
+    font-family:inherit;color:var(--parchment-dimmer);margin-left:7px;}
+  .lanes-row.compact .lanes-pt{top:1px;bottom:1px;}
   /* Failures get their OWN element. The first version wrote the message into the
      track with innerHTML, which deleted the age bands, the grid, the rows and the
      now line -- so the panel could never come back even when the data loaded on a
@@ -6821,14 +6850,125 @@ window.__lanes = (function(){
     }).join("\n");
   }
 
+
+  // --- step 8: the region lanes, derived from the anchors -----------------------
+  // THE REGIONS ARE DERIVED, NOT STORED, and they come from the map's own
+  // definition of a region. The anchors carry no region field -- 565 of them, with
+  // keys age, appear, id, label, lat, leader, lon, note, presentNote, site, status
+  // and nothing else -- and their id prefixes are not one scheme but about a hundred
+  // (ISO codes, tradition codes, bare letters), so they cannot stand in for one.
+  // data/borders/coverage.json already defines the regions this map reasons about,
+  // as boxes, and is already credited. So the lanes are built by putting each anchor
+  // in a box. Nothing is duplicated and nothing new has to be kept in step.
+  let REGIONS = null;
+
+  function regionOf(lat, lon){
+    if(!REGIONS) return null;
+    for(let i = 0; i < REGIONS.length; i++){
+      const R = REGIONS[i];
+      if(R.key === "skip") continue;              // Antarctica, deliberately not a lane
+      for(let j = 0; j < R.boxes.length; j++){
+        const b = R.boxes[j];                     // [latMin, latMax, lonMin, lonMax]
+        if(lat >= b[0] && lat <= b[1] && lon >= b[2] && lon <= b[3]) return R;
+      }
+    }
+    return null;
+  }
+
+  function regionLanes(){
+    if(!REGIONS || typeof ANCHORS === "undefined") return [];
+    const by = {};
+    ANCHORS.forEach(function(a){
+      const R = regionOf(a.lat, a.lon);
+      if(!R) return;
+      (by[R.key] = by[R.key] || {name: R.name, items: []}).items.push({
+        id: "an-" + a.id, kind: "point",
+        start: EPOCH - a.appear,          // the anchors are years-ago; the lanes are years CE
+        label: String(a.label).split(" \u2014 ")[0],
+        tier: a.status,
+        note: a.age ? String(a.age) : ""});
+    });
+    // ONE LANE PER KEY, NOT PER ENTRY. coverage.json lists Europe twice and
+    // Inner Asia twice, each with a different set of boxes -- a region there is
+    // a collection of boxes that happens to be written as more than one record.
+    // Mapping over the entries drew eleven lanes for nine regions, Europe and
+    // Inner Asia each twice with identical marks. The group header said
+    // "11 lanes" while nine rendered, which is how it was caught.
+    const seen = {};
+    return REGIONS.filter(function(R){
+        if(R.key === "skip" || !by[R.key] || seen[R.key]) return false;
+        seen[R.key] = 1;
+        return true;
+      })
+      .map(function(R){
+        const g = by[R.key];
+        return {id: "reg-" + R.key, group: "regions", compact: true,
+                label: g.name, caption: g.items.length + " dated anchors",
+                note: "Every dated anchor this map holds inside the "
+                    + g.name + " boxes that data/borders/coverage.json defines. "
+                    + "Assigned from each anchor\u2019s own latitude and longitude; "
+                    + "the anchors carry no region of their own.",
+                source: "data/borders/coverage.json, and the anchors\u2019 own "
+                      + "coordinates.",
+                items: g.items};
+      });
+  }
+
+  function loadRegions(){
+    return fetch("data/borders/coverage.json")
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ REGIONS = (d && d.regions) || null; return REGIONS; })
+      .catch(function(){ REGIONS = null; return null; });   // the panel still works
+  }
+
+  // --- step 7: collapsible groups -----------------------------------------------
+  // A real <button>, not a div with a click handler: this has to be reachable by
+  // keyboard and announce its own state, and aria-expanded is the only thing that
+  // tells a screen reader whether a group is open.
+  const openState = {};
+
+  function allLanes(){
+    if(!DOC) return [];
+    return DOC.lanes.concat(regionLanes());
+  }
+
+  function groupHeader(G, n, open){
+    const h = document.createElement("div");
+    h.className = "lanes-group";
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "lanes-grouphead";
+    b.setAttribute("aria-expanded", open ? "true" : "false");
+    b.innerHTML = '<span class="tw"></span><span class="gl"></span>'
+                + '<span class="gn"></span>';
+    b.querySelector(".tw").textContent = open ? "\u25be" : "\u25b8";
+    b.querySelector(".gl").textContent = G.label;
+    b.querySelector(".gn").textContent = n + (n === 1 ? " lane" : " lanes");
+    b.addEventListener("click", function(){
+      openState[G.key] = !openState[G.key];
+      buildRows();
+    });
+    h.appendChild(b);
+    return h;
+  }
   function buildRows(){
     if(!rowsEl || !DOC) return;
     rowsEl.textContent = "";
     const trackW = track.getBoundingClientRect().width || 1;
-    DOC.lanes.filter(function(L){ return L.group === "traditions"; })
-      .forEach(function(L){
+    const LANES = allLanes();
+    // A group with no lanes is not drawn. "Dynasties and states" is declared in
+    // the data file and is v2 work, to be built from RESEARCH Part B rather than
+    // from the Cliopatria acts; empty furniture for it would just be noise.
+    (DOC.groups || []).forEach(function(G){
+      const mine = LANES.filter(function(L){ return L.group === G.key; });
+      if(!mine.length) return;
+      if(openState[G.key] === undefined) openState[G.key] = !G.collapsed;
+      const open = openState[G.key];
+      rowsEl.appendChild(groupHeader(G, mine.length, open));
+      if(!open) return;
+      mine.forEach(function(L){
       const row = document.createElement("div");
-      row.className = "lanes-row";
+      row.className = "lanes-row" + (L.compact ? " compact" : "");
       row.dataset.lane = L.id;
 
       const name = document.createElement("div");
@@ -6954,6 +7094,7 @@ window.__lanes = (function(){
       });
 
       rowsEl.appendChild(row);
+      });
     });
 
     // A CAPTION ONLY WHERE THE HATCH CAN HOLD IT, MEASURED AFTER THE ROWS ARE IN
@@ -7019,6 +7160,11 @@ window.__lanes = (function(){
 
   function load(){
     say("");
+    // The region boxes are fetched alongside. A failure there is NOT fatal: the
+    // tradition lanes are the point of this panel and must still draw, so
+    // loadRegions swallows its own error, the regions group ends up with no
+    // lanes, and a group with no lanes is not rendered at all.
+    loadRegions().then(function(){ if(DOC) buildRows(); });
     return fetch("data/lanes/lanes.json")
       .then(function(r){
         if(!r.ok) throw new Error("HTTP " + r.status + " for data/lanes/lanes.json");
@@ -7096,6 +7242,7 @@ window.__lanes = (function(){
   return {layout: layout, build: build, buildRows: buildRows, refresh: refresh,
           now: now, reveal: reveal, load: load, ya: ya, x: f, pct: pct,
           doc: function(){ return DOC; }, cluster: clusterItems,
+          regions: function(){ return REGIONS; },
           thumbW: thumbW};
 })();
 // ===================== PRESENTATION MODE (?present=1) =====================
