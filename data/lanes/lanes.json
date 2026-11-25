@@ -1,0 +1,315 @@
+{
+ "about": "Six traditions’ own chronologies, drawn as lanes under the map. Each lane says what its tradition RECKONS, beside the dated record. Where a reckoning has not begun, its lane is hatched: that hatched ground is what this map is about.",
+ "date_convention": "Years CE, negative = BCE. Historical numbering, NO YEAR ZERO: -3114 means 3114 BCE. This matches data/acts/manifest.json. The page converts to years-ago with ya = 2026 - year.",
+ "source": "RESEARCH_Synchronoptic_Lanes_Sourcing.md Part A (54 sources), tracked in this repo at docs/RESEARCH_Synchronoptic_Lanes_Sourcing.md. Per-item sources are on the items.",
+ "licence": "The dates are facts and claims reported from the cited scholarship and are not themselves copyrightable; the wording here is this project’s.",
+ "credit": "Every lane item carries the source it came from, because a reader is entitled to know which tradition, and which scholar, a line on this chart is reporting.",
+ "generated": "2026-11-25",
+ "generated_by": "geowork/lanes/build_lanes.py",
+ "groups": [
+  {
+   "key": "regions",
+   "label": "Regions — the ground",
+   "collapsed": false
+  },
+  {
+   "key": "states",
+   "label": "Dynasties and states",
+   "collapsed": true
+  },
+  {
+   "key": "traditions",
+   "label": "Reckonings — six clocks",
+   "collapsed": false
+  }
+ ],
+ "lanes": [
+  {
+   "id": "trad-ussher",
+   "group": "traditions",
+   "label": "Biblical — Ussher (1650), as charted by Adams (1871)",
+   "caption": "Ussher: Creation, 4004 BC",
+   "tradition": "Biblical",
+   "reckoning": "Ussher chronology",
+   "reckoningStart": -4004,
+   "note": "A Biblical reckoning; other Biblical traditions date Creation from c. 3761 (Jewish Anno Mundi) to c. 5509 BC (Byzantine World Era). Septuagint and Masoretic genealogies differ by 1,466 years.",
+   "source": "Ussher, Annales Veteris Testamenti (1650); Adams Synchronological Chart (1871), which begins at 4004 BC following Ussher.",
+   "items": [
+    {
+     "id": "us-creation",
+     "kind": "point",
+     "start": -4004,
+     "label": "Creation",
+     "tier": "tradition",
+     "note": "23 October, Julian."
+    },
+    {
+     "id": "us-flood",
+     "kind": "point",
+     "start": -2348,
+     "label": "the Flood",
+     "tier": "tradition",
+     "note": "AM 1656; some summaries give 2349. This date falls INSIDE Egypt’s Old Kingdom and Early Dynastic/Akkadian Mesopotamia, both of which were keeping continuous king-lists through it."
+    },
+    {
+     "id": "us-abram",
+     "kind": "span",
+     "start": -1996,
+     "end": -1921,
+     "label": "Abram: birth to call",
+     "tier": "tradition"
+    },
+    {
+     "id": "us-exodus",
+     "kind": "point",
+     "start": -1491,
+     "label": "the Exodus",
+     "tier": "tradition",
+     "note": "AM 2513. The date is contested; the Merneptah stele (c. 1207 BCE) is the earliest mention of Israel outside the Bible."
+    },
+    {
+     "id": "us-temple",
+     "kind": "span",
+     "start": -1012,
+     "end": -1004,
+     "label": "Solomon’s Temple: founded to dedicated",
+     "tier": "tradition"
+    },
+    {
+     "id": "us-destroyed",
+     "kind": "point",
+     "start": -588,
+     "label": "First Temple destroyed",
+     "tier": "contested",
+     "note": "Ussher gives 588; modern scholarship gives 587–586."
+    },
+    {
+     "id": "us-christ",
+     "kind": "point",
+     "start": -5,
+     "label": "birth of Christ",
+     "tier": "tradition"
+    }
+   ]
+  },
+  {
+   "id": "trad-yuga",
+   "group": "traditions",
+   "label": "Hindu — the yuga cycle",
+   "caption": "Kali Yuga epoch, 3102 BCE",
+   "tradition": "Hindu",
+   "reckoning": "yuga cycle",
+   "reckoningStart": -3102,
+   "note": "An astronomical reckoning computed by classical Indian astronomers (attested from Āryabhaṭa onward). The epoch is a theoretical planetary conjunction on 18 February 3102 BC that, as Britannica puts it, could not have been observed.",
+   "source": "Britannica, Eras based on astronomical speculation; Fleet, JRAS 1911 on the Sūrya-Siddhānta and the Āryabhaṭa schools.",
+   "offscale": {
+    "label": "and 4.32 million years before that, off this map",
+    "note": "The Kali Yuga is the last and shortest of four yugas totalling one mahāyuga of 4,320,000 years — 2.4 times the whole span of this map, which reaches back 1.8 million years. Above that sits the kalpa: 1,000 mahāyugas, 4.32 billion years, one DAY of Brahma. The figure of 2,000 mahāyugas sometimes given is not a rival count but a day AND night together, 8.64 billion years. None of it can be drawn to scale here, so it is not drawn at all; only the Kali Yuga epoch is.",
+    "source": "Yuga lengths: Kr̥ta 1,728,000, Tretā 1,296,000, Dvāpara 864,000, Kali 432,000. Āryabhaṭa instead gives four EQUAL yugas of 1,080,000. Kalpa as a day of Brahma: Bhagavad Gita 8.17 and commentary."
+   },
+   "items": [
+    {
+     "id": "ky-epoch",
+     "kind": "point",
+     "start": -3102,
+     "label": "Kali Yuga begins",
+     "tier": "tradition",
+     "note": "18 February 3102 BC (Old Style). Tradition ties it to the end of the Mahābhārata war; proposed dates for that war range from 3102 (tradition) to c. 1000–950, 836 (B. B. Lal) and c. 750–350 (Parpola)."
+    }
+   ]
+  },
+  {
+   "id": "trad-longcount",
+   "group": "traditions",
+   "label": "Maya — the Long Count",
+   "caption": "Long Count zero, 3114 BCE",
+   "tradition": "Maya",
+   "reckoning": "Long Count",
+   "reckoningStart": -3114,
+   "note": "The calendar’s own zero point, 13.0.0.0.0 4 Ajaw 8 Kumk’u = 11 August 3114 BCE on the GMT correlation (584,283), which Kennett et al. 2013 supports by radiocarbon. Other correlations move it: Spinden by about 260 years earlier, Böhm by about 100 later.",
+   "source": "GMT correlation 584,283; Kennett et al. 2013, Scientific Reports.",
+   "items": [
+    {
+     "id": "lc-zero",
+     "kind": "point",
+     "start": -3114,
+     "label": "Long Count zero",
+     "tier": "tradition"
+    },
+    {
+     "id": "lc-first",
+     "kind": "span",
+     "start": -36,
+     "end": 37,
+     "label": "first carved Long Count dates",
+     "tier": "contested",
+     "note": "Chiapa de Corzo Stela 2 (36 BCE, uncertain), Tres Zapotes Stela C (32 BCE), El Baúl Stela 1 (11–37 CE). THE CALENDAR IS CARVED THREE THOUSAND YEARS AFTER ITS OWN ZERO."
+    },
+    {
+     "id": "lc-tikal",
+     "kind": "point",
+     "start": 292,
+     "label": "Tikal Stela 29 — first unequivocally Maya",
+     "tier": "solid"
+    }
+   ]
+  },
+  {
+   "id": "trad-chinese",
+   "group": "traditions",
+   "label": "Chinese — traditional chronology",
+   "caption": "Yellow Emperor, trad. 2698 BCE",
+   "tradition": "Chinese",
+   "reckoning": "traditional chronology",
+   "reckoningStart": -2698,
+   "note": "Traditional Chinese chronology (Shiji, Han-era and later computations). The Yellow Emperor is dated by tradition to 2698/2697 BCE and, in Britannica’s words, originated as a god who was later represented as a historical person. Year-precise dating begins at 841 BCE.",
+   "source": "Shiji; Xia–Shang–Zhou Chronology Project (itself contested).",
+   "items": [
+    {
+     "id": "cn-huangdi",
+     "kind": "point",
+     "start": -2698,
+     "label": "the Yellow Emperor",
+     "tier": "tradition"
+    },
+    {
+     "id": "cn-xia",
+     "kind": "point",
+     "start": -2205,
+     "label": "Xia begins (trad.)",
+     "tier": "tradition",
+     "note": "Traditional 2205 BCE; the XSZ Project gives c. 2070."
+    },
+    {
+     "id": "cn-shang",
+     "kind": "point",
+     "start": -1766,
+     "label": "Shang begins (trad.)",
+     "tier": "tradition",
+     "note": "Traditional 1766 BCE; the XSZ Project gives c. 1600."
+    },
+    {
+     "id": "cn-oracle",
+     "kind": "span",
+     "start": -1254,
+     "end": -1197,
+     "label": "Wu Ding oracle bones — the writing appears",
+     "tier": "solid"
+    },
+    {
+     "id": "cn-zhou",
+     "kind": "point",
+     "start": -1122,
+     "label": "Zhou conquest (trad.)",
+     "tier": "contested",
+     "note": "Traditional 1122; Bamboo Annals 1027; XSZ Project 1046; Cambridge 1045."
+    },
+    {
+     "id": "cn-841",
+     "kind": "point",
+     "start": -841,
+     "label": "Gonghe — year-precise from here",
+     "tier": "solid",
+     "note": "THE CLOCK STOPS BEING TRADITIONAL AND STARTS BEING DATED."
+    }
+   ]
+  },
+  {
+   "id": "trad-egypt",
+   "group": "traditions",
+   "label": "Egyptian — the king-list tradition",
+   "caption": "Dynasty 1: Aha, 3111–3045 BCE",
+   "tradition": "Egyptian",
+   "reckoning": "Manetho and the king lists",
+   "reckoningStart": -3111,
+   "note": "Egyptian king-list tradition, from the Old Kingdom annals to Manetho in the 3rd century BCE. The lane is drawn from Dynasty 1, whose start is radiocarbon-dated to 3111–3045 BCE (Dee et al. 2013) — the only point in this tradition the ground can place.",
+   "source": "Manetho, surviving in quotation; Palermo Stone; Abydos king list (76 kings from Menes); Dee et al. 2013 for the radiocarbon date.",
+   "offscale": {
+    "label": "gods and demigods, before the dynasties",
+    "note": "Manetho puts reigns of gods and demigods before the human kings, and the totals do not agree between the people quoting him: Eusebius gives the gods 13,900 years and the demigods 1,255, a grand total of 24,900 \"lunar years\"; Syncellus gives the gods 11,985. Read as lunar months those 24,900 come to roughly 2,014 solar years — which WOULD fit on this map. It is not drawn because the unit, the totals and the recension all disagree, not because the span is too long.",
+    "source": "Eusebius and Syncellus, quoting Manetho."
+   },
+   "items": [
+    {
+     "id": "eg-aha",
+     "kind": "span",
+     "start": -3111,
+     "end": -3045,
+     "label": "Aha — Dynasty 1 begins",
+     "tier": "solid",
+     "note": "Radiocarbon, Dee et al. 2013. Britannica’s conventional date for Dynasty 1 is c. 2900."
+    },
+    {
+     "id": "eg-djoser",
+     "kind": "span",
+     "start": -2691,
+     "end": -2625,
+     "label": "Djoser",
+     "tier": "solid",
+     "note": "Bronk Ramsey et al. 2010."
+    },
+    {
+     "id": "eg-nk",
+     "kind": "span",
+     "start": -1570,
+     "end": -1544,
+     "label": "New Kingdom begins",
+     "tier": "solid",
+     "note": "Bronk Ramsey et al. 2010."
+    }
+   ]
+  },
+  {
+   "id": "trad-skl",
+   "group": "traditions",
+   "label": "Sumerian — the King List",
+   "caption": "the list itself, c. 2084–2037 BCE",
+   "tradition": "Sumerian",
+   "reckoning": "Sumerian King List",
+   "reckoningStart": -2084,
+   "unanchored": true,
+   "note": "A Mesopotamian royal tradition with reigns before and after the Flood. ALONE AMONG THESE SIX, IT HAS NO ZERO POINT: it counts 241,200 years before a Flood to which it gives no date, so unlike the other five clocks it cannot be placed on this axis by its own arithmetic. The lane is drawn from the oldest version we have instead.",
+   "source": "16+ manuscripts; the Ur III copy under Shulgi (2084–2037 BCE); the Weld-Blundell Prism, c. 1800 BCE. Text: ETCSL 2.1.1.",
+   "offscale": {
+    "label": "241,200 years, and nowhere to put them",
+    "note": "\"After the kingship descended from heaven, the kingship was in Eridug.\" Alulim reigns 28,800 years, Alaljar 36,000; \"5 cities, 8 kings … 241,200 years\"; \"Then the flood swept over … the kingship was in Kish.\" That 241,200 years would COMFORTABLY fit on this map — it is well inside the 1.8 million years the axis covers. It is not drawn because the list gives no date to anchor it to, which is a different problem from being too long.",
+    "source": "ETCSL 2.1.1, the Sumerian King List."
+   },
+   "items": [
+    {
+     "id": "skl-shulgi",
+     "kind": "span",
+     "start": -2084,
+     "end": -2037,
+     "label": "the Ur III copy, under Shulgi",
+     "tier": "solid"
+    },
+    {
+     "id": "skl-prism",
+     "kind": "point",
+     "start": -1800,
+     "label": "the Weld-Blundell Prism",
+     "tier": "solid"
+    },
+    {
+     "id": "skl-hammurabi",
+     "kind": "span",
+     "start": -1792,
+     "end": -1750,
+     "label": "Hammurabi (middle chronology)",
+     "tier": "contested",
+     "convention": "middle chronology",
+     "note": "High 1848–1806, middle 1792–1750, low 1728–1686, ultra-low 1696–1654. The middle chronology is used here and the spread is about a century."
+    },
+    {
+     "id": "skl-911",
+     "kind": "point",
+     "start": -911,
+     "label": "Assyrian dates become year-accurate",
+     "tier": "solid",
+     "note": "Fixed by the eclipse of 763 BCE."
+    }
+   ]
+  }
+ ]
+}

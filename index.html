@@ -403,7 +403,7 @@
      passed while that was on screen, which is why the picture gets looked at. */
   .lanes-rows{position:relative;padding-top:3px;}
   .lanes-row{position:relative;height:30px;margin-top:17px;}
-  .lanes-rowname{position:absolute;left:0;top:-13px;font-family:'IBM Plex Mono',monospace;
+  .lanes-rowname{position:absolute;left:0;top:-13px;z-index:7;font-family:'IBM Plex Mono',monospace;
     font-size:9px;letter-spacing:.1em;text-transform:uppercase;
     color:var(--parchment-dimmer);pointer-events:none;}
   /* The Adams look, for the tradition lanes ONLY (ruled): an inked band with a ruled
@@ -414,9 +414,15 @@
   .lanes-band-trad{position:absolute;top:0;bottom:0;border:1px solid rgba(127,176,163,.85);
     background:linear-gradient(rgba(127,176,163,.26), rgba(127,176,163,.13));
     border-radius:1px;}
-  .lanes-band-trad .cap{position:absolute;left:6px;top:50%;transform:translateY(-50%);
-    font-family:'Spectral',serif;font-size:11.5px;font-style:italic;color:#d8efe8;
-    white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.8);pointer-events:none;}
+  /* THE BAND CARRIES NO TEXT. The caption began inside the band, Adams-style, and
+     the screenshot showed item marks drawn straight through "Ussher: Creation, 4004
+     BC" and four others -- the marks sit at fixed dates and the caption sat where
+     some of those dates are, so neither could be read. It now rides the lane name
+     line above, where nothing is positioned by date and nothing can cross it. The
+     Adams look is carried by the inked band, the hatch and the period lettering,
+     which the caption keeps. */
+  .lanes-rowname .cap{font-family:'Spectral',serif;font-size:11px;font-style:italic;
+    text-transform:none;letter-spacing:0;color:#cfe8e0;margin-left:8px;}
   /* "Before this reckoning": hatched, and dark, because the point of the panel is that
      this is where the show lives. */
   .lanes-hatch{position:absolute;top:0;bottom:0;border:1px dashed rgba(127,176,163,.3);
@@ -427,6 +433,43 @@
     font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.09em;
     text-transform:uppercase;color:var(--parchment-dimmer);white-space:nowrap;}
   .lanes-dark{opacity:.22;}            /* reveal mode: a clock not yet switched on */
+
+  /* --- steps 5-6: items, clusters, off-scale notes ---------------------------- */
+  /* Items carry NO text. Their dates, labels and evidence tier live in the tooltip,
+     because "let the map be a map" applies to this panel too: the visual layer says
+     when, and only when. It also means six lanes of items cannot collide as text. */
+  .lanes-pt{position:absolute;top:3px;bottom:3px;width:2px;margin-left:-1px;
+    background:var(--tier,#7fb0a3);border-radius:1px;cursor:help;}
+  .lanes-pt:hover{box-shadow:0 0 0 3px rgba(255,255,255,.1);}
+  /* A cluster is drawn as a visibly different mark, never as a single item. Two
+     claims on one pixel must not read as one claim. */
+  .lanes-pt.many{width:4px;margin-left:-2px;}
+  .lanes-pt.many::after{content:"";position:absolute;left:50%;top:-4px;
+    transform:translateX(-50%);width:5px;height:5px;border-radius:50%;
+    background:var(--tier,#7fb0a3);box-shadow:0 0 4px rgba(0,0,0,.6);}
+  .lanes-span{position:absolute;top:7px;bottom:7px;background:var(--tier,#7fb0a3);
+    opacity:.5;border-left:2px solid var(--tier,#7fb0a3);
+    border-right:2px solid var(--tier,#7fb0a3);border-radius:1px;cursor:help;}
+  .lanes-span:hover{opacity:.78;}
+  /* The off-scale note sits at the LEFT END OF THE HATCH, pointing further left.
+     It was first placed outside the track entirely, in the panel margin, on the
+     reasoning that a claim with no position on this axis should sit off the axis.
+     The screenshot showed why that fails: .lanes is overflow:hidden, so the three
+     notes were sliced into "S MAP", "STIES" and "THEM". Inside the hatch is both
+     visible and right -- the hatch is the ground before the reckoning, and this is
+     a claim about ground even further back. */
+  .lanes-offscale{position:absolute;left:5px;top:50%;transform:translateY(-50%);
+    font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.05em;
+    text-transform:uppercase;color:#8aa39c;white-space:nowrap;cursor:help;
+    opacity:.9;z-index:2;}
+  .lanes-offscale:hover{opacity:1;color:#b9d8d0;}
+  /* Failures get their OWN element. The first version wrote the message into the
+     track with innerHTML, which deleted the age bands, the grid, the rows and the
+     now line -- so the panel could never come back even when the data loaded on a
+     retry. An error must not cost you the thing that was working. */
+  .lanes-msg{margin-top:10px;padding:9px 12px;border-left:2px solid var(--rust);
+    background:rgba(209,114,90,.09);font-family:'IBM Plex Mono',monospace;
+    font-size:11px;line-height:1.55;color:#e8b5a6;}
 </style>
 </head>
 <body>
@@ -563,6 +606,7 @@
         <div class="lanes-rows" id="lanesRows"></div>
         <div class="lanes-now" id="lanesNow" hidden></div>
       </div>
+      <div class="lanes-msg" id="lanesMsg" role="status" hidden></div>
     </div>
   </section>
   <div class="legend-row">
@@ -6691,57 +6735,145 @@ window.__lanes = (function(){
     });
   }
 
-  // --- step 4: lanes. Hard-coded for now; step 5 moves this to data/lanes/lanes.json
-  // with its own source, licence and credit so build_credits.py picks it up.
-  // Dates are YEARS CE, negative = BCE, historical numbering with NO YEAR ZERO -- the
-  // convention data/acts/manifest.json already states for this repo. Converted to the
-  // page's own years-ago at the last moment and nowhere else.
+  // --- steps 5-6: the lanes, from data/lanes/lanes.json -----------------------
+  // The dates live in the data file with their own sources, not in this script.
+  // Years CE, negative = BCE, no year zero -- the file states its own convention
+  // and this is the only place it is converted.
   const EPOCH = 2026;
   function ya(yearCE){ return EPOCH - yearCE; }
-  const LANES = [
-    {id: "trad-ussher", group: "traditions", kind: "span",
-     label: "Biblical \u2014 Ussher (1650), as charted by Adams (1871)",
-     caption: "Ussher: Creation, 4004 BC",
-     reckoningStart: -4004,
-     note: "A Biblical reckoning; other Biblical traditions date Creation from c. 3761 to c. 5509 BC.",
-     source: "Ussher, Annales Veteris Testamenti (1650); Adams Synchronological Chart (1871)."}
-  ];
 
   const rowsEl = document.getElementById("lanesRows");
-  let revealing = false;
+  const TIER = (typeof TIER_COLOR !== "undefined") ? TIER_COLOR
+             : {solid: "#e5a75f", contested: "#d1725a", tradition: "#7fb0a3"};
+  const TIERNAME = (typeof TIER_LABEL !== "undefined") ? TIER_LABEL : {};
+  let DOC = null, revealing = false;
+
+  function fmtYear(y){
+    return y < 0 ? (-y) + " BCE" : y + " CE";
+  }
+
+  // COINCIDENT ITEMS ARE CLUSTERED, AND THE TOOLTIP SEPARATES WHAT THE PIXEL MERGES.
+  // Ruled from the start rather than added later, because the panel has items that
+  // genuinely land on the same pixel: Solomon\u2019s Temple founded 1012 and dedicated
+  // 1004 are eight years apart, which at this zoom is nothing at all. Drawing them on
+  // top of each other would quietly turn two claims into one mark.
+  const CLUSTER_PX = 11;
+  function clusterItems(items, trackW){
+    const marks = items.map(function(it){
+      const a = f(ya(it.start));
+      const b = (it.kind === "span" && it.end !== undefined) ? f(ya(it.end)) : a;
+      return {it: it, a: Math.min(a, b), b: Math.max(a, b)};
+    }).sort(function(p, q){ return p.a - q.a; });
+    const out = [];
+    marks.forEach(function(m){
+      const last = out[out.length - 1];
+      const isPoint = (m.b - m.a) * trackW < 1.5;
+      if(last && last.point && isPoint
+         && (m.a - last.a) * trackW < CLUSTER_PX){
+        last.members.push(m.it);
+      } else {
+        out.push({a: m.a, b: m.b, point: isPoint, members: [m.it]});
+      }
+    });
+    return out;
+  }
+
+  function tipFor(group){
+    return group.members.map(function(it){
+      const when = it.kind === "span" && it.end !== undefined
+                 ? fmtYear(it.start) + " to " + fmtYear(it.end)
+                 : fmtYear(it.start);
+      const tier = TIERNAME[it.tier] ? " [" + TIERNAME[it.tier] + "]" : "";
+      return "\u2022 " + when + " \u2014 " + it.label + tier
+           + (it.note ? "\n  " + it.note : "");
+    }).join("\n");
+  }
 
   function buildRows(){
-    if(!rowsEl) return;
+    if(!rowsEl || !DOC) return;
     rowsEl.textContent = "";
-    LANES.forEach(function(L){
+    const trackW = track.getBoundingClientRect().width || 1;
+    DOC.lanes.filter(function(L){ return L.group === "traditions"; })
+      .forEach(function(L){
       const row = document.createElement("div");
       row.className = "lanes-row";
       row.dataset.lane = L.id;
 
       const name = document.createElement("div");
       name.className = "lanes-rowname";
-      name.textContent = L.label;
+      name.appendChild(document.createTextNode(L.label));
+      const cap = document.createElement("span");
+      cap.className = "cap";
+      cap.textContent = L.caption;      // text, not HTML; these strings are data
+      name.appendChild(cap);
       row.appendChild(name);
 
       const start = ya(L.reckoningStart);
-      // BEFORE THIS RECKONING: from the left edge of the track to the clock's zero.
+
       const h = document.createElement("div");
       h.className = "lanes-hatch";
       h.style.left = "0%";
       h.style.width = pct(start);
       h.innerHTML = '<span class="cap">before this reckoning</span>';
-      h.title = "Before this reckoning begins. " + L.note
-              + " This map runs back to 1.8 million years ago; Gobekli Tepe (c. 9600 BCE) is about 5,600 years older than Ussher's Creation.";
+      h.title = "BEFORE THIS RECKONING \u2014 " + L.label + "\n\n" + L.note
+              + "\n\nThis map runs back to 1.8 million years. G\u00f6bekli Tepe "
+              + "(c. 9600 BCE) is about 5,600 years older than Ussher\u2019s Creation "
+              + "and older still than every other clock here.";
       row.appendChild(h);
 
       const b = document.createElement("div");
       b.className = "lanes-band-trad";
       b.style.left = pct(start);
       b.style.right = "0%";
-      b.innerHTML = '<span class="cap"></span>';
-      b.querySelector(".cap").textContent = L.caption;
-      b.title = L.label + " \u2014 " + L.note + " Source: " + L.source;
+      b.title = L.label + " \u2014 " + L.caption + "\n\n" + L.note
+              + "\n\nSource: " + L.source;
       row.appendChild(b);
+
+      // AN OFF-SCALE NOTE AT THE LEFT EDGE, NOT A DRAWN BAND (ruled 2026-11-25).
+      // Drawing a band for a claim this axis cannot hold would be the exact lie the
+      // standing scale note warns about.
+      if(L.offscale){
+        const o = document.createElement("div");
+        o.className = "lanes-offscale";
+        o.textContent = "\u25c0 " + L.offscale.label;
+        o.title = L.offscale.note + (L.offscale.source
+                  ? "\n\nSource: " + L.offscale.source : "");
+        row.appendChild(o);
+      }
+
+      clusterItems(L.items || [], trackW).forEach(function(g){
+        const el = document.createElement("div");
+        const many = g.members.length > 1;
+        const tier = g.members[0].tier || "tradition";
+        if(g.point){
+          el.className = "lanes-pt" + (many ? " many" : "");
+          el.style.left = (g.a * 100).toFixed(4) + "%";
+        } else {
+          el.className = "lanes-span";
+          el.style.left = (g.b * 100).toFixed(4) + "%";
+          el.style.width = Math.max(0.12, (g.a - g.b) * 100).toFixed(4) + "%";
+        }
+        el.style.setProperty("--tier", TIER[tier] || "#7fb0a3");
+        // A CLUSTER HEADER STATES THE YEARS IT IS HIDING. It used to say "on the
+        // same point of the axis", which was false: on the Sumerian lane three
+        // claims from 2084 BCE to 1750 BCE merge into one mark, and calling 334
+        // years "the same point" would tell a viewer they were simultaneous. They
+        // are not simultaneous, they are merely closer together than this axis can
+        // draw -- which is a statement about the chart, not about history.
+        if(many){
+          const ys = g.members.map(function(m){ return m.start; })
+            .concat(g.members.map(function(m){
+              return m.end === undefined ? m.start : m.end; }));
+          const a = Math.min.apply(null, ys), b = Math.max.apply(null, ys);
+          el.title = g.members.length + " claims between " + fmtYear(a) + " and "
+                   + fmtYear(b) + " \u2014 " + Math.abs(b - a) + " years, closer"
+                   + " together than this axis can draw them apart:\n" + tipFor(g);
+        } else {
+          el.title = tipFor(g);
+        }
+        if(many) el.dataset.count = g.members.length;
+        row.appendChild(el);
+      });
 
       rowsEl.appendChild(row);
     });
@@ -6753,9 +6885,10 @@ window.__lanes = (function(){
   // lane that is always lit and a lane that lights on cue are different objects.
   // Off by default: the panel has to read as a whole chart when nobody is scrubbing.
   function paint(v){
+    if(!rowsEl || !DOC) return;
     const nowYa = yearsAgoFromSlider(v);
     rowsEl.querySelectorAll(".lanes-row").forEach(function(row){
-      const L = LANES.find(function(x){ return x.id === row.dataset.lane; });
+      const L = DOC.lanes.find(function(x){ return x.id === row.dataset.lane; });
       if(!L) return;
       const lit = !revealing || nowYa <= ya(L.reckoningStart);
       row.classList.toggle("lanes-dark", !lit);
@@ -6775,13 +6908,54 @@ window.__lanes = (function(){
 
   function refresh(){ layout(); build(); buildRows(); now(); }
 
+  // THE FILE IS REQUIRED, AND A BAD ONE SAYS SO IN THE FRAME.
+  // Silence here would be the worst outcome: an empty panel under the map looks like
+  // a design choice. If the lanes cannot be loaded the panel says what failed, and
+  // the console carries the error for anyone with devtools open.
+  function say(msg){
+    const m = document.getElementById("lanesMsg");
+    if(!m) return;
+    m.textContent = msg || "";
+    m.hidden = !msg;
+  }
+
+  function load(){
+    say("");
+    return fetch("data/lanes/lanes.json")
+      .then(function(r){
+        if(!r.ok) throw new Error("HTTP " + r.status + " for data/lanes/lanes.json");
+        return r.json();
+      })
+      .then(function(d){
+        if(!d || !Array.isArray(d.lanes) || !d.lanes.length)
+          throw new Error("data/lanes/lanes.json has no lanes array");
+        d.lanes.forEach(function(L){
+          if(typeof L.reckoningStart !== "number")
+            throw new Error("lane " + L.id + " has no numeric reckoningStart");
+        });
+        DOC = d;
+        refresh();
+        return d;
+      })
+      .catch(function(e){
+        // THE MESSAGE GOES IN ITS OWN ELEMENT. Writing it into the track with
+        // innerHTML -- the first version -- deleted the age bands, the grid, the
+        // rows and the now line, so the panel could never recover even when a retry
+        // loaded the file perfectly well. A check now loads a broken file and then a
+        // good one, and fails if the lanes do not come back.
+        say("The lanes could not be loaded: " + String(e.message || e));
+        console.error("lanes:", e);
+        throw e;
+      });
+  }
+
   let t = null;
   window.addEventListener("resize", function(){
     if(t) clearTimeout(t);
     t = setTimeout(refresh, 150);   // the same debounce buildTicks uses
   });
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
-  refresh();
+  load();            // the panel is empty until the data file says otherwise
 
   // THE NOW LINE WATCHES THE SCRUBBER'S VALUE, NOT ANY ONE ROUTE INTO IT.
   // Two earlier attempts were wrong and the second was wrong silently.
@@ -6822,7 +6996,8 @@ window.__lanes = (function(){
   scrub.addEventListener("input", sync);
 
   return {layout: layout, build: build, buildRows: buildRows, refresh: refresh,
-          now: now, reveal: reveal, lanes: LANES, ya: ya, x: f, pct: pct,
+          now: now, reveal: reveal, load: load, ya: ya, x: f, pct: pct,
+          doc: function(){ return DOC; }, cluster: clusterItems,
           thumbW: thumbW};
 })();
 // ===================== PRESENTATION MODE (?present=1) =====================
