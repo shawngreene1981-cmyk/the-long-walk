@@ -2382,12 +2382,40 @@ const SAPIENS_START = sliderAtYears(SAPIENS_FLOOR);
 // where the strip gets its labels: ERA and the live slider bounds, the way the
 // tier legend gets its chips from ANCHORS. If ERA gains an era or the floor
 // moves with the pre-sapiens toggle, the strip follows on its own.
+// THE SCRUBBER'S REAL TRACK, shared by the tick strip and the lanes panel.
+// An <input type=range> moves its thumb CENTRE from left+w/2 to right-w/2, so the
+// input's own box is wider than the range the value spans. Anything that labels or
+// lines up with the scrubber has to use this, not the input's box, or it sits up to
+// half a thumb out at each end. The two widths mirror the thumb rules in the CSS
+// above (15 px, and 26 px below the 760 px breakpoint); if those change, change these.
+function thumbTrack(){
+  const sr = scrub.getBoundingClientRect();
+  const w = window.matchMedia("(max-width: 760px)").matches ? 26 : 15;
+  return {left: sr.left + w / 2, width: sr.width - w, thumb: w};
+}
+// Lay an element over that track. The offset is measured from the PARENT'S CONTENT
+// BOX, because a margin-left adds to whatever padding and border the parent already
+// has rather than replacing it.
+function fitToThumbTrack(el){
+  const tt = thumbTrack();
+  if(!tt.width || !el || !el.parentElement) return;
+  const hr = el.parentElement.getBoundingClientRect();
+  const hs = getComputedStyle(el.parentElement);
+  const base = hr.left + parseFloat(hs.paddingLeft || 0)
+             + parseFloat(hs.borderLeftWidth || 0);
+  el.style.marginLeft = (tt.left - base).toFixed(2) + "px";
+  el.style.width = tt.width.toFixed(2) + "px";
+}
 const TICK_PAD = 10;             // px of clear air required between two labels
 function buildTicks(){
   const strip = document.getElementById('tickStrip');
   if(!strip || typeof ERA === 'undefined' || !ERA.length) return;
   const lo = +scrub.min || 0, hi = SLIDER_MAX, span = hi - lo;
   if(!(span > 0)) return;
+  // Ruled 2026-11-25: the strip is laid over the thumb's travel, not the hud's
+  // content box, so a label sits above the value it names. Measured at up to
+  // 11.3 px of error before this line existed.
+  fitToThumbTrack(strip);
   const marks = ERA
     .map(function(e){ return {label:e.label, f:(sliderAtYears(e.yearsAgo) - lo) / span}; })
     .filter(function(m){ return m.f >= 0 && m.f <= 1; })
@@ -6594,18 +6622,12 @@ window.__lanes = (function(){
   const gridEl = document.getElementById("lanesGrid");
   if(!panel || !track) return null;
 
-  // THE TRACK IS ALIGNED TO THE THUMB'S TRAVEL, NOT TO THE INPUT BOX.
-  // An <input type=range> moves its thumb CENTRE from left+w/2 to right-w/2, so the
-  // input's own box is wider than the range the value actually spans. Positioning
-  // against the box would put every lane half a thumb out at one end and half a thumb
-  // out the other way at the other -- worst exactly where the reader checks it, under
-  // the thumb. These two numbers mirror the thumb rules in the page CSS; if those
-  // change, change these. The check script measures the real thumb in the rendered
-  // pixels and fails if the two have drifted apart, so this cannot rot silently.
-  const THUMB = {wide: 15, phone: 26};
-  function thumbW(){
-    return window.matchMedia("(max-width: 760px)").matches ? THUMB.phone : THUMB.wide;
-  }
+  // THE TRACK IS ALIGNED TO THE THUMB'S TRAVEL, NOT TO THE INPUT BOX, and the
+  // measurement is thumbTrack() / fitToThumbTrack(), shared with the tick strip above
+  // (patch_tickstrip_thumb.py). It used to be duplicated here. It is shared because
+  // the strip and the panel label the same scrubber and must not be able to drift
+  // apart: before the strip was fixed, it sat up to 11.3 px away from this track.
+  function thumbW(){ return thumbTrack().thumb; }
 
   function lo(){ return +scrub.min || 0; }
 
@@ -6621,26 +6643,12 @@ window.__lanes = (function(){
   // Measured, not assumed: read where the scrubber actually is and lay the track over
   // its thumb travel. Children are then positioned in PERCENT of that track, so an
   // ordinary resize only re-measures this one box and moves nothing else.
+  // fitToThumbTrack measures from the PARENT'S CONTENT BOX. The first version of
+  // this measured from .lanes instead and put the track 17 px right of the thumb at
+  // both ends, because .lanes-body already carries a 16 px side margin inside a 1 px
+  // border and a margin-left adds to that rather than replacing it.
   function layout(){
-    const sr = scrub.getBoundingClientRect();
-    if(!sr.width) return;
-    // MEASURED FROM THE PARENT'S CONTENT BOX, not from the panel. The first version
-    // measured from .lanes and put the track 17 px right of the thumb at both ends,
-    // because .lanes-body already carries a 16 px side margin inside a 1 px border and
-    // a margin-left is added ON TOP of that, not instead of it.
-    const host = track.parentElement;
-    const hr = host.getBoundingClientRect();
-    const hs = getComputedStyle(host);
-    const base = hr.left + parseFloat(hs.paddingLeft || 0)
-               + parseFloat(hs.borderLeftWidth || 0);
-    const half = thumbW() / 2;
-    const left = (sr.left + half) - base;
-    const width = sr.width - half * 2;
-    [track, scale].forEach(function(el){
-      if(!el) return;
-      el.style.marginLeft = left.toFixed(2) + "px";
-      el.style.width = width.toFixed(2) + "px";
-    });
+    [track, scale].forEach(function(el){ if(el) fitToThumbTrack(el); });
   }
 
   // The age bands and the era hairlines depend only on the track origin, which moves
