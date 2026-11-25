@@ -344,6 +344,89 @@
     .tier-n{font-size:14px;}
     .tier-point{font-size:12.2px;}
   }
+  /* ===================== SYNCHRONOPTIC LANES (2026-11-25) ===================== */
+  /* The panel shares the map scrubber, so every horizontal position in here is a
+     percentage of the same track. Percent, not pixels, so an ordinary window resize
+     needs no relayout at all; only the pre-sapiens toggle moves the track origin and
+     that calls __lanes.layout() for itself. */
+  .lanes{margin-top:14px;border:1px solid var(--line);border-radius:3px;
+    background:var(--paper);overflow:hidden;}
+  .lanes-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    padding:13px 16px 0;}
+  .lanes-title{font-family:'Spectral',serif;font-size:15px;font-weight:700;margin:0;
+    color:var(--parchment);}
+  .lanes-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--amber-bright);}
+  /* FOUNDER RULING 1a: the distortion is stated in words, on the panel, always. */
+  .lanes-scalenote{margin:8px 16px 0;padding:8px 11px;border-left:2px solid var(--teal);
+    background:rgba(99,168,168,.07);font-family:'IBM Plex Mono',monospace;font-size:11px;
+    line-height:1.6;color:var(--parchment-dim);}
+  .lanes-scalenote strong{color:var(--teal-bright);font-weight:600;}
+  .lanes-body{position:relative;margin:12px 16px 16px;}
+  /* The track is the SAME track as the scrubber above it. Anything positioned
+     against it uses __lanes.x(yearsAgo), never a hand-placed percentage. */
+  .lanes-track{position:relative;min-height:54px;}
+  .lanes-empty{font-family:'IBM Plex Mono',monospace;font-size:11px;
+    color:var(--parchment-dimmer);padding:18px 0;text-align:center;}
+
+  /* --- step 2: the axis ------------------------------------------------------ */
+  /* FOUNDER RULING 1b: the age bands are shaded BEHIND the lanes, so the reader can
+     see where the scale changes instead of only being told it does. The shading is
+     deliberately faint and alternating -- it is a scale warning, not a data layer,
+     and "let the map be a map" applies here too. */
+  .lanes-ages{position:absolute;inset:0;pointer-events:none;}
+  .lanes-band{position:absolute;top:0;bottom:0;}
+  .lanes-band.odd{background:rgba(255,255,255,.028);}
+  .lanes-band.hov{background:rgba(242,191,124,.07);}
+  .lanes-bandline{position:absolute;top:0;bottom:0;width:1px;
+    background:rgba(61,79,107,.75);}
+  .lanes-bandlab{position:absolute;top:2px;font-family:'IBM Plex Mono',monospace;
+    font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--parchment-dimmer);white-space:nowrap;pointer-events:none;}
+  /* The era checkpoints, as hairlines. The same 69 moments the tick strip labels, so
+     a reader can see that the two rulers are one ruler. */
+  .lanes-grid{position:absolute;inset:0;pointer-events:none;}
+  .lanes-gridline{position:absolute;top:14px;bottom:0;width:1px;
+    background:rgba(147,160,180,.13);}
+  .lanes-scale{position:relative;height:16px;margin-bottom:2px;}
+
+  /* --- step 3: the now line -------------------------------------------------- */
+  .lanes-now{position:absolute;top:0;bottom:0;width:1px;background:var(--amber-bright);
+    box-shadow:0 0 6px rgba(242,191,124,.55);pointer-events:none;z-index:6;}
+  .lanes-now::before{content:"";position:absolute;top:-4px;left:-3px;width:7px;height:7px;
+    border-radius:50%;background:var(--amber-bright);}
+
+  /* --- step 4: a lane --------------------------------------------------------- */
+  /* The lane name needs its own air. At margin-top:4px the first row's name rode up
+     into the age-band labels and the screenshot showed "BIBLICAL - USSHER (1650)..."
+     printed straight through "THE NETWORK" and "THE LONG WALK". Every numeric check
+     passed while that was on screen, which is why the picture gets looked at. */
+  .lanes-rows{position:relative;padding-top:3px;}
+  .lanes-row{position:relative;height:30px;margin-top:17px;}
+  .lanes-rowname{position:absolute;left:0;top:-13px;font-family:'IBM Plex Mono',monospace;
+    font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--parchment-dimmer);pointer-events:none;}
+  /* The Adams look, for the tradition lanes ONLY (ruled): an inked band with a ruled
+     edge, not the map's flat fills. #7fb0a3 is the existing tradition tier colour --
+     its ETHIC and its colour are reused, its six anchors are a different thing and are
+     not touched. Lane items deliberately do not carry status:"tradition", so the
+     published tier count of 6 stays 6. */
+  .lanes-band-trad{position:absolute;top:0;bottom:0;border:1px solid rgba(127,176,163,.85);
+    background:linear-gradient(rgba(127,176,163,.26), rgba(127,176,163,.13));
+    border-radius:1px;}
+  .lanes-band-trad .cap{position:absolute;left:6px;top:50%;transform:translateY(-50%);
+    font-family:'Spectral',serif;font-size:11.5px;font-style:italic;color:#d8efe8;
+    white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.8);pointer-events:none;}
+  /* "Before this reckoning": hatched, and dark, because the point of the panel is that
+     this is where the show lives. */
+  .lanes-hatch{position:absolute;top:0;bottom:0;border:1px dashed rgba(127,176,163,.3);
+    border-right:none;border-radius:1px 0 0 1px;
+    background:repeating-linear-gradient(135deg, rgba(127,176,163,.085) 0 3px,
+      rgba(0,0,0,0) 3px 7px);}
+  .lanes-hatch .cap{position:absolute;right:7px;top:50%;transform:translateY(-50%);
+    font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--parchment-dimmer);white-space:nowrap;}
+  .lanes-dark{opacity:.22;}            /* reveal mode: a clock not yet switched on */
 </style>
 </head>
 <body>
@@ -460,6 +543,28 @@
     </div>
   </div>
 
+  <!-- SYNCHRONOPTIC LANES. Outside .stage on purpose: .stage is overflow:hidden and would
+       clip this. Everything inside is built by script from the shared scrubber. -->
+  <section class="lanes" id="lanes" aria-labelledby="lanesTitle">
+    <div class="lanes-head">
+      <h2 class="lanes-title" id="lanesTitle">What was happening at the same time</h2>
+      <span class="lanes-sub">Six clocks, and the ground</span>
+    </div>
+    <p class="lanes-scalenote"><strong>Width is not duration.</strong> These lanes share the
+      scrubber above, which gives each age its own pace so that deep prehistory and recent
+      centuries are both readable. Two bars of the same width can therefore differ by many
+      thousands of years. The shaded bands behind the lanes are those ages: where a band
+      changes, the scale changes.</p>
+    <div class="lanes-body">
+      <div class="lanes-scale" id="lanesScale"></div>
+      <div class="lanes-track" id="lanesTrack">
+        <div class="lanes-ages" id="lanesAges"></div>
+        <div class="lanes-grid" id="lanesGrid"></div>
+        <div class="lanes-rows" id="lanesRows"></div>
+        <div class="lanes-now" id="lanesNow" hidden></div>
+      </div>
+    </div>
+  </section>
   <div class="legend-row">
     <span class="legend-note" style="flex-basis:100%"><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" stroke="#0e1420" stroke-width="1.2"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" fill-opacity="0.25"/></svg> <strong>Brightness is time, and only time.</strong> A mark is bright at its date and dims as the slider moves on, down to a faint version of the same shape. A dim mark is further in the past — it is <em>not</em> weaker evidence; evidence is the colour and shape, and the popup. Every mark stays clickable at every brightness. The three forced routes never dim.</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#e0a75e" stroke-width="2"/><circle cx="7" cy="7" r="2" fill="#e0a75e"/></svg> Origin node — a source, not a site</span>
@@ -2353,6 +2458,7 @@ function applyPresapiens(){
   if(!on && +scrub.value < SAPIENS_START){ scrub.value = SAPIENS_START; }
   render(+scrub.value);
   buildTicks();          // the floor just moved, so the strip's span moved with it
+  if(window.__lanes) window.__lanes.refresh();   // and so did the lanes track
 }
 document.getElementById('togglePresapiens').addEventListener('change', e=>{ layerState.presapiens=e.target.checked; applyPresapiens(); });
 document.getElementById('toggleFog').addEventListener('change', e=>{ layerState.fog=e.target.checked; render(+scrub.value); });
@@ -6475,6 +6581,242 @@ if(!applyUrlState()) writeUrl(false);
     + head + detail + '</div>';
   console.error('the_long_walk_interactive map init failed:', e);
 }
+// ===================== SYNCHRONOPTIC LANES (2026-11-25) =====================
+// Appended after the page has defined ERA, AGES, SLIDER_MAX, sliderAtYearsExact and
+// #scrub, so none of that is redefined here. The panel owns no time maths of its own:
+// every horizontal position comes from the page's sliderAtYearsExact, which is what
+// makes the lanes and the scrubber one ruler rather than two that agree by luck.
+window.__lanes = (function(){
+  const panel = document.getElementById("lanes");
+  const track = document.getElementById("lanesTrack");
+  const scale = document.getElementById("lanesScale");
+  const agesEl = document.getElementById("lanesAges");
+  const gridEl = document.getElementById("lanesGrid");
+  if(!panel || !track) return null;
+
+  // THE TRACK IS ALIGNED TO THE THUMB'S TRAVEL, NOT TO THE INPUT BOX.
+  // An <input type=range> moves its thumb CENTRE from left+w/2 to right-w/2, so the
+  // input's own box is wider than the range the value actually spans. Positioning
+  // against the box would put every lane half a thumb out at one end and half a thumb
+  // out the other way at the other -- worst exactly where the reader checks it, under
+  // the thumb. These two numbers mirror the thumb rules in the page CSS; if those
+  // change, change these. The check script measures the real thumb in the rendered
+  // pixels and fails if the two have drifted apart, so this cannot rot silently.
+  const THUMB = {wide: 15, phone: 26};
+  function thumbW(){
+    return window.matchMedia("(max-width: 760px)").matches ? THUMB.phone : THUMB.wide;
+  }
+
+  function lo(){ return +scrub.min || 0; }
+
+  // years ago -> 0..1 along the usable track. Same formula buildTicks uses, so the
+  // panel and the tick strip cannot disagree.
+  function f(ya){
+    const l = lo(), span = SLIDER_MAX - l;
+    if(!(span > 0)) return 0;
+    return Math.max(0, Math.min(1, (sliderAtYearsExact(ya) - l) / span));
+  }
+  function pct(ya){ return (f(ya) * 100).toFixed(4) + "%"; }
+
+  // Measured, not assumed: read where the scrubber actually is and lay the track over
+  // its thumb travel. Children are then positioned in PERCENT of that track, so an
+  // ordinary resize only re-measures this one box and moves nothing else.
+  function layout(){
+    const sr = scrub.getBoundingClientRect();
+    if(!sr.width) return;
+    // MEASURED FROM THE PARENT'S CONTENT BOX, not from the panel. The first version
+    // measured from .lanes and put the track 17 px right of the thumb at both ends,
+    // because .lanes-body already carries a 16 px side margin inside a 1 px border and
+    // a margin-left is added ON TOP of that, not instead of it.
+    const host = track.parentElement;
+    const hr = host.getBoundingClientRect();
+    const hs = getComputedStyle(host);
+    const base = hr.left + parseFloat(hs.paddingLeft || 0)
+               + parseFloat(hs.borderLeftWidth || 0);
+    const half = thumbW() / 2;
+    const left = (sr.left + half) - base;
+    const width = sr.width - half * 2;
+    [track, scale].forEach(function(el){
+      if(!el) return;
+      el.style.marginLeft = left.toFixed(2) + "px";
+      el.style.width = width.toFixed(2) + "px";
+    });
+  }
+
+  // The age bands and the era hairlines depend only on the track origin, which moves
+  // when the pre-sapiens floor moves -- not on window width.
+  function build(){
+    const l = lo();
+    agesEl.textContent = ""; gridEl.textContent = ""; scale.textContent = "";
+    AGES.forEach(function(a, i){
+      const a0 = f(a.from), a1 = f(a.to);
+      if(a1 <= a0) return;
+      const d = document.createElement("div");
+      d.className = "lanes-band" + (i % 2 ? " odd" : "");
+      d.style.left = (a0 * 100).toFixed(4) + "%";
+      d.style.width = ((a1 - a0) * 100).toFixed(4) + "%";
+      d.dataset.age = a.id;
+      agesEl.appendChild(d);
+      if(a0 > 0){
+        const ln = document.createElement("div");
+        ln.className = "lanes-bandline";
+        ln.style.left = (a0 * 100).toFixed(4) + "%";
+        agesEl.appendChild(ln);
+      }
+      // A label only where its own band has room for it; a clipped label is noise.
+      const lab = document.createElement("div");
+      lab.className = "lanes-bandlab";
+      lab.style.left = (a0 * 100).toFixed(4) + "%";
+      lab.style.paddingLeft = "4px";
+      lab.textContent = a.label;
+      scale.appendChild(lab);
+      const room = (a1 - a0) * scale.getBoundingClientRect().width;
+      if(lab.getBoundingClientRect().width > room) lab.remove();
+    });
+    ERA.forEach(function(e){
+      const v = sliderAtYearsExact(e.yearsAgo);
+      if(v < l) return;
+      const ln = document.createElement("div");
+      ln.className = "lanes-gridline";
+      ln.style.left = pct(e.yearsAgo);
+      gridEl.appendChild(ln);
+    });
+  }
+
+  // --- step 4: lanes. Hard-coded for now; step 5 moves this to data/lanes/lanes.json
+  // with its own source, licence and credit so build_credits.py picks it up.
+  // Dates are YEARS CE, negative = BCE, historical numbering with NO YEAR ZERO -- the
+  // convention data/acts/manifest.json already states for this repo. Converted to the
+  // page's own years-ago at the last moment and nowhere else.
+  const EPOCH = 2026;
+  function ya(yearCE){ return EPOCH - yearCE; }
+  const LANES = [
+    {id: "trad-ussher", group: "traditions", kind: "span",
+     label: "Biblical \u2014 Ussher (1650), as charted by Adams (1871)",
+     caption: "Ussher: Creation, 4004 BC",
+     reckoningStart: -4004,
+     note: "A Biblical reckoning; other Biblical traditions date Creation from c. 3761 to c. 5509 BC.",
+     source: "Ussher, Annales Veteris Testamenti (1650); Adams Synchronological Chart (1871)."}
+  ];
+
+  const rowsEl = document.getElementById("lanesRows");
+  let revealing = false;
+
+  function buildRows(){
+    if(!rowsEl) return;
+    rowsEl.textContent = "";
+    LANES.forEach(function(L){
+      const row = document.createElement("div");
+      row.className = "lanes-row";
+      row.dataset.lane = L.id;
+
+      const name = document.createElement("div");
+      name.className = "lanes-rowname";
+      name.textContent = L.label;
+      row.appendChild(name);
+
+      const start = ya(L.reckoningStart);
+      // BEFORE THIS RECKONING: from the left edge of the track to the clock's zero.
+      const h = document.createElement("div");
+      h.className = "lanes-hatch";
+      h.style.left = "0%";
+      h.style.width = pct(start);
+      h.innerHTML = '<span class="cap">before this reckoning</span>';
+      h.title = "Before this reckoning begins. " + L.note
+              + " This map runs back to 1.8 million years ago; Gobekli Tepe (c. 9600 BCE) is about 5,600 years older than Ussher's Creation.";
+      row.appendChild(h);
+
+      const b = document.createElement("div");
+      b.className = "lanes-band-trad";
+      b.style.left = pct(start);
+      b.style.right = "0%";
+      b.innerHTML = '<span class="cap"></span>';
+      b.querySelector(".cap").textContent = L.caption;
+      b.title = L.label + " \u2014 " + L.note + " Source: " + L.source;
+      row.appendChild(b);
+
+      rowsEl.appendChild(row);
+    });
+    paint(+scrub.value);
+  }
+
+  // PANEL BEAT 1 (Episode_Six_Clocks): the clocks switch on one by one as the scrubber
+  // passes each start. Built in from the beginning rather than retrofitted, because a
+  // lane that is always lit and a lane that lights on cue are different objects.
+  // Off by default: the panel has to read as a whole chart when nobody is scrubbing.
+  function paint(v){
+    const nowYa = yearsAgoFromSlider(v);
+    rowsEl.querySelectorAll(".lanes-row").forEach(function(row){
+      const L = LANES.find(function(x){ return x.id === row.dataset.lane; });
+      if(!L) return;
+      const lit = !revealing || nowYa <= ya(L.reckoningStart);
+      row.classList.toggle("lanes-dark", !lit);
+    });
+  }
+
+  function now(v){
+    const el = document.getElementById("lanesNow");
+    if(!el) return;
+    const val = (v === undefined || v === null) ? +scrub.value : +v;
+    el.hidden = false;
+    el.style.left = pct(yearsAgoFromSlider(val));
+    paint(val);
+  }
+
+  function reveal(on){ revealing = !!on; paint(+scrub.value); }
+
+  function refresh(){ layout(); build(); buildRows(); now(); }
+
+  let t = null;
+  window.addEventListener("resize", function(){
+    if(t) clearTimeout(t);
+    t = setTimeout(refresh, 150);   // the same debounce buildTicks uses
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+  refresh();
+
+  // THE NOW LINE WATCHES THE SCRUBBER'S VALUE, NOT ANY ONE ROUTE INTO IT.
+  // Two earlier attempts were wrong and the second was wrong silently.
+  //   A listener on "input" tracks a drag, but Play moves the scrubber
+  //   programmatically, so the line would freeze during playback -- which is exactly
+  //   when this panel is on camera.
+  //   Wrapping render() looked right and did nothing: measured in the live page, the
+  //   global `render` binding WAS the wrapper and the counter on it stayed at 0 while
+  //   an input event redrew the year readout normally. Reassigning that binding does
+  //   not reach the binding the page's own listeners call. It had a catch(e){} around
+  //   it too, so it could not even report its own failure. Both are gone.
+  // Watching the value is route-independent: drag, Play, the dated-moment steppers,
+  // search results, URL anchors and anything added later all move this one number.
+  // It costs one float comparison per frame and nothing when the tab is hidden.
+  let painted = null;
+  function sync(){
+    const v = +scrub.value;
+    if(v !== painted){ painted = v; now(v); }
+  }
+  (function watch(){ sync(); requestAnimationFrame(watch); })();
+
+  // A TIMER AS WELL, BECAUSE requestAnimationFrame CAN BE STARVED ON THIS PAGE.
+  // Measured, not feared: in one check run the rAF watcher did not fire for 8.4
+  // seconds while the scrubber sat at a new value, and the line simply stopped. The
+  // same starvation stopped the film renderer dead four times (see the 2026-11-06
+  // render report), so it is a known property of this page under load, not a quirk
+  // of one run. rAF gives a smooth line while the browser is painting; this interval
+  // guarantees the line is never wrong for more than a quarter of a second even when
+  // it is not. It costs one comparison four times a second.
+  setInterval(sync, 250);
+
+  // AND IMMEDIATELY ON INPUT, BECAUSE THE WATCHER CAN ONLY RUN WHEN THE MAP LETS IT.
+  // A big jump makes the map recompute ice, tundra, deserts and shorelines, which
+  // blocks the main thread; the next animation frame -- and so the now line -- can be
+  // a visible fraction of a second late. Moving the line is cheap, so it is moved
+  // first, in the same event, before the map starts its redraw. The watcher stays,
+  // because it is the part that covers Play and every other route.
+  scrub.addEventListener("input", sync);
+
+  return {layout: layout, build: build, buildRows: buildRows, refresh: refresh,
+          now: now, reveal: reveal, lanes: LANES, ya: ya, x: f, pct: pct,
+          thumbW: thumbW};
+})();
 // ===================== PRESENTATION MODE (?present=1) =====================
 // The map, full frame, with every piece of page furniture gone and a small overlay of its own:
 // a big date, a compact legend of only the layers actually on, a callout card in place of popups,
