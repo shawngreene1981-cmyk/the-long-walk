@@ -7343,9 +7343,17 @@ window.__lanes = (function(){
           el.className = "lanes-pt" + (many ? " many" : "");
           el.style.left = (g.a * 100).toFixed(4) + "%";
         } else {
+          // a IS THE LEFT EDGE AND b IS THE RIGHT, already min/maxed by
+          // clusterItems. This took left from b and width from (a - b),
+          // which is negative for every span there is, so the Math.max floor
+          // fired every time and EVERY SPAN WAS DRAWN 0.12 % WIDE -- about
+          // 1.3 px -- pinned at its right-hand end. It survived five steps
+          // because every span on the panel was short enough that 1.3 px
+          // looked about right; the state lanes, where the Roman Republic is
+          // 482 years, showed it in one frame.
           el.className = "lanes-span";
-          el.style.left = (g.b * 100).toFixed(4) + "%";
-          el.style.width = Math.max(0.12, (g.a - g.b) * 100).toFixed(4) + "%";
+          el.style.left = (g.a * 100).toFixed(4) + "%";
+          el.style.width = Math.max(0.12, (g.b - g.a) * 100).toFixed(4) + "%";
         }
         el.style.setProperty("--tier", TIER[tier] || "#7fb0a3");
         // The highlight selects on these, so every mark states its own years.
@@ -7743,9 +7751,19 @@ window.__lanes = (function(){
       .then(function(d){
         if(!d || !Array.isArray(d.lanes) || !d.lanes.length)
           throw new Error("data/lanes/lanes.json has no lanes array");
+        // WHAT EACH KIND OF LANE HAS TO HAVE. This asked every lane for a
+        // numeric reckoningStart, which was right while every lane was a
+        // reckoning; the state lanes are dated evidence and have none, so the
+        // whole file failed and the panel showed its error instead of itself.
+        // Loosening it to "skip if absent" would have been the lazy fix and
+        // would let a tradition lane ship with no epoch.
         d.lanes.forEach(function(L){
-          if(typeof L.reckoningStart !== "number")
-            throw new Error("lane " + L.id + " has no numeric reckoningStart");
+          if(!L.id || !L.label || !Array.isArray(L.items))
+            throw new Error("lane " + (L.id || "?")
+                            + " is missing an id, a label or its items");
+          if(L.group === "traditions" && typeof L.reckoningStart !== "number")
+            throw new Error("reckoning " + L.id
+                            + " has no numeric reckoningStart");
         });
         DOC = d;
         refresh();

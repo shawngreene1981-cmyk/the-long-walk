@@ -42,11 +42,11 @@ resolved.
 
 | # | item | touches | state |
 |---|---|---|---|
-| 2 | Erlitou radiocarbon range | Part B, China | open — v2 |
-| 3 | 1900 BCE Mature Harappan end | Part B, Indus | open — v2 |
-| 4 | Roman Empire 27 BCE / 476 CE | Part B, Rome | open — v2 |
-| 5 | Chavín revised phasing | Part B, Andes | open — v2 |
-| 6 | Minoan sequence start | Part B, Aegean | open — v2 |
+| 2 | Erlitou radiocarbon range | Part B, China | **resolved as contested** |
+| 3 | 1900 BCE Mature Harappan end | Part B, Indus | **resolved — against Part B** |
+| 4 | Roman Empire 27 BCE / 476 CE | Part B, Rome | **resolved** |
+| 5 | Chavín revised phasing | Part B, Andes | **resolved as contested** |
+| 6 | Minoan sequence start | Part B, Aegean | **resolved** |
 | 7 | Does the Turin King List open with divine rulers? | Egyptian lane | **scoped around** |
 | 8 | Three Sovereigns dates | Chinese lane | **scoped around** |
 | 9 | A larger free scan of the Weld-Blundell Prism | Sumerian lane image | open — see below |
@@ -77,6 +77,47 @@ which is why they were passed over — see `IMAGE_TERMS_Synchronoptic_Lanes.md`.
 Ashmolean's own collections site is the obvious place to ask.
 
 ---
+## RESOLVED IN v2 — the five Part B items
+
+All five were closed on 2026-11-26 while the dynasty group was typed. **Three of them
+resolve to “contested”, which is a result and not a failure**: the literature does
+not agree, the lane says so in its own tooltip, and the mark carries the contested tier.
+
+- ~~**2. Erlitou radiocarbon range.**~~ **Resolved as CONTESTED.** The
+  Xia–Shang–Zhou Chronology Project’s 2000 chart begins the Xia at 2070 BCE;
+  a larger series of radiocarbon samples from Erlitou’s lower layers moved the
+  site’s own start to about **1750 BCE** (Wu Xiaohong, Peking University, reported in
+  *Science*), and Erlitou’s excavation director has publicly called the project
+  political. The lane draws **1750–1520** and **does not label Erlitou “Xia”**,
+  because whether the site is the dynasty the texts describe IS the dispute. The
+  traditional Xia date stays on the Chinese tradition lane, where it belongs.
+- ~~**3. 1900 BCE Mature Harappan end.**~~ **Resolved AGAINST Part B.** Part B gave
+  Mature c. 2600–2000 and Late to c. 1700. Kenoyer’s table (2008), and
+  Shaffer’s Integration / Localisation eras behind it, give **2600–1900** and
+  **1900–1300**, and the 1900 boundary is common to nearly every published scheme.
+  Part B’s figures are superseded on the lane and the lane note says so. What is
+  still disputed is the Mature start (2600 or 2800) and the Late end (1300 or 1500).
+- ~~**4. Roman Empire 27 BCE / 476 CE.**~~ **Resolved.** 27 BCE is a constitutional
+  moment; **476 CE is a modern convention**, the deposition of Romulus Augustulus, and
+  it ends only the WESTERN empire. The eastern empire ran to 1453, **which this
+  map’s axis reaches**, so it is drawn rather than left off. The two bars overlap
+  from the division of 395, and that overlap is declared in `build_lanes.py`.
+- ~~**5. Chavín revised phasing.**~~ **Resolved as CONTESTED.** Part B’s
+  c. 900–200 BCE is Burger’s OLD chronology. His own later AMS sequence has the
+  site founded **c. 950 cal BC** and abandoned **by c. 400 cal BC**; Kembel’s
+  architectural sequence instead puts five construction phases at **1100–550 BC**,
+  moving the Janabarriu phase some four centuries earlier than the old scheme. The bar
+  follows the radiocarbon sequence and the architectural one is in its tooltip.
+- ~~**6. Minoan sequence start.**~~ **Resolved.** Part B’s “palaces from c.
+  1900” is the date of the FIRST PALACES, not of the Minoan sequence, which begins
+  at Early Minoan I, **c. 3100 BCE**. The lane draws 3100–1100 with the
+  Protopalatial palaces (c. 1900–1700) named in the note. **The Late Minoan end
+  moves by about a century** depending on the Aegean chronology — radiocarbon puts
+  the Thera eruption near 1600 BCE, Egyptian synchronism about a hundred years later
+  — and that argument is not settled, so the bar is contested.
+
+---
+
 ## RESOLVED
 
 - ~~**Kalpa: 1,000 or 2,000 mahāyugas?**~~ **Resolved 2026-11-25, and the two figures were
@@ -101,5 +142,13 @@ Ashmolean's own collections site is the obvious place to ask.
   (`Q1068371` is Han Dynasty, Chauhan Dynasty and a Han–Xiongnu alliance at once). This is why
   the dynasty group will be built from RESEARCH Part B and not from the acts. Full list:
   `TLW_FINDING_Cliopatria_QID_collisions_2026-11-25.txt`.
+- **EVERY SPAN ON THE PANEL WAS DRAWN 1.3 px WIDE, from step 5 to 2026-11-26.** The
+  drawing code took a span’s left edge from the RIGHT of its pair and its width from
+  a subtraction that is negative for every span there is, so the minimum-width floor
+  fired every time. It survived five steps and ninety checks because every span on the
+  panel was short — Abram’s seventy-five years, Solomon’s eight — and at
+  this zoom 1.3 px is roughly what a correct one would look like. The state lanes, where
+  the Roman Republic is 482 years, showed it in one frame. **No check had asserted that
+  a span’s width matched its own dates**; one does now.
 - **The page's tick strip was up to 11.3 px out from its own scrubber thumb.** Fixed
   2026-11-25; the strip and the lanes now share one measurement.

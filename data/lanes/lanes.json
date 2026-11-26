@@ -356,6 +356,463 @@
      "note": "Fixed by the eclipse of 763 BCE."
     }
    ]
+  },
+  {
+   "id": "st-egypt",
+   "label": "Egypt",
+   "caption": "nine periods, Met sequence",
+   "note": "PERIOD BOUNDARIES ARE CONVENTIONS, not measurements. This lane follows ONE authority end to end — the Metropolitan Museum’s list of rulers — because mixing two produces seams that look like history and are not. Britannica runs the Old Kingdom roughly a century later, c. 2543–2118, and begins the Early Dynastic at c. 2900 rather than c. 3100; Part B records both. WORTH NOTICING: the Met’s c. 3100 start agrees with the radiocarbon date for Aha, 3111–3045 BCE, on the Egyptian tradition lane below. Britannica’s c. 2900 does not.",
+   "source": "RESEARCH Part B [25] Metropolitan Museum of Art, List of Rulers of Ancient Egypt and Nubia; [28] Britannica. Aha by radiocarbon: Dee et al. 2013.",
+   "items": [
+    {
+     "id": "eg-ed",
+     "kind": "span",
+     "start": -3100,
+     "end": -2649,
+     "label": "Early Dynastic",
+     "tier": "solid",
+     "note": "Britannica begins it c. 2900 instead. The radiocarbon date for Aha on the tradition lane, 3111–3045 BCE, sits at this end of the Met’s range and outside Britannica’s altogether."
+    },
+    {
+     "id": "eg-ok",
+     "kind": "span",
+     "start": -2649,
+     "end": -2150,
+     "label": "Old Kingdom",
+     "tier": "solid",
+     "note": "Britannica: c. 2543–2118, roughly a century later. The pyramid-age alignment column above is drawn on the Met sequence."
+    },
+    {
+     "id": "eg-fip",
+     "kind": "span",
+     "start": -2150,
+     "end": -2030,
+     "label": "First Intermediate Period",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-mk",
+     "kind": "span",
+     "start": -2030,
+     "end": -1640,
+     "label": "Middle Kingdom",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-sip",
+     "kind": "span",
+     "start": -1640,
+     "end": -1550,
+     "label": "Second Intermediate Period",
+     "tier": "solid",
+     "note": "Part B gives the end as c. 1540, which would overlap the New Kingdom by ten years. The Met’s 1550 is used so the lane does not show a decade that two dynasties both ruled."
+    },
+    {
+     "id": "eg-nk",
+     "kind": "span",
+     "start": -1550,
+     "end": -1070,
+     "label": "New Kingdom",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-tip",
+     "kind": "span",
+     "start": -1070,
+     "end": -713,
+     "label": "Third Intermediate Period",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-late",
+     "kind": "span",
+     "start": -712,
+     "end": -332,
+     "label": "Late Period",
+     "tier": "solid",
+     "note": "Part B also records a start of 664, the beginning of the Twenty-sixth Dynasty, depending on whether the Kushite period is counted here."
+    },
+    {
+     "id": "eg-ptol",
+     "kind": "span",
+     "start": -305,
+     "end": -30,
+     "label": "Ptolemaic Egypt",
+     "tier": "solid",
+     "note": "Part B gives 305/304. It ends with Cleopatra VII and the Roman annexation, which is one of the few hard dates on this lane."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-babylonia",
+   "label": "Sumer and Babylonia",
+   "caption": "MIDDLE CHRONOLOGY",
+   "note": "EVERY DATE HERE FROM UR III ONWARD IS MIDDLE CHRONOLOGY, and the choice moves the whole lane. High chronology puts Hammurabi at 1848–1806 and the fall of Babylon at 1651; middle, used here, 1792–1750 and 1595; low, 1728–1686 and 1531; ultra-low, 1696–1654 and 1499. That is a spread of about 150 years, which is wider than several of the bars on this lane. Mesopotamian dates only become year-accurate at 911 BCE, fixed by the solar eclipse of 763 — see the Assyria lane.",
+   "source": "RESEARCH Part B [33]–[37], middle chronology throughout.",
+   "items": [
+    {
+     "id": "mes-uruk",
+     "kind": "span",
+     "start": -4000,
+     "end": -3100,
+     "label": "the Uruk period",
+     "tier": "contested",
+     "note": "An archaeological period bracketed by radiocarbon, not a polity with a reign list. Its end, c. 3100, is where writing and the first states appear — which is the window three of the six reckonings above chose to begin in."
+    },
+    {
+     "id": "mes-ed",
+     "kind": "span",
+     "start": -2900,
+     "end": -2350,
+     "label": "Early Dynastic",
+     "tier": "solid"
+    },
+    {
+     "id": "mes-akkad",
+     "kind": "span",
+     "start": -2350,
+     "end": -2150,
+     "label": "Akkad",
+     "tier": "contested",
+     "note": "Middle chronology. Sargon’s accession is conventionally 2334 BCE — fourteen years after the date Ussher gives for the Flood, with the record running straight through both."
+    },
+    {
+     "id": "mes-ur3",
+     "kind": "span",
+     "start": -2112,
+     "end": -2004,
+     "label": "Ur III",
+     "tier": "contested",
+     "note": "Middle chronology. The Sumerian King List is copied under Shulgi in this window; see the Sumerian lane."
+    },
+    {
+     "id": "mes-ob",
+     "kind": "span",
+     "start": -1894,
+     "end": -1595,
+     "label": "Old Babylonian",
+     "tier": "contested",
+     "note": "Middle chronology. Hammurabi reigns 1792–1750 on this reckoning."
+    },
+    {
+     "id": "mes-kassite",
+     "kind": "span",
+     "start": -1595,
+     "end": -1155,
+     "label": "Kassite Babylon",
+     "tier": "contested",
+     "note": "Middle chronology; begins at the fall of Babylon."
+    },
+    {
+     "id": "mes-nb",
+     "kind": "span",
+     "start": -626,
+     "end": -539,
+     "label": "Neo-Babylonian",
+     "tier": "solid",
+     "note": "Year-accurate. It ends with Cyrus taking Babylon, which is also where the Persia lane begins."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-assyria",
+   "label": "Assyria",
+   "caption": "year-accurate from 911 BCE",
+   "note": "Assyria and Babylonia were two states in one region at the same time, so they are two lanes: drawn on one row the bars would overlap, and a lane that overlaps itself cannot be read. THIS IS WHERE THE DATED RECORD HARDENS. Assyrian dates are year-accurate from 911 BCE, fixed by the eponym lists against the solar eclipse of 15 June 763 BCE. Everything to the left of that on this panel, on every lane, is reckoned rather than counted.",
+   "source": "RESEARCH Part B [33]–[37]; Metropolitan Museum, Assyria 1365–609 B.C. Middle Assyrian dates follow the same middle chronology as Babylonia.",
+   "items": [
+    {
+     "id": "as-middle",
+     "kind": "span",
+     "start": -1363,
+     "end": -912,
+     "label": "Middle Assyrian",
+     "tier": "contested",
+     "note": "From Ashur-uballit I to the death of Ashur-dan II. His accession is given as c. 1363 or c. 1365 depending on the chronology; Freydank offers 1353 on another reckoning."
+    },
+    {
+     "id": "as-neo",
+     "kind": "span",
+     "start": -911,
+     "end": -609,
+     "label": "Neo-Assyrian",
+     "tier": "solid"
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-indus",
+   "label": "the Indus",
+   "caption": "Kenoyer’s sequence; Part B’s figures superseded",
+   "note": "OPEN ITEM 3 IS RESOLVED HERE, AGAINST PART B. Part B gave the Mature phase as c. 2600–2000 and the Late phase as running to c. 1700. The standard scheme — Kenoyer 2008, and Shaffer’s Regionalisation / Integration / Localisation eras behind it — puts the Mature (Integration) phase at 2600–1900 and the Late (Localisation) phase at 1900–1300. The 1900 boundary is common to nearly every published scheme, so it is used. What is still disputed is when the Mature phase BEGINS (2600 or 2800) and when the Late phase ENDS (1300, 1500 or later in the east).",
+   "source": "RESEARCH Part B [38][39]; J. M. Kenoyer, Indus Civilization (2008), chronological table; J. G. Shaffer’s era scheme.",
+   "items": [
+    {
+     "id": "in-early",
+     "kind": "span",
+     "start": -3300,
+     "end": -2600,
+     "label": "Early Harappan",
+     "tier": "contested",
+     "note": "The Regionalisation era. Its start is a soft boundary in the archaeology rather than a date."
+    },
+    {
+     "id": "in-mature",
+     "kind": "span",
+     "start": -2600,
+     "end": -1900,
+     "label": "Mature Harappan",
+     "tier": "solid",
+     "note": "Kenoyer’s Integration era, Harappa Periods 3A–C. Some popular sources begin it at c. 2800 instead."
+    },
+    {
+     "id": "in-late",
+     "kind": "span",
+     "start": -1900,
+     "end": -1300,
+     "label": "Late Harappan",
+     "tier": "contested",
+     "note": "The Localisation era. Harappa’s own radiocarbon sequence puts a transitional phase at c. 1900–1800 before it. The end is variously given as 1300, 1500 or later again further east."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-china",
+   "label": "China",
+   "caption": "Erlitou on radiocarbon, not on the Xia",
+   "note": "OPEN ITEM 2 IS RESOLVED AS CONTESTED, WHICH IS WHAT THE LITERATURE SAYS. The Xia–Shang–Zhou Chronology Project’s 2000 chart begins the Xia at 2070 BCE; a larger series of radiocarbon samples from Erlitou’s lower layers moved the site’s own start to about 1750 BCE, and Erlitou’s excavation director has publicly called the project political. THIS LANE DOES NOT LABEL ERLITOU “XIA”: whether the site is the dynasty the texts describe is the dispute, not a detail of it. The traditional dates for the Xia, Shang and Zhou are on the Chinese tradition lane below, where they belong — 2205, 1766 and 1122 BCE — and they are not these dates.",
+   "source": "RESEARCH Part B [40][41]; Lawler, Science (2009) reporting Wu Xiaohong (Peking University) on the Erlitou redating; Xia–Shang–Zhou Chronology Project (2000) for the figures it is contested against.",
+   "items": [
+    {
+     "id": "cn-erlitou",
+     "kind": "span",
+     "start": -1750,
+     "end": -1520,
+     "label": "Erlitou",
+     "tier": "contested",
+     "note": "The start is the Peking University redating of lower-layer samples; earlier work gave a range as wide as 1900–1500. The end is the conventional transition to Erligang. OVERLAPS THE SHANG BAR BY ABOUT EIGHTY YEARS on this lane, and that overlap is real: the two are archaeological horizons, not a handover between governments."
+    },
+    {
+     "id": "cn-shang",
+     "kind": "span",
+     "start": -1600,
+     "end": -1046,
+     "label": "Shang",
+     "tier": "solid",
+     "note": "The Anyang oracle bones, from Wu Ding’s reign c. 1250 BCE, are the earliest Chinese writing and the first contemporary record of any of this."
+    },
+    {
+     "id": "cn-wzhou",
+     "kind": "span",
+     "start": -1046,
+     "end": -771,
+     "label": "Western Zhou",
+     "tier": "solid",
+     "note": "1046 is the Chronology Project’s date for the conquest; Cambridge gives 1045, the Bamboo Annals 1027 and the tradition 1122."
+    },
+    {
+     "id": "cn-ezhou",
+     "kind": "span",
+     "start": -771,
+     "end": -256,
+     "label": "Eastern Zhou",
+     "tier": "solid"
+    },
+    {
+     "id": "cn-qin",
+     "kind": "span",
+     "start": -221,
+     "end": -206,
+     "label": "Qin",
+     "tier": "solid"
+    },
+    {
+     "id": "cn-han",
+     "kind": "span",
+     "start": -206,
+     "end": 220,
+     "label": "Han",
+     "tier": "solid"
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-persia",
+   "label": "Persia",
+   "caption": "Achaemenid only, as Part B sources it",
+   "note": "Part B sources the Achaemenid empire and nothing else on this lane, so nothing else is drawn. The Seleucid, Parthian and Sasanian states are absent because they were not in the sourcing pass, NOT because they were judged unimportant — an empty stretch of lane here means no source was checked, which is a different thing from an empty stretch meaning nothing was happening.",
+   "source": "RESEARCH Part B [37][42].",
+   "items": [
+    {
+     "id": "pe-achaemenid",
+     "kind": "span",
+     "start": -550,
+     "end": -330,
+     "label": "Achaemenid Persia",
+     "tier": "solid",
+     "note": "From Cyrus to Alexander. It begins where the Neo-Babylonian bar ends."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-aegean",
+   "label": "Minoan Crete",
+   "caption": "the sequence, not the palaces",
+   "note": "OPEN ITEM 6 IS RESOLVED HERE. Part B gives “Minoan palaces from c. 1900”, which is the date of the FIRST PALACES and not of the Minoan sequence: that begins at Early Minoan I, c. 3100 BCE. The Protopalatial palaces are c. 1900–1700, inside this bar, and some schemes start Protopalatial society at c. 2100. THE WHOLE LATE MINOAN END OF THIS BAR MOVES BY ABOUT A CENTURY depending on the Aegean chronology: radiocarbon puts the Thera eruption near 1600 BCE, synchronism with Egyptian records puts it about a hundred years later, and that argument is not settled.",
+   "source": "RESEARCH Part B [43]; Minoan chronology, Early Minoan I c. 3100 BCE; Dunn (Durham, 2002) on the two calendrical ranges for the Thera eruption, c. 1645–1628 and c. 1540–1500 BCE.",
+   "items": [
+    {
+     "id": "ae-minoan",
+     "kind": "span",
+     "start": -3100,
+     "end": -1100,
+     "label": "Minoan Crete",
+     "tier": "contested",
+     "note": "Early Minoan I to the end of the Late Minoan sequence. The first palaces are c. 1900–1700, within this span; the Late Minoan dates depend on which Aegean chronology you take."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-greece",
+   "label": "Greece",
+   "caption": "mainland; Crete is its own lane",
+   "note": "The mainland sequence. Mycenaean Greece and Minoan Crete overlap by five centuries, which is why they are two lanes rather than two bars on one.",
+   "source": "RESEARCH Part B [44] Mycenaean; [9] Archaic and Classical.",
+   "items": [
+    {
+     "id": "gr-myc",
+     "kind": "span",
+     "start": -1600,
+     "end": -1100,
+     "label": "Mycenaean Greece",
+     "tier": "contested",
+     "note": "Its start shares the Aegean chronology problem with Minoan Crete. The destructions around 1200 BCE fall inside this bar, in the same fifty-year window as Wu Ding’s oracle bones and the Merneptah stele — see the alignment column."
+    },
+    {
+     "id": "gr-archaic",
+     "kind": "span",
+     "start": -800,
+     "end": -480,
+     "label": "Archaic Greece",
+     "tier": "solid"
+    },
+    {
+     "id": "gr-classical",
+     "kind": "span",
+     "start": -480,
+     "end": -323,
+     "label": "Classical Greece",
+     "tier": "solid"
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-rome",
+   "label": "Rome",
+   "caption": "west to 476, east to 1453",
+   "note": "OPEN ITEM 4 IS RESOLVED HERE. 27 BCE is a constitutional moment: the senate grants Octavian the title Augustus. 476 CE IS NOT AN EVENT OF THE SAME KIND. It is a modern convention, the deposition of Romulus Augustulus, and it ends only the WESTERN empire; no one alive in 476 thought Rome had fallen. The eastern empire ran to 1453, which this map’s axis reaches, so it is drawn rather than left off. The two bars overlap from 395, when the empire was formally divided, and that overlap is the point.",
+   "source": "RESEARCH Part B [45] for the founding; the Republic from 509; the imperial dates are the conventional ones and the convention is described in the note.",
+   "items": [
+    {
+     "id": "ro-founded",
+     "kind": "point",
+     "start": -753,
+     "label": "Rome founded (tradition)",
+     "tier": "tradition",
+     "note": "The traditional date. The archaeology gives a Palatine village in the tenth to ninth centuries BCE, which is a different kind of claim about a different kind of thing."
+    },
+    {
+     "id": "ro-republic",
+     "kind": "span",
+     "start": -509,
+     "end": -27,
+     "label": "the Republic",
+     "tier": "solid"
+    },
+    {
+     "id": "ro-west",
+     "kind": "span",
+     "start": -27,
+     "end": 476,
+     "label": "the Roman Empire in the west",
+     "tier": "solid",
+     "note": "476 is a modern convention, not a contemporary event: see the lane note."
+    },
+    {
+     "id": "ro-east",
+     "kind": "span",
+     "start": 395,
+     "end": 1453,
+     "label": "the Roman Empire in the east",
+     "tier": "solid",
+     "note": "From the formal division of 395 to the fall of Constantinople. OVERLAPS THE WESTERN BAR FROM 395 TO 476, because for those eighty years there were two."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-mesoamerica",
+   "label": "Mesoamerica",
+   "caption": "Olmec, then Classic Maya",
+   "note": "The earliest carved Long Count dates, 36 BCE to 37 CE, are on the Maya tradition lane rather than repeated here: they are a fact about the calendar, and this lane is about states.",
+   "source": "RESEARCH Part B [46] Olmec; [47] Classic.",
+   "items": [
+    {
+     "id": "ma-olmec",
+     "kind": "span",
+     "start": -1200,
+     "end": -400,
+     "label": "Olmec",
+     "tier": "solid",
+     "note": "San Lorenzo is at its height around 1200 BCE, inside the same fifty-year window as the Mycenaean destructions and the Merneptah stele."
+    },
+    {
+     "id": "ma-classic",
+     "kind": "span",
+     "start": 250,
+     "end": 900,
+     "label": "Classic Maya",
+     "tier": "solid",
+     "note": "Part B gives the start as c. 100 or c. 250 CE depending on where the Preclassic is held to end; 250 is the commoner convention."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-andes",
+   "label": "the Andes",
+   "caption": "Chavín redated, and still disputed",
+   "note": "OPEN ITEM 5 IS RESOLVED AS CONTESTED. Part B gave Chavín as c. 900–200 BCE, which is Burger’s OLD chronology. His own later AMS sequence has the site founded c. 950 cal BC and abandoned by c. 400 cal BC, while Kembel’s architectural sequence puts five construction phases at 1100–550 BC, moving the Janabarriu phase some four centuries earlier than the old scheme. The bar follows the radiocarbon sequence; the architectural one is in its tooltip. CARAL IS NOT DRAWN SEPARATELY — it is a site within Norte Chico, and nesting one bar inside another would read as two things rather than one thing inside another.",
+   "source": "RESEARCH Part B [48]–[52]; Burger, Understanding the Socioeconomic Trajectory of Chavín de Huántar: A New Radiocarbon Sequence (Latin American Antiquity); Kembel on the monumental architecture.",
+   "items": [
+    {
+     "id": "an-nortechico",
+     "kind": "span",
+     "start": -3000,
+     "end": -1800,
+     "label": "Norte Chico / Caral-Supe",
+     "tier": "solid",
+     "note": "Caral itself is dated 2627–1977 cal BC, inside this span. It is not drawn as its own bar because it is a site within this tradition, not a second one."
+    },
+    {
+     "id": "an-chavin",
+     "kind": "span",
+     "start": -950,
+     "end": -400,
+     "label": "Chavín de Huántar",
+     "tier": "contested",
+     "note": "Burger’s AMS sequence: founded c. 950 cal BC, abandoned by c. 400. Kembel’s architectural sequence instead runs 1100–550 BC. Part B’s c. 900–200 is the superseded chronology."
+    }
+   ],
+   "group": "states"
   }
  ],
  "alignments": [

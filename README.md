@@ -957,6 +957,34 @@ words it, the crop box, the source and output dimensions, and the files rejected
 Each band's own tooltip carries its image's credit, because the image is on screen and a
 credits roll is not.
 
+**Eleven more lanes are dynasties and states**, typed from the sourcing pass's Part B
+and **not** taken from the Cliopatria border acts: 171 of Cliopatria v0.2.1's 1,413
+Wikidata ids carry more than one polity name — `Q1068371` is the Han Dynasty, the
+Chauhan Dynasty and a Han–Xiongnu alliance at once — so a lane built from the acts
+would silently merge polities. The group is collapsed by default, because eleven more
+rows open would push the six clocks off most screens.
+
+**These are conventions, not measurements, and the lanes say so.** A period boundary is
+where scholarship agreed to put a line, and different authorities put it in different
+places: Egypt runs about a century apart between the two authorities Part B cites, so the
+lane follows one of them end to end and names the other in its tooltip. **Everything on
+the Sumer and Babylonia lane from Ur III onward is middle chronology**, and the high, low
+and ultra-low alternatives move it by about 150 years — wider than several of its own
+bars. Assyria is a separate lane from Babylonia because they were two states at once, and
+a lane that overlaps itself cannot be read. **Only two overlaps are drawn, and both are
+declared in the generator**: Erlitou against Shang, which are archaeological horizons
+rather than a handover between governments, and the western Roman empire against the
+eastern from the division of 395.
+
+**Four of the sourcing pass's open items were settled here, three of them as *contested*.**
+Erlitou is drawn on radiocarbon (c. 1750–1520) and is deliberately **not labelled
+“Xia”**, because whether the site is the dynasty the texts describe is the dispute
+itself. The Mature Harappan phase ends at 1900 BCE on Kenoyer's sequence, superseding Part
+B's 2000. Chavín follows Burger's AMS redating, c. 950–400 cal BC, with Kembel's
+architectural sequence of 1100–550 in the tooltip. And **476 CE is named as what it is
+— a modern convention** that ends only the western empire; the eastern empire is drawn
+on to 1453, which this map's axis reaches.
+
 **The region lanes carry no claim of their own.** They are derived, not stored: all 565
 anchors placed into the boxes `coverage.json` defines, none falling outside. Each mark keeps
 the tier it has on the map.
