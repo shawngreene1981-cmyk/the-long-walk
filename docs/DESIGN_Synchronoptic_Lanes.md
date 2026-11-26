@@ -20,6 +20,7 @@ What it can't do, and why that is our hook: **it starts at 4004 BC, so everythin
 - **"Let the map be a map."** Opacity means time only. Evidence tiers live in tooltips, not the visual layer.
 - **Evidence tiers unchanged:** the map's existing tiers (well-supported, contested, pre-sapiens, tradition, no verified evidence). Every item on a lane carries its tier in its tooltip.
 - **The Divergence Test** is the methodology; this view is a display of it, not a new standard.
+- **A CHANGE TO AN APPROVED SET COMES BACK BEFORE IT IS USED (ruled 2026-11-26).** Once Shawn has approved a specific set — these files, these sources, these licences — swapping any member of it for a different file, source or licence is a decision for him and not for whoever is building. **Write the case and wait for his word, EVEN WHEN THE REPLACEMENT IS PLAINLY BETTER.** The rule comes from a case where it was: the approved oracle-bone photograph turned out on download to show the uninscribed face of the bone through museum glass, and was replaced mid-build with a British Library scan of the inscribed face under the same licence. The swap was kept, and it should still have been asked. “Obviously better” is exactly the reasoning that makes an approval stop meaning anything.
 - **Tradition lanes are labelled as tradition**, never as history and never mocked. The tone is "here is what this tradition reckons, here is what the ground shows". **No lane is privileged**: all six get the same treatment.
 
 ## 4. Layout (RULED 2026-11-25: a panel under the map)
