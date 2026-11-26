@@ -609,6 +609,79 @@
   .lanes-msg{margin-top:10px;padding:9px 12px;border-left:2px solid var(--rust);
     background:rgba(209,114,90,.09);font-family:'IBM Plex Mono',monospace;
     font-size:11px;line-height:1.55;color:#e8b5a6;}
+
+  /* --- step 12: tap to read -------------------------------------------- */
+  /* EVERY WORD ON THIS PANEL LIVES IN A TITLE ATTRIBUTE, and a touch device
+     never shows one -- so the sheet opened on a phone with the dates, the
+     sources, the evidence tiers and the notes that exist to refuse a reading
+     all unreachable. Tapping anything puts its text here instead. Wired at
+     every width, because a native tooltip is also slow, truncated after a few
+     lines and impossible to copy from, and the three-beginnings note is 400
+     characters long. */
+  .lanes-detail{margin-top:9px;padding:10px 12px;border:1px solid var(--line);
+    border-left:2px solid var(--amber);border-radius:3px;background:var(--paper);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;
+    color:var(--parchment-dim);white-space:pre-wrap;word-break:break-word;}
+  .lanes-detail[hidden]{display:none;}
+  .lanes-detail .dx{float:right;margin:-3px -4px 0 8px;padding:3px 6px;
+    background:none;border:0;color:var(--parchment-dimmer);cursor:pointer;
+    font-size:13px;line-height:1;}
+  .lanes-detail .dx:hover{color:var(--amber-bright);}
+  .lanes-detail .dt{display:block;}
+  .lanes-tapped{outline:2px solid var(--amber-bright);outline-offset:1px;}
+  .lanes-taphint{margin-top:7px;font-family:'IBM Plex Mono',monospace;
+    font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--parchment-dimmer);}
+
+  /* --- step 12: the phone sheet ---------------------------------------- */
+  /* FOUNDER RULING: on a phone the panel opens as a SHEET, like the layers
+     panel. It reuses that sheet furniture rather than inventing a second kind
+     -- .layers-btn, .sheet-head, .sheet-close and .sheet-scrim are already
+     defined above, already hidden over 760 px, and already behave the way a
+     reader of this page expects. Fifteen lanes under the map would otherwise
+     push everything else off a phone screen. */
+  @media (max-width: 760px){
+    .lanes{position:fixed;left:0;right:0;bottom:0;z-index:2000;margin:0;
+      padding:0 14px calc(16px + env(safe-area-inset-bottom));
+      max-height:82vh;overflow-y:auto;overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;border:0;
+      border-top:1px solid var(--line);border-radius:12px 12px 0 0;
+      box-shadow:0 -14px 40px rgba(0,0,0,.6);
+      transform:translateY(101%);transition:transform .26s ease;
+      visibility:hidden;}
+    .lanes.open{transform:translateY(0);visibility:visible;}
+    /* THE STICKY HEAD HAS TO WIN. .sheet-head carries z-index:1 from the layers
+       sheet, where nothing else is layered; here the lane names are z-index 7 and
+       the now line 6, so scrolling the sheet drew the marks and a lane name
+       straight across the title. */
+    .lanes .sheet-head{margin:0 -14px 4px;padding:14px 14px 10px;z-index:12;}
+    /* The sheet head carries the title, so the in-panel one would say it twice. */
+    .lanes-head{padding:8px 0 0;}
+    .lanes-title{display:none;}
+    .lanes-scalenote{margin:8px 0 0;padding:7px 9px;font-size:10.5px;}
+    .lanes-body{margin:10px 0 2px;}
+    /* A LANE NAME MUST NOT WRAP INTO ITS OWN MARKS. At 9 px the Biblical name
+       and caption are about 400 px of type and the sheet is 345 px wide, so it
+       wrapped onto a second line that landed straight on the row. The caption
+       is dropped here and the name is cut with an ellipsis; both are still in
+       the tooltip, which is where this panel keeps its words anyway. */
+    .lanes-rowname{font-size:8px;letter-spacing:.07em;max-width:100%;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .lanes-rowname .cap{display:none;}
+    .lanes-row{margin-top:19px;}
+    .lanes-row.compact{margin-top:18px;}
+    .lanes-nowread{font-size:9.5px;letter-spacing:.05em;}
+    .lanes-detail{font-size:11.5px;line-height:1.65;max-height:38vh;
+      overflow-y:auto;}
+    /* A 2 px mark is not a touch target. The marks keep their own width --
+       moving them would be a lie about dates -- so each gets an invisible
+       10 px-wide pad to be tapped by, drawn outside the layout. */
+    .lanes-pt::before{content:"";position:absolute;top:-4px;bottom:-4px;
+      left:-5px;right:-5px;}
+    .lanes-pt{position:absolute;}
+    .lanes-gapchip{font-size:7px;padding:1px 3px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .lanes{transition:none;} }
 </style>
 </head>
 <body>
@@ -727,7 +800,16 @@
 
   <!-- SYNCHRONOPTIC LANES. Outside .stage on purpose: .stage is overflow:hidden and would
        clip this. Everything inside is built by script from the shared scrubber. -->
+  <!-- The opener is display:none over 760 px; below it, the section becomes a
+       bottom sheet. Same classes as the layers sheet, deliberately. -->
+  <button type="button" class="layers-btn lanes-btn" id="lanesBtn"
+          aria-expanded="false" aria-controls="lanes">What was happening at the same time</button>
   <section class="lanes" id="lanes" aria-labelledby="lanesTitle">
+    <div class="sheet-head">
+      <span class="sheet-title">What was happening at the same time</span>
+      <button type="button" class="sheet-close" id="lanesClose"
+              aria-label="Close the lanes panel">&#10005;</button>
+    </div>
     <div class="lanes-head">
       <h2 class="lanes-title" id="lanesTitle">What was happening at the same time</h2>
       <span class="lanes-sub">Six clocks, and the ground</span>
@@ -749,9 +831,14 @@
       </div>
       <div class="lanes-nowread" id="lanesNowRead" role="status"
            aria-live="polite"></div>
+      <div class="lanes-detail" id="lanesDetail" role="status"
+           aria-live="polite" hidden></div>
+      <p class="lanes-taphint" id="lanesTapHint">Tap or click anything on the
+        chart to read its dates, sources and evidence tier.</p>
       <div class="lanes-msg" id="lanesMsg" role="status" hidden></div>
     </div>
   </section>
+  <div class="sheet-scrim" id="lanesScrim" hidden></div>
   <div class="legend-row">
     <span class="legend-note" style="flex-basis:100%"><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" stroke="#0e1420" stroke-width="1.2"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" fill-opacity="0.25"/></svg> <strong>Brightness is time, and only time.</strong> A mark is bright at its date and dims as the slider moves on, down to a faint version of the same shape. A dim mark is further in the past — it is <em>not</em> weaker evidence; evidence is the colour and shape, and the popup. Every mark stays clickable at every brightness. The three forced routes never dim.</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#e0a75e" stroke-width="2"/><circle cx="7" cy="7" r="2" fill="#e0a75e"/></svg> Origin node — a source, not a site</span>
@@ -6834,8 +6921,20 @@ window.__lanes = (function(){
   // this measured from .lanes instead and put the track 17 px right of the thumb at
   // both ends, because .lanes-body already carries a 16 px side margin inside a 1 px
   // border and a margin-left adds to that rather than replacing it.
+  // BELOW 760 px THERE IS NO THUMB TO FIT TO. The panel is a fixed bottom sheet
+  // there and the scrubber is behind a scrim, so laying the track over a slider
+  // nobody can see would be alignment to nothing. The track fills the sheet
+  // instead. The MAPPING does not change -- every position still comes from the
+  // same f() -- so the panel is still one ruler with itself and with the year
+  // readout; it simply is not laid over a second one. The tick strip is already
+  // display:none at this width for the same sort of reason.
+  const PHONE = window.matchMedia("(max-width: 760px)");
   function layout(){
-    [track, scale].forEach(function(el){ if(el) fitToThumbTrack(el); });
+    [track, scale].forEach(function(el){
+      if(!el) return;
+      if(PHONE.matches){ el.style.marginLeft = ""; el.style.width = ""; }
+      else fitToThumbTrack(el);
+    });
   }
 
   // The age bands and the era hairlines depend only on the track origin, which moves
@@ -7235,6 +7334,8 @@ window.__lanes = (function(){
         cap.remove();
     });
     buildGaps();      // after the rows are in the document: it measures them
+    sheetLabel();
+    clearDetail();    // the element being read has just been thrown away
     paint(+scrub.value);
   }
 
@@ -7469,6 +7570,19 @@ window.__lanes = (function(){
       if(r.left < lastRight + 8){ el.classList.add("hid"); return; }
       lastRight = r.right;
     });
+    // AND ONE THAT WOULD RUN OFF THE PANEL IS DROPPED TOO. The pass above only
+    // compares each label with the one before it, so the LAST one was never
+    // tested against anything: "The Long Count goes to stone, beside Augustus
+    // and the Han" starts at 36 BCE, near the right end, and .lanes is
+    // overflow:hidden, so it was sliced to "...BESIDE AUGUSTUS AND TH". That
+    // was on screen in the step-9 screenshot and went unread; the phone check
+    // at 390 px, where it overflows by much more, is what caught it.
+    const pb = panel.getBoundingClientRect();
+    Array.prototype.slice.call(alignLab.children).forEach(function(el){
+      if(el.classList.contains("hid")) return;
+      const r = el.getBoundingClientRect();
+      if(r.right > pb.right - 2 || r.left < pb.left + 2) el.classList.add("hid");
+    });
   }
 
   // THE SIMULTANEITY HIGHLIGHT. Adams reads down a column; this is that column.
@@ -7636,7 +7750,110 @@ window.__lanes = (function(){
   // because it is the part that covers Play and every other route.
   scrub.addEventListener("input", sync);
 
+  // --- step 12: tap to read -----------------------------------------------------
+  // One delegated listener on the body, rather than a handler per mark: there
+  // are 346 titled elements on this panel and that number grows with the data.
+  // It walks up from the tapped node to the nearest ancestor carrying a title,
+  // so the 2 px marks, the bands, the hatch, the anchors, the alignment columns
+  // and the gap connectors are all readable by the same three lines of code.
+  const detail = document.getElementById("lanesDetail");
+  const tapHint = document.getElementById("lanesTapHint");
+  let tapped = null;
+
+  function showDetail(el){
+    if(tapped) tapped.classList.remove("lanes-tapped");
+    tapped = el || null;
+    if(!detail) return;
+    if(!el){
+      detail.hidden = true;
+      detail.textContent = "";
+      // AND THE HINT COMES BACK. Without this the panel said the chart could
+      // be tapped exactly once, and never again after the first note closed.
+      if(tapHint) tapHint.hidden = false;
+      return;
+    }
+    el.classList.add("lanes-tapped");
+    // THE TEXT GETS ITS OWN SPAN, because the box is aria-live: with the close
+    // button inside the box, every note was announced beginning with a cross,
+    // and the box read "\u2715Oceania \u2014 24 dated anchors" to anything
+    // reading its textContent.
+    detail.textContent = "";
+    const x = document.createElement("button");
+    x.type = "button";
+    x.className = "dx";
+    x.setAttribute("aria-label", "Close this note");
+    x.textContent = "\u2715";
+    x.addEventListener("click", function(e){ e.stopPropagation(); showDetail(null); });
+    detail.appendChild(x);
+    const dt = document.createElement("span");
+    dt.className = "dt";
+    dt.textContent = el.title;
+    detail.appendChild(dt);
+    detail.hidden = false;
+    if(tapHint) tapHint.hidden = true;
+  }
+
+  const body = panel.querySelector(".lanes-body");
+  if(body) body.addEventListener("click", function(e){
+    // A group header is a real button and keeps its own job.
+    if(e.target.closest(".lanes-grouphead")) return;
+    let el = e.target;
+    while(el && el !== body && !(el.title && el.title.length)) el = el.parentElement;
+    showDetail(el && el !== body && el.title ? el : null);
+  });
+  // Rebuilding the rows destroys whatever was being read, so the box goes with it.
+  function clearDetail(){
+    tapped = null;
+    if(detail){ detail.hidden = true; detail.textContent = ""; }
+    if(tapHint) tapHint.hidden = false;
+  }
+
+  // --- step 12: the sheet ------------------------------------------------------
+  // Open, close, scrim, Escape, and -- the one every bottom sheet gets wrong --
+  // rotating or widening past the breakpoint, which must not leave the page
+  // locked behind a scrim that is no longer drawn.
+  const sheetBtn = document.getElementById("lanesBtn");
+  const sheetX = document.getElementById("lanesClose");
+  const scrim = document.getElementById("lanesScrim");
+  let sheetOpen = false;
+
+  function setSheet(open){
+    sheetOpen = !!open;
+    panel.classList.toggle("open", sheetOpen);
+    if(scrim) scrim.hidden = !sheetOpen;
+    if(sheetBtn) sheetBtn.setAttribute("aria-expanded", sheetOpen ? "true" : "false");
+    document.body.style.overflow = sheetOpen ? "hidden" : "";
+    if(sheetOpen){
+      // Measure AFTER the sheet is on screen: everything on this panel is
+      // positioned from measured geometry, and a sheet that has not been
+      // painted yet has the wrong width to measure.
+      requestAnimationFrame(function(){ refresh(); if(sheetX) sheetX.focus(); });
+    } else if(PHONE.matches && sheetBtn) sheetBtn.focus();
+  }
+
+  // THE OPENER SAYS HOW MUCH IS BEHIND IT, the way the layers button does.
+  function sheetLabel(){
+    if(!sheetBtn) return;
+    const n = allLanes().length;
+    sheetBtn.textContent = n
+      ? "At the same time \u00b7 " + n + (n === 1 ? " lane" : " lanes")
+      : "What was happening at the same time";
+  }
+
+  if(sheetBtn) sheetBtn.addEventListener("click", function(){ setSheet(!sheetOpen); });
+  if(sheetX) sheetX.addEventListener("click", function(){ setSheet(false); });
+  if(scrim) scrim.addEventListener("click", function(){ setSheet(false); });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && sheetOpen) setSheet(false);
+  });
+  function syncSheet(){ if(!PHONE.matches && sheetOpen) setSheet(false); }
+  if(PHONE.addEventListener) PHONE.addEventListener("change", syncSheet);
+  else if(PHONE.addListener) PHONE.addListener(syncSheet);
+  window.addEventListener("resize", syncSheet);
+
   return {layout: layout, build: build, buildRows: buildRows, refresh: refresh,
+          sheet: setSheet, sheetOpen: function(){ return sheetOpen; },
+          detail: showDetail,
           now: now, reveal: reveal, load: load, ya: ya, x: f, pct: pct,
           doc: function(){ return DOC; }, cluster: clusterItems,
           regions: function(){ return REGIONS; }, highlight: highlight,
