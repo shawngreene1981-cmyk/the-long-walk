@@ -289,3 +289,73 @@ When the frames are approved, the build order is: step 1's true-scale figure fir
 the only genuinely new drawing primitive), then the sequence shell with keyboard and
 swipe, then steps 2–6 on top of the existing lane renderer, then the Explore changes in
 §4, each with render-level checks at 1400 px and 390 px, as everything else here has been.
+
+---
+
+## 6. BUILT — 2026-11-26
+
+Approved on the twelve frames and built the same day. **154 render-level checks pass:**
+96 desktop (`check_lanes.py`), 19 phone (`check_phone.py`), 39 story
+(`check_story.py`, new — every step at 1400 px and at 390 px, keyboard, swipe, tap, both
+handoffs).
+
+Build chain, after `lanes/patch_lanes_readme.py`: **`lanes/patch_story_mode.py`** then
+**`lanes/patch_explore.py`**. The group order and the ribbon flag are data, so they live
+in `build_lanes.py`. Frames: `geowork/story/shot_built.py` writes each built step beside
+its approved mockup.
+
+### What differs from the approved mockups, and why
+
+Every one of these is a difference you should see before it is anywhere near a reader.
+
+1. **The rate reads 67 years to the pixel on step 1, not 55 — and 1.40 on step 2, not
+   1.15.** The mockup assumed a 1300 px plot; the real rail is about 1070 px inside the
+   panel's own margins. **The figure is measured off the laid-out rail at runtime**, so
+   the screen is right and the mockup's number was the mockup's. Nothing else in the
+   design depends on it: the clocks still occupy the last 8.4%, because that is a
+   proportion.
+2. **The story is a section in the page, not a full screen.** 628 px tall rather than
+   900, with real Back / Next buttons and a step counter where the mockup only said
+   "→ or tap to continue". The panel stays below it rather than being hidden — hiding it
+   would have made all 114 existing checks measure a zero-size box.
+3. **Step 4's labels are longer than the mockup's.** "Hindu — Kali Yuga begins" rather
+   than "Kali Yuga epoch", because they are built from the lane's label and the item's
+   own label instead of being written for the slide. Say the word and they shorten.
+4. **Step 5 gained a line.** The mockup carried "both dates fall inside somebody's
+   continuous record" as axis furniture, where the built rail prints the measured rate.
+   It is back as copy, and says which records: Egypt's Old Kingdom and Early Dynastic
+   Mesopotamia, neither of which reports a flood.
+5. **The phone shows three landmarks on step 2, not four.** Mohenjo-daro and Gilgamesh
+   are 200 years apart, which is 45 px at 390 px and narrower than either name.
+6. **The phone rail is 380 px tall, not 300**, because the off-scale note wraps to three
+   lines and step 4 hangs a label off a 64 px stem.
+
+### What the frames caught that the checks did not
+
+The pattern holds: **four defects were visible only in a picture, and each is now a
+check.** The off-scale depth printed as **"NaN million years"** — a formatted string run
+back through arithmetic — and the check covering it asserted the words around the number
+rather than the number, so it passed. The phone's off-scale note printed through
+"70,000 BCE". Step 4's third label reached the ends row. Step 2's two phone labels sat on
+each other. The last three are held by new checks s29 and p5b, which assert that no text
+on a story screen overlaps any other text, at both widths.
+
+### The checks that were rewritten rather than loosened
+
+Six of the 114 asserted things the approved design deliberately changes. Each keeps the
+fault it was written for:
+
+| check | was | is |
+|---|---|---|
+| 7d | collapse the regions and nothing is left | they now START collapsed, so it opens them first, then collapses — same assertion |
+| 7e | — | new: collapsed, the regions are still there as one ribbon of all 565 marks |
+| 11 | a new kind of tooltip fails until someone decides | decided: the ribbon and the thumbnail carry no tier, and why is written down |
+| 13a | the image is inside the inked band | the image is beside its own lane's name and off the timeline |
+| 13b | the image cannot be clicked through to | the thumbnail IS what you hover, and it did not take the band's tooltip |
+| 13d | the opacities are measured, so no lane dominates | every thumbnail is the same size, so no lane dominates |
+| 12d | fifteen rows in the phone sheet | six clocks on opening, every other lane one tap away, 26 in all |
+
+**No check was dropped and none was weakened.** 13d is the one worth arguing about: a
+thumbnail cannot be dimmed into balance, so the fault it guards — one lane shouting
+louder than another because of its source — becomes a rule about size instead of opacity.
+The measured opacities stay in the manifest and check 13e still reads them.

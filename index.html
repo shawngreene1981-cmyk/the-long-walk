@@ -716,6 +716,204 @@
     .lanes-gapchip{font-size:7px;padding:1px 3px;}
   }
   @media (prefers-reduced-motion: reduce){ .lanes{transition:none;} }
+  /* --- story mode: the guided sequence above the panel ---------------------- */
+  .story{background:var(--paper);border:1px solid var(--line);border-radius:3px;
+    margin:14px 0 10px;padding:18px 22px 14px;scroll-margin-top:12px;}
+  .story-top{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--amber-bright);}
+  .story-pips{display:flex;gap:7px;align-items:center;}
+  .story-pips button{width:9px;height:9px;padding:0;border-radius:50%;cursor:pointer;
+    background:#2c3a53;border:1px solid var(--line);}
+  .story-pips button[aria-current="step"]{background:var(--amber-bright);
+    border-color:var(--amber-bright);box-shadow:0 0 9px rgba(242,191,124,.55);}
+  .story-pips button:focus-visible{outline:2px solid var(--amber-bright);
+    outline-offset:2px;}
+  .story-stage{min-height:430px;display:flex;flex-direction:column;}
+  .story h3{font-size:34px;line-height:1.1;margin:16px 0 0;font-weight:600;}
+  .story h3 em{font-style:italic;color:var(--amber-bright);}
+  .story-fig{flex:1;display:flex;flex-direction:column;justify-content:center;
+    margin:16px 0 4px;}
+  .story-copy{font-size:17px;line-height:1.5;color:var(--parchment-dim);
+    max-width:64ch;margin:12px 0 0;}
+  .story-copy b{color:var(--parchment);font-weight:600;}
+  .story-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;
+    border-top:1px solid var(--line);margin-top:12px;padding-top:11px;}
+  .story-nav .story-key{display:flex;gap:14px;flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--parchment-dimmer);}
+  .story-nav .story-key i{display:inline-block;width:8px;height:8px;margin-right:5px;}
+  .story-btns{display:flex;gap:8px;align-items:center;}
+  .story-btns button{font-family:'IBM Plex Mono',monospace;font-size:11px;
+    text-transform:uppercase;letter-spacing:.08em;color:var(--parchment);
+    background:var(--paper-2);border:1px solid var(--line);border-radius:2px;
+    padding:8px 14px;cursor:pointer;}
+  .story-btns button:hover:not(:disabled){border-color:var(--amber-bright);
+    color:var(--amber-bright);}
+  .story-btns button:disabled{opacity:.38;cursor:default;}
+  .story-count{font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.12em;color:var(--parchment-dimmer);white-space:nowrap;}
+  .story-go{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink);background:var(--amber-bright);
+    border:1px solid var(--amber-bright);border-radius:2px;padding:11px 20px;
+    font-weight:600;cursor:pointer;margin-top:14px;}
+  .story-msg{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--rust);
+    padding:18px 0;}
+
+  /* the rail: one horizontal line, drawn to real proportion */
+  .story-rail{position:relative;height:250px;margin:0 8px;}
+  .story-axis{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line);}
+  .story-ribbon{position:absolute;left:0;right:0;top:calc(50% - 9px);height:18px;}
+  .story-ribbon i{position:absolute;top:0;width:1px;height:18px;background:var(--amber);
+    opacity:.22;}
+  .story-mk{position:absolute;top:calc(50% - 13px);width:2px;height:26px;
+    background:var(--c,#e5a75f);}
+  /* A RANGE IS A BAND, never a rule with a point on it -- the same rule the panel
+     already follows for the Shuruppak anchor. */
+  .story-mk.band{opacity:.85;}
+  /* THE CLOCKS HAVE TO WIN at true scale: all six land inside about 109 px of the
+     densest part of the ribbon, and a 26 px tick in that crowd is invisible, which
+     would lose the only thing step 1 exists to show. */
+  .story-mk.clock{height:46px;top:calc(50% - 23px);background:var(--teal-bright);}
+  .story-stem{position:absolute;width:1px;background:var(--line);}
+  .story-lab{position:absolute;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+    letter-spacing:.05em;color:var(--parchment-dim);white-space:nowrap;
+    transform:translateX(-50%);text-align:center;}
+  .story-lab b{color:var(--parchment);font-weight:600;display:block;}
+  .story-lab .d{color:var(--amber-bright);}
+  .story-lab.up{bottom:calc(50% + 20px);}
+  .story-lab.dn{top:calc(50% + 20px);}
+  .story-brace{position:absolute;border:1px solid var(--amber-bright);
+    border-bottom:none;height:16px;opacity:.9;}
+  .story-bracelab{position:absolute;font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.1em;color:var(--amber-bright);
+    text-transform:uppercase;white-space:nowrap;transform:translateX(-50%);}
+  /* right-aligned where the brace ends at the rail’s own right edge: a centred
+     label there hangs off the page, measured at 1404 px against a 1400 px viewport */
+  .story-bracelab.r{transform:translateX(-100%);}
+  .story-off{position:absolute;left:0;top:calc(50% + 76px);
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--parchment-dimmer);}
+  .story-shade{position:absolute;top:calc(50% - 30px);height:60px;
+    background:rgba(99,168,168,.10);border-left:1px dashed rgba(99,168,168,.45);
+    border-right:1px dashed rgba(99,168,168,.45);}
+  .story-ends{position:absolute;left:0;right:0;top:calc(50% + 100px);display:flex;
+    justify-content:space-between;font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--parchment-dimmer);letter-spacing:.1em;}
+  .story-callout{margin:22px auto 0;max-width:66ch;text-align:center;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;
+    letter-spacing:.03em;color:var(--parchment-dim);border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);padding:11px 0;}
+  .story-callout b{color:var(--amber-bright);font-weight:600;}
+
+  /* the artifact cards: the images at a size a reader can actually see */
+  .story-cards{display:flex;gap:12px;align-items:stretch;}
+  .story-card{flex:1;min-width:0;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:2px;overflow:hidden;display:flex;flex-direction:column;}
+  .story-card .ph{height:190px;background:#121a28;overflow:hidden;}
+  .story-card .ph img{width:100%;height:100%;object-fit:cover;display:block;}
+  .story-card .bd{padding:10px 11px 11px;display:flex;flex-direction:column;gap:5px;
+    flex:1;}
+  .story-card .nm{font-size:16px;font-weight:600;color:var(--parchment);}
+  .story-card .ep{font-family:'IBM Plex Mono',monospace;font-size:12.5px;
+    color:var(--amber-bright);}
+  .story-card .cr{font-family:'IBM Plex Mono',monospace;font-size:8.6px;
+    line-height:1.35;color:var(--parchment-dimmer);margin-top:auto;}
+  /* THE BLANK CARD IS A CARD. The Hindu lane has no image that clears on terms this
+     project accepts, and saying so on screen is the most honest frame in the
+     sequence; hiding the gap would be the one dishonest one. */
+  .story-card.none{border-style:dashed;border-color:#5a4a63;}
+  .story-card.none .ph{display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:0 14px;line-height:1.6;
+    font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;
+    color:#8d7f99;}
+
+  .story-caveats{background:var(--paper-2);border-left:3px solid var(--rust);
+    padding:12px 16px;margin-top:12px;}
+  .story-caveats .h{font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--rust);margin-bottom:7px;}
+  .story-caveats ul{margin:0;padding-left:17px;}
+  .story-caveats li{font-size:14.5px;line-height:1.45;color:var(--parchment-dim);
+    margin-bottom:4px;}
+  .story-caveats li b{color:var(--parchment);}
+
+  /* the way back out of Explore */
+  .lanes-backstory{font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--parchment);
+    background:var(--paper-2);border:1px solid var(--line);border-radius:2px;
+    padding:6px 11px;cursor:pointer;margin-left:auto;}
+  .lanes-backstory:hover{border-color:var(--amber-bright);color:var(--amber-bright);}
+
+  @media (max-width: 760px){
+    .story{padding:14px 13px 11px;margin:10px 0;}
+    .story h3{font-size:23px;margin-top:12px;}
+    .story-copy{font-size:15px;max-width:none;}
+    .story-stage{min-height:0;}
+    /* THE RAIL IS TALLER AND ITS FURNITURE IS LOWER at this width. Two things
+       forced it, both found by putting a built frame beside its mockup and both
+       now held by check p5b: the off-scale note wraps to three lines on a 340 px
+       rail and was printing through "70,000 BCE", and step 4 hangs its third
+       label off a 64 px stem, which reached the ends row where it had been put. */
+    .story-rail{height:380px;margin:0 2px;}
+    .story-ends{top:calc(50% + 118px);}
+    .story-off{top:calc(50% + 144px);white-space:normal;}
+    /* at 206 years to the pixel a phone cannot hold eight labels without them
+       sitting on top of one another, so the sequence shows four and says so */
+    .story-rail .opt{display:none;}
+    .story-lab{font-size:9px;}
+    .story-cards{flex-direction:column;}
+    .story-card{flex-direction:row;}
+    .story-card .ph{height:auto;width:104px;flex:0 0 104px;}
+    .story-card .cr{display:none;}
+    .story-caveats li{font-size:12.5px;}
+    .story-top{font-size:9px;letter-spacing:.1em;}
+    .story-ends{font-size:9px;}
+  }
+  /* --- explore: the panel, rearranged for a reader arriving from the story --- */
+  /* 2. the collapsed regions, as one density ribbon */
+  .lanes-ribrow{display:flex;align-items:center;gap:10px;padding:2px 0 8px;}
+  .lanes-ribname{flex:0 0 var(--namew,190px);font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--parchment-dimmer);}
+  .lanes-ribtrack{position:relative;flex:1;height:20px;cursor:help;}
+  .lanes-ribtrack i{position:absolute;top:0;width:1px;height:20px;
+    background:var(--amber);opacity:.26;}
+  .lanes-ribmore{font-family:'IBM Plex Mono',monospace;font-size:9.5px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--amber-bright);
+    background:none;border:none;cursor:pointer;padding:0;}
+  .lanes-ribmore:hover{text-decoration:underline;}
+  /* 3. the caveat, one line, with the paragraph behind it */
+  .lanes-scalenote details{margin-top:5px;}
+  .lanes-scalenote summary{cursor:pointer;color:var(--teal-bright);
+    font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;
+    text-transform:uppercase;list-style:none;}
+  .lanes-scalenote summary::-webkit-details-marker{display:none;}
+  .lanes-scalenote summary::before{content:"\25b8 ";}
+  .lanes-scalenote details[open] summary::before{content:"\25be ";}
+  .lanes-scalenote .full{margin:6px 0 0;}
+  /* 4. the artifact, beside its lane instead of behind it */
+  /* 44 x 14 AND THE HEIGHT IS THE MEASUREMENT THAT MATTERS, not the width. The
+     lane name is an absolutely positioned line of 9 px text floating 13 px above
+     its lane, so an inline-block taller than about 19 px grows that line box down
+     into the lane and straight through the Egyptian and Sumerian mythology
+     captions. The first build used 42 x 22 and check 4g caught exactly that --
+     and the first fix shifted the captions sideways, which was the wrong variable
+     entirely: the boxes overlapped by 2 px VERTICALLY and by 97 px across. */
+  .lanes-rowimg{display:inline-block;width:44px;height:14px;vertical-align:-3px;
+    margin-right:7px;border:1px solid var(--line);border-radius:2px;
+    background-size:cover;background-position:center;cursor:help;
+    pointer-events:auto;}
+  /* 6. the ground stops being anonymous */
+  .lanes-ptlab{position:absolute;bottom:calc(100% - 3px);transform:translateX(-50%);
+    font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.04em;
+    color:var(--parchment-dimmer);white-space:nowrap;pointer-events:none;}
+  @media (max-width: 760px){
+    .lanes-ribname{flex-basis:92px;font-size:9px;}
+    .lanes-rowimg{width:30px;height:10px;vertical-align:-2px;margin-right:5px;}
+    /* at 390 px a lane is about 250 px wide and a name needs 90 of them, so the
+       ground labels would overlap their own neighbours. They wait for the width. */
+    .lanes-ptlab{display:none;}
+  }
 </style>
 </head>
 <body>
@@ -838,6 +1036,23 @@
        bottom sheet. Same classes as the layers sheet, deliberately. -->
   <button type="button" class="layers-btn lanes-btn" id="lanesBtn"
           aria-expanded="false" aria-controls="lanes">What was happening at the same time</button>
+  <section class="story" id="story" aria-label="Six clocks: a guided sequence">
+    <div class="story-top">
+      <span>Six clocks &middot; a guided sequence</span>
+      <span class="story-pips" id="storyPips" role="group"
+            aria-label="Jump to a step"></span>
+    </div>
+    <div class="story-stage" id="storyStage" role="group"
+         aria-live="polite" tabindex="0"></div>
+    <div class="story-nav">
+      <span class="story-key" id="storyKey"></span>
+      <span class="story-btns">
+        <span class="story-count" id="storyCount"></span>
+        <button type="button" id="storyPrev">&larr; Back</button>
+        <button type="button" id="storyNext">Next &rarr;</button>
+      </span>
+    </div>
+  </section>
   <section class="lanes" id="lanes" aria-labelledby="lanesTitle">
     <div class="sheet-head">
       <span class="sheet-title">What was happening at the same time</span>
@@ -847,12 +1062,16 @@
     <div class="lanes-head">
       <h2 class="lanes-title" id="lanesTitle">What was happening at the same time</h2>
       <span class="lanes-sub">Six clocks, and the ground</span>
+      <button type="button" class="lanes-backstory" id="lanesBackStory">&larr; Back to the story</button>
     </div>
-    <p class="lanes-scalenote"><strong>Width is not duration.</strong> These lanes share the
+    <p class="lanes-scalenote"><strong>Width is not duration.</strong> Two bars of the
+      same width can differ by many thousands of years.
+      <details><summary>Why, and what the shaded bands are</summary>
+      <span class="full">These lanes share the
       scrubber above, which gives each age its own pace so that deep prehistory and recent
       centuries are both readable. Two bars of the same width can therefore differ by many
       thousands of years. The shaded bands behind the lanes are those ages: where a band
-      changes, the scale changes.</p>
+      changes, the scale changes.</span></details></p>
     <div class="lanes-body">
       <div class="lanes-scale" id="lanesScale"></div>
       <div class="lanes-allabs" id="lanesAlignLab"></div>
@@ -7207,7 +7426,53 @@ window.__lanes = (function(){
       if(openState[G.key] === undefined) openState[G.key] = !G.collapsed;
       const open = openState[G.key];
       rowsEl.appendChild(groupHeader(G, mine.length, open));
-      if(!open) return;
+      if(!open){
+        // A COLLAPSED GROUP OF GROUND LANES IS NOT NOTHING. Nine lanes of
+        // unlabelled ticks read as noise and pushed the six clocks off the
+        // screen, but hiding the dated record entirely would say the opposite of
+        // what it means. Collapsed, the regions draw as ONE DENSITY RIBBON --
+        // the same figure story mode opens with -- so the record is still there
+        // and still in proportion, in one row instead of nine.
+        // THE GROUP DECLARES THIS. The first version inferred it instead -- a
+        // group whose lanes carry no reckoning -- which also describes the eleven
+        // dynasty lanes, so the states group drew a ribbon of its own forty marks
+        // the moment it was collapsed. Caught by check 7e.
+        if(!G.ribbon) return;
+        const n = mine.reduce(function(s, L){
+          return s + ((L.items && L.items.length) || 0); }, 0);
+        const rr = document.createElement("div");
+        rr.className = "lanes-ribrow";
+        rr.dataset.group = G.key;
+        const nm = document.createElement("span");
+        nm.className = "lanes-ribname";
+        nm.textContent = comma(n) + " dated anchors";
+        rr.appendChild(nm);
+        const tr = document.createElement("div");
+        tr.className = "lanes-ribtrack";
+        tr.title = comma(n) + " dated anchors across " + mine.length
+                 + " regions, every one of them still on this panel.\n\n"
+                 + "Open the group to read them lane by lane. Each mark keeps its"
+                 + " own date, source and evidence tier.";
+        mine.forEach(function(L){
+          (L.items || []).forEach(function(it){
+            const i = document.createElement("i");
+            i.style.left = pct(ya(it.start));
+            tr.appendChild(i);
+          });
+        });
+        rr.appendChild(tr);
+        const more = document.createElement("button");
+        more.type = "button";
+        more.className = "lanes-ribmore";
+        more.textContent = "open " + mine.length + " lanes";
+        more.addEventListener("click", function(){
+          openState[G.key] = true;
+          buildRows();
+        });
+        rr.appendChild(more);
+        rowsEl.appendChild(rr);
+        return;
+      }
       mine.forEach(function(L){
       const row = document.createElement("div");
       row.className = "lanes-row" + (L.compact ? " compact" : "");
@@ -7215,6 +7480,19 @@ window.__lanes = (function(){
 
       const name = document.createElement("div");
       name.className = "lanes-rowname";
+      // THE ARTIFACT, BESIDE THE LANE IT BELONGS TO. A 42 px thumbnail a reader
+      // can see and hover beats a full-width wash nobody noticed, and the credit
+      // now hangs on the object itself.
+      const TH = (typeof PLATES !== "undefined" && PLATES) ? PLATES[L.id] : null;
+      if(TH){
+        const th = document.createElement("span");
+        th.className = "lanes-rowimg";
+        th.dataset.plate = L.id;
+        th.style.backgroundImage = 'url("' + TH.file + '")';
+        th.title = TH.of + "\n\n" + TH.credit;
+        name.appendChild(th);
+        row.classList.add("hasimg");
+      }
       name.appendChild(document.createTextNode(L.label));
       const cap = document.createElement("span");
       cap.className = "cap";
@@ -7323,12 +7601,13 @@ window.__lanes = (function(){
                            : start);
       b.style.right = "0%";
       // THE RECKONING ITSELF IS A TRADITION-TIER CLAIM, and now says so.
-      // THE PERIOD IMAGE, INSIDE THE BAND, so it begins where the reckoning
-      // does. Its credit goes in the band’s own tooltip rather than in a
-      // credits roll nobody opens, because the image is on screen and the
-      // roll is not.
+      // THE PERIOD IMAGE IS NO LONGER BEHIND THE BAND. Ruled 2026-11-26: at
+      // 10-26% opacity behind a 1,000 px bar it was invisible wallpaper, and the
+      // five credits were technically present rather than legible. It is now a
+      // thumbnail beside the lane’s own name, drawn further down, and this
+      // variable stays only so the band’s tooltip can still carry the credit.
       const PL = PLATES && PLATES[L.id];
-      if(PL){
+      if(false){
         const pl = document.createElement("div");
         pl.className = "lanes-plate";
         pl.style.backgroundImage = 'url("' + PL.file + '")';
@@ -7344,7 +7623,7 @@ window.__lanes = (function(){
       b.title = L.label + " \u2014 " + L.caption
               + (TIERNAME[L.tier] ? "  [" + TIERNAME[L.tier] + "]" : "")
               + "\n\n" + L.note + "\n\nSource: " + L.source
-              + (PL ? "\n\nBehind this lane: " + PL.of + ".\n" + PL.credit
+              + (PL ? "\n\nBeside this lane: " + PL.of + ".\n" + PL.credit
                     : "");
       row.appendChild(b);
       }   // end: this lane is a reckoning, not the ground
@@ -7415,6 +7694,35 @@ window.__lanes = (function(){
       });
 
       rowsEl.appendChild(row);
+      });
+    });
+
+    // 6. THE GROUND STOPS BEING ANONYMOUS. A lane of unlabelled ticks reads as
+    // noise, which is half of why the panel did not tell a story. Labels go to
+    // the widest-spaced marks on each ground lane -- chosen greedily by measured
+    // position, never by a typed list -- so no label can ever sit on another.
+    rowsEl.querySelectorAll(".lanes-row").forEach(function(row){
+      const gr = row.querySelector(".lanes-ground");
+      if(!gr) return;
+      const w = row.getBoundingClientRect().width || 1;
+      const marks = [].slice.call(row.querySelectorAll(".lanes-pt"))
+        .map(function(el){
+          return {el: el, x: el.getBoundingClientRect().left
+                            - row.getBoundingClientRect().left};
+        })
+        .sort(function(a, b){ return a.x - b.x; });
+      let last = -1e9, used = 0;
+      marks.forEach(function(m){
+        if(used >= 5 || m.x - last < 130) return;
+        const nm = (m.el.dataset.label || m.el.title || "").split("\n")[0]
+                     .split(" \u2014 ")[0].trim();
+        if(!nm || nm.length > 26) return;
+        const lab = document.createElement("span");
+        lab.className = "lanes-ptlab";
+        lab.textContent = nm;
+        lab.style.left = (m.x / w * 100).toFixed(3) + "%";
+        row.appendChild(lab);
+        last = m.x; used++;
       });
     });
 
@@ -7995,6 +8303,500 @@ window.__lanes = (function(){
           gaps: buildGaps, gapTitle: gapTitle,
           pairs: function(){ return (DOC && DOC.pairs) || []; },
           thumbW: thumbW};
+})();
+/* ===================== STORY MODE =========================================
+   The guided sequence above the panel. Six steps, one screen each, every number
+   on them read from the data at runtime. See docs/DESIGN_Story_Mode.md.
+   ------------------------------------------------------------------------ */
+window.__story = (function(){
+  const host = document.getElementById("story");
+  const stage = document.getElementById("storyStage");
+  const pipsEl = document.getElementById("storyPips");
+  const prevB = document.getElementById("storyPrev");
+  const nextB = document.getElementById("storyNext");
+  const countEl = document.getElementById("storyCount");
+  const keyEl = document.getElementById("storyKey");
+  if(!host || !stage) return null;
+
+  const N = 6;
+  const EP = (typeof EPOCH === "number") ? EPOCH : 2026;
+  const PHONE = window.matchMedia("(max-width: 760px)");
+  let DOC = null, MAN = null, step = 1;
+
+  // THE TIER COLOURS ARE LIFTED AT BUILD TIME, not read at run time. They are
+  // declared inside a block in the page and are simply not visible from here --
+  // which has already cost this project three silent failures.
+  const TIER = {solid:'#e5a75f', contested:'#d1725a', nonsapiens:'#b6abe0', hoax:'#8f897a', demographic:'#b06a7a', tradition:'#7fb0a3'};
+  const TLAB = {solid: "WELL-SUPPORTED", contested: "CONTESTED",
+                tradition: "TRADITION-ONLY", nonsapiens: "PRE-SAPIENS",
+                hoax: "NO VERIFIED EVIDENCE", demographic: "CONTESTED SCALE"};
+
+  // THE LANDMARK SELECTION IS EDITORIAL; EVERYTHING ABOUT A LANDMARK IS DATA.
+  // These are anchor ids out of the page’s own ANCHORS. The label, the date and
+  // the tier are read from the anchor, so a landmark cannot drift from the map.
+  // "phone" marks the four that survive at 390 px, where the rail is 206 years to
+  // the pixel and eight labels would sit on top of one another.
+  const TRUE_SCALE = [
+    {id: "au1",  up: true,  phone: true},
+    {id: "v01",  up: false, phone: true},
+    {id: "z15",  up: true,  phone: false},
+    {id: "s02",  up: false, phone: false},
+    {id: "na10", up: true,  phone: true},
+    {id: "a27",  up: true,  phone: false},
+    {id: "a28",  up: false, phone: false}];
+  const ZOOM = [
+    {id: "ea15", up: true,  phone: false},
+    {id: "a34",  up: false, phone: true},
+    {id: "w01",  up: true,  phone: false},
+    {id: "a35",  up: false, phone: false},
+    {id: "a27",  up: true,  phone: true},
+    {id: "a55",  up: false, phone: true},
+    {id: "a28",  up: true,  phone: false},
+    // 200 years from Gilgamesh, which is 45 px at phone width and narrower than
+    // either name, so this one waits for the room. Caught by check p5b.
+    {id: "pk14", up: false, phone: false}];
+
+  function ground(){
+    return (typeof ANCHORS === "undefined") ? [] : ANCHORS;
+  }
+  function anchorById(id){
+    const A = ground();
+    for(let i = 0; i < A.length; i++) if(A[i].id === id) return A[i];
+    return null;
+  }
+  function yrOf(a){ return EP - a.appear; }
+  function comma(n){ return String(n).replace(/\B(?=(\d{3})+$)/g, ","); }
+  function bce(v){
+    return v < 0 ? comma(-v) + " BCE" : comma(v) + " CE";
+  }
+  function esc(s){
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function pct(v, lo, hi){ return (v - lo) / (hi - lo) * 100; }
+
+  // --- the rail -----------------------------------------------------------
+  function railHTML(o){
+    const lo = o.from, hi = o.to;
+    const out = ["<div class=\"story-rail\" data-from=\"" + lo + "\" data-to=\""
+                 + hi + "\"><div class=\"story-axis\"></div>"];
+    if(o.shadeTo !== undefined){
+      const a = pct(lo, lo, hi), b = pct(o.shadeTo, lo, hi);
+      out.push("<span class=\"story-shade\" style=\"left:" + a.toFixed(3)
+               + "%;width:" + (b - a).toFixed(3) + "%\"></span>");
+    }
+    if(o.ribbon){
+      out.push("<div class=\"story-ribbon\">");
+      ground().forEach(function(a){
+        const y = yrOf(a);
+        if(y < lo || y > hi) return;
+        out.push("<i style=\"left:" + pct(y, lo, hi).toFixed(4) + "%\"></i>");
+      });
+      out.push("</div>");
+    }
+    (o.marks || []).forEach(function(m){
+      const p = pct(m.year, lo, hi);
+      const w = (m.to !== undefined) ? (pct(m.to, lo, hi) - p) : null;
+      const cls = "story-mk" + (m.clock ? " clock" : "") + (w !== null ? " band" : "");
+      let st = "left:" + p.toFixed(3) + "%;--c:" + (TIER[m.tier] || "#e5a75f") + ";";
+      if(w !== null) st += "width:" + Math.max(0.25, w).toFixed(3) + "%;";
+      out.push("<i class=\"" + cls + "\" data-year=\"" + m.year + "\" style=\""
+               + st + "\"></i>");
+      if(!m.label) return;
+      const mid = (w !== null) ? p + w / 2 : p;
+      const h = m.stem || 18;
+      const opt = m.phone === false ? " opt" : "";
+      out.push("<span class=\"story-stem" + opt + "\" style=\"left:" + mid.toFixed(3)
+               + "%;" + (m.up ? "bottom:calc(50% + 14px);" : "top:calc(50% + 14px);")
+               + "height:" + h + "px\"></span>");
+      out.push("<span class=\"story-lab " + (m.up ? "up" : "dn") + opt + "\" style=\"left:"
+               + mid.toFixed(3) + "%;" + (m.up ? "bottom:calc(50% + " + (h + 16)
+               + "px);" : "top:calc(50% + " + (h + 16) + "px);") + "\"><b>"
+               + esc(m.label) + "</b><span class=\"d\">" + esc(m.date) + "</span></span>");
+    });
+    (o.braces || []).forEach(function(b){
+      const a = pct(b.from, lo, hi), z = pct(b.to, lo, hi);
+      out.push("<span class=\"story-brace\" style=\"left:" + a.toFixed(3) + "%;width:"
+               + (z - a).toFixed(3) + "%;top:calc(50% - " + (b.top || 90) + "px)\"></span>");
+      const right = z > 92;
+      out.push("<span class=\"story-bracelab" + (right ? " r" : "") + "\" style=\"left:"
+               + (right ? "100" : ((a + z) / 2).toFixed(3)) + "%;top:calc(50% - "
+               + ((b.top || 90) + 22) + "px)\">" + esc(b.label) + "</span>");
+    });
+    if(o.off){
+      out.push("<span class=\"story-off\">" + esc(o.off) + "</span>");
+    }
+    out.push("<div class=\"story-ends\"><span>" + esc(bce(lo)) + "</span>"
+             + "<span class=\"opt\" data-rate=\"1\"></span><span>"
+             + (hi >= EP ? "today" : esc(bce(hi))) + "</span></div>");
+    out.push("</div>");
+    return out.join("");
+  }
+
+  function landmarks(list, lo, hi){
+    const out = [];
+    list.forEach(function(L){
+      const a = anchorById(L.id);
+      if(!a) return;                      // an anchor that left the map leaves the story
+      const y = yrOf(a);
+      if(y < lo || y > hi) return;
+      out.push({year: y, tier: a.status, up: L.up, phone: L.phone,
+                label: String(a.label).split(" \u2014 ")[0], date: bce(y)});
+    });
+    return out;
+  }
+
+  // The six clock epochs, DERIVED: a tradition lane’s first item is the first
+  // thing its reckoning claims. Sorting by it gives Ussher, the Long Count, Egypt,
+  // the Kali Yuga, the Sumerian flood and the Yellow Emperor, oldest first.
+  function clocks(){
+    if(!DOC) return [];
+    return (DOC.lanes || []).filter(function(L){
+        return L.group === "traditions" && L.items && L.items.length;
+      })
+      .map(function(L){ return {lane: L, year: L.items[0].start}; })
+      .sort(function(a, b){ return a.year - b.year; });
+  }
+
+  // --- the steps ----------------------------------------------------------
+  function stepTrueScale(last){
+    const lo = -70000, hi = EP;
+    const inwin = ground().filter(function(a){ return yrOf(a) >= lo; });
+    const off = ground().length - inwin.length;
+    const oldest = ground().reduce(function(m, a){ return Math.max(m, a.appear); }, 0);
+    const gob = (DOC && (DOC.alignments || []).filter(function(x){
+      return x.id === "al10"; })[0]) || null;
+    const marks = landmarks(TRUE_SCALE, lo, hi);
+    if(gob) marks.push({year: gob.from, tier: gob.tier || "solid", up: false,
+                        phone: true, label: "G\u00f6bekli Tepe", date: bce(gob.from),
+                        stem: 18});
+    const cl = clocks();
+    cl.forEach(function(c){ marks.push({year: c.year, tier: "tradition", clock: true}); });
+    const first = cl.length ? cl[0].year : -4004;
+    const share = (EP - first) / (EP - lo) * 100;
+    const withClocks = inwin.filter(function(a){ return yrOf(a) >= first; }).length;
+    const o = {from: lo, to: hi, ribbon: true, marks: marks,
+      braces: [{from: first, to: hi, top: 112,
+                label: "all six clocks \u2014 the last " + share.toFixed(1) + "%"}],
+      // THE DEPTH OFF THE LEFT EDGE, in millions of years. The first version of
+      // this ran a formatted STRING back through arithmetic and printed "NaN
+      // million years" on screen -- and the check covering it asserted the words
+      // around the number rather than the number, so it passed. Both are fixed.
+      off: "\u25c0 and " + ((oldest - (EP - lo)) / 1e6).toFixed(2)
+           + " million years before this, off this screen \u2014 "
+           + off + " more dated anchors"};
+    if(last) o.shadeTo = gob ? gob.from : -9600;
+    const head = last
+      ? "<h3>Everything <em>before memory</em></h3>"
+      : "<h3>Seventy-two thousand years, <em>to scale</em></h3>";
+    const tail = last
+      ? '<p class="story-copy">Every civilisation counted back to the beginning. '
+        + '<b>None of them could count that far.</b> The shaded stretch is this '
+        + 'show\u2019s territory: ' + comma(inwin.filter(function(a){
+            return yrOf(a) < (gob ? gob.from : -9600); }).length)
+        + ' dated anchors, and not one clock that reaches them.</p>'
+        + '<button type="button" class="story-go" id="storyGo">'
+        + 'Explore the whole record</button>'
+      : '<p class="story-copy">Every clock in this episode starts inside the '
+        + '<b>last twelfth</b> of this line. G\u00f6bekli Tepe is the mark five '
+        + 'thousand years to their left, and <b>no reckoning on earth reaches '
+        + 'it</b>.</p>';
+    const call = last ? "" :
+      '<div class="story-callout"><b>' + comma(withClocks) + ' of the '
+      + comma(inwin.length) + ' dated anchors on this line \u2014 two thirds of the '
+      + 'whole record \u2014 fall inside that last ' + share.toFixed(1) + '%,</b> '
+      + 'beside the clocks. The record thickens exactly where the reckonings begin.</div>';
+    return head + '<div class="story-fig">' + railHTML(o) + call + "</div>" + tail;
+  }
+
+  function stepZoom(){
+    const lo = -4000, hi = -2500;
+    const marks = landmarks(ZOOM, lo, hi);
+    clocks().forEach(function(c){
+      if(c.year >= lo && c.year <= hi) marks.push({year: c.year, tier: "tradition",
+                                                   clock: true});
+    });
+    const cl = clocks().filter(function(c){ return c.year >= lo && c.year <= hi; });
+    const br = cl.length ? [{from: cl[0].year, to: cl[cl.length - 1].year, top: 112,
+                             label: "the six clock epochs"}] : [];
+    return "<h3>Fifteen hundred years, <em>the same line</em></h3>"
+      + '<div class="story-fig">'
+      + railHTML({from: lo, to: hi, ribbon: true, marks: marks, braces: br})
+      + "</div>"
+      + '<p class="story-copy">This is the sliver the clocks were crowded into. '
+      + '<b>It is wide enough now to hold a world</b> \u2014 and the world in it '
+      + 'was not waiting for them.</p>';
+  }
+
+  function stepCards(){
+    const byLane = {};
+    ((MAN && MAN.images) || []).forEach(function(e){ byLane[e.lane] = e; });
+    const cards = clocks().map(function(c){
+      const L = c.lane, im = byLane[L.id];
+      const nm = String(L.label).split(" \u2014 ")[0];
+      const ph = im
+        ? '<div class="ph"><img src="' + esc(im.file) + '" alt="" loading="lazy"></div>'
+        : '<div class="ph">no image clears on<br>terms we accept<br>'
+          + '&mdash; ruled 2026-11-25</div>';
+      const cr = im ? esc(String(im.credit).slice(0, 150)) + "&hellip;"
+                    : "The lane runs without one rather than borrowing another "
+                      + "tradition\u2019s.";
+      return '<div class="story-card' + (im ? "" : " none") + '" data-lane="'
+        + esc(L.id) + '">' + ph + '<div class="bd"><span class="nm">' + esc(nm)
+        + '</span><span class="ep">' + esc(L.caption) + '</span>'
+        + '<span class="cr">' + cr + "</span></div></div>";
+    }).join("");
+    return "<h3>Six clocks, <em>six artifacts</em></h3>"
+      + '<div class="story-fig"><div class="story-cards">' + cards + "</div></div>"
+      + '<p class="story-copy">Each of these is a thing you can hold, or stand in '
+      + 'front of. <b>The date is a claim; the object is the evidence that the claim '
+      + 'was made.</b> One lane has no object, and says so.</p>';
+  }
+
+  function stepCluster(){
+    const lo = -3200, hi = -3000;
+    const cl = clocks().filter(function(c){ return c.year >= lo && c.year <= hi; });
+    const marks = [];
+    cl.forEach(function(c){
+      const it = c.lane.items[0];
+      const nm = String(c.lane.label).split(" \u2014 ")[0];
+      marks.push({year: it.start, to: (it.end !== undefined && it.end !== null)
+                    ? it.end : undefined,
+                  tier: it.tier || "tradition", up: marks.length % 2 === 0,
+                  phone: true, stem: 20 + marks.length * 22,
+                  label: nm + " \u2014 " + it.label,
+                  date: bce(it.start) + ((it.end !== undefined && it.end !== null)
+                        ? " to " + bce(it.end) : "")});
+    });
+    const a = cl.length ? cl[0].year : -3114;
+    const b = cl.length > 1 ? cl[1].year : -3102;
+    const two = cl.filter(function(c){ return c.lane.id === "trad-longcount"
+                                           || c.lane.id === "trad-yuga"; })
+                  .map(function(c){ return c.year; }).sort(function(x, y){ return x - y; });
+    const span = two.length === 2 ? Math.abs(two[1] - two[0]) : Math.abs(b - a);
+    const al = (DOC && (DOC.alignments || []).filter(function(x){
+      return x.id === "al02"; })[0]) || null;
+    return "<h3>Twelve years <em>apart</em></h3>".replace("Twelve", comma(span) === "12"
+             ? "Twelve" : comma(span))
+      + '<div class="story-fig">'
+      + railHTML({from: lo, to: hi, marks: marks,
+                  braces: two.length === 2
+                    ? [{from: two[0], to: two[1], top: 128,
+                        label: comma(span) + " years"}] : []})
+      + "</div>"
+      + '<div class="story-caveats"><div class="h">what this is not</div><ul>'
+      + "<li><b>Read as a shared event, this is a coincidence of three computed "
+      + "starting points</b>, fixed centuries later by different methods on different "
+      + "continents.</li>"
+      + "<li>c. 3100 BCE is when <b>writing and states appear</b> \u2014 which is what "
+      + "all three were reaching back towards, not a date they inherited from each "
+      + "other.</li></ul></div>"
+      + (al ? '<p class="story-copy" hidden data-al="al02">' + esc(al.note)
+              + "</p>" : "");
+  }
+
+  function stepFloods(){
+    const lo = -3150, hi = -2250;
+    const P = (DOC && (DOC.pairs || []).filter(function(x){
+      return x.id === "gap-flood"; })[0]) || null;
+    const skl = (DOC && (DOC.lanes || []).filter(function(x){
+      return x.id === "trad-skl"; })[0]) || null;
+    if(!P || !skl || !skl.mythology) return '<p class="story-msg">The flood pair is '
+      + "not in the data file, so this step cannot be drawn.</p>";
+    const M = skl.mythology;
+    const far = (M.anchorFrom !== undefined) ? M.anchorFrom : M.anchor;
+    const near = (M.anchorTo !== undefined) ? M.anchorTo : M.anchor;
+    const marks = [
+      {year: far, to: near, tier: M.anchorTier || "contested", up: true, phone: true,
+       stem: 22, label: "the King List\u2019s Flood",
+       date: "c. " + bce(far) + " to " + bce(near) + " \u2014 our placement, a range"},
+      {year: P.a.year, tier: "tradition", up: false, phone: true, stem: 22,
+       label: "Ussher\u2019s Flood", date: bce(P.a.year)}];
+    const figure = comma(P.gap) + (P.gapTo && P.gapTo !== P.gap
+                   ? "\u2013" + comma(P.gapTo) : "") + " years";
+    return "<h3>Two floods, <em>six hundred years apart</em></h3>"
+      + '<div class="story-fig">'
+      + railHTML({from: lo, to: hi, marks: marks,
+                  braces: [{from: far, to: P.a.year, top: 96, label: figure}]})
+      + "</div>"
+      + '<div class="story-caveats"><div class="h">the layer under Shuruppak '
+      + "\u2014 Schmidt, Museum Journal XXII, 1931</div><ul>"
+      + "<li><b>The stratigraphy is his; the date is not.</b> He put the inundation "
+      + "about the middle of the fourth millennium, some six hundred years earlier.</li>"
+      + "<li>The culture break across the layer is <b>not complete</b>, and there were "
+      + "<b>no victims</b> \u2014 so the layer may only coincide with the end of the "
+      + "Jemdet Nasr settlement.</li>"
+      + "<li>The deposits at Ur, Kish and Shuruppak are <b>of different dates and "
+      + "cannot be one event</b>.</li></ul></div>"
+      // THE LINE THAT MAKES THE DIVERGENCE MATTER. The mockup carried it under
+      // the rail, where the built version prints the measured rate instead, so it
+      // comes back as copy. A six-hundred-year disagreement between two flood
+      // stories is only interesting because both dates land inside a record that
+      // was being kept at the time and does not mention a flood.
+      + '<p class="story-copy">Both dates fall inside somebody\u2019s '
+      + "continuous dated record: 2348 BCE lands in Egypt\u2019s Old Kingdom and "
+      + "in Early Dynastic Mesopotamia, and neither record reports a flood.</p>";
+  }
+
+  const STEPS = [
+    {n: 1, name: "True scale", keys: ["solid", "contested", "tradition"],
+     html: function(){ return stepTrueScale(false); }},
+    {n: 2, name: "The zoom", keys: ["solid", "tradition"], html: stepZoom},
+    {n: 3, name: "Six clocks", keys: ["tradition"], html: stepCards},
+    {n: 4, name: "The cluster", keys: ["solid", "tradition"], html: stepCluster},
+    {n: 5, name: "Two floods", keys: ["contested", "tradition"], html: stepFloods},
+    {n: 6, name: "Before memory", keys: ["solid", "contested", "tradition"],
+     html: function(){ return stepTrueScale(true); }}];
+
+  // --- rendering ----------------------------------------------------------
+  function render(){
+    const S = STEPS[step - 1];
+    stage.innerHTML = S.html();
+    stage.dataset.step = step;
+    stage.setAttribute("aria-label", "Step " + step + " of " + N + ": " + S.name);
+    countEl.textContent = "step " + step + " of " + N;
+    keyEl.innerHTML = S.keys.map(function(k){
+      return '<span><i style="background:' + (TIER[k] || "#e5a75f") + '"></i>'
+           + TLAB[k] + "</span>";
+    }).join("");
+    prevB.disabled = (step === 1);
+    nextB.disabled = (step === N);
+    [].forEach.call(pipsEl.children, function(b, i){
+      if(i + 1 === step) b.setAttribute("aria-current", "step");
+      else b.removeAttribute("aria-current");
+    });
+    // THE RATE IS MEASURED, NOT ASSERTED. "55 years to the pixel" is the reason
+    // step 1 draws points and not bars, so it is read off the laid-out rail rather
+    // than written into the copy, where it would quietly go stale at another width.
+    const rail = stage.querySelector(".story-rail");
+    const rate = rail && stage.querySelector("[data-rate]");
+    if(rail && rate){
+      const w = rail.getBoundingClientRect().width || 1;
+      const span = (+rail.dataset.to) - (+rail.dataset.from);
+      const per = span / w;
+      rate.textContent = (per >= 10 ? Math.round(per) : per.toFixed(2))
+                       + " years to the pixel";
+      rail.dataset.perPixel = per.toFixed(4);
+    }
+    const go = document.getElementById("storyGo");
+    if(go) go.addEventListener("click", explore);
+  }
+
+  function goTo(n, focus){
+    const was = step;
+    step = Math.max(1, Math.min(N, n));
+    if(step !== was || !stage.dataset.step) render();
+    if(focus) stage.focus({preventScroll: true});
+    return step;
+  }
+
+  function explore(){
+    const panel = document.getElementById("lanes");
+    if(!panel) return;
+    // On a phone the panel is a sheet and scrolling to it shows nothing, so the
+    // handoff has to open it the way a reader would.
+    if(PHONE.matches){
+      const b = document.getElementById("lanesBtn");
+      if(b && b.getAttribute("aria-expanded") !== "true") b.click();
+    } else {
+      panel.scrollIntoView({behavior: "smooth", block: "start"});
+    }
+    host.dataset.handed = "1";
+  }
+
+  function backToStory(){
+    if(PHONE.matches){
+      const c = document.getElementById("lanesClose");
+      if(c) c.click();
+    }
+    host.scrollIntoView({behavior: "smooth", block: "start"});
+    stage.focus({preventScroll: true});
+  }
+
+  // --- the controls -------------------------------------------------------
+  for(let i = 1; i <= N; i++){
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.step = i;
+    b.setAttribute("aria-label", "Step " + i);
+    b.addEventListener("click", function(){ goTo(i, true); });
+    pipsEl.appendChild(b);
+  }
+  prevB.addEventListener("click", function(){ goTo(step - 1, true); });
+  nextB.addEventListener("click", function(){ goTo(step + 1, true); });
+
+  // KEYBOARD. The page already owns the arrow keys inside the scrubber, and taking
+  // them would break scrubbing, so a keypress whose target is a control is left
+  // alone. The story also only answers while it is actually on screen.
+  document.addEventListener("keydown", function(e){
+    if(e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+    const tg = e.target;
+    if(tg && tg !== document.body){
+      const tag = (tg.tagName || "").toUpperCase();
+      if(tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      if(tg.isContentEditable) return;
+      if(!host.contains(tg) && tag === "BUTTON") return;
+    }
+    const r = host.getBoundingClientRect();
+    if(r.bottom < 0 || r.top > (window.innerHeight || 0)) return;
+    if(e.key === "ArrowRight"){ goTo(step + 1, false); e.preventDefault(); }
+    else if(e.key === "ArrowLeft"){ goTo(step - 1, false); e.preventDefault(); }
+  });
+
+  // SWIPE, and a tap that only advances on a phone. On a desktop a stray click on
+  // the figure moving the story on is a nuisance rather than a gesture.
+  let tx = null, ty = null;
+  stage.addEventListener("touchstart", function(e){
+    if(e.touches.length !== 1) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, {passive: true});
+  stage.addEventListener("touchend", function(e){
+    if(tx === null) return;
+    const t2 = e.changedTouches && e.changedTouches[0];
+    if(!t2) return;
+    const dx = t2.clientX - tx, dy = t2.clientY - ty;
+    tx = null;
+    if(Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+    goTo(step + (dx < 0 ? 1 : -1), false);
+  }, {passive: true});
+  stage.addEventListener("click", function(e){
+    if(!PHONE.matches) return;
+    if(e.target.closest("button, a")) return;
+    goTo(step + 1, false);
+  });
+
+  const back = document.getElementById("lanesBackStory");
+  if(back) back.addEventListener("click", backToStory);
+
+  window.addEventListener("resize", function(){
+    if(stage.dataset.step) render();     // the rate, and the phone label set
+  });
+
+  // --- the data -----------------------------------------------------------
+  // The panel fetches the same lanes file; this is a second request to the same URL
+  // and the browser serves it from cache. Sharing the panel’s copy would couple
+  // the story to the panel’s load order for no gain.
+  stage.innerHTML = '<p class="story-msg">Loading the six clocks\u2026</p>';
+  Promise.all([
+    fetch("data/lanes/lanes.json").then(function(r){
+      if(!r.ok) throw new Error("lanes.json HTTP " + r.status); return r.json(); }),
+    fetch("img/lanes/manifest.json").then(function(r){
+      return r.ok ? r.json() : null; }).catch(function(){ return null; })
+  ]).then(function(got){
+    DOC = got[0]; MAN = got[1];
+    if(!DOC || !DOC.lanes || !DOC.lanes.length) throw new Error("no lanes in the file");
+    render();
+  }).catch(function(err){
+    // A STORY THAT CANNOT READ ITS DATA SAYS SO IN THE FRAME. It does not quietly
+    // draw an empty box, which is what the panel used to do.
+    stage.innerHTML = '<p class="story-msg">The story could not load its data: '
+      + String(err && err.message ? err.message : err) + "</p>";
+  });
+
+  return {go: goTo, step: function(){ return step; }, n: N,
+          explore: explore, back: backToStory,
+          doc: function(){ return DOC; }, clocks: clocks,
+          ground: function(){ return ground().length; }};
 })();
 // ===================== PRESENTATION MODE (?present=1) =====================
 // The map, full frame, with every piece of page furniture gone and a small overlay of its own:

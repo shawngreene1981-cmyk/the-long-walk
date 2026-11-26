@@ -8,8 +8,8 @@
  "generated_by": "geowork/lanes/build_lanes.py",
  "groups": [
   {
-   "key": "regions",
-   "label": "Regions — the ground",
+   "key": "traditions",
+   "label": "Reckonings — six clocks",
    "collapsed": false
   },
   {
@@ -18,9 +18,10 @@
    "collapsed": true
   },
   {
-   "key": "traditions",
-   "label": "Reckonings — six clocks",
-   "collapsed": false
+   "key": "regions",
+   "label": "Regions — the ground",
+   "collapsed": true,
+   "ribbon": true
   }
  ],
  "lanes": [
