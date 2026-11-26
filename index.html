@@ -552,6 +552,44 @@
     letter-spacing:.07em;text-transform:uppercase;color:var(--parchment-dimmer);}
   .lanes-nowread.al{color:var(--amber-bright);}
   .lanes-row.compact .lanes-pt{top:1px;bottom:1px;}
+
+  /* --- step 10: gap connectors ------------------------------------------------ */
+  /* DESIGN sec.3, the divergence gap: where a tradition and the record name the same
+     thing at different dates, a thin connector joins the two and states the size of
+     the gap. Every position comes from the pair's own years through the same f() the
+     marks use, so a connector travels with the axis instead of sitting at a
+     remembered pixel -- which is the whole test for it.
+     IT RUNS IN A GUTTER OF ITS OWN. On the lower lane row the run would have had to
+     cross that row's marks, and the only place left for the figure would have been on
+     top of one of them. The lower row is given 14 px of margin instead and the run and
+     the figure live in it, where nothing else on this panel is positioned. */
+  /* A REAL ELEMENT, NOT A MARGIN. margin-bottom:14px here bought nothing: it
+     sat against the next row's margin-top:17px and ADJACENT SIBLING MARGINS
+     COLLAPSE to the larger of the two, so the spacing stayed 17 px and the run
+     was drawn over the next lane's name -- measured at 2573.1 px with that name
+     occupying 2573.1..2590.1. On the last row the run landed 4 px below rowsEl's
+     own bottom edge, outside the layer that is supposed to contain it. A block in
+     flow cannot collapse. .lanes-row.hasgap stays as a marker for the checks. */
+  .lanes-gutter{height:14px;position:relative;}
+  .lanes-gaps{position:absolute;inset:0;pointer-events:none;z-index:5;}
+  .lanes-gap{position:absolute;inset:0;pointer-events:none;}
+  .lanes-gap.dim{opacity:.16;}     /* reveal mode: an end whose clock is still dark */
+  .lanes-gapv{position:absolute;width:0;
+    border-left:1px dashed rgba(242,191,124,.42);}
+  /* THE RUN CARRIES THE HOVER, not only the chip: where the figure has to be dropped
+     for want of room the tooltip must still be reachable, and a zero-height rule
+     cannot be hovered. So it is a 7 px band with the rule drawn on its top edge. */
+  .lanes-gaph{position:absolute;height:7px;margin-top:-3px;pointer-events:auto;
+    cursor:help;border-top:1px solid rgba(242,191,124,.5);}
+  .lanes-gaph:hover{border-top-color:var(--amber-bright);}
+  .lanes-gapcap{position:absolute;width:0;height:7px;margin-top:-3.5px;
+    border-left:1px solid rgba(242,191,124,.85);}
+  .lanes-gapchip{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;
+    cursor:help;padding:1px 5px;border:1px solid rgba(242,191,124,.45);
+    border-radius:2px;background:var(--paper);white-space:nowrap;
+    font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--amber-bright);}
+  .lanes-gapchip:hover{border-color:var(--amber-bright);}
   /* Failures get their OWN element. The first version wrote the message into the
      track with innerHTML, which deleted the age bands, the grid, the rows and the
      now line -- so the panel could never come back even when the data loaded on a
@@ -7155,6 +7193,7 @@ window.__lanes = (function(){
       if(cap.getBoundingClientRect().width > h.getBoundingClientRect().width - 10)
         cap.remove();
     });
+    buildGaps();      // after the rows are in the document: it measures them
     paint(+scrub.value);
   }
 
@@ -7176,6 +7215,173 @@ window.__lanes = (function(){
       const epoch = L.mythology ? ya(L.mythology.anchor) : ya(L.reckoningStart);
       const lit = !revealing || nowYa <= epoch;
       row.classList.toggle("lanes-dark", !lit);
+    });
+    // AND THE CONNECTORS FOLLOW THEIR OWN ENDS. A gap between two clocks means
+    // nothing while one of them has not been switched on yet, so a connector dims
+    // if either lane it joins is dark -- and comes back when both are lit.
+    const gl = rowsEl.querySelector(".lanes-gaps");
+    if(gl) gl.querySelectorAll(".lanes-gap").forEach(function(g){
+      g.classList.toggle("dim", String(g.dataset.lanes).split(" ")
+        .some(function(id){
+          const r = rowOf(id);
+          return r && r.classList.contains("lanes-dark");
+        }));
+    });
+  }
+
+  // --- step 10: gap connectors --------------------------------------------------
+  // Three of them, each joining two dated claims and stating the distance between:
+  // Ussher's Flood against the Sumerian King List's (EPISODE BEAT 5), the Long
+  // Count's own zero against the earliest date anyone carved in it, and the Yellow
+  // Emperor against the earliest Chinese writing that could have named a king.
+  // The pairs name ITEMS, not dates: data/lanes/lanes.json resolves each end's year
+  // from the item it points at, and build_lanes.py aborts on an id that is not there,
+  // so the figure in the connector label cannot drift from the mark it measures.
+  function comma(n){
+    let s = String(n), o = "";
+    while(s.length > 3){ o = "," + s.slice(-3) + o; s = s.slice(0, -3); }
+    return s + o;
+  }
+
+  // THE KIND OF GAP IS STATED, because the three are not the same claim. Two
+  // traditions dating one story is not the same thing as a reckoning measured
+  // against its own earliest evidence, and "two datings of one EVENT" -- which is
+  // what this said first -- would have asserted that the Flood happened.
+  const GAPKIND = {
+    "same-story": "Two traditions, one story, two dates.",
+    "claim-and-evidence":
+      "A reckoning, against the earliest dated evidence bearing on it."};
+
+  function gapTitle(P){
+    const head = [P.what.toUpperCase() + " \u2014 " + comma(P.gap)
+                  + " YEARS APART"];
+    if(GAPKIND[P.kind]) head.push(GAPKIND[P.kind]);
+    // THE PAIRING CARRIES ITS OWN TIER, which is not either end's tier: whether
+    // these two dates are about the same thing at all is itself a claim, and for
+    // the two floods it is a contested one.
+    if(TIERNAME[P.tier]) head.push("This pairing: [" + TIERNAME[P.tier] + "]");
+    head.push("");
+    [P.a, P.b].slice().sort(function(p, q){ return p.year - q.year; })
+      .forEach(function(E){
+        head.push(fmtYear(E.year)
+          + (E.end !== undefined ? " to " + fmtYear(E.end) : "")
+          + (E.approx ? " (approximate, and OURS)" : "")
+          + "  \u2014  " + E.says
+          + (TIERNAME[E.tier] ? "  [" + TIERNAME[E.tier] + "]" : ""));
+      });
+    return head.concat(["", P.note]).join("\n");
+  }
+
+  function rowOf(id){
+    return rowsEl.querySelector('.lanes-row[data-lane="' + id + '"]');
+  }
+
+  function buildGaps(){
+    const old = rowsEl.querySelector(".lanes-gaps");
+    if(old) old.remove();
+    rowsEl.querySelectorAll(".lanes-row.hasgap").forEach(function(r){
+      r.classList.remove("hasgap");
+    });
+    const PAIRS = (DOC && DOC.pairs) || [];
+    if(!PAIRS.length) return;
+    // PASS ONE: CLAIM THE GUTTER, before anything is measured. Adding the margin
+    // moves every row below it, so a geometry read taken first would be stale by the
+    // time the connector was drawn into it.
+    rowsEl.querySelectorAll(".lanes-gutter").forEach(function(g){ g.remove(); });
+    const live = [];
+    PAIRS.forEach(function(P){
+      const ra = rowOf(P.a.lane), rb = rowOf(P.b.lane);
+      if(!ra || !rb) return;              // a collapsed group draws no connector
+      const lower = (ra.getBoundingClientRect().top >= rb.getBoundingClientRect().top)
+                  ? ra : rb;
+      lower.classList.add("hasgap");
+      let gut = lower.nextElementSibling;
+      if(!gut || !gut.classList.contains("lanes-gutter")){
+        gut = document.createElement("div");
+        gut.className = "lanes-gutter";
+        lower.parentNode.insertBefore(gut, lower.nextSibling);
+      }
+      live.push({P: P, gut: gut});
+    });
+    if(!live.length) return;
+    const layer = document.createElement("div");
+    layer.className = "lanes-gaps";
+    rowsEl.appendChild(layer);
+    // PASS TWO: measure, now that the gutters exist.
+    const base = rowsEl.getBoundingClientRect();
+    const panelBox = panel.getBoundingClientRect();
+    live.forEach(function(E){
+      const P = E.P;
+      const bA = rowOf(P.a.lane).getBoundingClientRect();
+      const bB = rowOf(P.b.lane).getBoundingClientRect();
+      const bG = E.gut.getBoundingClientRect();
+      const yA = bA.top - base.top + bA.height / 2;
+      const yB = bB.top - base.top + bB.height / 2;
+      // THE RUN LIVES IN THE GUTTER'S OWN MIDDLE, read off the gutter element
+      // rather than guessed at from the row below it.
+      const yRun = bG.top - base.top + bG.height / 2;
+      const xa = f(ya(P.a.year)), xb = f(ya(P.b.year));
+      const title = gapTitle(P);
+      const g = document.createElement("div");
+      g.className = "lanes-gap";
+      g.dataset.gap = P.id;
+      g.dataset.lanes = P.a.lane + " " + P.b.lane;
+      g.dataset.years = P.a.year + " " + P.b.year;
+      [[xa, yA], [xb, yB]].forEach(function(e){
+        const v = document.createElement("div");
+        v.className = "lanes-gapv";
+        v.style.left = (e[0] * 100).toFixed(4) + "%";
+        v.style.top = e[1].toFixed(2) + "px";
+        v.style.height = Math.max(0, yRun - e[1]).toFixed(2) + "px";
+        g.appendChild(v);
+        const c = document.createElement("div");
+        c.className = "lanes-gapcap";
+        c.style.left = (e[0] * 100).toFixed(4) + "%";
+        c.style.top = yRun.toFixed(2) + "px";
+        g.appendChild(c);
+      });
+      const h = document.createElement("div");
+      h.className = "lanes-gaph";
+      h.style.left = (Math.min(xa, xb) * 100).toFixed(4) + "%";
+      h.style.width = (Math.abs(xb - xa) * 100).toFixed(4) + "%";
+      h.style.top = yRun.toFixed(2) + "px";
+      h.title = title;
+      g.appendChild(h);
+      const chip = document.createElement("div");
+      chip.className = "lanes-gapchip";
+      chip.style.left = ((xa + xb) / 2 * 100).toFixed(4) + "%";
+      chip.style.top = yRun.toFixed(2) + "px";
+      chip.textContent = comma(P.gap) + " years";
+      chip.title = title;
+      g.appendChild(chip);
+      layer.appendChild(g);
+    });
+    // THE FIGURE MAY OVERHANG ITS OWN RUN. The first rule here was the one the
+    // age-band and alignment labels follow -- drop any label wider than the thing
+    // it labels -- and it took the number off TWO of the three connectors, the
+    // episode's own among them: 552 years is 41 px of bar at that point of the
+    // axis and "552 years" is 63 px of type. That rule exists because a label
+    // wider than its span reads as belonging to a wider span; in this gutter it
+    // cannot, because nothing else is positioned here and the two end caps already
+    // state the run's true extent. So it is dropped only when it would be CLIPPED
+    // by the panel -- .lanes is overflow:hidden, which is how the off-scale notes
+    // once rendered as "S MAP" and "STIES" -- or when it would land on another
+    // connector sharing its gutter. The run carries the tooltip either way.
+    const chips = Array.prototype.slice.call(
+      layer.querySelectorAll(".lanes-gapchip"));
+    const parts = Array.prototype.slice.call(
+      layer.querySelectorAll(".lanes-gaph, .lanes-gapcap"));
+    chips.forEach(function(ch){
+      const cb = ch.getBoundingClientRect();
+      const own = ch.parentElement;
+      const clipped = cb.left < panelBox.left + 2 || cb.right > panelBox.right - 2;
+      const clash = chips.concat(parts).some(function(el){
+        if(el === ch || el.parentElement === own) return false;
+        const b = el.getBoundingClientRect();
+        return !(cb.right <= b.left || b.right <= cb.left
+              || cb.bottom <= b.top || b.bottom <= cb.top);
+      });
+      if(clipped || clash) ch.remove();
     });
   }
 
@@ -7393,6 +7599,8 @@ window.__lanes = (function(){
           now: now, reveal: reveal, load: load, ya: ya, x: f, pct: pct,
           doc: function(){ return DOC; }, cluster: clusterItems,
           regions: function(){ return REGIONS; }, highlight: highlight,
+          gaps: buildGaps, gapTitle: gapTitle,
+          pairs: function(){ return (DOC && DOC.pairs) || []; },
           thumbW: thumbW};
 })();
 // ===================== PRESENTATION MODE (?present=1) =====================

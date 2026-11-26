@@ -4,7 +4,7 @@
  "source": "RESEARCH_Synchronoptic_Lanes_Sourcing.md Part A (54 sources), tracked in this repo at docs/RESEARCH_Synchronoptic_Lanes_Sourcing.md. Per-item sources are on the items.",
  "licence": "The dates are facts and claims reported from the cited scholarship and are not themselves copyrightable; the wording here is this project’s.",
  "credit": "Every lane item carries the source it came from, because a reader is entitled to know which tradition, and which scholar, a line on this chart is reporting.",
- "generated": "2026-11-25",
+ "generated": "2026-11-26",
  "generated_by": "geowork/lanes/build_lanes.py",
  "groups": [
   {
@@ -428,6 +428,89 @@
    "label": "The Long Count goes to stone, beside Augustus and the Han",
    "tier": "solid",
    "note": "The earliest carved Long Count dates fall in the same decades as Augustus and the Han — three thousand years after the calendar’s own zero."
+  }
+ ],
+ "pairs": [
+  {
+   "id": "gap-flood",
+   "what": "the Flood",
+   "kind": "same-story",
+   "tier": "contested",
+   "a": {
+    "lane": "trad-ussher",
+    "item": "us-flood",
+    "says": "Ussher’s Flood, computed from Biblical genealogy",
+    "year": -2348,
+    "tier": "tradition",
+    "label": "the Flood",
+    "laneLabel": "Biblical — Ussher (1650), as charted by Adams (1871)"
+   },
+   "b": {
+    "lane": "trad-skl",
+    "anchor": true,
+    "says": "the King List’s flood, hung here on the Shuruppak deposit — OUR anchor, not a date the List gives",
+    "year": -2900,
+    "tier": "tradition",
+    "approx": true,
+    "label": "the antediluvian reigns — 8 kings, 241,200 years — anchor",
+    "laneLabel": "Sumerian — the King List"
+   },
+   "note": "EPISODE BEAT 5. Two traditions tell one flood story and date it 552 years apart — and the List gives no date at all, so even its end of the bar is this panel’s placement rather than the text’s. BOTH DATES FALL INSIDE A CONTINUOUS DATED RECORD. Egypt’s king-list runs unbroken from Dynasty 1 (radiocarbon 3111–3045 BCE) through both of them, and Mesopotamia’s through Early Dynastic and Akkadian Sumer; neither records an interruption. The inked bands on the Egyptian and Sumerian lanes are those unbroken reckonings, and you can see that neither stops at either date.",
+   "gap": 552
+  },
+  {
+   "id": "gap-longcount",
+   "what": "the Long Count",
+   "kind": "claim-and-evidence",
+   "tier": "solid",
+   "a": {
+    "lane": "trad-longcount",
+    "item": "lc-zero",
+    "says": "the Long Count’s own zero, 11 August 3114 BCE",
+    "year": -3114,
+    "tier": "tradition",
+    "label": "Long Count zero",
+    "laneLabel": "Maya — the Long Count"
+   },
+   "b": {
+    "lane": "trad-longcount",
+    "item": "lc-first",
+    "says": "the earliest dates anyone actually carved in it",
+    "year": -36,
+    "tier": "contested",
+    "label": "first carved Long Count dates",
+    "end": 37,
+    "laneLabel": "Maya — the Long Count"
+   },
+   "note": "The calendar’s zero, and the first surviving use of the calendar, are 3,078 years apart. The zero is a computed starting point rather than a remembered event — the same relationship Ussher’s 4004 BC has to 1650, and the Kali Yuga epoch to the astronomers who fixed it. A reckoning that begins long before its own earliest evidence is the ordinary case on this panel, not the exception.",
+   "gap": 3078
+  },
+  {
+   "id": "gap-chinese",
+   "what": "a Chinese king in writing",
+   "kind": "claim-and-evidence",
+   "tier": "solid",
+   "a": {
+    "lane": "trad-chinese",
+    "item": "cn-huangdi",
+    "says": "the Yellow Emperor, where the traditional chronology begins",
+    "year": -2698,
+    "tier": "tradition",
+    "label": "the Yellow Emperor",
+    "laneLabel": "Chinese — traditional chronology"
+   },
+   "b": {
+    "lane": "trad-chinese",
+    "item": "cn-oracle",
+    "says": "the Anyang oracle bones — the earliest Chinese writing that names a king, under Wu Ding",
+    "year": -1254,
+    "tier": "solid",
+    "label": "Wu Ding oracle bones — the writing appears",
+    "end": -1197,
+    "laneLabel": "Chinese — traditional chronology"
+   },
+   "note": "1,444 years separate the first emperor of the traditional chronology from the earliest Chinese writing that could have recorded one. Everything between is transmitted rather than contemporary: the Xia and Shang dates on this lane are traditional, and Chinese dates only become year-precise at Gonghe in 841 BCE. The Yellow Emperor himself is a god later historicised (see his tooltip), which is why this gap is drawn as a reckoning against its evidence and not as two datings of one event.",
+   "gap": 1444
   }
  ]
 }
