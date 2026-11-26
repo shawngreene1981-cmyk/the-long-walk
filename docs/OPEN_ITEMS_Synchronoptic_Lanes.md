@@ -9,20 +9,42 @@ Last reviewed 2026-11-26.
 
 ---
 
-## NOTHING BLOCKS PUBLICATION
+## PUBLISHED — 2026-11-26
 
-**Founder-ruled 2026-11-26.** The one item that did — the Fara sourcing behind the
-Sumerian Flood anchor — was researched, the anchor was widened to a range, and the
-item was released. **Publication itself is a separate ruling and has not been given.**
+**Founder-ruled, and done.** The panel is live at https://shawngreene1981-cmyk.github.io/the-long-walk/
+
+| | |
+|---|---|
+| merge commit | **`a06f755`** — `--no-ff`, parents `19875a4` and `6f604ce` |
+| rollback point | **`19875a4`**, the tip of `main` before the merge |
+| published `index.html` | sha256 `38ff426a3a2b6c78…`, 1,300,506 bytes |
+| deploy | `git push origin main`; GitHub Pages served the new page about 20 seconds later |
+
+**The branch rule returned with that push.** `synchronoptic-lanes` is the working
+branch again and **nothing is pushed without a new ruling.** The checklist below was
+run in full before the merge and is kept, not struck out: it is the procedure for the
+next publication as much as the record of this one.
+
+The one item that had blocked — the Fara sourcing behind the Sumerian Flood anchor
+— was researched, the anchor was widened to a range, and the item was released
+before any of this.
 
 ---
 
 ## THE PUBLICATION CHECKLIST
 
-**Written 2026-11-26 on the founder’s instruction. NOTHING IN IT HAS BEEN RUN.**
-Publication is its own ruling and has not been given. The branch holds at
-`synchronoptic-lanes`; nothing is merged, pushed or deployed. **`19875a4` is the
+**Written 2026-11-26, and RUN IN FULL the same day** on the founder’s publication
+ruling. It is kept here as the procedure for the next one. **`19875a4` is the
 pre-publication tip of `main`** — the number to quote in any rollback.
+
+**What the run produced**, for the next person who follows it:
+
+- pre-flight §A: a full rebuild left the tree clean at `index.html` **1,300,506
+  bytes**; 95 desktop and 19 phone checks passed; `origin/main..main` was empty;
+- §B: merge `a06f755`, pushed `19875a4..a06f755`;
+- §C: the live page was still the old one on the first look and the new one about
+  **20 seconds** later. It was not re-pushed;
+- **one line of §C was wrong and is corrected below.** See the note on `autocrlf`.
 
 The live site is classic GitHub Pages off `main`’s root: there is no workflow in
 `.github/`, so pushing `main` IS the deploy. It usually rebuilds in under a minute.
@@ -87,15 +109,32 @@ Live URL: `https://shawngreene1981-cmyk.github.io/the-long-walk/`
 **First, that the deploy landed at all** — the one part of this a command settles:
 
 ```sh
-sha256sum index.html
+git show main:index.html | sha256sum                      # NOT sha256sum index.html
 curl -s https://shawngreene1981-cmyk.github.io/the-long-walk/ | sha256sum
 curl -sI https://shawngreene1981-cmyk.github.io/the-long-walk/data/lanes/lanes.json
 curl -sI https://shawngreene1981-cmyk.github.io/the-long-walk/img/lanes/adams-panorama.webp
 ```
 
+**Hash the COMMITTED BLOB, not the working file.** This repo is checked out with
+`core.autocrlf=true`, so the `index.html` on disk is CRLF and **1,309,001 bytes** while
+the blob git stores — and GitHub serves — is LF and **1,300,506 bytes**. Their
+hashes can never match, and `sha256sum index.html` therefore reports a failed deploy on
+a deploy that worked perfectly. The first version of this checklist said exactly that,
+and running it is what found the mistake.
+
 The two hashes must match, and both `curl -sI` must give **200**. If the live hash is
 still the old one, Pages has not finished rebuilding — **wait and look again; do not
 re-push.** A second push does not make a build go faster and it muddies §D.
+
+**Then run the live checks:** `python -I geowork/lanes/shot_live.py` (written
+2026-11-26). Thirteen render-level checks against the published URL in headless Edge,
+and the frames to go with them. Every other check in this project serves a local copy,
+so none of them can say anything about the live site: byte-identity proves the HTML is
+the same, not that it renders when the assets come over https from Pages. It measures
+the anchor band, the beat-5 chip and its three caps, the Roman Republic bar, the five
+images arriving from the live origin, the phone sheet and tap-to-read. The human list
+below is still worth doing — but it is no longer the only thing standing between a
+broken deploy and nobody noticing.
 
 **Desktop, in a real browser** (the checks only ever used headless Edge):
 
