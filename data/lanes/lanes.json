@@ -1,0 +1,988 @@
+{
+ "about": "Six traditions’ own chronologies, drawn as lanes under the map. Each lane says what its tradition RECKONS, beside the dated record. Where a reckoning has not begun, its lane is hatched: that hatched ground is what this map is about.",
+ "date_convention": "Years CE, negative = BCE. Historical numbering, NO YEAR ZERO: -3114 means 3114 BCE. This matches data/acts/manifest.json. The page converts to years-ago with ya = 2026 - year.",
+ "source": "RESEARCH_Synchronoptic_Lanes_Sourcing.md Part A (54 sources), tracked in this repo at docs/RESEARCH_Synchronoptic_Lanes_Sourcing.md. Per-item sources are on the items.",
+ "licence": "The dates are facts and claims reported from the cited scholarship and are not themselves copyrightable; the wording here is this project’s.",
+ "credit": "Every lane item carries the source it came from, because a reader is entitled to know which tradition, and which scholar, a line on this chart is reporting.",
+ "generated": "2026-11-26",
+ "generated_by": "geowork/lanes/build_lanes.py",
+ "groups": [
+  {
+   "key": "regions",
+   "label": "Regions — the ground",
+   "collapsed": false
+  },
+  {
+   "key": "states",
+   "label": "Dynasties and states",
+   "collapsed": true
+  },
+  {
+   "key": "traditions",
+   "label": "Reckonings — six clocks",
+   "collapsed": false
+  }
+ ],
+ "lanes": [
+  {
+   "id": "trad-ussher",
+   "tier": "tradition",
+   "group": "traditions",
+   "label": "Biblical — Ussher (1650), as charted by Adams (1871)",
+   "caption": "Ussher: Creation, 4004 BC",
+   "tradition": "Biblical",
+   "reckoning": "Ussher chronology",
+   "reckoningStart": -4004,
+   "note": "A Biblical reckoning; other Biblical traditions date Creation from c. 3761 (Jewish Anno Mundi) to c. 5509 BC (Byzantine World Era). Septuagint and Masoretic genealogies differ by 1,466 years.",
+   "source": "Ussher, Annales Veteris Testamenti (1650); Adams Synchronological Chart (1871), which begins at 4004 BC following Ussher.",
+   "items": [
+    {
+     "id": "us-creation",
+     "kind": "point",
+     "start": -4004,
+     "label": "Creation",
+     "tier": "tradition",
+     "note": "23 October, Julian."
+    },
+    {
+     "id": "us-flood",
+     "kind": "point",
+     "start": -2348,
+     "label": "the Flood",
+     "tier": "tradition",
+     "note": "AM 1656; some summaries give 2349. This date falls INSIDE Egypt’s Old Kingdom and Early Dynastic/Akkadian Mesopotamia, both of which were keeping continuous king-lists through it."
+    },
+    {
+     "id": "us-abram",
+     "kind": "span",
+     "start": -1996,
+     "end": -1921,
+     "label": "Abram: birth to call",
+     "tier": "tradition"
+    },
+    {
+     "id": "us-exodus",
+     "kind": "point",
+     "start": -1491,
+     "label": "the Exodus",
+     "tier": "tradition",
+     "note": "AM 2513. The date is contested; the Merneptah stele (c. 1207 BCE) is the earliest mention of Israel outside the Bible."
+    },
+    {
+     "id": "us-temple",
+     "kind": "span",
+     "start": -1012,
+     "end": -1004,
+     "label": "Solomon’s Temple: founded to dedicated",
+     "tier": "tradition"
+    },
+    {
+     "id": "us-destroyed",
+     "kind": "point",
+     "start": -588,
+     "label": "First Temple destroyed",
+     "tier": "contested",
+     "note": "Ussher gives 588; modern scholarship gives 587–586."
+    },
+    {
+     "id": "us-christ",
+     "kind": "point",
+     "start": -5,
+     "label": "birth of Christ",
+     "tier": "tradition"
+    }
+   ]
+  },
+  {
+   "id": "trad-yuga",
+   "tier": "tradition",
+   "group": "traditions",
+   "label": "Hindu — the yuga cycle",
+   "caption": "Kali Yuga epoch, 3102 BCE",
+   "tradition": "Hindu",
+   "reckoning": "yuga cycle",
+   "reckoningStart": -867102,
+   "mythology": {
+    "from": -867102,
+    "to": -3102,
+    "label": "Dvāpara Yuga",
+    "anchor": -3102,
+    "anchorApprox": false,
+    "anchorTier": "tradition",
+    "anchorNote": "THE ANCHOR IS THE TRADITION’S OWN, not ours: 18 February 3102 BC is a computed date, the epoch classical Indian astronomers fixed for the start of the Kali Yuga. The yuga drawn to its left is the tradition’s own arithmetic counted back from it.",
+    "note": "CULTURAL MYTHOLOGY, drawn from the tradition’s own arithmetic. The Dvāpara Yuga runs 864,000 years and ends at the Kali epoch, so it begins 867,102 BCE. The two older yugas do not fit: Tretā (1,296,000 years) would begin 2,163,102 BCE and Kr̥ta (1,728,000) earlier still, both off the left edge of a map that reaches 1.8 million years. Āryabhaṭa gives four EQUAL yugas of 1,080,000 instead, which would move this bar.",
+    "source": "Yuga lengths from the Sūrya-Siddhānta tradition; epoch per Britannica, Eras based on astronomical speculation."
+   },
+   "note": "An astronomical reckoning computed by classical Indian astronomers (attested from Āryabhaṭa onward). The epoch is a theoretical planetary conjunction on 18 February 3102 BC that, as Britannica puts it, could not have been observed.",
+   "source": "Britannica, Eras based on astronomical speculation; Fleet, JRAS 1911 on the Sūrya-Siddhānta and the Āryabhaṭa schools.",
+   "offscale": {
+    "tier": "tradition",
+    "label": "and 4.32 million years before that, off this map",
+    "note": "The Kali Yuga is the last and shortest of four yugas totalling one mahāyuga of 4,320,000 years — 2.4 times the whole span of this map, which reaches back 1.8 million years. Above that sits the kalpa: 1,000 mahāyugas, 4.32 billion years, one DAY of Brahma. The figure of 2,000 mahāyugas sometimes given is not a rival count but a day AND night together, 8.64 billion years. None of it can be drawn to scale here, so it is not drawn at all; only the Kali Yuga epoch is.",
+    "source": "Yuga lengths: Kr̥ta 1,728,000, Tretā 1,296,000, Dvāpara 864,000, Kali 432,000. Āryabhaṭa instead gives four EQUAL yugas of 1,080,000. Kalpa as a day of Brahma: Bhagavad Gita 8.17 and commentary."
+   },
+   "items": [
+    {
+     "id": "ky-epoch",
+     "kind": "point",
+     "start": -3102,
+     "label": "Kali Yuga begins",
+     "tier": "tradition",
+     "note": "18 February 3102 BC (Old Style). Tradition ties it to the end of the Mahābhārata war; proposed dates for that war range from 3102 (tradition) to c. 1000–950, 836 (B. B. Lal) and c. 750–350 (Parpola)."
+    }
+   ]
+  },
+  {
+   "id": "trad-longcount",
+   "tier": "tradition",
+   "group": "traditions",
+   "label": "Maya — the Long Count",
+   "caption": "Long Count zero, 3114 BCE",
+   "tradition": "Maya",
+   "reckoning": "Long Count",
+   "reckoningStart": -3114,
+   "note": "The calendar’s own zero point, 13.0.0.0.0 4 Ajaw 8 Kumk’u = 11 August 3114 BCE on the GMT correlation (584,283), which Kennett et al. 2013 supports by radiocarbon. Other correlations move it: Spinden by about 260 years earlier, Böhm by about 100 later.",
+   "source": "GMT correlation 584,283; Kennett et al. 2013, Scientific Reports.",
+   "items": [
+    {
+     "id": "lc-zero",
+     "kind": "point",
+     "start": -3114,
+     "label": "Long Count zero",
+     "tier": "tradition"
+    },
+    {
+     "id": "lc-first",
+     "kind": "span",
+     "start": -36,
+     "end": 37,
+     "label": "first carved Long Count dates",
+     "tier": "contested",
+     "note": "Chiapa de Corzo Stela 2 (36 BCE, uncertain), Tres Zapotes Stela C (32 BCE), El Baúl Stela 1 (11–37 CE). THE CALENDAR IS CARVED THREE THOUSAND YEARS AFTER ITS OWN ZERO."
+    },
+    {
+     "id": "lc-tikal",
+     "kind": "point",
+     "start": 292,
+     "label": "Tikal Stela 29 — first unequivocally Maya",
+     "tier": "solid"
+    }
+   ]
+  },
+  {
+   "id": "trad-chinese",
+   "tier": "tradition",
+   "group": "traditions",
+   "label": "Chinese — traditional chronology",
+   "caption": "Yellow Emperor, trad. 2698 BCE",
+   "tradition": "Chinese",
+   "reckoning": "traditional chronology",
+   "reckoningStart": -2698,
+   "note": "Traditional Chinese chronology (Shiji, Han-era and later computations). The Yellow Emperor is dated by tradition to 2698/2697 BCE and, in Britannica’s words, originated as a god who was later represented as a historical person. Year-precise dating begins at 841 BCE.",
+   "source": "Shiji; Xia–Shang–Zhou Chronology Project (itself contested).",
+   "items": [
+    {
+     "id": "cn-huangdi",
+     "kind": "point",
+     "start": -2698,
+     "label": "the Yellow Emperor",
+     "tier": "tradition"
+    },
+    {
+     "id": "cn-xia",
+     "kind": "point",
+     "start": -2205,
+     "label": "Xia begins (trad.)",
+     "tier": "tradition",
+     "note": "Traditional 2205 BCE; the XSZ Project gives c. 2070."
+    },
+    {
+     "id": "cn-shang",
+     "kind": "point",
+     "start": -1766,
+     "label": "Shang begins (trad.)",
+     "tier": "tradition",
+     "note": "Traditional 1766 BCE; the XSZ Project gives c. 1600."
+    },
+    {
+     "id": "cn-oracle",
+     "kind": "span",
+     "start": -1254,
+     "end": -1197,
+     "label": "Wu Ding oracle bones — the writing appears",
+     "tier": "solid"
+    },
+    {
+     "id": "cn-zhou",
+     "kind": "point",
+     "start": -1122,
+     "label": "Zhou conquest (trad.)",
+     "tier": "contested",
+     "note": "Traditional 1122; Bamboo Annals 1027; XSZ Project 1046; Cambridge 1045."
+    },
+    {
+     "id": "cn-841",
+     "kind": "point",
+     "start": -841,
+     "label": "Gonghe — year-precise from here",
+     "tier": "solid",
+     "note": "THE CLOCK STOPS BEING TRADITIONAL AND STARTS BEING DATED."
+    }
+   ]
+  },
+  {
+   "id": "trad-egypt",
+   "tier": "tradition",
+   "group": "traditions",
+   "label": "Egyptian — the king-list tradition",
+   "caption": "Dynasty 1: Aha, 3111–3045 BCE",
+   "tradition": "Egyptian",
+   "reckoning": "Manetho and the king lists",
+   "reckoningStart": -28011,
+   "mythology": {
+    "from": -28011,
+    "to": -3111,
+    "label": "gods and demigods (Manetho, as written)",
+    "anchor": -3111,
+    "anchorApprox": true,
+    "anchorTier": "contested",
+    "anchorNote": "OUR PLACEMENT, NOT MANETHO’S. The date itself is sound — the start of Dynasty 1 is radiocarbon-dated to 3111–3045 BCE (Dee et al. 2013) — but hanging the divine reigns on it is an editorial decision by this map. Manetho gives the gods a length, not a date; nothing in the text says when they ended.",
+    "note": "CULTURAL MYTHOLOGY. Eusebius, quoting Manetho: gods 13,900 years, demigods 1,255, other kings 1,817, thirty Memphite kings 1,790, ten Thinite 350, spirits and demigods 5,813 — 24,900 in all. He calls them LUNAR years and gives 2,206 solar as the equivalent, which would shorten this bar to start at 5,317 BCE. The totals also vary by who is quoting: Syncellus gives the gods 11,985, and another set of his figures gives 11,984 for gods and 2,646 for demigods. The bar is drawn at the written 24,900 and every other reading is recorded here.",
+    "source": "Manetho via Eusebius (Waddell, Loeb 350) and via Syncellus; Dee et al. 2013 for the Dynasty 1 radiocarbon range."
+   },
+   "note": "Egyptian king-list tradition, from the Old Kingdom annals to Manetho in the 3rd century BCE. The lane is drawn from Dynasty 1, whose start is radiocarbon-dated to 3111–3045 BCE (Dee et al. 2013) — the only point in this tradition the ground can place.",
+   "source": "Manetho, surviving in quotation; Palermo Stone; Abydos king list (76 kings from Menes); Dee et al. 2013 for the radiocarbon date.",
+   "items": [
+    {
+     "id": "eg-aha",
+     "kind": "span",
+     "start": -3111,
+     "end": -3045,
+     "label": "Aha — Dynasty 1 begins",
+     "tier": "solid",
+     "note": "Radiocarbon, Dee et al. 2013. Britannica’s conventional date for Dynasty 1 is c. 2900."
+    },
+    {
+     "id": "eg-djoser",
+     "kind": "span",
+     "start": -2691,
+     "end": -2625,
+     "label": "Djoser",
+     "tier": "solid",
+     "note": "Bronk Ramsey et al. 2010."
+    },
+    {
+     "id": "eg-nk",
+     "kind": "span",
+     "start": -1570,
+     "end": -1544,
+     "label": "New Kingdom begins",
+     "tier": "solid",
+     "note": "Bronk Ramsey et al. 2010."
+    }
+   ]
+  },
+  {
+   "id": "trad-skl",
+   "tier": "tradition",
+   "group": "traditions",
+   "label": "Sumerian — the King List",
+   "caption": "the Flood, placed by us at c. 3000–2900 BCE",
+   "tradition": "Sumerian",
+   "reckoning": "Sumerian King List",
+   "reckoningStart": -244100,
+   "mythology": {
+    "from": -244200,
+    "label": "the antediluvian reigns — 8 kings, 241,200 years",
+    "to": -2900,
+    "anchorFrom": -3000,
+    "anchorTo": -2900,
+    "anchorApprox": true,
+    "anchorTier": "contested",
+    "anchorNote": "OUR PLACEMENT, NOT THE LIST’S, AND A RANGE RATHER THAN A DATE. The Sumerian King List gives the Flood no date at all. This map hangs it on the flood deposit at Shuruppak (Tell Fara), excavated by Erich Schmidt in 1931: a band of water-laid clay with Jemdet Nasr material below it and Early Dynastic above. The STRATIGRAPHY is his; THE DATE IS NOT. \n\nc. 3000–2900 BCE is this project’s figure, got by applying the modern radiocarbon dating of the Jemdet Nasr period (now c. 3100–2900 BCE) to Schmidt’s section, and it is the window Mallowan argued for in “Noah’s Flood Reconsidered”, Iraq 26 (1964). On the short chronology the boundary falls nearer 2800. \n\nSCHMIDT HIMSELF DATED THE INUNDATION SOME SIX HUNDRED YEARS EARLIER — to about the middle of the fourth millennium — because in 1931 the Jemdet Nasr period was placed in the first half of that millennium. \n\nHIS OWN REPORT CARRIES TWO CAVEATS THAT WEAKEN THIS ANCHOR. The culture break across the layer is NOT COMPLETE: Early Sumerian bowls appear at the same level as the Jemdet Nasr vessels beneath it, and sherds below it he could not tell apart from those above. And THERE WERE NO VICTIMS — no human or animal remains — from which he concluded that either the people were warned and fled, or the end of the Jemdet Nasr settlement was not caused by the inundation but merely coincided with it. He declined to say it was one event at all. \n\nAND THE DEPOSITS CANNOT BE ONE FLOOD. Ur’s is c. 3500 BCE, Kish has three (two c. 2900, one c. 2600), Shuruppak’s is at this boundary. They are of different dates. \n\nThe association is contested for a further reason the List itself gives: it puts Ziusudra’s kingship BEFORE the flood, which several scholars read as ruling this deposit out. Shuruppak is used because it is Ziusudra’s own city and the one place the two records touch.",
+    "note": "CULTURAL MYTHOLOGY, drawn back from an anchor we chose. \"After the kingship descended from heaven, the kingship was in Eridug.\" Alulim reigns 28,800 years, Alaljar 36,000; \"5 cities, 8 kings … 241,200 years\"; \"Then the flood swept over.\" Counted back from the anchor range that reaches 244,200–244,100 BCE — which fits on this map with room to spare, and the hundred years of doubt at the flood end are invisible at the other. The length was never the problem; the missing date was.",
+    "source": "ETCSL 2.1.1 for the reigns. For the anchor: Erich F. Schmidt, “Excavations at Fara, 1931”, The Museum Journal XXII.3–4 (1931), 193–217, University of Pennsylvania — a preliminary field report, as the Journal itself notes; the modern radiocarbon dating of the Jemdet Nasr period, c. 3100–2900 BCE; and M. E. L. Mallowan, “Noah’s Flood Reconsidered”, Iraq 26 (1964)."
+   },
+   "note": "A Mesopotamian royal tradition with reigns before and after the Flood. ALONE AMONG THESE SIX IT NAMES NO ZERO POINT — it counts 241,200 years before a Flood it never dates — so the position of everything left of Kish is an anchor this map chose, not a date the text gives. See the anchor marker.",
+   "source": "16+ manuscripts; the Ur III copy under Shulgi (2084–2037 BCE); the Weld-Blundell Prism, c. 1800 BCE. Text: ETCSL 2.1.1.",
+   "items": [
+    {
+     "id": "skl-kish",
+     "kind": "span",
+     "start": -2900,
+     "end": -2600,
+     "label": "kingship at Kish, after the flood — still legendary",
+     "tier": "tradition",
+     "note": "The List resumes at Kish with reigns still in the hundreds of years. Its right-hand end here is where the List first touches something dug up, not a date the List gives."
+    },
+    {
+     "id": "skl-enmebaragesi",
+     "kind": "point",
+     "start": -2600,
+     "label": "Enmebaragesi of Kish — the first king on the List anyone has dug up",
+     "tier": "solid",
+     "note": "Attested by his own inscriptions, c. 2600 BCE. THE LIST JOINS THE DATED RECORD HERE: everything to the left of this point is tradition, and everything to the right can be checked."
+    },
+    {
+     "id": "skl-shulgi",
+     "kind": "span",
+     "start": -2084,
+     "end": -2037,
+     "label": "the Ur III copy, under Shulgi",
+     "tier": "solid"
+    },
+    {
+     "id": "skl-prism",
+     "kind": "point",
+     "start": -1800,
+     "label": "the Weld-Blundell Prism",
+     "tier": "solid"
+    },
+    {
+     "id": "skl-hammurabi",
+     "kind": "span",
+     "start": -1792,
+     "end": -1750,
+     "label": "Hammurabi (middle chronology)",
+     "tier": "contested",
+     "convention": "middle chronology",
+     "note": "High 1848–1806, middle 1792–1750, low 1728–1686, ultra-low 1696–1654. The middle chronology is used here and the spread is about a century."
+    },
+    {
+     "id": "skl-911",
+     "kind": "point",
+     "start": -911,
+     "label": "Assyrian dates become year-accurate",
+     "tier": "solid",
+     "note": "Fixed by the eclipse of 763 BCE."
+    }
+   ]
+  },
+  {
+   "id": "st-egypt",
+   "label": "Egypt",
+   "caption": "nine periods, Met sequence",
+   "note": "PERIOD BOUNDARIES ARE CONVENTIONS, not measurements. This lane follows ONE authority end to end — the Metropolitan Museum’s list of rulers — because mixing two produces seams that look like history and are not. Britannica runs the Old Kingdom roughly a century later, c. 2543–2118, and begins the Early Dynastic at c. 2900 rather than c. 3100; Part B records both. WORTH NOTICING: the Met’s c. 3100 start agrees with the radiocarbon date for Aha, 3111–3045 BCE, on the Egyptian tradition lane below. Britannica’s c. 2900 does not.",
+   "source": "RESEARCH Part B [25] Metropolitan Museum of Art, List of Rulers of Ancient Egypt and Nubia; [28] Britannica. Aha by radiocarbon: Dee et al. 2013.",
+   "items": [
+    {
+     "id": "eg-ed",
+     "kind": "span",
+     "start": -3100,
+     "end": -2649,
+     "label": "Early Dynastic",
+     "tier": "solid",
+     "note": "Britannica begins it c. 2900 instead. The radiocarbon date for Aha on the tradition lane, 3111–3045 BCE, sits at this end of the Met’s range and outside Britannica’s altogether."
+    },
+    {
+     "id": "eg-ok",
+     "kind": "span",
+     "start": -2649,
+     "end": -2150,
+     "label": "Old Kingdom",
+     "tier": "solid",
+     "note": "Britannica: c. 2543–2118, roughly a century later. The pyramid-age alignment column above is drawn on the Met sequence."
+    },
+    {
+     "id": "eg-fip",
+     "kind": "span",
+     "start": -2150,
+     "end": -2030,
+     "label": "First Intermediate Period",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-mk",
+     "kind": "span",
+     "start": -2030,
+     "end": -1640,
+     "label": "Middle Kingdom",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-sip",
+     "kind": "span",
+     "start": -1640,
+     "end": -1550,
+     "label": "Second Intermediate Period",
+     "tier": "solid",
+     "note": "Part B gives the end as c. 1540, which would overlap the New Kingdom by ten years. The Met’s 1550 is used so the lane does not show a decade that two dynasties both ruled."
+    },
+    {
+     "id": "eg-nk",
+     "kind": "span",
+     "start": -1550,
+     "end": -1070,
+     "label": "New Kingdom",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-tip",
+     "kind": "span",
+     "start": -1070,
+     "end": -713,
+     "label": "Third Intermediate Period",
+     "tier": "solid"
+    },
+    {
+     "id": "eg-late",
+     "kind": "span",
+     "start": -712,
+     "end": -332,
+     "label": "Late Period",
+     "tier": "solid",
+     "note": "Part B also records a start of 664, the beginning of the Twenty-sixth Dynasty, depending on whether the Kushite period is counted here."
+    },
+    {
+     "id": "eg-ptol",
+     "kind": "span",
+     "start": -305,
+     "end": -30,
+     "label": "Ptolemaic Egypt",
+     "tier": "solid",
+     "note": "Part B gives 305/304. It ends with Cleopatra VII and the Roman annexation, which is one of the few hard dates on this lane."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-babylonia",
+   "label": "Sumer and Babylonia",
+   "caption": "MIDDLE CHRONOLOGY",
+   "note": "EVERY DATE HERE FROM UR III ONWARD IS MIDDLE CHRONOLOGY, and the choice moves the whole lane. High chronology puts Hammurabi at 1848–1806 and the fall of Babylon at 1651; middle, used here, 1792–1750 and 1595; low, 1728–1686 and 1531; ultra-low, 1696–1654 and 1499. That is a spread of about 150 years, which is wider than several of the bars on this lane. Mesopotamian dates only become year-accurate at 911 BCE, fixed by the solar eclipse of 763 — see the Assyria lane.",
+   "source": "RESEARCH Part B [33]–[37], middle chronology throughout.",
+   "items": [
+    {
+     "id": "mes-uruk",
+     "kind": "span",
+     "start": -4000,
+     "end": -3100,
+     "label": "the Uruk period",
+     "tier": "contested",
+     "note": "An archaeological period bracketed by radiocarbon, not a polity with a reign list. Its end, c. 3100, is where writing and the first states appear — which is the window three of the six reckonings above chose to begin in."
+    },
+    {
+     "id": "mes-ed",
+     "kind": "span",
+     "start": -2900,
+     "end": -2350,
+     "label": "Early Dynastic",
+     "tier": "solid"
+    },
+    {
+     "id": "mes-akkad",
+     "kind": "span",
+     "start": -2350,
+     "end": -2150,
+     "label": "Akkad",
+     "tier": "contested",
+     "note": "Middle chronology. Sargon’s accession is conventionally 2334 BCE — fourteen years after the date Ussher gives for the Flood, with the record running straight through both."
+    },
+    {
+     "id": "mes-ur3",
+     "kind": "span",
+     "start": -2112,
+     "end": -2004,
+     "label": "Ur III",
+     "tier": "contested",
+     "note": "Middle chronology. The Sumerian King List is copied under Shulgi in this window; see the Sumerian lane."
+    },
+    {
+     "id": "mes-ob",
+     "kind": "span",
+     "start": -1894,
+     "end": -1595,
+     "label": "Old Babylonian",
+     "tier": "contested",
+     "note": "Middle chronology. Hammurabi reigns 1792–1750 on this reckoning."
+    },
+    {
+     "id": "mes-kassite",
+     "kind": "span",
+     "start": -1595,
+     "end": -1155,
+     "label": "Kassite Babylon",
+     "tier": "contested",
+     "note": "Middle chronology; begins at the fall of Babylon."
+    },
+    {
+     "id": "mes-nb",
+     "kind": "span",
+     "start": -626,
+     "end": -539,
+     "label": "Neo-Babylonian",
+     "tier": "solid",
+     "note": "Year-accurate. It ends with Cyrus taking Babylon, which is also where the Persia lane begins."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-assyria",
+   "label": "Assyria",
+   "caption": "year-accurate from 911 BCE",
+   "note": "Assyria and Babylonia were two states in one region at the same time, so they are two lanes: drawn on one row the bars would overlap, and a lane that overlaps itself cannot be read. THIS IS WHERE THE DATED RECORD HARDENS. Assyrian dates are year-accurate from 911 BCE, fixed by the eponym lists against the solar eclipse of 15 June 763 BCE. Everything to the left of that on this panel, on every lane, is reckoned rather than counted.",
+   "source": "RESEARCH Part B [33]–[37]; Metropolitan Museum, Assyria 1365–609 B.C. Middle Assyrian dates follow the same middle chronology as Babylonia.",
+   "items": [
+    {
+     "id": "as-middle",
+     "kind": "span",
+     "start": -1363,
+     "end": -912,
+     "label": "Middle Assyrian",
+     "tier": "contested",
+     "note": "From Ashur-uballit I to the death of Ashur-dan II. His accession is given as c. 1363 or c. 1365 depending on the chronology; Freydank offers 1353 on another reckoning."
+    },
+    {
+     "id": "as-neo",
+     "kind": "span",
+     "start": -911,
+     "end": -609,
+     "label": "Neo-Assyrian",
+     "tier": "solid"
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-indus",
+   "label": "the Indus",
+   "caption": "Kenoyer’s sequence; Part B’s figures superseded",
+   "note": "OPEN ITEM 3 IS RESOLVED HERE, AGAINST PART B. Part B gave the Mature phase as c. 2600–2000 and the Late phase as running to c. 1700. The standard scheme — Kenoyer 2008, and Shaffer’s Regionalisation / Integration / Localisation eras behind it — puts the Mature (Integration) phase at 2600–1900 and the Late (Localisation) phase at 1900–1300. The 1900 boundary is common to nearly every published scheme, so it is used. What is still disputed is when the Mature phase BEGINS (2600 or 2800) and when the Late phase ENDS (1300, 1500 or later in the east).",
+   "source": "RESEARCH Part B [38][39]; J. M. Kenoyer, Indus Civilization (2008), chronological table; J. G. Shaffer’s era scheme.",
+   "items": [
+    {
+     "id": "in-early",
+     "kind": "span",
+     "start": -3300,
+     "end": -2600,
+     "label": "Early Harappan",
+     "tier": "contested",
+     "note": "The Regionalisation era. Its start is a soft boundary in the archaeology rather than a date."
+    },
+    {
+     "id": "in-mature",
+     "kind": "span",
+     "start": -2600,
+     "end": -1900,
+     "label": "Mature Harappan",
+     "tier": "solid",
+     "note": "Kenoyer’s Integration era, Harappa Periods 3A–C. Some popular sources begin it at c. 2800 instead."
+    },
+    {
+     "id": "in-late",
+     "kind": "span",
+     "start": -1900,
+     "end": -1300,
+     "label": "Late Harappan",
+     "tier": "contested",
+     "note": "The Localisation era. Harappa’s own radiocarbon sequence puts a transitional phase at c. 1900–1800 before it. The end is variously given as 1300, 1500 or later again further east."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-china",
+   "label": "China",
+   "caption": "Erlitou on radiocarbon, not on the Xia",
+   "note": "OPEN ITEM 2 IS RESOLVED AS CONTESTED, WHICH IS WHAT THE LITERATURE SAYS. The Xia–Shang–Zhou Chronology Project’s 2000 chart begins the Xia at 2070 BCE; a larger series of radiocarbon samples from Erlitou’s lower layers moved the site’s own start to about 1750 BCE, and Erlitou’s excavation director has publicly called the project political. THIS LANE DOES NOT LABEL ERLITOU “XIA”: whether the site is the dynasty the texts describe is the dispute, not a detail of it. The traditional dates for the Xia, Shang and Zhou are on the Chinese tradition lane below, where they belong — 2205, 1766 and 1122 BCE — and they are not these dates.",
+   "source": "RESEARCH Part B [40][41]; Lawler, Science (2009) reporting Wu Xiaohong (Peking University) on the Erlitou redating; Xia–Shang–Zhou Chronology Project (2000) for the figures it is contested against.",
+   "items": [
+    {
+     "id": "cn-erlitou",
+     "kind": "span",
+     "start": -1750,
+     "end": -1520,
+     "label": "Erlitou",
+     "tier": "contested",
+     "note": "The start is the Peking University redating of lower-layer samples; earlier work gave a range as wide as 1900–1500. The end is the conventional transition to Erligang. OVERLAPS THE SHANG BAR BY ABOUT EIGHTY YEARS on this lane, and that overlap is real: the two are archaeological horizons, not a handover between governments."
+    },
+    {
+     "id": "cn-shang",
+     "kind": "span",
+     "start": -1600,
+     "end": -1046,
+     "label": "Shang",
+     "tier": "solid",
+     "note": "The Anyang oracle bones, from Wu Ding’s reign c. 1250 BCE, are the earliest Chinese writing and the first contemporary record of any of this."
+    },
+    {
+     "id": "cn-wzhou",
+     "kind": "span",
+     "start": -1046,
+     "end": -771,
+     "label": "Western Zhou",
+     "tier": "solid",
+     "note": "1046 is the Chronology Project’s date for the conquest; Cambridge gives 1045, the Bamboo Annals 1027 and the tradition 1122."
+    },
+    {
+     "id": "cn-ezhou",
+     "kind": "span",
+     "start": -771,
+     "end": -256,
+     "label": "Eastern Zhou",
+     "tier": "solid"
+    },
+    {
+     "id": "cn-qin",
+     "kind": "span",
+     "start": -221,
+     "end": -206,
+     "label": "Qin",
+     "tier": "solid"
+    },
+    {
+     "id": "cn-han",
+     "kind": "span",
+     "start": -206,
+     "end": 220,
+     "label": "Han",
+     "tier": "solid"
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-persia",
+   "label": "Persia",
+   "caption": "Achaemenid only, as Part B sources it",
+   "note": "Part B sources the Achaemenid empire and nothing else on this lane, so nothing else is drawn. The Seleucid, Parthian and Sasanian states are absent because they were not in the sourcing pass, NOT because they were judged unimportant — an empty stretch of lane here means no source was checked, which is a different thing from an empty stretch meaning nothing was happening.",
+   "source": "RESEARCH Part B [37][42].",
+   "items": [
+    {
+     "id": "pe-achaemenid",
+     "kind": "span",
+     "start": -550,
+     "end": -330,
+     "label": "Achaemenid Persia",
+     "tier": "solid",
+     "note": "From Cyrus to Alexander. It begins where the Neo-Babylonian bar ends."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-aegean",
+   "label": "Minoan Crete",
+   "caption": "the sequence, not the palaces",
+   "note": "OPEN ITEM 6 IS RESOLVED HERE. Part B gives “Minoan palaces from c. 1900”, which is the date of the FIRST PALACES and not of the Minoan sequence: that begins at Early Minoan I, c. 3100 BCE. The Protopalatial palaces are c. 1900–1700, inside this bar, and some schemes start Protopalatial society at c. 2100. THE WHOLE LATE MINOAN END OF THIS BAR MOVES BY ABOUT A CENTURY depending on the Aegean chronology: radiocarbon puts the Thera eruption near 1600 BCE, synchronism with Egyptian records puts it about a hundred years later, and that argument is not settled.",
+   "source": "RESEARCH Part B [43]; Minoan chronology, Early Minoan I c. 3100 BCE; Dunn (Durham, 2002) on the two calendrical ranges for the Thera eruption, c. 1645–1628 and c. 1540–1500 BCE.",
+   "items": [
+    {
+     "id": "ae-minoan",
+     "kind": "span",
+     "start": -3100,
+     "end": -1100,
+     "label": "Minoan Crete",
+     "tier": "contested",
+     "note": "Early Minoan I to the end of the Late Minoan sequence. The first palaces are c. 1900–1700, within this span; the Late Minoan dates depend on which Aegean chronology you take."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-greece",
+   "label": "Greece",
+   "caption": "mainland; Crete is its own lane",
+   "note": "The mainland sequence. Mycenaean Greece and Minoan Crete overlap by five centuries, which is why they are two lanes rather than two bars on one.",
+   "source": "RESEARCH Part B [44] Mycenaean; [9] Archaic and Classical.",
+   "items": [
+    {
+     "id": "gr-myc",
+     "kind": "span",
+     "start": -1600,
+     "end": -1100,
+     "label": "Mycenaean Greece",
+     "tier": "contested",
+     "note": "Its start shares the Aegean chronology problem with Minoan Crete. The destructions around 1200 BCE fall inside this bar, in the same fifty-year window as Wu Ding’s oracle bones and the Merneptah stele — see the alignment column."
+    },
+    {
+     "id": "gr-archaic",
+     "kind": "span",
+     "start": -800,
+     "end": -480,
+     "label": "Archaic Greece",
+     "tier": "solid"
+    },
+    {
+     "id": "gr-classical",
+     "kind": "span",
+     "start": -480,
+     "end": -323,
+     "label": "Classical Greece",
+     "tier": "solid"
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-rome",
+   "label": "Rome",
+   "caption": "west to 476, east to 1453",
+   "note": "OPEN ITEM 4 IS RESOLVED HERE. 27 BCE is a constitutional moment: the senate grants Octavian the title Augustus. 476 CE IS NOT AN EVENT OF THE SAME KIND. It is a modern convention, the deposition of Romulus Augustulus, and it ends only the WESTERN empire; no one alive in 476 thought Rome had fallen. The eastern empire ran to 1453, which this map’s axis reaches, so it is drawn rather than left off. The two bars overlap from 395, when the empire was formally divided, and that overlap is the point.",
+   "source": "RESEARCH Part B [45] for the founding; the Republic from 509; the imperial dates are the conventional ones and the convention is described in the note.",
+   "items": [
+    {
+     "id": "ro-founded",
+     "kind": "point",
+     "start": -753,
+     "label": "Rome founded (tradition)",
+     "tier": "tradition",
+     "note": "The traditional date. The archaeology gives a Palatine village in the tenth to ninth centuries BCE, which is a different kind of claim about a different kind of thing."
+    },
+    {
+     "id": "ro-republic",
+     "kind": "span",
+     "start": -509,
+     "end": -27,
+     "label": "the Republic",
+     "tier": "solid"
+    },
+    {
+     "id": "ro-west",
+     "kind": "span",
+     "start": -27,
+     "end": 476,
+     "label": "the Roman Empire in the west",
+     "tier": "solid",
+     "note": "476 is a modern convention, not a contemporary event: see the lane note."
+    },
+    {
+     "id": "ro-east",
+     "kind": "span",
+     "start": 395,
+     "end": 1453,
+     "label": "the Roman Empire in the east",
+     "tier": "solid",
+     "note": "From the formal division of 395 to the fall of Constantinople. OVERLAPS THE WESTERN BAR FROM 395 TO 476, because for those eighty years there were two."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-mesoamerica",
+   "label": "Mesoamerica",
+   "caption": "Olmec, then Classic Maya",
+   "note": "The earliest carved Long Count dates, 36 BCE to 37 CE, are on the Maya tradition lane rather than repeated here: they are a fact about the calendar, and this lane is about states.",
+   "source": "RESEARCH Part B [46] Olmec; [47] Classic.",
+   "items": [
+    {
+     "id": "ma-olmec",
+     "kind": "span",
+     "start": -1200,
+     "end": -400,
+     "label": "Olmec",
+     "tier": "solid",
+     "note": "San Lorenzo is at its height around 1200 BCE, inside the same fifty-year window as the Mycenaean destructions and the Merneptah stele."
+    },
+    {
+     "id": "ma-classic",
+     "kind": "span",
+     "start": 250,
+     "end": 900,
+     "label": "Classic Maya",
+     "tier": "solid",
+     "note": "Part B gives the start as c. 100 or c. 250 CE depending on where the Preclassic is held to end; 250 is the commoner convention."
+    }
+   ],
+   "group": "states"
+  },
+  {
+   "id": "st-andes",
+   "label": "the Andes",
+   "caption": "Chavín redated, and still disputed",
+   "note": "OPEN ITEM 5 IS RESOLVED AS CONTESTED. Part B gave Chavín as c. 900–200 BCE, which is Burger’s OLD chronology. His own later AMS sequence has the site founded c. 950 cal BC and abandoned by c. 400 cal BC, while Kembel’s architectural sequence puts five construction phases at 1100–550 BC, moving the Janabarriu phase some four centuries earlier than the old scheme. The bar follows the radiocarbon sequence; the architectural one is in its tooltip. CARAL IS NOT DRAWN SEPARATELY — it is a site within Norte Chico, and nesting one bar inside another would read as two things rather than one thing inside another.",
+   "source": "RESEARCH Part B [48]–[52]; Burger, Understanding the Socioeconomic Trajectory of Chavín de Huántar: A New Radiocarbon Sequence (Latin American Antiquity); Kembel on the monumental architecture.",
+   "items": [
+    {
+     "id": "an-nortechico",
+     "kind": "span",
+     "start": -3000,
+     "end": -1800,
+     "label": "Norte Chico / Caral-Supe",
+     "tier": "solid",
+     "note": "Caral itself is dated 2627–1977 cal BC, inside this span. It is not drawn as its own bar because it is a site within this tradition, not a second one."
+    },
+    {
+     "id": "an-chavin",
+     "kind": "span",
+     "start": -950,
+     "end": -400,
+     "label": "Chavín de Huántar",
+     "tier": "contested",
+     "note": "Burger’s AMS sequence: founded c. 950 cal BC, abandoned by c. 400. Kembel’s architectural sequence instead runs 1100–550 BC. Part B’s c. 900–200 is the superseded chronology."
+    }
+   ],
+   "group": "states"
+  }
+ ],
+ "alignments": [
+  {
+   "id": "al10",
+   "from": -9600,
+   "to": -8200,
+   "label": "Before all six clocks",
+   "tier": "solid",
+   "note": "Göbekli Tepe. Monumental building roughly 5,600 years before the oldest of these six reckonings begins, and older still than the other five. THIS IS THE POINT OF THE PANEL: everything the clocks were built to explain starts long after this."
+  },
+  {
+   "id": "al02",
+   "from": -4004,
+   "to": -3102,
+   "label": "Three beginnings",
+   "tier": "tradition",
+   "note": "Ussher 4004, the Long Count 3114, the Kali Yuga 3102 — and Egypt’s Dynasty 1 radiocarbon-dated 3111–3045 in the same window. READ AS A SHARED EVENT THIS HAS NO VERIFIED EVIDENCE. Three of the four are reckonings computed centuries or millennia later by people who could not have consulted one another, and the fourth is a radiocarbon range. c. 3100 BCE is when writing and states appear, which is a reason for clocks to START there, not evidence that anything happened."
+  },
+  {
+   "id": "al04",
+   "from": -3000,
+   "to": -2084,
+   "label": "Two king lists, two floods",
+   "tier": "contested",
+   "note": "The Sumerian King List is copied under Shulgi with a flood in it; Manetho, much later, puts gods before his kings. THE DOCUMENTS ARE SOLID. A single shared Flood behind them has no verified evidence, and the Mesopotamian flood tradition is a known literary inheritance rather than independent testimony."
+  },
+  {
+   "id": "al01",
+   "from": -2600,
+   "to": -2450,
+   "label": "The pyramid age",
+   "tier": "solid",
+   "note": "Khufu, the Stonehenge sarsens c. 2500, Caral, the Mature Harappan and Early Dynastic Sumer are all going on at once. No contact is implied between any of them; this is simply what the dated record shows."
+  },
+  {
+   "id": "al03",
+   "from": -2348,
+   "to": -2348,
+   "label": "Ussher’s Flood, against two continuous records",
+   "tier": "solid",
+   "note": "A solid divergence, and presented as one rather than as a gotcha. 2348 BCE falls inside Egypt’s Old Kingdom and inside Early Dynastic and Akkadian Mesopotamia, both of which were keeping continuous king-lists through it and recorded no interruption."
+  },
+  {
+   "id": "al05",
+   "from": -1800,
+   "to": -1750,
+   "label": "Hammurabi’s century",
+   "tier": "contested",
+   "note": "Middle chronology. High, low and ultra-low chronologies move this by 60 to 100 years either way, so the uncertainty is about as wide as the bar."
+  },
+  {
+   "id": "al06",
+   "from": -1250,
+   "to": -1200,
+   "label": "The thirteenth-century horizon",
+   "tier": "solid",
+   "note": "Wu Ding’s oracle bones, the Mycenaean destructions, the Merneptah stele with the first mention of Israel, and San Lorenzo. Four unconnected parts of the world leaving hard evidence inside one fifty-year window."
+  },
+  {
+   "id": "al07",
+   "from": -911,
+   "to": -753,
+   "label": "The world becomes datable",
+   "tier": "solid",
+   "note": "Assyrian dates go year-accurate from 911 BCE, fixed by the eclipse of 763. Rome’s traditional founding is 753. From here on the arguments are about what happened, not about when."
+  },
+  {
+   "id": "al08",
+   "from": -550,
+   "to": -221,
+   "label": "The axial-age empires",
+   "tier": "solid",
+   "note": "Cyrus, Chandragupta, Qin Shi Huang. Three imperial consolidations across Eurasia inside three centuries."
+  },
+  {
+   "id": "al09",
+   "from": -36,
+   "to": 37,
+   "label": "The Long Count goes to stone, beside Augustus and the Han",
+   "tier": "solid",
+   "note": "The earliest carved Long Count dates fall in the same decades as Augustus and the Han — three thousand years after the calendar’s own zero."
+  }
+ ],
+ "pairs": [
+  {
+   "id": "gap-flood",
+   "what": "the Flood",
+   "kind": "same-story",
+   "tier": "contested",
+   "a": {
+    "lane": "trad-ussher",
+    "item": "us-flood",
+    "says": "Ussher’s Flood, computed from Biblical genealogy",
+    "year": -2348,
+    "tier": "tradition",
+    "label": "the Flood",
+    "laneLabel": "Biblical — Ussher (1650), as charted by Adams (1871)"
+   },
+   "b": {
+    "lane": "trad-skl",
+    "anchor": true,
+    "says": "the King List’s flood, hung here on the Shuruppak deposit — OUR anchor, not a date the List gives",
+    "year": -2900,
+    "yearFar": -3000,
+    "tier": "contested",
+    "approx": true,
+    "label": "the antediluvian reigns — 8 kings, 241,200 years — anchor",
+    "laneLabel": "Sumerian — the King List"
+   },
+   "note": "EPISODE BEAT 5. Two traditions tell one flood story and date it 552 years apart — and the List gives no date at all, so even its end of the bar is this panel’s placement rather than the text’s. BOTH DATES FALL INSIDE A CONTINUOUS DATED RECORD. Egypt’s king-list runs unbroken from Dynasty 1 (radiocarbon 3111–3045 BCE) through both of them, and Mesopotamia’s through Early Dynastic and Akkadian Sumer; neither records an interruption. The inked bands on the Egyptian and Sumerian lanes are those unbroken reckonings, and you can see that neither stops at either date.",
+   "gap": 552,
+   "gapTo": 652
+  },
+  {
+   "id": "gap-longcount",
+   "what": "the Long Count",
+   "kind": "claim-and-evidence",
+   "tier": "solid",
+   "a": {
+    "lane": "trad-longcount",
+    "item": "lc-zero",
+    "says": "the Long Count’s own zero, 11 August 3114 BCE",
+    "year": -3114,
+    "tier": "tradition",
+    "label": "Long Count zero",
+    "laneLabel": "Maya — the Long Count"
+   },
+   "b": {
+    "lane": "trad-longcount",
+    "item": "lc-first",
+    "says": "the earliest dates anyone actually carved in it",
+    "year": -36,
+    "tier": "contested",
+    "label": "first carved Long Count dates",
+    "end": 37,
+    "laneLabel": "Maya — the Long Count"
+   },
+   "note": "The calendar’s zero, and the first surviving use of the calendar, are 3,078 years apart. The zero is a computed starting point rather than a remembered event — the same relationship Ussher’s 4004 BC has to 1650, and the Kali Yuga epoch to the astronomers who fixed it. A reckoning that begins long before its own earliest evidence is the ordinary case on this panel, not the exception.",
+   "gap": 3078,
+   "gapTo": 3078
+  },
+  {
+   "id": "gap-chinese",
+   "what": "a Chinese king in writing",
+   "kind": "claim-and-evidence",
+   "tier": "solid",
+   "a": {
+    "lane": "trad-chinese",
+    "item": "cn-huangdi",
+    "says": "the Yellow Emperor, where the traditional chronology begins",
+    "year": -2698,
+    "tier": "tradition",
+    "label": "the Yellow Emperor",
+    "laneLabel": "Chinese — traditional chronology"
+   },
+   "b": {
+    "lane": "trad-chinese",
+    "item": "cn-oracle",
+    "says": "the Anyang oracle bones — the earliest Chinese writing that names a king, under Wu Ding",
+    "year": -1254,
+    "tier": "solid",
+    "label": "Wu Ding oracle bones — the writing appears",
+    "end": -1197,
+    "laneLabel": "Chinese — traditional chronology"
+   },
+   "note": "1,444 years separate the first emperor of the traditional chronology from the earliest Chinese writing that could have recorded one. Everything between is transmitted rather than contemporary: the Xia and Shang dates on this lane are traditional, and Chinese dates only become year-precise at Gonghe in 841 BCE. The Yellow Emperor himself is a god later historicised (see his tooltip), which is why this gap is drawn as a reckoning against its evidence and not as two datings of one event.",
+   "gap": 1444,
+   "gapTo": 1444
+  }
+ ]
+}

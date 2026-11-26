@@ -344,6 +344,378 @@
     .tier-n{font-size:14px;}
     .tier-point{font-size:12.2px;}
   }
+  /* ===================== SYNCHRONOPTIC LANES (2026-11-25) ===================== */
+  /* The panel shares the map scrubber, so every horizontal position in here is a
+     percentage of the same track. Percent, not pixels, so an ordinary window resize
+     needs no relayout at all; only the pre-sapiens toggle moves the track origin and
+     that calls __lanes.layout() for itself. */
+  .lanes{margin-top:14px;border:1px solid var(--line);border-radius:3px;
+    background:var(--paper);overflow:hidden;}
+  .lanes-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    padding:13px 16px 0;}
+  .lanes-title{font-family:'Spectral',serif;font-size:15px;font-weight:700;margin:0;
+    color:var(--parchment);}
+  .lanes-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--amber-bright);}
+  /* FOUNDER RULING 1a: the distortion is stated in words, on the panel, always. */
+  .lanes-scalenote{margin:8px 16px 0;padding:8px 11px;border-left:2px solid var(--teal);
+    background:rgba(99,168,168,.07);font-family:'IBM Plex Mono',monospace;font-size:11px;
+    line-height:1.6;color:var(--parchment-dim);}
+  .lanes-scalenote strong{color:var(--teal-bright);font-weight:600;}
+  .lanes-body{position:relative;margin:12px 16px 16px;}
+  /* The track is the SAME track as the scrubber above it. Anything positioned
+     against it uses __lanes.x(yearsAgo), never a hand-placed percentage. */
+  .lanes-track{position:relative;min-height:54px;}
+  .lanes-empty{font-family:'IBM Plex Mono',monospace;font-size:11px;
+    color:var(--parchment-dimmer);padding:18px 0;text-align:center;}
+
+  /* --- step 2: the axis ------------------------------------------------------ */
+  /* FOUNDER RULING 1b: the age bands are shaded BEHIND the lanes, so the reader can
+     see where the scale changes instead of only being told it does. The shading is
+     deliberately faint and alternating -- it is a scale warning, not a data layer,
+     and "let the map be a map" applies here too. */
+  .lanes-ages{position:absolute;inset:0;pointer-events:none;}
+  .lanes-band{position:absolute;top:0;bottom:0;}
+  .lanes-band.odd{background:rgba(255,255,255,.028);}
+  .lanes-band.hov{background:rgba(242,191,124,.07);}
+  .lanes-bandline{position:absolute;top:0;bottom:0;width:1px;
+    background:rgba(61,79,107,.75);}
+  .lanes-bandlab{position:absolute;top:2px;font-family:'IBM Plex Mono',monospace;
+    font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--parchment-dimmer);white-space:nowrap;pointer-events:none;}
+  /* The era checkpoints, as hairlines. The same 69 moments the tick strip labels, so
+     a reader can see that the two rulers are one ruler. */
+  .lanes-grid{position:absolute;inset:0;pointer-events:none;}
+  .lanes-gridline{position:absolute;top:14px;bottom:0;width:1px;
+    background:rgba(147,160,180,.13);}
+  .lanes-scale{position:relative;height:16px;margin-bottom:2px;}
+
+  /* --- step 3: the now line -------------------------------------------------- */
+  .lanes-now{position:absolute;top:0;bottom:0;width:1px;background:var(--amber-bright);
+    box-shadow:0 0 6px rgba(242,191,124,.55);pointer-events:none;z-index:6;}
+  .lanes-now::before{content:"";position:absolute;top:-4px;left:-3px;width:7px;height:7px;
+    border-radius:50%;background:var(--amber-bright);}
+
+  /* --- step 4: a lane --------------------------------------------------------- */
+  /* The lane name needs its own air. At margin-top:4px the first row's name rode up
+     into the age-band labels and the screenshot showed "BIBLICAL - USSHER (1650)..."
+     printed straight through "THE NETWORK" and "THE LONG WALK". Every numeric check
+     passed while that was on screen, which is why the picture gets looked at. */
+  .lanes-rows{position:relative;padding-top:3px;}
+  .lanes-row{position:relative;height:30px;margin-top:17px;}
+  .lanes-rowname{position:absolute;left:0;top:-13px;z-index:7;font-family:'IBM Plex Mono',monospace;
+    font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--parchment-dimmer);pointer-events:none;}
+  /* The Adams look, for the tradition lanes ONLY (ruled): an inked band with a ruled
+     edge, not the map's flat fills. #7fb0a3 is the existing tradition tier colour --
+     its ETHIC and its colour are reused, its six anchors are a different thing and are
+     not touched. Lane items deliberately do not carry status:"tradition", so the
+     published tier count of 6 stays 6. */
+  .lanes-band-trad{position:absolute;top:0;bottom:0;border:1px solid rgba(127,176,163,.85);
+    background:linear-gradient(rgba(127,176,163,.26), rgba(127,176,163,.13));
+    border-radius:1px;}
+  /* THE BAND CARRIES NO TEXT. The caption began inside the band, Adams-style, and
+     the screenshot showed item marks drawn straight through "Ussher: Creation, 4004
+     BC" and four others -- the marks sit at fixed dates and the caption sat where
+     some of those dates are, so neither could be read. It now rides the lane name
+     line above, where nothing is positioned by date and nothing can cross it. The
+     Adams look is carried by the inked band, the hatch and the period lettering,
+     which the caption keeps. */
+  .lanes-rowname .cap{font-family:'Spectral',serif;font-size:11px;font-style:italic;
+    text-transform:none;letter-spacing:0;color:#cfe8e0;margin-left:8px;}
+  /* "Before this reckoning": hatched, and dark, because the point of the panel is that
+     this is where the show lives. */
+  .lanes-hatch{position:absolute;top:0;bottom:0;border:1px dashed rgba(127,176,163,.3);
+    border-right:none;border-radius:1px 0 0 1px;
+    background:repeating-linear-gradient(135deg, rgba(127,176,163,.085) 0 3px,
+      rgba(0,0,0,0) 3px 7px);}
+  .lanes-hatch .cap{position:absolute;right:7px;top:50%;transform:translateY(-50%);
+    font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--parchment-dimmer);white-space:nowrap;}
+  .lanes-dark{opacity:.22;}            /* reveal mode: a clock not yet switched on */
+
+  /* --- steps 5-6: items, clusters, off-scale notes ---------------------------- */
+  /* Items carry NO text. Their dates, labels and evidence tier live in the tooltip,
+     because "let the map be a map" applies to this panel too: the visual layer says
+     when, and only when. It also means six lanes of items cannot collide as text. */
+  .lanes-pt{position:absolute;top:3px;bottom:3px;width:2px;margin-left:-1px;
+    background:var(--tier,#7fb0a3);border-radius:1px;cursor:help;}
+  .lanes-pt:hover{box-shadow:0 0 0 3px rgba(255,255,255,.1);}
+  /* A cluster is drawn as a visibly different mark, never as a single item. Two
+     claims on one pixel must not read as one claim. */
+  .lanes-pt.many{width:4px;margin-left:-2px;}
+  .lanes-pt.many::after{content:"";position:absolute;left:50%;top:-4px;
+    transform:translateX(-50%);width:5px;height:5px;border-radius:50%;
+    background:var(--tier,#7fb0a3);box-shadow:0 0 4px rgba(0,0,0,.6);}
+  .lanes-span{position:absolute;top:7px;bottom:7px;background:var(--tier,#7fb0a3);
+    opacity:.5;border-left:2px solid var(--tier,#7fb0a3);
+    border-right:2px solid var(--tier,#7fb0a3);border-radius:1px;cursor:help;}
+  .lanes-span:hover{opacity:.78;}
+  /* The off-scale note sits at the LEFT END OF THE HATCH, pointing further left.
+     It was first placed outside the track entirely, in the panel margin, on the
+     reasoning that a claim with no position on this axis should sit off the axis.
+     The screenshot showed why that fails: .lanes is overflow:hidden, so the three
+     notes were sliced into "S MAP", "STIES" and "THEM". Inside the hatch is both
+     visible and right -- the hatch is the ground before the reckoning, and this is
+     a claim about ground even further back. */
+  .lanes-offscale{margin-left:10px;font-size:7.5px;letter-spacing:.05em;
+    color:#9a93c4;white-space:nowrap;cursor:help;opacity:.95;}
+  .lanes-offscale:hover{opacity:1;color:#b9d8d0;}
+
+  /* --- CULTURAL MYTHOLOGY (founder-ruled 2026-11-25) ------------------------- */
+  /* Three things have to be told apart at a glance and none may be mistaken for
+     another: the HATCH is ground before a tradition says anything at all; the
+     MYTHOLOGY span is what a tradition says about time it did not witness, placed
+     here on an anchor we chose; the INKED BAND is the reckoning proper. So the
+     mythology gets its own hue -- a dusty indigo used nowhere else on this map,
+     deliberately not the pre-sapiens violet, which is an evidence tier -- its own
+     dotted rule, and a sparse stipple that is visibly not the hatch's diagonals. */
+  .lanes-myth{position:absolute;top:1px;bottom:1px;
+    border:1px dotted rgba(141,139,184,.8);border-radius:1px;
+    background:radial-gradient(rgba(141,139,184,.5) 0.9px, rgba(0,0,0,0) 1px)
+      0 0/6px 6px, linear-gradient(rgba(141,139,184,.1), rgba(141,139,184,.05));
+    cursor:help;}
+  .lanes-myth .cap{position:absolute;left:7px;top:50%;transform:translateY(-50%);
+    font-family:'Spectral',serif;font-size:10.5px;font-style:italic;color:#c3c0e4;
+    white-space:nowrap;text-shadow:0 1px 5px rgba(0,0,0,.9);pointer-events:none;}
+  /* THE ANCHOR IS DRAWN AS A JOINT, NOT A DATE. An approximate one gets the wobble
+     mark; an exact one (the Kali epoch is the tradition's own computed date) does
+     not, because marking it approximate would be its own small lie. */
+  .lanes-anchor{position:absolute;top:-2px;bottom:-2px;width:0;
+    border-left:1px solid #c3c0e4;cursor:help;z-index:4;}
+  .lanes-anchor::before{content:"";position:absolute;left:-3px;top:-3px;width:6px;
+    height:6px;background:#c3c0e4;transform:rotate(45deg);}
+  .lanes-anchor.approx{border-left-style:dashed;}
+  /* A RANGE ANCHOR IS A BAND, NOT A RULE (ruled 2026-11-26). A 1 px rule with a
+     diamond on it says "here", and the finding of the Fara sourcing pass is that
+     there is no "here" to point at: the deposit sits at the Jemdet Nasr / Early
+     Dynastic I boundary, which is c. 3000-2900 BCE. So the mark is a bracket
+     across the whole range, with an upright at each end, and the reader can see
+     how wide the doubt is instead of being told a date. */
+  .lanes-anchorband{position:absolute;top:-2px;bottom:-2px;cursor:help;z-index:4;
+    border-left:1px dashed #c3c0e4;border-right:1px dashed #c3c0e4;
+    border-top:1px dotted rgba(195,192,228,.75);
+    border-bottom:1px dotted rgba(195,192,228,.75);
+    background:rgba(195,192,228,.1);}
+  .lanes-anchorband::before{content:"";position:absolute;left:-3px;top:-3px;
+    width:6px;height:6px;background:#c3c0e4;transform:rotate(45deg);}
+  .lanes-anchorband::after{content:"8";position:absolute;left:-7px;
+    bottom:-13px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+    color:#c3c0e4;}
+  /* The literal character, not a CSS escape. Written as "\\2248" it went through
+     Python as a doubled backslash and the page printed "\\2248" on screen, twice. */
+  .lanes-anchor.approx::after{content:"≈";position:absolute;left:-7px;
+    bottom:-13px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+    color:#c3c0e4;}
+  /* When a mythology span starts before the left edge of the map, say so there. */
+  .lanes-offedge{position:absolute;left:0;top:0;bottom:0;width:9px;
+    background:linear-gradient(90deg, rgba(141,139,184,.55), rgba(141,139,184,0));
+    cursor:help;z-index:3;}
+
+  /* --- step 7: collapsible groups -------------------------------------------- */
+  /* A real <button>, because this has to work from the keyboard and announce its
+     own state. aria-expanded is the only thing that tells a screen reader whether
+     a group is open; a div with a click handler tells it nothing. */
+  .lanes-group{margin:14px 0 2px;}
+  .lanes-group:first-child{margin-top:0;}
+  .lanes-grouphead{display:flex;align-items:baseline;gap:8px;width:100%;
+    background:none;border:0;border-bottom:1px solid rgba(61,79,107,.6);
+    padding:0 0 4px;cursor:pointer;text-align:left;font:inherit;}
+  .lanes-grouphead:hover .gl{color:var(--parchment);}
+  .lanes-grouphead:focus-visible{outline:2px solid var(--amber-bright);
+    outline-offset:3px;}
+  .lanes-grouphead .tw{color:var(--amber-bright);font-size:10px;line-height:1;}
+  .lanes-grouphead .gl{font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--parchment-dim);}
+  .lanes-grouphead .gn{font-family:'IBM Plex Mono',monospace;font-size:9px;
+    color:var(--parchment-dimmer);margin-left:auto;}
+  /* Region lanes are marks and nothing else, so they do not need a tradition
+     lane's height. Thirteen full-height lanes would push the legend off the
+     bottom of most screens. */
+  /* The caption rides the name line, and on a compact row its 11 px italic
+     made the line box tall enough to hang into the marks below it -- the check
+     caught marks drawn through four region names. Same size as the name here. */
+  /* THE GROUND IS NOT A RECKONING, and for two steps it was drawn as one.
+     A region lane has no reckoningStart, and buildRows handed it the whole of
+     a tradition row: a 1 px hatch, invisible but carrying the tooltip BEFORE
+     THIS RECKONING - Oceania, and the inked Adams band -- which on this panel
+     is the mark for a tradition claiming something -- drawn the full width of
+     nine lanes of dated archaeology. That is the argument of the panel turned
+     inside out, in the one place it ought to be clearest. The ground gets a
+     container of its own instead: the same geometry, in the neutral slate the
+     panel uses for structure, making no claim. */
+  .lanes-ground{position:absolute;top:0;bottom:0;left:0;right:0;
+    border:1px solid rgba(147,160,180,.26);border-radius:1px;
+    background:rgba(147,160,180,.04);cursor:help;}
+  .lanes-row.compact{height:15px;margin-top:17px;}
+  .lanes-row.compact .lanes-rowname{top:-14px;}
+  .lanes-row.compact .lanes-rowname .cap{font-size:9px;font-style:normal;
+    font-family:inherit;color:var(--parchment-dimmer);margin-left:7px;}
+
+  /* --- step 9: alignments and the simultaneity column ------------------------- */
+  /* The bands sit BEHIND every lane and run the full height, because an alignment
+     is a claim about a column of time, not about any one row. They are faint: the
+     reader should notice the column, not be told what to think about it. The tier
+     is in the tooltip and in nothing else -- "let the map be a map". */
+  .lanes-align{position:absolute;inset:0;pointer-events:none;z-index:1;}
+  .lanes-al{position:absolute;top:0;bottom:0;pointer-events:auto;cursor:help;
+    background:rgba(242,191,124,.05);
+    border-left:1px solid rgba(242,191,124,.22);
+    border-right:1px solid rgba(242,191,124,.22);}
+  .lanes-al:hover,.lanes-al.on{background:rgba(242,191,124,.13);
+    border-left-color:rgba(242,191,124,.6);border-right-color:rgba(242,191,124,.6);}
+  /* A tradition-tier alignment is one the panel is warning you about, so it is
+     dashed rather than solid: the column is real, the reading of it may not be. */
+  .lanes-al.tier-tradition{border-left-style:dashed;border-right-style:dashed;}
+  .lanes-allabs{position:relative;height:13px;margin-bottom:1px;}
+  .lanes-allab{position:absolute;top:0;font-family:'IBM Plex Mono',monospace;
+    font-size:8px;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(242,191,124,.6);white-space:nowrap;padding-left:3px;cursor:help;}
+  .lanes-allab.on{color:var(--amber-bright);}
+  .lanes-allab.hid{display:none;}
+  /* The simultaneity highlight: everything inside the column, on every lane. */
+  .lanes-pt.sim{box-shadow:0 0 0 2px rgba(242,191,124,.45);}
+  .lanes-span.sim,.lanes-myth.sim{box-shadow:0 0 0 2px rgba(242,191,124,.4);}
+  .lanes-nowread{margin-top:9px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--parchment-dimmer);}
+  .lanes-nowread.al{color:var(--amber-bright);}
+  .lanes-row.compact .lanes-pt{top:1px;bottom:1px;}
+
+  /* --- step 10: gap connectors ------------------------------------------------ */
+  /* DESIGN sec.3, the divergence gap: where a tradition and the record name the same
+     thing at different dates, a thin connector joins the two and states the size of
+     the gap. Every position comes from the pair's own years through the same f() the
+     marks use, so a connector travels with the axis instead of sitting at a
+     remembered pixel -- which is the whole test for it.
+     IT RUNS IN A GUTTER OF ITS OWN. On the lower lane row the run would have had to
+     cross that row's marks, and the only place left for the figure would have been on
+     top of one of them. The lower row is given 14 px of margin instead and the run and
+     the figure live in it, where nothing else on this panel is positioned. */
+  /* A REAL ELEMENT, NOT A MARGIN. margin-bottom:14px here bought nothing: it
+     sat against the next row's margin-top:17px and ADJACENT SIBLING MARGINS
+     COLLAPSE to the larger of the two, so the spacing stayed 17 px and the run
+     was drawn over the next lane's name -- measured at 2573.1 px with that name
+     occupying 2573.1..2590.1. On the last row the run landed 4 px below rowsEl's
+     own bottom edge, outside the layer that is supposed to contain it. A block in
+     flow cannot collapse. .lanes-row.hasgap stays as a marker for the checks. */
+  .lanes-gutter{height:14px;position:relative;}
+  .lanes-gaps{position:absolute;inset:0;pointer-events:none;z-index:5;}
+  .lanes-gap{position:absolute;inset:0;pointer-events:none;}
+  .lanes-gap.dim{opacity:.16;}     /* reveal mode: an end whose clock is still dark */
+  .lanes-gapv{position:absolute;width:0;
+    border-left:1px dashed rgba(242,191,124,.42);}
+  /* THE RUN CARRIES THE HOVER, not only the chip: where the figure has to be dropped
+     for want of room the tooltip must still be reachable, and a zero-height rule
+     cannot be hovered. So it is a 7 px band with the rule drawn on its top edge. */
+  .lanes-gaph{position:absolute;height:7px;margin-top:-3px;pointer-events:auto;
+    cursor:help;border-top:1px solid rgba(242,191,124,.5);}
+  .lanes-gaph:hover{border-top-color:var(--amber-bright);}
+  .lanes-gapcap{position:absolute;width:0;height:7px;margin-top:-3.5px;
+    border-left:1px solid rgba(242,191,124,.85);}
+  .lanes-gapchip{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;
+    cursor:help;padding:1px 5px;border:1px solid rgba(242,191,124,.45);
+    border-radius:2px;background:var(--paper);white-space:nowrap;
+    font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--amber-bright);}
+  .lanes-gapchip:hover{border-color:var(--amber-bright);}
+  /* Failures get their OWN element. The first version wrote the message into the
+     track with innerHTML, which deleted the age bands, the grid, the rows and the
+     now line -- so the panel could never come back even when the data loaded on a
+     retry. An error must not cost you the thing that was working. */
+  .lanes-msg{margin-top:10px;padding:9px 12px;border-left:2px solid var(--rust);
+    background:rgba(209,114,90,.09);font-family:'IBM Plex Mono',monospace;
+    font-size:11px;line-height:1.55;color:#e8b5a6;}
+
+  /* --- step 13: the period images --------------------------------------- */
+  /* One per tradition lane, behind the INKED BAND only -- never behind the
+     hatch or the mythology span, which are different claims and would be
+     saying the wrong thing with a period object under them. Faint on purpose:
+     the marks, the now line and the alignment columns all have to stay
+     readable over it, and the image is the MATERIAL the tradition is written
+     on, not a layer of data. Each strip was cropped to 6:1 by
+     geowork/lanes/build_lane_images.py, which records the crop box and the
+     source and output dimensions, because two of the five are free to use
+     only as faithful reproductions and this is not that. */
+  .lanes-plate{position:absolute;inset:0;background-position:center;
+    background-size:cover;background-repeat:no-repeat;opacity:.17;
+    pointer-events:none;border-radius:1px;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 86%,transparent 100%);
+    mask-image:linear-gradient(90deg,#000 0,#000 86%,transparent 100%);}
+  /* The lane is lit by the reveal, and so is what is behind it. */
+  .lanes-row.lanes-dark .lanes-plate{opacity:.07;}
+
+  /* --- step 12: tap to read -------------------------------------------- */
+  /* EVERY WORD ON THIS PANEL LIVES IN A TITLE ATTRIBUTE, and a touch device
+     never shows one -- so the sheet opened on a phone with the dates, the
+     sources, the evidence tiers and the notes that exist to refuse a reading
+     all unreachable. Tapping anything puts its text here instead. Wired at
+     every width, because a native tooltip is also slow, truncated after a few
+     lines and impossible to copy from, and the three-beginnings note is 400
+     characters long. */
+  .lanes-detail{margin-top:9px;padding:10px 12px;border:1px solid var(--line);
+    border-left:2px solid var(--amber);border-radius:3px;background:var(--paper);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;
+    color:var(--parchment-dim);white-space:pre-wrap;word-break:break-word;}
+  .lanes-detail[hidden]{display:none;}
+  .lanes-detail .dx{float:right;margin:-3px -4px 0 8px;padding:3px 6px;
+    background:none;border:0;color:var(--parchment-dimmer);cursor:pointer;
+    font-size:13px;line-height:1;}
+  .lanes-detail .dx:hover{color:var(--amber-bright);}
+  .lanes-detail .dt{display:block;}
+  .lanes-tapped{outline:2px solid var(--amber-bright);outline-offset:1px;}
+  .lanes-taphint{margin-top:7px;font-family:'IBM Plex Mono',monospace;
+    font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--parchment-dimmer);}
+
+  /* --- step 12: the phone sheet ---------------------------------------- */
+  /* FOUNDER RULING: on a phone the panel opens as a SHEET, like the layers
+     panel. It reuses that sheet furniture rather than inventing a second kind
+     -- .layers-btn, .sheet-head, .sheet-close and .sheet-scrim are already
+     defined above, already hidden over 760 px, and already behave the way a
+     reader of this page expects. Fifteen lanes under the map would otherwise
+     push everything else off a phone screen. */
+  @media (max-width: 760px){
+    .lanes{position:fixed;left:0;right:0;bottom:0;z-index:2000;margin:0;
+      padding:0 14px calc(16px + env(safe-area-inset-bottom));
+      max-height:82vh;overflow-y:auto;overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;border:0;
+      border-top:1px solid var(--line);border-radius:12px 12px 0 0;
+      box-shadow:0 -14px 40px rgba(0,0,0,.6);
+      transform:translateY(101%);transition:transform .26s ease;
+      visibility:hidden;}
+    .lanes.open{transform:translateY(0);visibility:visible;}
+    /* THE STICKY HEAD HAS TO WIN. .sheet-head carries z-index:1 from the layers
+       sheet, where nothing else is layered; here the lane names are z-index 7 and
+       the now line 6, so scrolling the sheet drew the marks and a lane name
+       straight across the title. */
+    .lanes .sheet-head{margin:0 -14px 4px;padding:14px 14px 10px;z-index:12;}
+    /* The sheet head carries the title, so the in-panel one would say it twice. */
+    .lanes-head{padding:8px 0 0;}
+    .lanes-title{display:none;}
+    .lanes-scalenote{margin:8px 0 0;padding:7px 9px;font-size:10.5px;}
+    .lanes-body{margin:10px 0 2px;}
+    /* A LANE NAME MUST NOT WRAP INTO ITS OWN MARKS. At 9 px the Biblical name
+       and caption are about 400 px of type and the sheet is 345 px wide, so it
+       wrapped onto a second line that landed straight on the row. The caption
+       is dropped here and the name is cut with an ellipsis; both are still in
+       the tooltip, which is where this panel keeps its words anyway. */
+    .lanes-rowname{font-size:8px;letter-spacing:.07em;max-width:100%;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .lanes-rowname .cap{display:none;}
+    .lanes-row{margin-top:19px;}
+    .lanes-row.compact{margin-top:18px;}
+    .lanes-nowread{font-size:9.5px;letter-spacing:.05em;}
+    .lanes-detail{font-size:11.5px;line-height:1.65;max-height:38vh;
+      overflow-y:auto;}
+    /* A 2 px mark is not a touch target. The marks keep their own width --
+       moving them would be a lie about dates -- so each gets an invisible
+       10 px-wide pad to be tapped by, drawn outside the layout. */
+    .lanes-pt::before{content:"";position:absolute;top:-4px;bottom:-4px;
+      left:-5px;right:-5px;}
+    .lanes-pt{position:absolute;}
+    .lanes-gapchip{font-size:7px;padding:1px 3px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .lanes{transition:none;} }
 </style>
 </head>
 <body>
@@ -460,6 +832,47 @@
     </div>
   </div>
 
+  <!-- SYNCHRONOPTIC LANES. Outside .stage on purpose: .stage is overflow:hidden and would
+       clip this. Everything inside is built by script from the shared scrubber. -->
+  <!-- The opener is display:none over 760 px; below it, the section becomes a
+       bottom sheet. Same classes as the layers sheet, deliberately. -->
+  <button type="button" class="layers-btn lanes-btn" id="lanesBtn"
+          aria-expanded="false" aria-controls="lanes">What was happening at the same time</button>
+  <section class="lanes" id="lanes" aria-labelledby="lanesTitle">
+    <div class="sheet-head">
+      <span class="sheet-title">What was happening at the same time</span>
+      <button type="button" class="sheet-close" id="lanesClose"
+              aria-label="Close the lanes panel">&#10005;</button>
+    </div>
+    <div class="lanes-head">
+      <h2 class="lanes-title" id="lanesTitle">What was happening at the same time</h2>
+      <span class="lanes-sub">Six clocks, and the ground</span>
+    </div>
+    <p class="lanes-scalenote"><strong>Width is not duration.</strong> These lanes share the
+      scrubber above, which gives each age its own pace so that deep prehistory and recent
+      centuries are both readable. Two bars of the same width can therefore differ by many
+      thousands of years. The shaded bands behind the lanes are those ages: where a band
+      changes, the scale changes.</p>
+    <div class="lanes-body">
+      <div class="lanes-scale" id="lanesScale"></div>
+      <div class="lanes-allabs" id="lanesAlignLab"></div>
+      <div class="lanes-track" id="lanesTrack">
+        <div class="lanes-ages" id="lanesAges"></div>
+        <div class="lanes-align" id="lanesAlign"></div>
+        <div class="lanes-grid" id="lanesGrid"></div>
+        <div class="lanes-rows" id="lanesRows"></div>
+        <div class="lanes-now" id="lanesNow" hidden></div>
+      </div>
+      <div class="lanes-nowread" id="lanesNowRead" role="status"
+           aria-live="polite"></div>
+      <div class="lanes-detail" id="lanesDetail" role="status"
+           aria-live="polite" hidden></div>
+      <p class="lanes-taphint" id="lanesTapHint">Tap or click anything on the
+        chart to read its dates, sources and evidence tier.</p>
+      <div class="lanes-msg" id="lanesMsg" role="status" hidden></div>
+    </div>
+  </section>
+  <div class="sheet-scrim" id="lanesScrim" hidden></div>
   <div class="legend-row">
     <span class="legend-note" style="flex-basis:100%"><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" stroke="#0e1420" stroke-width="1.2"/></svg><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="#e5a75f" fill-opacity="0.25"/></svg> <strong>Brightness is time, and only time.</strong> A mark is bright at its date and dims as the slider moves on, down to a faint version of the same shape. A dim mark is further in the past — it is <em>not</em> weaker evidence; evidence is the colour and shape, and the popup. Every mark stays clickable at every brightness. The three forced routes never dim.</span>
     <span><svg class="glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#e0a75e" stroke-width="2"/><circle cx="7" cy="7" r="2" fill="#e0a75e"/></svg> Origin node — a source, not a site</span>
@@ -2277,12 +2690,40 @@ const SAPIENS_START = sliderAtYears(SAPIENS_FLOOR);
 // where the strip gets its labels: ERA and the live slider bounds, the way the
 // tier legend gets its chips from ANCHORS. If ERA gains an era or the floor
 // moves with the pre-sapiens toggle, the strip follows on its own.
+// THE SCRUBBER'S REAL TRACK, shared by the tick strip and the lanes panel.
+// An <input type=range> moves its thumb CENTRE from left+w/2 to right-w/2, so the
+// input's own box is wider than the range the value spans. Anything that labels or
+// lines up with the scrubber has to use this, not the input's box, or it sits up to
+// half a thumb out at each end. The two widths mirror the thumb rules in the CSS
+// above (15 px, and 26 px below the 760 px breakpoint); if those change, change these.
+function thumbTrack(){
+  const sr = scrub.getBoundingClientRect();
+  const w = window.matchMedia("(max-width: 760px)").matches ? 26 : 15;
+  return {left: sr.left + w / 2, width: sr.width - w, thumb: w};
+}
+// Lay an element over that track. The offset is measured from the PARENT'S CONTENT
+// BOX, because a margin-left adds to whatever padding and border the parent already
+// has rather than replacing it.
+function fitToThumbTrack(el){
+  const tt = thumbTrack();
+  if(!tt.width || !el || !el.parentElement) return;
+  const hr = el.parentElement.getBoundingClientRect();
+  const hs = getComputedStyle(el.parentElement);
+  const base = hr.left + parseFloat(hs.paddingLeft || 0)
+             + parseFloat(hs.borderLeftWidth || 0);
+  el.style.marginLeft = (tt.left - base).toFixed(2) + "px";
+  el.style.width = tt.width.toFixed(2) + "px";
+}
 const TICK_PAD = 10;             // px of clear air required between two labels
 function buildTicks(){
   const strip = document.getElementById('tickStrip');
   if(!strip || typeof ERA === 'undefined' || !ERA.length) return;
   const lo = +scrub.min || 0, hi = SLIDER_MAX, span = hi - lo;
   if(!(span > 0)) return;
+  // Ruled 2026-11-25: the strip is laid over the thumb's travel, not the hud's
+  // content box, so a label sits above the value it names. Measured at up to
+  // 11.3 px of error before this line existed.
+  fitToThumbTrack(strip);
   const marks = ERA
     .map(function(e){ return {label:e.label, f:(sliderAtYears(e.yearsAgo) - lo) / span}; })
     .filter(function(m){ return m.f >= 0 && m.f <= 1; })
@@ -2353,6 +2794,7 @@ function applyPresapiens(){
   if(!on && +scrub.value < SAPIENS_START){ scrub.value = SAPIENS_START; }
   render(+scrub.value);
   buildTicks();          // the floor just moved, so the strip's span moved with it
+  if(window.__lanes) window.__lanes.refresh();   // and so did the lanes track
 }
 document.getElementById('togglePresapiens').addEventListener('change', e=>{ layerState.presapiens=e.target.checked; applyPresapiens(); });
 document.getElementById('toggleFog').addEventListener('change', e=>{ layerState.fog=e.target.checked; render(+scrub.value); });
@@ -6475,6 +6917,1085 @@ if(!applyUrlState()) writeUrl(false);
     + head + detail + '</div>';
   console.error('the_long_walk_interactive map init failed:', e);
 }
+// ===================== SYNCHRONOPTIC LANES (2026-11-25) =====================
+// Appended after the page has defined ERA, AGES, SLIDER_MAX, sliderAtYearsExact and
+// #scrub, so none of that is redefined here. The panel owns no time maths of its own:
+// every horizontal position comes from the page's sliderAtYearsExact, which is what
+// makes the lanes and the scrubber one ruler rather than two that agree by luck.
+window.__lanes = (function(){
+  const panel = document.getElementById("lanes");
+  const track = document.getElementById("lanesTrack");
+  const scale = document.getElementById("lanesScale");
+  const agesEl = document.getElementById("lanesAges");
+  const gridEl = document.getElementById("lanesGrid");
+  if(!panel || !track) return null;
+
+  // THE TRACK IS ALIGNED TO THE THUMB'S TRAVEL, NOT TO THE INPUT BOX, and the
+  // measurement is thumbTrack() / fitToThumbTrack(), shared with the tick strip above
+  // (patch_tickstrip_thumb.py). It used to be duplicated here. It is shared because
+  // the strip and the panel label the same scrubber and must not be able to drift
+  // apart: before the strip was fixed, it sat up to 11.3 px away from this track.
+  function thumbW(){ return thumbTrack().thumb; }
+
+  function lo(){ return +scrub.min || 0; }
+
+  // years ago -> 0..1 along the usable track. Same formula buildTicks uses, so the
+  // panel and the tick strip cannot disagree.
+  function f(ya){
+    const l = lo(), span = SLIDER_MAX - l;
+    if(!(span > 0)) return 0;
+    return Math.max(0, Math.min(1, (sliderAtYearsExact(ya) - l) / span));
+  }
+  function pct(ya){ return (f(ya) * 100).toFixed(4) + "%"; }
+
+  // Measured, not assumed: read where the scrubber actually is and lay the track over
+  // its thumb travel. Children are then positioned in PERCENT of that track, so an
+  // ordinary resize only re-measures this one box and moves nothing else.
+  // fitToThumbTrack measures from the PARENT'S CONTENT BOX. The first version of
+  // this measured from .lanes instead and put the track 17 px right of the thumb at
+  // both ends, because .lanes-body already carries a 16 px side margin inside a 1 px
+  // border and a margin-left adds to that rather than replacing it.
+  // BELOW 760 px THERE IS NO THUMB TO FIT TO. The panel is a fixed bottom sheet
+  // there and the scrubber is behind a scrim, so laying the track over a slider
+  // nobody can see would be alignment to nothing. The track fills the sheet
+  // instead. The MAPPING does not change -- every position still comes from the
+  // same f() -- so the panel is still one ruler with itself and with the year
+  // readout; it simply is not laid over a second one. The tick strip is already
+  // display:none at this width for the same sort of reason.
+  const PHONE = window.matchMedia("(max-width: 760px)");
+  function layout(){
+    [track, scale].forEach(function(el){
+      if(!el) return;
+      if(PHONE.matches){ el.style.marginLeft = ""; el.style.width = ""; }
+      else fitToThumbTrack(el);
+    });
+  }
+
+  // The age bands and the era hairlines depend only on the track origin, which moves
+  // when the pre-sapiens floor moves -- not on window width.
+  function build(){
+    const l = lo();
+    agesEl.textContent = ""; gridEl.textContent = ""; scale.textContent = "";
+    AGES.forEach(function(a, i){
+      const a0 = f(a.from), a1 = f(a.to);
+      if(a1 <= a0) return;
+      const d = document.createElement("div");
+      d.className = "lanes-band" + (i % 2 ? " odd" : "");
+      d.style.left = (a0 * 100).toFixed(4) + "%";
+      d.style.width = ((a1 - a0) * 100).toFixed(4) + "%";
+      d.dataset.age = a.id;
+      agesEl.appendChild(d);
+      if(a0 > 0){
+        const ln = document.createElement("div");
+        ln.className = "lanes-bandline";
+        ln.style.left = (a0 * 100).toFixed(4) + "%";
+        agesEl.appendChild(ln);
+      }
+      // A label only where its own band has room for it; a clipped label is noise.
+      const lab = document.createElement("div");
+      lab.className = "lanes-bandlab";
+      lab.style.left = (a0 * 100).toFixed(4) + "%";
+      lab.style.paddingLeft = "4px";
+      lab.textContent = a.label;
+      scale.appendChild(lab);
+      const room = (a1 - a0) * scale.getBoundingClientRect().width;
+      if(lab.getBoundingClientRect().width > room) lab.remove();
+    });
+    ERA.forEach(function(e){
+      const v = sliderAtYearsExact(e.yearsAgo);
+      if(v < l) return;
+      const ln = document.createElement("div");
+      ln.className = "lanes-gridline";
+      ln.style.left = pct(e.yearsAgo);
+      gridEl.appendChild(ln);
+    });
+  }
+
+  // --- steps 5-6: the lanes, from data/lanes/lanes.json -----------------------
+  // The dates live in the data file with their own sources, not in this script.
+  // Years CE, negative = BCE, no year zero -- the file states its own convention
+  // and this is the only place it is converted.
+  const EPOCH = 2026;
+  function ya(yearCE){ return EPOCH - yearCE; }
+
+  const rowsEl = document.getElementById("lanesRows");
+  // THE TIER TABLES ARE COPIED IN AT BUILD TIME, NOT READ AT RUN TIME.
+  // Measured in the live page: typeof TIER_COLOR and typeof TIER_LABEL are both
+  // "undefined" from here, the same scoping that defeated the render wrapper. The
+  // module had been quietly falling back to a literal colour map that happened to
+  // match, and to an EMPTY label map -- so no tooltip on this panel was carrying
+  // its evidence tier at all, which is a ruling, not a nicety. These two lines are
+  // generated by patch_lanes_panel.py from the page's own definitions and the
+  // build aborts if it cannot find them, so they cannot drift apart.
+  const TIER = {solid:'#e5a75f', contested:'#d1725a', nonsapiens:'#b6abe0', hoax:'#8f897a', demographic:'#b06a7a', tradition:'#7fb0a3'};
+  const TIERNAME = {solid:'WELL-SUPPORTED', contested:'CONTESTED / DISPUTED', nonsapiens:'PRE-SAPIENS HOMININ', hoax:'NO VERIFIED EVIDENCE', demographic:'CONTESTED SCALE \u2014 HOW MANY, NOT WHETHER', tradition:'TRADITION-ONLY \u2014 NO INDEPENDENT CONFIRMATION'};
+  let DOC = null, revealing = false;
+
+  function fmtYear(y){
+    return y < 0 ? (-y) + " BCE" : y + " CE";
+  }
+
+  // COINCIDENT ITEMS ARE CLUSTERED, AND THE TOOLTIP SEPARATES WHAT THE PIXEL MERGES.
+  // Ruled from the start rather than added later, because the panel has items that
+  // genuinely land on the same pixel: Solomon\u2019s Temple founded 1012 and dedicated
+  // 1004 are eight years apart, which at this zoom is nothing at all. Drawing them on
+  // top of each other would quietly turn two claims into one mark.
+  const CLUSTER_PX = 11;
+  function clusterItems(items, trackW){
+    const marks = items.map(function(it){
+      const a = f(ya(it.start));
+      const b = (it.kind === "span" && it.end !== undefined) ? f(ya(it.end)) : a;
+      return {it: it, a: Math.min(a, b), b: Math.max(a, b)};
+    }).sort(function(p, q){ return p.a - q.a; });
+    const out = [];
+    marks.forEach(function(m){
+      const last = out[out.length - 1];
+      const isPoint = (m.b - m.a) * trackW < 1.5;
+      if(last && last.point && isPoint
+         && (m.a - last.a) * trackW < CLUSTER_PX){
+        last.members.push(m.it);
+      } else {
+        out.push({a: m.a, b: m.b, point: isPoint, members: [m.it]});
+      }
+    });
+    return out;
+  }
+
+  function tipFor(group){
+    return group.members.map(function(it){
+      const when = it.kind === "span" && it.end !== undefined
+                 ? fmtYear(it.start) + " to " + fmtYear(it.end)
+                 : fmtYear(it.start);
+      const tier = TIERNAME[it.tier] ? " [" + TIERNAME[it.tier] + "]" : "";
+      return "\u2022 " + when + " \u2014 " + it.label + tier
+           + (it.note ? "\n  " + it.note : "");
+    }).join("\n");
+  }
+
+
+  // --- step 8: the region lanes, derived from the anchors -----------------------
+  // THE REGIONS ARE DERIVED, NOT STORED, and they come from the map's own
+  // definition of a region. The anchors carry no region field -- 565 of them, with
+  // keys age, appear, id, label, lat, leader, lon, note, presentNote, site, status
+  // and nothing else -- and their id prefixes are not one scheme but about a hundred
+  // (ISO codes, tradition codes, bare letters), so they cannot stand in for one.
+  // data/borders/coverage.json already defines the regions this map reasons about,
+  // as boxes, and is already credited. So the lanes are built by putting each anchor
+  // in a box. Nothing is duplicated and nothing new has to be kept in step.
+  let REGIONS = null;
+
+  function regionOf(lat, lon){
+    if(!REGIONS) return null;
+    for(let i = 0; i < REGIONS.length; i++){
+      const R = REGIONS[i];
+      if(R.key === "skip") continue;              // Antarctica, deliberately not a lane
+      for(let j = 0; j < R.boxes.length; j++){
+        const b = R.boxes[j];                     // [latMin, latMax, lonMin, lonMax]
+        if(lat >= b[0] && lat <= b[1] && lon >= b[2] && lon <= b[3]) return R;
+      }
+    }
+    return null;
+  }
+
+  function regionLanes(){
+    if(!REGIONS || typeof ANCHORS === "undefined") return [];
+    const by = {};
+    ANCHORS.forEach(function(a){
+      const R = regionOf(a.lat, a.lon);
+      if(!R) return;
+      (by[R.key] = by[R.key] || {name: R.name, items: []}).items.push({
+        id: "an-" + a.id, kind: "point",
+        start: EPOCH - a.appear,          // the anchors are years-ago; the lanes are years CE
+        label: String(a.label).split(" \u2014 ")[0],
+        tier: a.status,
+        note: a.age ? String(a.age) : ""});
+    });
+    // ONE LANE PER KEY, NOT PER ENTRY. coverage.json lists Europe twice and
+    // Inner Asia twice, each with a different set of boxes -- a region there is
+    // a collection of boxes that happens to be written as more than one record.
+    // Mapping over the entries drew eleven lanes for nine regions, Europe and
+    // Inner Asia each twice with identical marks. The group header said
+    // "11 lanes" while nine rendered, which is how it was caught.
+    const seen = {};
+    return REGIONS.filter(function(R){
+        if(R.key === "skip" || !by[R.key] || seen[R.key]) return false;
+        seen[R.key] = 1;
+        return true;
+      })
+      .map(function(R){
+        const g = by[R.key];
+        return {id: "reg-" + R.key, group: "regions", compact: true,
+                label: g.name, caption: g.items.length + " dated anchors",
+                note: "Every dated anchor this map holds inside the "
+                    + g.name + " boxes that data/borders/coverage.json defines. "
+                    + "Assigned from each anchor\u2019s own latitude and longitude; "
+                    + "the anchors carry no region of their own.",
+                source: "data/borders/coverage.json, and the anchors\u2019 own "
+                      + "coordinates.",
+                items: g.items};
+      });
+  }
+
+  // --- step 13: the period images -----------------------------------------
+  // img/lanes/manifest.json is written by build_lane_images.py beside the
+  // files themselves, so the credit a lane shows and the bytes on disk cannot
+  // come apart. A lane with no entry gets no image, which is the Hindu lane:
+  // no yuga-cycle picture could be cleared on terms this project accepts, and
+  // the ruling is that such a lane runs without one rather than borrowing
+  // another tradition’s.
+  let PLATES = null;
+
+  function loadPlates(){
+    return fetch("img/lanes/manifest.json")
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        PLATES = {};
+        ((d && d.images) || []).forEach(function(i){ PLATES[i.lane] = i; });
+        return PLATES;
+      })
+      .catch(function(){ PLATES = {}; return PLATES; });   // the panel is fine
+  }
+
+  function loadRegions(){
+    return fetch("data/borders/coverage.json")
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ REGIONS = (d && d.regions) || null; return REGIONS; })
+      .catch(function(){ REGIONS = null; return null; });   // the panel still works
+  }
+
+  // --- step 7: collapsible groups -----------------------------------------------
+  // A real <button>, not a div with a click handler: this has to be reachable by
+  // keyboard and announce its own state, and aria-expanded is the only thing that
+  // tells a screen reader whether a group is open.
+  const openState = {};
+
+  function allLanes(){
+    if(!DOC) return [];
+    return DOC.lanes.concat(regionLanes());
+  }
+
+  function groupHeader(G, n, open){
+    const h = document.createElement("div");
+    h.className = "lanes-group";
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "lanes-grouphead";
+    b.setAttribute("aria-expanded", open ? "true" : "false");
+    b.innerHTML = '<span class="tw"></span><span class="gl"></span>'
+                + '<span class="gn"></span>';
+    b.querySelector(".tw").textContent = open ? "\u25be" : "\u25b8";
+    b.querySelector(".gl").textContent = G.label;
+    b.querySelector(".gn").textContent = n + (n === 1 ? " lane" : " lanes");
+    b.addEventListener("click", function(){
+      openState[G.key] = !openState[G.key];
+      buildRows();
+    });
+    h.appendChild(b);
+    return h;
+  }
+  function buildRows(){
+    if(!rowsEl || !DOC) return;
+    rowsEl.textContent = "";
+    const trackW = track.getBoundingClientRect().width || 1;
+    const LANES = allLanes();
+    // A group with no lanes is not drawn. "Dynasties and states" is declared in
+    // the data file and is v2 work, to be built from RESEARCH Part B rather than
+    // from the Cliopatria acts; empty furniture for it would just be noise.
+    (DOC.groups || []).forEach(function(G){
+      const mine = LANES.filter(function(L){ return L.group === G.key; });
+      if(!mine.length) return;
+      if(openState[G.key] === undefined) openState[G.key] = !G.collapsed;
+      const open = openState[G.key];
+      rowsEl.appendChild(groupHeader(G, mine.length, open));
+      if(!open) return;
+      mine.forEach(function(L){
+      const row = document.createElement("div");
+      row.className = "lanes-row" + (L.compact ? " compact" : "");
+      row.dataset.lane = L.id;
+
+      const name = document.createElement("div");
+      name.className = "lanes-rowname";
+      name.appendChild(document.createTextNode(L.label));
+      const cap = document.createElement("span");
+      cap.className = "cap";
+      cap.textContent = L.caption;      // text, not HTML; these strings are data
+      name.appendChild(cap);
+      row.appendChild(name);
+
+      // A LANE IS EITHER A RECKONING OR THE GROUND, and only a reckoning gets a
+      // hatch, a mythology span and an inked band. The region lanes are derived
+      // from the anchors and carry no reckoningStart at all.
+      const isGround = typeof L.reckoningStart !== "number";
+      if(isGround){
+        const gr = document.createElement("div");
+        gr.className = "lanes-ground";
+        gr.title = L.label + " \u2014 " + L.caption + "\n\n" + L.note
+                 + "\n\nDated evidence, not a reckoning: this lane makes no "
+                 + "claim of its own, and every mark on it carries its own "
+                 + "evidence tier."
+                 + "\n\nSource: " + L.source;
+        row.appendChild(gr);
+      }
+      const start = ya(L.reckoningStart);
+
+      if(!isGround){
+      const h = document.createElement("div");
+      h.className = "lanes-hatch";
+      h.style.left = "0%";
+      h.style.width = pct(start);
+      h.innerHTML = '<span class="cap">before this reckoning</span>';
+      h.title = "BEFORE THIS RECKONING \u2014 " + L.label + "\n\n" + L.note
+              + "\n\nThis map runs back to 1.8 million years. G\u00f6bekli Tepe "
+              + "(c. 9600 BCE) is about 5,600 years older than Ussher\u2019s Creation "
+              + "and older still than every other clock here.";
+      row.appendChild(h);
+
+      // THE MYTHOLOGY SPAN, between the hatch and the reckoning proper.
+      // Founder-ruled 2026-11-25: a tradition's mythic era is drawn, on an
+      // approximate anchor, rather than left off-scale for want of a date.
+      const M = L.mythology;
+      if(M){
+        const m0 = f(ya(M.from)), m1 = f(ya(M.to));
+        const mv = document.createElement("div");
+        mv.className = "lanes-myth";
+        mv.style.left = (m0 * 100).toFixed(4) + "%";
+        mv.style.width = Math.max(0, (m1 - m0) * 100).toFixed(4) + "%";
+        mv.innerHTML = '<span class="cap"></span>';
+        mv.querySelector(".cap").textContent = M.label;
+        mv.dataset.from = M.from; mv.dataset.to = M.to;
+        mv.title = "CULTURAL MYTHOLOGY \u2014 " + M.label
+                 + (TIERNAME[M.tier || "tradition"]
+                    ? "  [" + TIERNAME[M.tier || "tradition"] + "]" : "")
+                 + "\n\n" + M.note + "\n\nSource: " + M.source;
+        row.appendChild(mv);
+
+        // IF IT RUNS PAST THE LEFT EDGE, SAY SO THERE. f() clamps to 0, so without
+        // this a span that overruns the map would look as though it began exactly
+        // at the edge. The Hindu lane does overrun: the Dvapara Yuga reaches
+        // 867,102 BCE, which is behind the default pre-sapiens floor.
+        if(sliderAtYearsExact(ya(M.from)) < lo() - 0.5){
+          const oe = document.createElement("div");
+          oe.className = "lanes-offedge";
+          oe.title = "This span begins at " + fmtYear(M.from) + ", which is off the "
+                   + "left edge of the timeline as it is currently set. Turn on the "
+                   + "pre-sapiens tier to pull the floor back, or read the note on "
+                   + "the lane.";
+          row.appendChild(oe);
+        }
+
+        // A RANGE ANCHOR IS DRAWN AS A BAND ACROSS THE RANGE; a single-date one
+        // keeps the rule and the diamond. The Shuruppak anchor became a range on
+        // 2026-11-26 and carries no scalar date at all, so that nobody can quote
+        // one from it.
+        const aFrom = (M.anchorFrom !== undefined) ? M.anchorFrom : M.anchor;
+        const aTo = (M.anchorTo !== undefined) ? M.anchorTo : M.anchor;
+        const isRange = aFrom !== aTo;
+        const an = document.createElement("div");
+        an.className = isRange ? "lanes-anchorband"
+                     : ("lanes-anchor" + (M.anchorApprox ? " approx" : ""));
+        an.style.left = pct(ya(aFrom));
+        if(isRange){
+          const w = f(ya(aTo)) - f(ya(aFrom));
+          an.style.width = Math.max(0.15, w * 100).toFixed(4) + "%";
+        }
+        // THE ANCHOR CARRIES ITS OWN TIER, which is not the lane's. The Kali
+        // epoch is the tradition's own computed date, so it is tradition-tier;
+        // Shuruppak and Dynasty 1 are OUR placements of a mythic era onto a
+        // dated one, which is a contested move however sound the date under it.
+        an.title = (M.anchorApprox ? "APPROXIMATE ANCHOR \u2014 " : "ANCHOR \u2014 ")
+                 + (isRange ? fmtYear(aFrom) + " to " + fmtYear(aTo)
+                            : fmtYear(aFrom))
+                 + (TIERNAME[M.anchorTier]
+                    ? "  [" + TIERNAME[M.anchorTier] + "]" : "")
+                 + "\n\n" + M.anchorNote;
+        row.appendChild(an);
+      }
+
+      // The inked band is the RECKONING PROPER, so where a lane has a mythology
+      // span the band starts at the anchor, not at reckoningStart -- which is now
+      // the start of the mythology. Getting this wrong would draw the band straight
+      // over the mythology and merge the two claims into one bar.
+      const b = document.createElement("div");
+      b.className = "lanes-band-trad";
+      // THE RECKONING PROPER BEGINS AT THE LATE END OF A RANGE ANCHOR, where the
+      // reckoning is certainly under way. The bracket to its left is the doubt.
+      b.style.left = pct(M ? ya(M.anchorTo !== undefined ? M.anchorTo : M.anchor)
+                           : start);
+      b.style.right = "0%";
+      // THE RECKONING ITSELF IS A TRADITION-TIER CLAIM, and now says so.
+      // THE PERIOD IMAGE, INSIDE THE BAND, so it begins where the reckoning
+      // does. Its credit goes in the band’s own tooltip rather than in a
+      // credits roll nobody opens, because the image is on screen and the
+      // roll is not.
+      const PL = PLATES && PLATES[L.id];
+      if(PL){
+        const pl = document.createElement("div");
+        pl.className = "lanes-plate";
+        pl.style.backgroundImage = 'url("' + PL.file + '")';
+        pl.dataset.plate = L.id;
+        // THE OPACITY IS PER IMAGE AND IT IS MEASURED. At one value for all
+        // five the Maya lane dominated the panel: an inverted line drawing has
+        // more than twice the luminance spread of a photograph of carved stone,
+        // so the same 17% put three times the ink on that row. build_lane_images
+        // scales it by each strip’s own contrast against the median.
+        if(PL.opacity) pl.style.opacity = PL.opacity;
+        b.appendChild(pl);
+      }
+      b.title = L.label + " \u2014 " + L.caption
+              + (TIERNAME[L.tier] ? "  [" + TIERNAME[L.tier] + "]" : "")
+              + "\n\n" + L.note + "\n\nSource: " + L.source
+              + (PL ? "\n\nBehind this lane: " + PL.of + ".\n" + PL.credit
+                    : "");
+      row.appendChild(b);
+      }   // end: this lane is a reckoning, not the ground
+
+      // AN OFF-SCALE NOTE AT THE LEFT EDGE, NOT A DRAWN BAND (ruled 2026-11-25).
+      // Drawing a band for a claim this axis cannot hold would be the exact lie the
+      // standing scale note warns about.
+      // IT RIDES THE LANE-NAME LINE, not the track. Placed on the track it landed on
+      // top of the mythology caption on the one lane that has both -- the Hindu lane,
+      // whose mythology span starts at the left edge, exactly where the note was. The
+      // name line carries nothing positioned by date, so nothing there can collide.
+      if(L.offscale){
+        const o = document.createElement("span");
+        o.className = "lanes-offscale";
+        o.textContent = "\u25c0 " + L.offscale.label;
+        o.title = (TIERNAME[L.offscale.tier]
+                   ? "[" + TIERNAME[L.offscale.tier] + "]\n\n" : "")
+                + L.offscale.note + (L.offscale.source
+                  ? "\n\nSource: " + L.offscale.source : "");
+        name.appendChild(o);
+      }
+
+      clusterItems(L.items || [], trackW).forEach(function(g){
+        const el = document.createElement("div");
+        const many = g.members.length > 1;
+        const tier = g.members[0].tier || "tradition";
+        if(g.point){
+          el.className = "lanes-pt" + (many ? " many" : "");
+          el.style.left = (g.a * 100).toFixed(4) + "%";
+        } else {
+          // a IS THE LEFT EDGE AND b IS THE RIGHT, already min/maxed by
+          // clusterItems. This took left from b and width from (a - b),
+          // which is negative for every span there is, so the Math.max floor
+          // fired every time and EVERY SPAN WAS DRAWN 0.12 % WIDE -- about
+          // 1.3 px -- pinned at its right-hand end. It survived five steps
+          // because every span on the panel was short enough that 1.3 px
+          // looked about right; the state lanes, where the Roman Republic is
+          // 482 years, showed it in one frame.
+          el.className = "lanes-span";
+          el.style.left = (g.a * 100).toFixed(4) + "%";
+          el.style.width = Math.max(0.12, (g.b - g.a) * 100).toFixed(4) + "%";
+        }
+        el.style.setProperty("--tier", TIER[tier] || "#7fb0a3");
+        // The highlight selects on these, so every mark states its own years.
+        el.dataset.from = Math.min.apply(null, g.members.map(function(m){
+          return Math.min(m.start, m.end === undefined ? m.start : m.end); }));
+        el.dataset.to = Math.max.apply(null, g.members.map(function(m){
+          return Math.max(m.start, m.end === undefined ? m.start : m.end); }));
+        // A CLUSTER HEADER STATES THE YEARS IT IS HIDING. It used to say "on the
+        // same point of the axis", which was false: on the Sumerian lane three
+        // claims from 2084 BCE to 1750 BCE merge into one mark, and calling 334
+        // years "the same point" would tell a viewer they were simultaneous. They
+        // are not simultaneous, they are merely closer together than this axis can
+        // draw -- which is a statement about the chart, not about history.
+        if(many){
+          const ys = g.members.map(function(m){ return m.start; })
+            .concat(g.members.map(function(m){
+              return m.end === undefined ? m.start : m.end; }));
+          const a = Math.min.apply(null, ys), b = Math.max.apply(null, ys);
+          el.title = g.members.length + " claims between " + fmtYear(a) + " and "
+                   + fmtYear(b) + " \u2014 " + Math.abs(b - a) + " years, closer"
+                   + " together than this axis can draw them apart:\n" + tipFor(g);
+        } else {
+          el.title = tipFor(g);
+        }
+        if(many) el.dataset.count = g.members.length;
+        row.appendChild(el);
+      });
+
+      rowsEl.appendChild(row);
+      });
+    });
+
+    // A CAPTION ONLY WHERE THE HATCH CAN HOLD IT, MEASURED AFTER THE ROWS ARE IN
+    // THE DOCUMENT. Once the mythology spans moved three reckoningStarts far to the
+    // left, those hatches became narrow -- and the Hindu one zero-width, since its
+    // span overruns the map -- so the right-aligned caption spilled past the panel
+    // edge. The first fix measured inside the build loop, before the row had been
+    // appended: both widths were 0, 0 > -10 is true, and it silently deleted the
+    // caption from EVERY lane. An element not yet in the document has no geometry.
+    rowsEl.querySelectorAll(".lanes-hatch").forEach(function(h){
+      const cap = h.querySelector(".cap");
+      if(!cap) return;
+      if(cap.getBoundingClientRect().width > h.getBoundingClientRect().width - 10)
+        cap.remove();
+    });
+    buildGaps();      // after the rows are in the document: it measures them
+    sheetLabel();
+    clearDetail();    // the element being read has just been thrown away
+    paint(+scrub.value);
+  }
+
+  // PANEL BEAT 1 (Episode_Six_Clocks): the clocks switch on one by one as the scrubber
+  // passes each start. Built in from the beginning rather than retrofitted, because a
+  // lane that is always lit and a lane that lights on cue are different objects.
+  // Off by default: the panel has to read as a whole chart when nobody is scrubbing.
+  function paint(v){
+    if(!rowsEl || !DOC) return;
+    const nowYa = yearsAgoFromSlider(v);
+    rowsEl.querySelectorAll(".lanes-row").forEach(function(row){
+      const L = DOC.lanes.find(function(x){ return x.id === row.dataset.lane; });
+      if(!L) return;
+      // A CLOCK SWITCHES ON AT ITS EPOCH, NOT AT THE START OF ITS MYTHOLOGY.
+      // The episode wants the six to light one after another as the scrubber
+      // passes 4004, 3114, 3111, 3102, 2900, 2698. If the Sumerian lane lit at
+      // 244,100 BCE -- where its mythology now begins -- that staircase would be
+      // gone and the beat with it.
+      const M = L.mythology;
+      const epoch = M ? ya(M.anchorTo !== undefined ? M.anchorTo : M.anchor)
+                      : ya(L.reckoningStart);
+      const lit = !revealing || nowYa <= epoch;
+      row.classList.toggle("lanes-dark", !lit);
+    });
+    // AND THE CONNECTORS FOLLOW THEIR OWN ENDS. A gap between two clocks means
+    // nothing while one of them has not been switched on yet, so a connector dims
+    // if either lane it joins is dark -- and comes back when both are lit.
+    const gl = rowsEl.querySelector(".lanes-gaps");
+    if(gl) gl.querySelectorAll(".lanes-gap").forEach(function(g){
+      g.classList.toggle("dim", String(g.dataset.lanes).split(" ")
+        .some(function(id){
+          const r = rowOf(id);
+          return r && r.classList.contains("lanes-dark");
+        }));
+    });
+  }
+
+  // --- step 10: gap connectors --------------------------------------------------
+  // Three of them, each joining two dated claims and stating the distance between:
+  // Ussher's Flood against the Sumerian King List's (EPISODE BEAT 5), the Long
+  // Count's own zero against the earliest date anyone carved in it, and the Yellow
+  // Emperor against the earliest Chinese writing that could have named a king.
+  // The pairs name ITEMS, not dates: data/lanes/lanes.json resolves each end's year
+  // from the item it points at, and build_lanes.py aborts on an id that is not there,
+  // so the figure in the connector label cannot drift from the mark it measures.
+  function comma(n){
+    let s = String(n), o = "";
+    while(s.length > 3){ o = "," + s.slice(-3) + o; s = s.slice(0, -3); }
+    return s + o;
+  }
+
+  // THE KIND OF GAP IS STATED, because the three are not the same claim. Two
+  // traditions dating one story is not the same thing as a reckoning measured
+  // against its own earliest evidence, and "two datings of one EVENT" -- which is
+  // what this said first -- would have asserted that the Flood happened.
+  const GAPKIND = {
+    "same-story": "Two traditions, one story, two dates.",
+    "claim-and-evidence":
+      "A reckoning, against the earliest dated evidence bearing on it."};
+
+  function gapTitle(P){
+    const head = [P.what.toUpperCase() + " \u2014 "
+                  + (P.gapTo && P.gapTo !== P.gap
+                     ? comma(P.gap) + " TO " + comma(P.gapTo)
+                     : comma(P.gap)) + " YEARS APART"];
+    if(GAPKIND[P.kind]) head.push(GAPKIND[P.kind]);
+    // THE PAIRING CARRIES ITS OWN TIER, which is not either end's tier: whether
+    // these two dates are about the same thing at all is itself a claim, and for
+    // the two floods it is a contested one.
+    if(TIERNAME[P.tier]) head.push("This pairing: [" + TIERNAME[P.tier] + "]");
+    head.push("");
+    [P.a, P.b].slice().sort(function(p, q){ return p.year - q.year; })
+      .forEach(function(E){
+        head.push(fmtYear(E.yearFar !== undefined ? E.yearFar : E.year)
+          + (E.yearFar !== undefined ? " to " + fmtYear(E.year) : "")
+          + (E.end !== undefined ? " to " + fmtYear(E.end) : "")
+          + (E.approx ? " (approximate, and OURS)" : "")
+          + "  \u2014  " + E.says
+          + (TIERNAME[E.tier] ? "  [" + TIERNAME[E.tier] + "]" : ""));
+      });
+    return head.concat(["", P.note]).join("\n");
+  }
+
+  function rowOf(id){
+    return rowsEl.querySelector('.lanes-row[data-lane="' + id + '"]');
+  }
+
+  function buildGaps(){
+    const old = rowsEl.querySelector(".lanes-gaps");
+    if(old) old.remove();
+    rowsEl.querySelectorAll(".lanes-row.hasgap").forEach(function(r){
+      r.classList.remove("hasgap");
+    });
+    const PAIRS = (DOC && DOC.pairs) || [];
+    if(!PAIRS.length) return;
+    // PASS ONE: CLAIM THE GUTTER, before anything is measured. Adding the margin
+    // moves every row below it, so a geometry read taken first would be stale by the
+    // time the connector was drawn into it.
+    rowsEl.querySelectorAll(".lanes-gutter").forEach(function(g){ g.remove(); });
+    const live = [];
+    PAIRS.forEach(function(P){
+      const ra = rowOf(P.a.lane), rb = rowOf(P.b.lane);
+      if(!ra || !rb) return;              // a collapsed group draws no connector
+      const lower = (ra.getBoundingClientRect().top >= rb.getBoundingClientRect().top)
+                  ? ra : rb;
+      lower.classList.add("hasgap");
+      let gut = lower.nextElementSibling;
+      if(!gut || !gut.classList.contains("lanes-gutter")){
+        gut = document.createElement("div");
+        gut.className = "lanes-gutter";
+        lower.parentNode.insertBefore(gut, lower.nextSibling);
+      }
+      live.push({P: P, gut: gut});
+    });
+    if(!live.length) return;
+    const layer = document.createElement("div");
+    layer.className = "lanes-gaps";
+    rowsEl.appendChild(layer);
+    // PASS TWO: measure, now that the gutters exist.
+    const base = rowsEl.getBoundingClientRect();
+    const panelBox = panel.getBoundingClientRect();
+    live.forEach(function(E){
+      const P = E.P;
+      const bA = rowOf(P.a.lane).getBoundingClientRect();
+      const bB = rowOf(P.b.lane).getBoundingClientRect();
+      const bG = E.gut.getBoundingClientRect();
+      const yA = bA.top - base.top + bA.height / 2;
+      const yB = bB.top - base.top + bB.height / 2;
+      // THE RUN LIVES IN THE GUTTER'S OWN MIDDLE, read off the gutter element
+      // rather than guessed at from the row below it.
+      const yRun = bG.top - base.top + bG.height / 2;
+      // AN END THAT IS A RANGE GETS A CAP AT EACH LIMIT, and the run reaches the
+      // far one, so the bracket contains the whole of the uncertainty rather than
+      // stopping at the near edge and quietly understating it.
+      const xa = f(ya(P.a.year)), xb = f(ya(P.b.year));
+      const xbFar = (P.b.yearFar !== undefined) ? f(ya(P.b.yearFar)) : null;
+      const xaFar = (P.a.yearFar !== undefined) ? f(ya(P.a.yearFar)) : null;
+      const title = gapTitle(P);
+      const g = document.createElement("div");
+      g.className = "lanes-gap";
+      g.dataset.gap = P.id;
+      g.dataset.lanes = P.a.lane + " " + P.b.lane;
+      // EVERY LIMIT THE CONNECTOR MEASURES TO, in the order the caps are made, so
+      // a check can hold each cap against its own year. A range end contributes
+      // two.
+      g.dataset.years = [P.a.year, P.b.year]
+        .concat(P.a.yearFar !== undefined ? [P.a.yearFar] : [])
+        .concat(P.b.yearFar !== undefined ? [P.b.yearFar] : []).join(" ");
+      const ends = [[xa, yA], [xb, yB]];
+      if(xaFar !== null) ends.push([xaFar, yA]);
+      if(xbFar !== null) ends.push([xbFar, yB]);
+      ends.forEach(function(e){
+        const v = document.createElement("div");
+        v.className = "lanes-gapv";
+        v.style.left = (e[0] * 100).toFixed(4) + "%";
+        v.style.top = e[1].toFixed(2) + "px";
+        v.style.height = Math.max(0, yRun - e[1]).toFixed(2) + "px";
+        g.appendChild(v);
+        const c = document.createElement("div");
+        c.className = "lanes-gapcap";
+        c.style.left = (e[0] * 100).toFixed(4) + "%";
+        c.style.top = yRun.toFixed(2) + "px";
+        g.appendChild(c);
+      });
+      const h = document.createElement("div");
+      h.className = "lanes-gaph";
+      const xs = ends.map(function(e){ return e[0]; });
+      const x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs);
+      h.style.left = (x0 * 100).toFixed(4) + "%";
+      h.style.width = ((x1 - x0) * 100).toFixed(4) + "%";
+      h.style.top = yRun.toFixed(2) + "px";
+      h.title = title;
+      g.appendChild(h);
+      const chip = document.createElement("div");
+      chip.className = "lanes-gapchip";
+      chip.style.left = ((x0 + x1) / 2 * 100).toFixed(4) + "%";
+      chip.style.top = yRun.toFixed(2) + "px";
+      // A RANGE FIGURE WHERE THE PAIR MEASURES TO A RANGE. Ussher’s Flood is a
+      // point; the King List’s is an anchor spread over a century, so the
+      // distance between them is not a number. Both ends come from the data file,
+      // resolved from the items by build_lanes.py and never typed.
+      chip.textContent = (P.gapTo && P.gapTo !== P.gap
+                          ? comma(P.gap) + "\u2013" + comma(P.gapTo)
+                          : comma(P.gap)) + " years";
+      chip.title = title;
+      g.appendChild(chip);
+      layer.appendChild(g);
+    });
+    // THE FIGURE MAY OVERHANG ITS OWN RUN. The first rule here was the one the
+    // age-band and alignment labels follow -- drop any label wider than the thing
+    // it labels -- and it took the number off TWO of the three connectors, the
+    // episode's own among them: 552 years is 41 px of bar at that point of the
+    // axis and "552 years" is 63 px of type. That rule exists because a label
+    // wider than its span reads as belonging to a wider span; in this gutter it
+    // cannot, because nothing else is positioned here and the two end caps already
+    // state the run's true extent. So it is dropped only when it would be CLIPPED
+    // by the panel -- .lanes is overflow:hidden, which is how the off-scale notes
+    // once rendered as "S MAP" and "STIES" -- or when it would land on another
+    // connector sharing its gutter. The run carries the tooltip either way.
+    const chips = Array.prototype.slice.call(
+      layer.querySelectorAll(".lanes-gapchip"));
+    const parts = Array.prototype.slice.call(
+      layer.querySelectorAll(".lanes-gaph, .lanes-gapcap"));
+    chips.forEach(function(ch){
+      const cb = ch.getBoundingClientRect();
+      const own = ch.parentElement;
+      const clipped = cb.left < panelBox.left + 2 || cb.right > panelBox.right - 2;
+      const clash = chips.concat(parts).some(function(el){
+        if(el === ch || el.parentElement === own) return false;
+        const b = el.getBoundingClientRect();
+        return !(cb.right <= b.left || b.right <= cb.left
+              || cb.bottom <= b.top || b.bottom <= cb.top);
+      });
+      if(clipped || clash) ch.remove();
+    });
+  }
+
+
+  // --- step 9: the alignments, and the simultaneity highlight -------------------
+  // Part C of the sourcing pass. Ten moments where the lanes line up -- which is
+  // exactly where a reader is most tempted to read coincidence as cause, so every
+  // one carries its own evidence tier and several exist in order to say "this looks
+  // like something and is not". The tier is in the tooltip, never in the colour of
+  // the map: "let the map be a map" holds here too.
+  const alignEl = document.getElementById("lanesAlign");
+  const alignLab = document.getElementById("lanesAlignLab");
+  const readout = document.getElementById("lanesNowRead");
+
+  function buildAligns(){
+    if(!alignEl || !DOC) return;
+    alignEl.textContent = ""; alignLab.textContent = "";
+    (DOC.alignments || []).forEach(function(A){
+      const a0 = f(ya(A.from)), a1 = f(ya(A.to));
+      const band = document.createElement("div");
+      band.className = "lanes-al tier-" + (A.tier || "solid");
+      band.dataset.al = A.id;
+      band.style.left = (a0 * 100).toFixed(4) + "%";
+      band.style.width = Math.max(0.08, (a1 - a0) * 100).toFixed(4) + "%";
+      band.title = A.label.toUpperCase() + "\n" + fmtYear(A.from)
+                 + (A.to !== A.from ? " to " + fmtYear(A.to) : "")
+                 + (TIERNAME[A.tier] ? "  [" + TIERNAME[A.tier] + "]" : "")
+                 + "\n\n" + A.note;
+      alignEl.appendChild(band);
+
+      const lab = document.createElement("div");
+      lab.className = "lanes-allab";
+      lab.dataset.al = A.id;
+      lab.style.left = (a0 * 100).toFixed(4) + "%";
+      lab.textContent = A.label;
+      lab.title = band.title;
+      alignLab.appendChild(lab);
+    });
+    // Labels are dropped where they would overlap the one before, nearest-first,
+    // rather than allowed to pile up. Ten of them across one bar will not all fit.
+    let lastRight = -1e9;
+    Array.prototype.slice.call(alignLab.children).forEach(function(el){
+      const r = el.getBoundingClientRect();
+      if(r.left < lastRight + 8){ el.classList.add("hid"); return; }
+      lastRight = r.right;
+    });
+    // AND ONE THAT WOULD RUN OFF THE PANEL IS DROPPED TOO. The pass above only
+    // compares each label with the one before it, so the LAST one was never
+    // tested against anything: "The Long Count goes to stone, beside Augustus
+    // and the Han" starts at 36 BCE, near the right end, and .lanes is
+    // overflow:hidden, so it was sliced to "...BESIDE AUGUSTUS AND TH". That
+    // was on screen in the step-9 screenshot and went unread; the phone check
+    // at 390 px, where it overflows by much more, is what caught it.
+    const pb = panel.getBoundingClientRect();
+    Array.prototype.slice.call(alignLab.children).forEach(function(el){
+      if(el.classList.contains("hid")) return;
+      const r = el.getBoundingClientRect();
+      if(r.right > pb.right - 2 || r.left < pb.left + 2) el.classList.add("hid");
+    });
+  }
+
+  // THE SIMULTANEITY HIGHLIGHT. Adams reads down a column; this is that column.
+  // Anything within the window lights up on every lane at once, and the readout
+  // says what the window is -- because a highlight with no stated width invites the
+  // reader to invent one.
+  function highlight(v){
+    if(!rowsEl || !DOC) return;
+    const nowYa = yearsAgoFromSlider(v), nowYear = EPOCH - nowYa;
+    // The window is the alignment you are standing in, if any, so the highlight
+    // means the same thing the alignment means. Otherwise it is a fixed slice of
+    // the bar, converted to years at THIS point of the axis -- which is not a
+    // constant, because the axis is age-weighted.
+    let win = null, inAl = null;
+    // THE NARROWEST COLUMN WINS WHERE THEY NEST. Standing at 2500 BCE you are
+    // inside both the pyramid age (2600-2450) and two king lists, two floods
+    // (2900-2084). Taking the first in file order answered with the 816-year one
+    // and buried the 150-year one, which is the more specific and more useful
+    // answer to "what is happening right here".
+    // WITH A TOLERANCE OF ONE SLIDER STEP, because the scrubber cannot land
+    // anywhere finer. <input type=range> has no step attribute here, so its step
+    // is 1, and one step near 3100 BCE is worth a couple of years. Standing
+    // exactly on the Kali Yuga epoch -- which is the right-hand EDGE of the three
+    // beginnings column, and the moment the episode freezes on -- quantised to a
+    // year or two outside it and the column did not light. The tolerance is the
+    // axis own resolution at this point, not a fudge factor.
+    const tol = Math.abs(yearsAgoFromSlider(Math.min(SLIDER_MAX, v + 1))
+                       - yearsAgoFromSlider(Math.max(lo(), v - 1))) / 2 + 1;
+    (DOC.alignments || []).forEach(function(A){
+      if(nowYear < A.from - tol || nowYear > A.to + tol) return;
+      if(!inAl || (A.to - A.from) < (inAl.to - inAl.from)) inAl = A;
+    });
+    if(inAl){ win = [inAl.from, inAl.to]; }
+    else {
+      const span = Math.abs(yearsAgoFromSlider(Math.min(SLIDER_MAX, v + 18))
+                          - yearsAgoFromSlider(Math.max(lo(), v - 18))) / 2;
+      win = [nowYear - span, nowYear + span];
+    }
+    let n = 0;
+    rowsEl.querySelectorAll("[data-from]").forEach(function(el){
+      const a = +el.dataset.from, b = +el.dataset.to;
+      const on = b >= win[0] && a <= win[1];
+      el.classList.toggle("sim", on);
+      if(on) n++;
+    });
+    alignEl.querySelectorAll(".lanes-al").forEach(function(el){
+      el.classList.toggle("on", !!inAl && el.dataset.al === inAl.id);
+    });
+    alignLab.querySelectorAll(".lanes-allab").forEach(function(el){
+      el.classList.toggle("on", !!inAl && el.dataset.al === inAl.id);
+    });
+    if(readout){
+      const w = Math.round(Math.abs(win[1] - win[0]));
+      readout.textContent = inAl
+        ? inAl.label.toUpperCase() + "  \u00b7  " + n
+          + (n === 1 ? " thing" : " things") + " on the lanes"
+        : n + (n === 1 ? " thing" : " things") + " within "
+          + (w >= 1000 ? Math.round(w / 100) / 10 + "k" : w) + " years";
+      readout.classList.toggle("al", !!inAl);
+    }
+  }
+  function now(v){
+    const el = document.getElementById("lanesNow");
+    if(!el) return;
+    const val = (v === undefined || v === null) ? +scrub.value : +v;
+    el.hidden = false;
+    el.style.left = pct(yearsAgoFromSlider(val));
+    paint(val);
+    highlight(val);
+  }
+
+  function reveal(on){ revealing = !!on; paint(+scrub.value); }
+
+  function refresh(){ layout(); build(); buildRows(); buildAligns(); now(); }
+
+  // THE FILE IS REQUIRED, AND A BAD ONE SAYS SO IN THE FRAME.
+  // Silence here would be the worst outcome: an empty panel under the map looks like
+  // a design choice. If the lanes cannot be loaded the panel says what failed, and
+  // the console carries the error for anyone with devtools open.
+  function say(msg){
+    const m = document.getElementById("lanesMsg");
+    if(!m) return;
+    m.textContent = msg || "";
+    m.hidden = !msg;
+  }
+
+  function load(){
+    say("");
+    // The region boxes are fetched alongside. A failure there is NOT fatal: the
+    // tradition lanes are the point of this panel and must still draw, so
+    // loadRegions swallows its own error, the regions group ends up with no
+    // lanes, and a group with no lanes is not rendered at all.
+    loadRegions().then(function(){ if(DOC) buildRows(); });
+    loadPlates().then(function(){ if(DOC) buildRows(); });
+    return fetch("data/lanes/lanes.json")
+      .then(function(r){
+        if(!r.ok) throw new Error("HTTP " + r.status + " for data/lanes/lanes.json");
+        return r.json();
+      })
+      .then(function(d){
+        if(!d || !Array.isArray(d.lanes) || !d.lanes.length)
+          throw new Error("data/lanes/lanes.json has no lanes array");
+        // WHAT EACH KIND OF LANE HAS TO HAVE. This asked every lane for a
+        // numeric reckoningStart, which was right while every lane was a
+        // reckoning; the state lanes are dated evidence and have none, so the
+        // whole file failed and the panel showed its error instead of itself.
+        // Loosening it to "skip if absent" would have been the lazy fix and
+        // would let a tradition lane ship with no epoch.
+        d.lanes.forEach(function(L){
+          if(!L.id || !L.label || !Array.isArray(L.items))
+            throw new Error("lane " + (L.id || "?")
+                            + " is missing an id, a label or its items");
+          if(L.group === "traditions" && typeof L.reckoningStart !== "number")
+            throw new Error("reckoning " + L.id
+                            + " has no numeric reckoningStart");
+        });
+        DOC = d;
+        refresh();
+        return d;
+      })
+      .catch(function(e){
+        // THE MESSAGE GOES IN ITS OWN ELEMENT. Writing it into the track with
+        // innerHTML -- the first version -- deleted the age bands, the grid, the
+        // rows and the now line, so the panel could never recover even when a retry
+        // loaded the file perfectly well. A check now loads a broken file and then a
+        // good one, and fails if the lanes do not come back.
+        say("The lanes could not be loaded: " + String(e.message || e));
+        console.error("lanes:", e);
+        throw e;
+      });
+  }
+
+  let t = null;
+  window.addEventListener("resize", function(){
+    if(t) clearTimeout(t);
+    t = setTimeout(refresh, 150);   // the same debounce buildTicks uses
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+  load();            // the panel is empty until the data file says otherwise
+
+  // THE NOW LINE WATCHES THE SCRUBBER'S VALUE, NOT ANY ONE ROUTE INTO IT.
+  // Two earlier attempts were wrong and the second was wrong silently.
+  //   A listener on "input" tracks a drag, but Play moves the scrubber
+  //   programmatically, so the line would freeze during playback -- which is exactly
+  //   when this panel is on camera.
+  //   Wrapping render() looked right and did nothing: measured in the live page, the
+  //   global `render` binding WAS the wrapper and the counter on it stayed at 0 while
+  //   an input event redrew the year readout normally. Reassigning that binding does
+  //   not reach the binding the page's own listeners call. It had a catch(e){} around
+  //   it too, so it could not even report its own failure. Both are gone.
+  // Watching the value is route-independent: drag, Play, the dated-moment steppers,
+  // search results, URL anchors and anything added later all move this one number.
+  // It costs one float comparison per frame and nothing when the tab is hidden.
+  let painted = null;
+  function sync(){
+    const v = +scrub.value;
+    if(v !== painted){ painted = v; now(v); }
+  }
+  (function watch(){ sync(); requestAnimationFrame(watch); })();
+
+  // A TIMER AS WELL, BECAUSE requestAnimationFrame CAN BE STARVED ON THIS PAGE.
+  // Measured, not feared: in one check run the rAF watcher did not fire for 8.4
+  // seconds while the scrubber sat at a new value, and the line simply stopped. The
+  // same starvation stopped the film renderer dead four times (see the 2026-11-06
+  // render report), so it is a known property of this page under load, not a quirk
+  // of one run. rAF gives a smooth line while the browser is painting; this interval
+  // guarantees the line is never wrong for more than a quarter of a second even when
+  // it is not. It costs one comparison four times a second.
+  setInterval(sync, 250);
+
+  // AND IMMEDIATELY ON INPUT, BECAUSE THE WATCHER CAN ONLY RUN WHEN THE MAP LETS IT.
+  // A big jump makes the map recompute ice, tundra, deserts and shorelines, which
+  // blocks the main thread; the next animation frame -- and so the now line -- can be
+  // a visible fraction of a second late. Moving the line is cheap, so it is moved
+  // first, in the same event, before the map starts its redraw. The watcher stays,
+  // because it is the part that covers Play and every other route.
+  scrub.addEventListener("input", sync);
+
+  // --- step 12: tap to read -----------------------------------------------------
+  // One delegated listener on the body, rather than a handler per mark: there
+  // are 346 titled elements on this panel and that number grows with the data.
+  // It walks up from the tapped node to the nearest ancestor carrying a title,
+  // so the 2 px marks, the bands, the hatch, the anchors, the alignment columns
+  // and the gap connectors are all readable by the same three lines of code.
+  const detail = document.getElementById("lanesDetail");
+  const tapHint = document.getElementById("lanesTapHint");
+  let tapped = null;
+
+  function showDetail(el){
+    if(tapped) tapped.classList.remove("lanes-tapped");
+    tapped = el || null;
+    if(!detail) return;
+    if(!el){
+      detail.hidden = true;
+      detail.textContent = "";
+      // AND THE HINT COMES BACK. Without this the panel said the chart could
+      // be tapped exactly once, and never again after the first note closed.
+      if(tapHint) tapHint.hidden = false;
+      return;
+    }
+    el.classList.add("lanes-tapped");
+    // THE TEXT GETS ITS OWN SPAN, because the box is aria-live: with the close
+    // button inside the box, every note was announced beginning with a cross,
+    // and the box read "\u2715Oceania \u2014 24 dated anchors" to anything
+    // reading its textContent.
+    detail.textContent = "";
+    const x = document.createElement("button");
+    x.type = "button";
+    x.className = "dx";
+    x.setAttribute("aria-label", "Close this note");
+    x.textContent = "\u2715";
+    x.addEventListener("click", function(e){ e.stopPropagation(); showDetail(null); });
+    detail.appendChild(x);
+    const dt = document.createElement("span");
+    dt.className = "dt";
+    dt.textContent = el.title;
+    detail.appendChild(dt);
+    detail.hidden = false;
+    if(tapHint) tapHint.hidden = true;
+  }
+
+  const body = panel.querySelector(".lanes-body");
+  if(body) body.addEventListener("click", function(e){
+    // A group header is a real button and keeps its own job.
+    if(e.target.closest(".lanes-grouphead")) return;
+    let el = e.target;
+    while(el && el !== body && !(el.title && el.title.length)) el = el.parentElement;
+    showDetail(el && el !== body && el.title ? el : null);
+  });
+  // Rebuilding the rows destroys whatever was being read, so the box goes with it.
+  function clearDetail(){
+    tapped = null;
+    if(detail){ detail.hidden = true; detail.textContent = ""; }
+    if(tapHint) tapHint.hidden = false;
+  }
+
+  // --- step 12: the sheet ------------------------------------------------------
+  // Open, close, scrim, Escape, and -- the one every bottom sheet gets wrong --
+  // rotating or widening past the breakpoint, which must not leave the page
+  // locked behind a scrim that is no longer drawn.
+  const sheetBtn = document.getElementById("lanesBtn");
+  const sheetX = document.getElementById("lanesClose");
+  const scrim = document.getElementById("lanesScrim");
+  let sheetOpen = false;
+
+  function setSheet(open){
+    sheetOpen = !!open;
+    panel.classList.toggle("open", sheetOpen);
+    if(scrim) scrim.hidden = !sheetOpen;
+    if(sheetBtn) sheetBtn.setAttribute("aria-expanded", sheetOpen ? "true" : "false");
+    document.body.style.overflow = sheetOpen ? "hidden" : "";
+    if(sheetOpen){
+      // Measure AFTER the sheet is on screen: everything on this panel is
+      // positioned from measured geometry, and a sheet that has not been
+      // painted yet has the wrong width to measure.
+      requestAnimationFrame(function(){ refresh(); if(sheetX) sheetX.focus(); });
+    } else if(PHONE.matches && sheetBtn) sheetBtn.focus();
+  }
+
+  // THE OPENER SAYS HOW MUCH IS BEHIND IT, the way the layers button does.
+  function sheetLabel(){
+    if(!sheetBtn) return;
+    const n = allLanes().length;
+    sheetBtn.textContent = n
+      ? "At the same time \u00b7 " + n + (n === 1 ? " lane" : " lanes")
+      : "What was happening at the same time";
+  }
+
+  if(sheetBtn) sheetBtn.addEventListener("click", function(){ setSheet(!sheetOpen); });
+  if(sheetX) sheetX.addEventListener("click", function(){ setSheet(false); });
+  if(scrim) scrim.addEventListener("click", function(){ setSheet(false); });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && sheetOpen) setSheet(false);
+  });
+  function syncSheet(){ if(!PHONE.matches && sheetOpen) setSheet(false); }
+  if(PHONE.addEventListener) PHONE.addEventListener("change", syncSheet);
+  else if(PHONE.addListener) PHONE.addListener(syncSheet);
+  window.addEventListener("resize", syncSheet);
+
+  return {layout: layout, build: build, buildRows: buildRows, refresh: refresh,
+          sheet: setSheet, sheetOpen: function(){ return sheetOpen; },
+          detail: showDetail,
+          now: now, reveal: reveal, load: load, ya: ya, x: f, pct: pct,
+          doc: function(){ return DOC; }, cluster: clusterItems,
+          regions: function(){ return REGIONS; }, highlight: highlight,
+          gaps: buildGaps, gapTitle: gapTitle,
+          pairs: function(){ return (DOC && DOC.pairs) || []; },
+          thumbW: thumbW};
+})();
 // ===================== PRESENTATION MODE (?present=1) =====================
 // The map, full frame, with every piece of page furniture gone and a small overlay of its own:
 // a big date, a compact legend of only the layers actually on, a callout card in place of popups,

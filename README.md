@@ -873,6 +873,132 @@ toned to the map's own ground so the palette holds (worst overlay keeps 94.3% of
 contrast), and cut into Web Mercator WebP tiles to zoom 5 in `tiles/relief/`
 (1,365 tiles, 12.1 MB).
 
+## What was happening at the same time — the synchronoptic lanes
+
+Under the map is a panel of horizontal lanes sharing the map's own scrubber, so one
+vertical slice shows what every part of the world was doing at the same moment. **Nine
+lanes are the ground** — every dated anchor the map holds, sorted into the regions
+`data/borders/coverage.json` already defines, by each anchor's own latitude and longitude.
+**Six are reckonings**: the Biblical chronology after Ussher as Adams charted it, the
+Hindu yuga cycle, the Maya Long Count, the Chinese traditional chronology, the Egyptian
+king-list tradition after Manetho, and the Sumerian King List.
+
+**The argument is visible without a caption.** The ground carries dense dated evidence
+across the whole bar, while every one of the six clocks starts late and to the right. Göbekli
+Tepe, at c. 9600 BCE, is about **5,600 years older than the oldest of the six** — and older
+still than the other five. Where a reckoning has not begun its lane is hatched, and that
+hatched ground is what this map is about.
+
+**Three things on that chart are not the same kind of claim, and none may be mistaken for
+another.** The hatch is ground before a tradition says anything at all. A **cultural
+mythology** span — its own hue, its own dotted rule, its own stipple — is what a tradition
+says about time it did not witness. The inked band is the reckoning proper.
+
+**Where a tradition gives a length but no date, the anchor is ours and the panel says so.**
+The Sumerian King List's antediluvian reigns run 241,200 years and the List dates none of
+them; the panel hangs the Flood on the **flood deposit at Shuruppak, c. 3000–2900 BCE**
+— a range, not a date — because
+Ziusudra — the List's own flood hero — is king *of* Shuruppak, which is the one place the
+two records touch. **The stratigraphy is Schmidt’s (*Museum Journal* XXII, 1931);
+the date is not.** c. 3000–2900 is this project’s figure, got by applying the
+modern radiocarbon dating of the Jemdet Nasr period to his section, and the window
+Mallowan argued for in *Iraq* 26 (1964); Schmidt himself put the inundation some six
+hundred years earlier, around the middle of the fourth millennium. The anchor is drawn
+as a bracket across the range rather than a rule at a point, and its tooltip carries
+the doubt — including that Schmidt found the culture break across the layer
+**incomplete** and **no victims** in it, that the deposits at Ur, Kish and Shuruppak are
+of different dates and cannot be one event, and
+including that several scholars read that deposit as not being the myth's flood at all.
+Manetho's divine reigns hang on **Dynasty 1, radiocarbon-dated 3111–3045 BCE** (Dee *et al.*
+2013) for the same reason, and the bar is drawn at **Eusebius's 24,900 as written**, with the
+tooltip recording that he calls them lunar years, that the texts make that 2,206 solar, and
+that Syncellus gives the gods 11,985 instead. The Kali Yuga epoch is **not** marked
+approximate: 3102 BCE is the tradition's own computed date, and flagging it as ours would be
+its own small lie.
+
+**Width is not duration, and the panel says so in words as well as in shading.** These lanes
+share the map's age-weighted scrubber, which gives each age its own pace so that deep
+prehistory and recent centuries are both readable — so two bars of the same width can differ
+by thousands of years. The ages are shaded behind the lanes: where a band changes, the scale
+changes.
+
+**Ten alignments are drawn as columns behind every lane, and several exist to refuse a
+reading.** An alignment is a claim about a column of time, not about any one row. The
+three-beginnings column — Ussher 4004, the Long Count 3114, the Kali Yuga 3102, with Egypt's
+Dynasty 1 radiocarbon-dated into the same window — says in its own tooltip that a shared event
+there has **no verified evidence**, that three of the four are reckonings computed centuries or
+millennia later by people who could not have consulted one another, and that **c. 3100 BCE is
+when writing and states appear, which is a reason for clocks to start there rather than
+evidence that anything happened.**
+
+**Three gap connectors join two datings of one thing and state the distance between them.**
+Ussher's Flood at 2348 BCE against the King List's at our c. 3000–2900 anchor, which makes
+the gap a range of 552–652 years — and both
+dates fall inside a continuous dated record that runs unbroken through them. The Long Count's
+own zero against the earliest dates anyone carved in it, 3,078 years. The Yellow Emperor
+against the Anyang oracle bones, the earliest Chinese writing that could have named a king,
+1,444 years.
+
+**Evidence tiers live in tooltips and nowhere else** — the same ruling the map itself follows,
+so the chart stays a chart. **On a phone the panel opens as a sheet**, like the layers panel,
+and because a touch device never shows a tooltip, **tapping anything on the chart opens its
+dates, sources and tier** in a panel at the foot. That works at every width.
+
+**The dates come from `data/lanes/lanes.json`**, generated by `geowork/lanes/build_lanes.py`
+from `docs/RESEARCH_Synchronoptic_Lanes_Sourcing.md`. Every item carries its own source.
+Dates are stored as years CE with negative for BCE, historical numbering with **no year
+zero** — the same convention `data/acts/manifest.json` already states. Three companion
+documents are tracked beside the data: the design, the sourcing pass, and
+`docs/OPEN_ITEMS_Synchronoptic_Lanes.md`, which records what is still unresolved — including
+what remains to do, including the follow-up reading on the Fara stratigraphy that no longer
+blocks publication.
+
+**Five of the six reckonings carry a period image behind the band** — a strip of the
+Adams chart, a band of cartouches from the Abydos king list, the pitted and inscribed face
+of a British Library oracle bone, cuneiform lines from the Weld-Blundell Prism, and a band
+of glyph blocks from Quiriguá Stela C. The image sits inside the inked band and nowhere
+else, so it begins where the reckoning does and never runs under the hatch or a mythology
+span. **The Hindu lane has none**: no yuga-cycle image could be cleared on terms this
+project accepts — the only Sūrya-Siddhānta page on Commons is CC BY-SA 4.0, and
+share-alike is the problem rather than attribution — and the ruling is that such a lane
+runs without one rather than borrowing another tradition's. Every image is public domain or
+CC0; `docs/IMAGE_TERMS_Synchronoptic_Lanes.md` records each licence as its own file page
+words it, the crop box, the source and output dimensions, and the files rejected and why.
+Each band's own tooltip carries its image's credit, because the image is on screen and a
+credits roll is not.
+
+**Eleven more lanes are dynasties and states**, typed from the sourcing pass's Part B
+and **not** taken from the Cliopatria border acts: 171 of Cliopatria v0.2.1's 1,413
+Wikidata ids carry more than one polity name — `Q1068371` is the Han Dynasty, the
+Chauhan Dynasty and a Han–Xiongnu alliance at once — so a lane built from the acts
+would silently merge polities. The group is collapsed by default, because eleven more
+rows open would push the six clocks off most screens.
+
+**These are conventions, not measurements, and the lanes say so.** A period boundary is
+where scholarship agreed to put a line, and different authorities put it in different
+places: Egypt runs about a century apart between the two authorities Part B cites, so the
+lane follows one of them end to end and names the other in its tooltip. **Everything on
+the Sumer and Babylonia lane from Ur III onward is middle chronology**, and the high, low
+and ultra-low alternatives move it by about 150 years — wider than several of its own
+bars. Assyria is a separate lane from Babylonia because they were two states at once, and
+a lane that overlaps itself cannot be read. **Only two overlaps are drawn, and both are
+declared in the generator**: Erlitou against Shang, which are archaeological horizons
+rather than a handover between governments, and the western Roman empire against the
+eastern from the division of 395.
+
+**Four of the sourcing pass's open items were settled here, three of them as *contested*.**
+Erlitou is drawn on radiocarbon (c. 1750–1520) and is deliberately **not labelled
+“Xia”**, because whether the site is the dynasty the texts describe is the dispute
+itself. The Mature Harappan phase ends at 1900 BCE on Kenoyer's sequence, superseding Part
+B's 2000. Chavín follows Burger's AMS redating, c. 950–400 cal BC, with Kembel's
+architectural sequence of 1100–550 in the tooltip. And **476 CE is named as what it is
+— a modern convention** that ends only the western empire; the eastern empire is drawn
+on to 1453, which this map's axis reaches.
+
+**The region lanes carry no claim of their own.** They are derived, not stored: all 565
+anchors placed into the boxes `coverage.json` defines, none falling outside. Each mark keeps
+the tier it has on the map.
+
 ## Citing a single anchor
 
 Every anchor has its own address, so a specific claim can be linked directly
