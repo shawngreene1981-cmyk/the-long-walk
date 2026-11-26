@@ -26,6 +26,7 @@
  "lanes": [
   {
    "id": "trad-ussher",
+   "tier": "tradition",
    "group": "traditions",
    "label": "Biblical — Ussher (1650), as charted by Adams (1871)",
    "caption": "Ussher: Creation, 4004 BC",
@@ -94,6 +95,7 @@
   },
   {
    "id": "trad-yuga",
+   "tier": "tradition",
    "group": "traditions",
    "label": "Hindu — the yuga cycle",
    "caption": "Kali Yuga epoch, 3102 BCE",
@@ -106,6 +108,7 @@
     "label": "Dvāpara Yuga",
     "anchor": -3102,
     "anchorApprox": false,
+    "anchorTier": "tradition",
     "anchorNote": "THE ANCHOR IS THE TRADITION’S OWN, not ours: 18 February 3102 BC is a computed date, the epoch classical Indian astronomers fixed for the start of the Kali Yuga. The yuga drawn to its left is the tradition’s own arithmetic counted back from it.",
     "note": "CULTURAL MYTHOLOGY, drawn from the tradition’s own arithmetic. The Dvāpara Yuga runs 864,000 years and ends at the Kali epoch, so it begins 867,102 BCE. The two older yugas do not fit: Tretā (1,296,000 years) would begin 2,163,102 BCE and Kr̥ta (1,728,000) earlier still, both off the left edge of a map that reaches 1.8 million years. Āryabhaṭa gives four EQUAL yugas of 1,080,000 instead, which would move this bar.",
     "source": "Yuga lengths from the Sūrya-Siddhānta tradition; epoch per Britannica, Eras based on astronomical speculation."
@@ -113,6 +116,7 @@
    "note": "An astronomical reckoning computed by classical Indian astronomers (attested from Āryabhaṭa onward). The epoch is a theoretical planetary conjunction on 18 February 3102 BC that, as Britannica puts it, could not have been observed.",
    "source": "Britannica, Eras based on astronomical speculation; Fleet, JRAS 1911 on the Sūrya-Siddhānta and the Āryabhaṭa schools.",
    "offscale": {
+    "tier": "tradition",
     "label": "and 4.32 million years before that, off this map",
     "note": "The Kali Yuga is the last and shortest of four yugas totalling one mahāyuga of 4,320,000 years — 2.4 times the whole span of this map, which reaches back 1.8 million years. Above that sits the kalpa: 1,000 mahāyugas, 4.32 billion years, one DAY of Brahma. The figure of 2,000 mahāyugas sometimes given is not a rival count but a day AND night together, 8.64 billion years. None of it can be drawn to scale here, so it is not drawn at all; only the Kali Yuga epoch is.",
     "source": "Yuga lengths: Kr̥ta 1,728,000, Tretā 1,296,000, Dvāpara 864,000, Kali 432,000. Āryabhaṭa instead gives four EQUAL yugas of 1,080,000. Kalpa as a day of Brahma: Bhagavad Gita 8.17 and commentary."
@@ -130,6 +134,7 @@
   },
   {
    "id": "trad-longcount",
+   "tier": "tradition",
    "group": "traditions",
    "label": "Maya — the Long Count",
    "caption": "Long Count zero, 3114 BCE",
@@ -166,6 +171,7 @@
   },
   {
    "id": "trad-chinese",
+   "tier": "tradition",
    "group": "traditions",
    "label": "Chinese — traditional chronology",
    "caption": "Yellow Emperor, trad. 2698 BCE",
@@ -226,6 +232,7 @@
   },
   {
    "id": "trad-egypt",
+   "tier": "tradition",
    "group": "traditions",
    "label": "Egyptian — the king-list tradition",
    "caption": "Dynasty 1: Aha, 3111–3045 BCE",
@@ -238,6 +245,7 @@
     "label": "gods and demigods (Manetho, as written)",
     "anchor": -3111,
     "anchorApprox": true,
+    "anchorTier": "contested",
     "anchorNote": "OUR PLACEMENT, NOT MANETHO’S. The date itself is sound — the start of Dynasty 1 is radiocarbon-dated to 3111–3045 BCE (Dee et al. 2013) — but hanging the divine reigns on it is an editorial decision by this map. Manetho gives the gods a length, not a date; nothing in the text says when they ended.",
     "note": "CULTURAL MYTHOLOGY. Eusebius, quoting Manetho: gods 13,900 years, demigods 1,255, other kings 1,817, thirty Memphite kings 1,790, ten Thinite 350, spirits and demigods 5,813 — 24,900 in all. He calls them LUNAR years and gives 2,206 solar as the equivalent, which would shorten this bar to start at 5,317 BCE. The totals also vary by who is quoting: Syncellus gives the gods 11,985, and another set of his figures gives 11,984 for gods and 2,646 for demigods. The bar is drawn at the written 24,900 and every other reading is recorded here.",
     "source": "Manetho via Eusebius (Waddell, Loeb 350) and via Syncellus; Dee et al. 2013 for the Dynasty 1 radiocarbon range."
@@ -276,6 +284,7 @@
   },
   {
    "id": "trad-skl",
+   "tier": "tradition",
    "group": "traditions",
    "label": "Sumerian — the King List",
    "caption": "the Flood, placed by us at c. 2900 BCE",
@@ -288,6 +297,7 @@
     "label": "the antediluvian reigns — 8 kings, 241,200 years",
     "anchor": -2900,
     "anchorApprox": true,
+    "anchorTier": "contested",
     "anchorNote": "OUR PLACEMENT, NOT THE LIST’S. The Sumerian King List gives the Flood no date at all. This map hangs it on the flood deposit at Shuruppak (Tell Fara), excavated by Erich Schmidt in 1931: a band of water-laid clay between Jemdet Nasr and Early Dynastic I levels, c. 2900 BCE. The range runs 2900–2750 BCE and some place it at the END of ED I, nearer 2750. The association is contested — the List puts Ziusudra’s kingship BEFORE the flood, which several scholars read as ruling the 2900 deposit out. Shuruppak is used because it is Ziusudra’s own city and the one place the two records touch.",
     "note": "CULTURAL MYTHOLOGY, drawn back from an anchor we chose. \"After the kingship descended from heaven, the kingship was in Eridug.\" Alulim reigns 28,800 years, Alaljar 36,000; \"5 cities, 8 kings … 241,200 years\"; \"Then the flood swept over.\" Counted back from c. 2900 BCE that reaches 244,100 BCE — which fits on this map with room to spare. The length was never the problem; the missing date was.",
     "source": "ETCSL 2.1.1 for the reigns; Schmidt’s 1931 Fara excavation and the Jemdet Nasr / ED I flood horizon for the anchor."

@@ -519,6 +519,18 @@
   /* The caption rides the name line, and on a compact row its 11 px italic
      made the line box tall enough to hang into the marks below it -- the check
      caught marks drawn through four region names. Same size as the name here. */
+  /* THE GROUND IS NOT A RECKONING, and for two steps it was drawn as one.
+     A region lane has no reckoningStart, and buildRows handed it the whole of
+     a tradition row: a 1 px hatch, invisible but carrying the tooltip BEFORE
+     THIS RECKONING - Oceania, and the inked Adams band -- which on this panel
+     is the mark for a tradition claiming something -- drawn the full width of
+     nine lanes of dated archaeology. That is the argument of the panel turned
+     inside out, in the one place it ought to be clearest. The ground gets a
+     container of its own instead: the same geometry, in the neutral slate the
+     panel uses for structure, making no claim. */
+  .lanes-ground{position:absolute;top:0;bottom:0;left:0;right:0;
+    border:1px solid rgba(147,160,180,.26);border-radius:1px;
+    background:rgba(147,160,180,.04);cursor:help;}
   .lanes-row.compact{height:15px;margin-top:17px;}
   .lanes-row.compact .lanes-rowname{top:-14px;}
   .lanes-row.compact .lanes-rowname .cap{font-size:9px;font-style:normal;
@@ -7057,8 +7069,23 @@ window.__lanes = (function(){
       name.appendChild(cap);
       row.appendChild(name);
 
+      // A LANE IS EITHER A RECKONING OR THE GROUND, and only a reckoning gets a
+      // hatch, a mythology span and an inked band. The region lanes are derived
+      // from the anchors and carry no reckoningStart at all.
+      const isGround = typeof L.reckoningStart !== "number";
+      if(isGround){
+        const gr = document.createElement("div");
+        gr.className = "lanes-ground";
+        gr.title = L.label + " \u2014 " + L.caption + "\n\n" + L.note
+                 + "\n\nDated evidence, not a reckoning: this lane makes no "
+                 + "claim of its own, and every mark on it carries its own "
+                 + "evidence tier."
+                 + "\n\nSource: " + L.source;
+        row.appendChild(gr);
+      }
       const start = ya(L.reckoningStart);
 
+      if(!isGround){
       const h = document.createElement("div");
       h.className = "lanes-hatch";
       h.style.left = "0%";
@@ -7083,8 +7110,10 @@ window.__lanes = (function(){
         mv.innerHTML = '<span class="cap"></span>';
         mv.querySelector(".cap").textContent = M.label;
         mv.dataset.from = M.from; mv.dataset.to = M.to;
-        mv.title = "CULTURAL MYTHOLOGY \u2014 " + M.label + "\n\n" + M.note
-                 + "\n\nSource: " + M.source;
+        mv.title = "CULTURAL MYTHOLOGY \u2014 " + M.label
+                 + (TIERNAME[M.tier || "tradition"]
+                    ? "  [" + TIERNAME[M.tier || "tradition"] + "]" : "")
+                 + "\n\n" + M.note + "\n\nSource: " + M.source;
         row.appendChild(mv);
 
         // IF IT RUNS PAST THE LEFT EDGE, SAY SO THERE. f() clamps to 0, so without
@@ -7104,8 +7133,15 @@ window.__lanes = (function(){
         const an = document.createElement("div");
         an.className = "lanes-anchor" + (M.anchorApprox ? " approx" : "");
         an.style.left = pct(ya(M.anchor));
+        // THE ANCHOR CARRIES ITS OWN TIER, which is not the lane's. The Kali
+        // epoch is the tradition's own computed date, so it is tradition-tier;
+        // Shuruppak and Dynasty 1 are OUR placements of a mythic era onto a
+        // dated one, which is a contested move however sound the date under it.
         an.title = (M.anchorApprox ? "APPROXIMATE ANCHOR \u2014 " : "ANCHOR \u2014 ")
-                 + fmtYear(M.anchor) + "\n\n" + M.anchorNote;
+                 + fmtYear(M.anchor)
+                 + (TIERNAME[M.anchorTier]
+                    ? "  [" + TIERNAME[M.anchorTier] + "]" : "")
+                 + "\n\n" + M.anchorNote;
         row.appendChild(an);
       }
 
@@ -7117,9 +7153,12 @@ window.__lanes = (function(){
       b.className = "lanes-band-trad";
       b.style.left = pct(M ? ya(M.anchor) : start);
       b.style.right = "0%";
-      b.title = L.label + " \u2014 " + L.caption + "\n\n" + L.note
-              + "\n\nSource: " + L.source;
+      // THE RECKONING ITSELF IS A TRADITION-TIER CLAIM, and now says so.
+      b.title = L.label + " \u2014 " + L.caption
+              + (TIERNAME[L.tier] ? "  [" + TIERNAME[L.tier] + "]" : "")
+              + "\n\n" + L.note + "\n\nSource: " + L.source;
       row.appendChild(b);
+      }   // end: this lane is a reckoning, not the ground
 
       // AN OFF-SCALE NOTE AT THE LEFT EDGE, NOT A DRAWN BAND (ruled 2026-11-25).
       // Drawing a band for a claim this axis cannot hold would be the exact lie the
@@ -7132,7 +7171,9 @@ window.__lanes = (function(){
         const o = document.createElement("span");
         o.className = "lanes-offscale";
         o.textContent = "\u25c0 " + L.offscale.label;
-        o.title = L.offscale.note + (L.offscale.source
+        o.title = (TIERNAME[L.offscale.tier]
+                   ? "[" + TIERNAME[L.offscale.tier] + "]\n\n" : "")
+                + L.offscale.note + (L.offscale.source
                   ? "\n\nSource: " + L.offscale.source : "");
         name.appendChild(o);
       }
