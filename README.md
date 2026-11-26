@@ -943,6 +943,20 @@ documents are tracked beside the data: the design, the sourcing pass, and
 the one item that **blocks publication**, tightening the Fara sourcing behind that 2900 BCE
 anchor.
 
+**Five of the six reckonings carry a period image behind the band** — a strip of the
+Adams chart, a band of cartouches from the Abydos king list, the pitted and inscribed face
+of a British Library oracle bone, cuneiform lines from the Weld-Blundell Prism, and a band
+of glyph blocks from Quiriguá Stela C. The image sits inside the inked band and nowhere
+else, so it begins where the reckoning does and never runs under the hatch or a mythology
+span. **The Hindu lane has none**: no yuga-cycle image could be cleared on terms this
+project accepts — the only Sūrya-Siddhānta page on Commons is CC BY-SA 4.0, and
+share-alike is the problem rather than attribution — and the ruling is that such a lane
+runs without one rather than borrowing another tradition's. Every image is public domain or
+CC0; `docs/IMAGE_TERMS_Synchronoptic_Lanes.md` records each licence as its own file page
+words it, the crop box, the source and output dimensions, and the files rejected and why.
+Each band's own tooltip carries its image's credit, because the image is on screen and a
+credits roll is not.
+
 **The region lanes carry no claim of their own.** They are derived, not stored: all 565
 anchors placed into the boxes `coverage.json` defines, none falling outside. Each mark keeps
 the tier it has on the map.

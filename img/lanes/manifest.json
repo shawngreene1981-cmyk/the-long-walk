@@ -1,0 +1,139 @@
+{
+ "about": "Period images behind the tradition lanes. One per lane, except the Hindu lane, which has none: no yuga-cycle image could be cleared on terms this project can accept, and the ruling of 2026-11-25 is that such a lane runs without one rather than borrowing another tradition’s. See docs/IMAGE_TERMS_Synchronoptic_Lanes.md.",
+ "terms": "docs/IMAGE_TERMS_Synchronoptic_Lanes.md records, for every candidate, the licence as its own Wikimedia Commons file page words it, and the files rejected and why.",
+ "changes": "Every image here is CROPPED to a horizontal strip, RESIZED and re-encoded to WebP; one is also INVERTED. Nothing is distorted: each crop is cut to the output ratio and this build aborts if one is not. The source dimensions, the crop box and the output dimensions are recorded per image below, because a faithful reproduction of a public-domain work is the basis on which two of these are free to use at all, and a reader is entitled to know that this is not that.",
+ "generated": "2026-11-26",
+ "generated_by": "geowork/lanes/build_lane_images.py",
+ "images": [
+  {
+   "lane": "trad-ussher",
+   "file": "img/lanes/adams-panorama.webp",
+   "of": "a strip of the chart, which is what the design asks for in those words",
+   "credit": "Adams’ Illustrated Panorama of History, Sebastian C. Adams — THE 1878 THIRD EDITION of the chart first published in 1871. Scan given to Wikimedia Commons by Geographicus Rare Antique Maps. Public domain: a faithful reproduction of a two-dimensional public-domain work, published before 1931. Downscaled from the Commons scan, cropped to a strip and re-encoded for this map.",
+   "url": "https://commons.wikimedia.org/wiki/File:1878_Adams_Monumental_Illustrated_Panorama_of_History_-_Geographicus_-_WorldHistory-adams-1871.jpg",
+   "source_file": "adams.jpg",
+   "source_px": [
+    3840,
+    1626
+   ],
+   "crop_px": [
+    0,
+    190,
+    3840,
+    830
+   ],
+   "output_px": [
+    1200,
+    200
+   ],
+   "inverted": false,
+   "contrast_sd": 57.5,
+   "bytes": 69546,
+   "opacity": 0.155
+  },
+  {
+   "lane": "trad-egypt",
+   "file": "img/lanes/abydos-kinglist.webp",
+   "of": "a band of cartouches from the king list in the temple of Seti I",
+   "credit": "The Abydos King List, temple of Seti I, photographed by Markh (2004) and released by its author into the public domain worldwide. Wikimedia Commons. Cropped to a strip, resized and re-encoded.",
+   "url": "https://commons.wikimedia.org/wiki/File:Abydos_King_List.jpg",
+   "source_file": "abydos.jpg",
+   "source_px": [
+    960,
+    1280
+   ],
+   "crop_px": [
+    0,
+    170,
+    960,
+    330
+   ],
+   "output_px": [
+    1200,
+    200
+   ],
+   "inverted": false,
+   "contrast_sd": 32.4,
+   "bytes": 64082,
+   "opacity": 0.26
+  },
+  {
+   "lane": "trad-chinese",
+   "file": "img/lanes/anyang-oracle-bone.webp",
+   "of": "the pitted and inscribed face of the scapula, where the cracks were read",
+   "credit": "Chinese oracle bone, British Library Or. 7694/1535v, held and digitised by the British Library and released under CC0 1.0. Wikimedia Commons. Cropped to a strip, resized and re-encoded.",
+   "url": "https://commons.wikimedia.org/wiki/File:Chinese_oracle_bone_(16th-10th_C_BC)_-_BL_Or._7694.jpg",
+   "source_file": "bone_bl.jpg",
+   "source_px": [
+    1670,
+    1714
+   ],
+   "crop_px": [
+    140,
+    400,
+    1090,
+    558
+   ],
+   "output_px": [
+    1200,
+    200
+   ],
+   "inverted": false,
+   "contrast_sd": 52.4,
+   "bytes": 25026,
+   "opacity": 0.17
+  },
+  {
+   "lane": "trad-skl",
+   "file": "img/lanes/weld-blundell-prism.webp",
+   "of": "cuneiform lines from the face of the prism",
+   "credit": "The Weld-Blundell Prism, Ashmolean Museum AN1923.444, photographed by 俞磊 (2006) and released by its author into the public domain worldwide. Wikimedia Commons. Cropped to a strip, enlarged from a 320 px source and re-encoded.",
+   "url": "https://commons.wikimedia.org/wiki/File:Sumeriankinglist.jpg",
+   "source_file": "prism.jpg",
+   "source_px": [
+    320,
+    589
+   ],
+   "crop_px": [
+    60,
+    180,
+    272,
+    215
+   ],
+   "output_px": [
+    1200,
+    200
+   ],
+   "inverted": false,
+   "contrast_sd": 39.8,
+   "bytes": 18160,
+   "opacity": 0.224
+  },
+  {
+   "lane": "trad-longcount",
+   "file": "img/lanes/quirigua-stela-c.webp",
+   "of": "a band across two glyph blocks of the inscription. The first crop took the outer frame of one block and came out as three white blobs; only the picture showed it",
+   "credit": "Quiriguá Stela C, east side — Maudslay’s drawing, published in Cyrus Thomas, Mayan Calendar Systems II (1904). Public domain on age. Wikimedia Commons. Cropped to a strip, INVERTED to light-on-dark, enlarged and re-encoded.",
+   "url": "https://commons.wikimedia.org/wiki/File:East_side_of_stela_C,_Quirigua.PNG",
+   "source_file": "stela.png",
+   "source_px": [
+    251,
+    579
+   ],
+   "crop_px": [
+    0,
+    300,
+    251,
+    342
+   ],
+   "output_px": [
+    1200,
+    200
+   ],
+   "inverted": true,
+   "contrast_sd": 109.1,
+   "bytes": 17130,
+   "opacity": 0.1
+  }
+ ]
+}

@@ -610,6 +610,24 @@
     background:rgba(209,114,90,.09);font-family:'IBM Plex Mono',monospace;
     font-size:11px;line-height:1.55;color:#e8b5a6;}
 
+  /* --- step 13: the period images --------------------------------------- */
+  /* One per tradition lane, behind the INKED BAND only -- never behind the
+     hatch or the mythology span, which are different claims and would be
+     saying the wrong thing with a period object under them. Faint on purpose:
+     the marks, the now line and the alignment columns all have to stay
+     readable over it, and the image is the MATERIAL the tradition is written
+     on, not a layer of data. Each strip was cropped to 6:1 by
+     geowork/lanes/build_lane_images.py, which records the crop box and the
+     source and output dimensions, because two of the five are free to use
+     only as faithful reproductions and this is not that. */
+  .lanes-plate{position:absolute;inset:0;background-position:center;
+    background-size:cover;background-repeat:no-repeat;opacity:.17;
+    pointer-events:none;border-radius:1px;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 86%,transparent 100%);
+    mask-image:linear-gradient(90deg,#000 0,#000 86%,transparent 100%);}
+  /* The lane is lit by the reveal, and so is what is behind it. */
+  .lanes-row.lanes-dark .lanes-plate{opacity:.07;}
+
   /* --- step 12: tap to read -------------------------------------------- */
   /* EVERY WORD ON THIS PANEL LIVES IN A TITLE ATTRIBUTE, and a touch device
      never shows one -- so the sheet opened on a phone with the dates, the
@@ -7102,6 +7120,26 @@ window.__lanes = (function(){
       });
   }
 
+  // --- step 13: the period images -----------------------------------------
+  // img/lanes/manifest.json is written by build_lane_images.py beside the
+  // files themselves, so the credit a lane shows and the bytes on disk cannot
+  // come apart. A lane with no entry gets no image, which is the Hindu lane:
+  // no yuga-cycle picture could be cleared on terms this project accepts, and
+  // the ruling is that such a lane runs without one rather than borrowing
+  // another tradition’s.
+  let PLATES = null;
+
+  function loadPlates(){
+    return fetch("img/lanes/manifest.json")
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        PLATES = {};
+        ((d && d.images) || []).forEach(function(i){ PLATES[i.lane] = i; });
+        return PLATES;
+      })
+      .catch(function(){ PLATES = {}; return PLATES; });   // the panel is fine
+  }
+
   function loadRegions(){
     return fetch("data/borders/coverage.json")
       .then(function(r){ return r.ok ? r.json() : null; })
@@ -7253,9 +7291,29 @@ window.__lanes = (function(){
       b.style.left = pct(M ? ya(M.anchor) : start);
       b.style.right = "0%";
       // THE RECKONING ITSELF IS A TRADITION-TIER CLAIM, and now says so.
+      // THE PERIOD IMAGE, INSIDE THE BAND, so it begins where the reckoning
+      // does. Its credit goes in the band’s own tooltip rather than in a
+      // credits roll nobody opens, because the image is on screen and the
+      // roll is not.
+      const PL = PLATES && PLATES[L.id];
+      if(PL){
+        const pl = document.createElement("div");
+        pl.className = "lanes-plate";
+        pl.style.backgroundImage = 'url("' + PL.file + '")';
+        pl.dataset.plate = L.id;
+        // THE OPACITY IS PER IMAGE AND IT IS MEASURED. At one value for all
+        // five the Maya lane dominated the panel: an inverted line drawing has
+        // more than twice the luminance spread of a photograph of carved stone,
+        // so the same 17% put three times the ink on that row. build_lane_images
+        // scales it by each strip’s own contrast against the median.
+        if(PL.opacity) pl.style.opacity = PL.opacity;
+        b.appendChild(pl);
+      }
       b.title = L.label + " \u2014 " + L.caption
               + (TIERNAME[L.tier] ? "  [" + TIERNAME[L.tier] + "]" : "")
-              + "\n\n" + L.note + "\n\nSource: " + L.source;
+              + "\n\n" + L.note + "\n\nSource: " + L.source
+              + (PL ? "\n\nBehind this lane: " + PL.of + ".\n" + PL.credit
+                    : "");
       row.appendChild(b);
       }   // end: this lane is a reckoning, not the ground
 
@@ -7676,6 +7734,7 @@ window.__lanes = (function(){
     // loadRegions swallows its own error, the regions group ends up with no
     // lanes, and a group with no lanes is not rendered at all.
     loadRegions().then(function(){ if(DOC) buildRows(); });
+    loadPlates().then(function(){ if(DOC) buildRows(); });
     return fetch("data/lanes/lanes.json")
       .then(function(r){
         if(!r.ok) throw new Error("HTTP " + r.status + " for data/lanes/lanes.json");

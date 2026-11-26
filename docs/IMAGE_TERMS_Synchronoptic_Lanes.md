@@ -126,13 +126,73 @@ probably not.
 
 ---
 
+## WHAT SHIPPED — dimensions, crops and changes
+
+**Founder-ruled 2026-11-26: the five downloads approved; the Hindu lane runs without
+an image; the Adams 1878 third-edition scan is to be used with the edition stated in
+the credit, downscaled, and the source and output dimensions recorded here; the 320 px
+prism file is to be used, with a non-blocking open item to replace it.**
+
+Built by `geowork/lanes/build_lane_images.py`, which writes `img/lanes/manifest.json`
+beside the files. The panel and `build_credits.py` both read that manifest, so a credit
+cannot drift from the bytes it describes.
+
+| file | source | crop (source px) | output | opacity | size |
+|---|---|---|---|---|---|
+| `adams-panorama.webp` | 3840×1626 | 0,190 – 3840,830 (3840×640) | 1200×200 | 0.155 | 68 KB |
+| `abydos-kinglist.webp` | 960×1280 | 0,170 – 960,330 (960×160) | 1200×200 | 0.260 | 63 KB |
+| `anyang-oracle-bone.webp` | 1670×1714 | 140,400 – 1090,558 (950×158) | 1200×200 | 0.170 | 24 KB |
+| `weld-blundell-prism.webp` | 320×589 | 60,180 – 272,215 (212×35) | 1200×200 | 0.224 | 18 KB |
+| `quirigua-stela-c.webp` | 251×579 | 0,300 – 251,342 (251×42) | 1200×200 | 0.100 | 17 KB |
+
+**All five are cropped to 6:1 and resized to that same ratio, so none is distorted** —
+the build aborts if a crop is not within 6 % of the output ratio. An earlier version
+forced the width to 1200 while capping the height at 150, which silently squashed every
+image by up to 3×; a squashed scan is not a faithful reproduction, and faithful
+reproduction is the basis on which two of these are free to use at all.
+
+**Why 6:1 and not the shape of the lane.** The band behind a tradition lane is about
+650 × 30 px, roughly 21:1. No photograph of a stela or a prism is that shape, so
+something must crop it; choosing the crop here rather than letting the browser take
+whatever is in the middle of the frame is how each lane ends up carrying the part of
+its object worth carrying.
+
+**The opacities are measured, not chosen.** At one value for all five the Maya lane
+dominated the panel: an inverted line drawing has more than twice the luminance spread
+of a photograph of carved stone (sd 109 against a median of 52), so the same 17 % put
+three times the ink on that row. Each opacity is now scaled by that strip’s own
+contrast against the median and clamped to 0.10–0.26. "No lane privileged" is a ruling
+about the data; it should hold for the decoration too.
+
+**ONE SUBSTITUTION, AND IT IS NOT THE FILE THAT WAS APPROVED.** The approved Chinese
+image was `File:Ancient Chinese Writing on Ox Scapula, Shang Dynasty Oracle Bone,
+Yinxu, Anyang.jpg` (Gary Todd, CC0). It was downloaded, and the photograph turns out to
+show the **uninscribed face** of the bone through museum glass — cracks and reflections,
+no legible writing — so it would have put a blank bone behind the one lane whose point
+is the earliest Chinese writing. It was replaced with **`File:Chinese oracle bone
+(16th-10th C BC) - BL Or. 7694.jpg`**: British Library Or. 7694/1535v, held and digitised
+by the British Library, uploaded to Flickr Commons, **CC0 1.0**, 1,670 × 1,714, 953 KB,
+licence read on its own file page. It is a flat scan of the pitted and inscribed face,
+with the poker burns that produced the cracks and several characters visible. Same
+licence class, same subject, better evidence — but it is a change to the approved set
+and is recorded here as one.
+
+**The Adams edition, as ruled.** The scan is the **1878 third edition**; the lane caption
+keeps "as charted by Adams (1871)", which is when the chart was first published, and the
+image credit states the edition and that the file was downscaled and re-encoded from the
+Commons scan. The Commons original is 10,000 × 4,235; this build fetched the 3,840 px
+rendition from the Commons thumbnail service rather than pulling 14.7 MB to throw most
+of it away, and cropped and re-encoded from that.
+
+**The Hindu lane ships with no image and nothing on the panel pretends otherwise.**
+
+---
 ## WHAT STILL HAS TO HAPPEN
 
-1. **The founder approves the downloads.** Five files, 19 MB before any re-encoding, from
-   Wikimedia Commons. Nothing is fetched until then.
-2. Each is downscaled to what a background at low opacity actually needs and re-encoded;
-   the Adams scan especially.
-3. Every image gets an entry in `build_credits.py` carrying the file name, the author, the
-   licence as worded above, and the Commons URL — and, where we resized or cropped, says
-   so, because "faithful reproduction" is part of why some of these are free to use.
-4. The Hindu lane ships with no image, and nothing on the panel pretends otherwise.
+1. ~~The founder approves the downloads.~~ **Approved and done, 2026-11-26.**
+2. ~~Each is downscaled and re-encoded.~~ **Done** — see the table above.
+3. ~~Every image gets an entry in `build_credits.py`.~~ **Done**, read from
+   `img/lanes/manifest.json` so it cannot drift from the files.
+4. ~~The Hindu lane ships with no image.~~ **Done, and checked against a picture.**
+5. **Still open, not blocking:** replace the 320 px prism photograph with a larger
+   free scan if one can be found — item 9 in `OPEN_ITEMS_Synchronoptic_Lanes.md`.

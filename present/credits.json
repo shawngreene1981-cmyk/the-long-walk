@@ -112,6 +112,51 @@
    "note": "Every lane item carries the source it came from, because a reader is entitled to know which tradition, and which scholar, a line on this chart is reporting."
   },
   {
+   "name": "Period image: adams-panorama.webp",
+   "used_for": "the image behind the trad-ussher lane — a strip of the chart, which is what the design asks for in those words",
+   "source": "Adams’ Illustrated Panorama of History, Sebastian C. Adams — THE 1878 THIRD EDITION of the chart first published in 1871. Scan given to Wikimedia Commons by Geographicus Rare Antique Maps. Public domain: a faithful reproduction of a two-dimensional public-domain work, published before 1931. Downscaled from the Commons scan, cropped to a strip and re-encoded for this map.",
+   "licence": "See the credit text: public domain by the author, public domain on age, or CC0 1.0. No candidate carrying a share-alike condition was used.",
+   "data": "https://commons.wikimedia.org/wiki/File:1878_Adams_Monumental_Illustrated_Panorama_of_History_-_Geographicus_-_WorldHistory-adams-1871.jpg",
+   "changes": "Changes were made: cropped to 3840×640 of a 3840×1626 source, resized to 1200×200 and re-encoded as WebP. Drawn at 16% opacity behind the lane.",
+   "note": null
+  },
+  {
+   "name": "Period image: abydos-kinglist.webp",
+   "used_for": "the image behind the trad-egypt lane — a band of cartouches from the king list in the temple of Seti I",
+   "source": "The Abydos King List, temple of Seti I, photographed by Markh (2004) and released by its author into the public domain worldwide. Wikimedia Commons. Cropped to a strip, resized and re-encoded.",
+   "licence": "See the credit text: public domain by the author, public domain on age, or CC0 1.0. No candidate carrying a share-alike condition was used.",
+   "data": "https://commons.wikimedia.org/wiki/File:Abydos_King_List.jpg",
+   "changes": "Changes were made: cropped to 960×160 of a 960×1280 source, resized to 1200×200 and re-encoded as WebP. Drawn at 26% opacity behind the lane.",
+   "note": null
+  },
+  {
+   "name": "Period image: anyang-oracle-bone.webp",
+   "used_for": "the image behind the trad-chinese lane — the pitted and inscribed face of the scapula, where the cracks were read",
+   "source": "Chinese oracle bone, British Library Or. 7694/1535v, held and digitised by the British Library and released under CC0 1.0. Wikimedia Commons. Cropped to a strip, resized and re-encoded.",
+   "licence": "See the credit text: public domain by the author, public domain on age, or CC0 1.0. No candidate carrying a share-alike condition was used.",
+   "data": "https://commons.wikimedia.org/wiki/File:Chinese_oracle_bone_(16th-10th_C_BC)_-_BL_Or._7694.jpg",
+   "changes": "Changes were made: cropped to 950×158 of a 1670×1714 source, resized to 1200×200 and re-encoded as WebP. Drawn at 17% opacity behind the lane.",
+   "note": null
+  },
+  {
+   "name": "Period image: weld-blundell-prism.webp",
+   "used_for": "the image behind the trad-skl lane — cuneiform lines from the face of the prism",
+   "source": "The Weld-Blundell Prism, Ashmolean Museum AN1923.444, photographed by 俞磊 (2006) and released by its author into the public domain worldwide. Wikimedia Commons. Cropped to a strip, enlarged from a 320 px source and re-encoded.",
+   "licence": "See the credit text: public domain by the author, public domain on age, or CC0 1.0. No candidate carrying a share-alike condition was used.",
+   "data": "https://commons.wikimedia.org/wiki/File:Sumeriankinglist.jpg",
+   "changes": "Changes were made: cropped to 212×35 of a 320×589 source, resized to 1200×200 and re-encoded as WebP. Drawn at 22% opacity behind the lane.",
+   "note": null
+  },
+  {
+   "name": "Period image: quirigua-stela-c.webp",
+   "used_for": "the image behind the trad-longcount lane — a band across two glyph blocks of the inscription. The first crop took the outer frame of one block and came out as three white blobs; only the picture showed it",
+   "source": "Quiriguá Stela C, east side — Maudslay’s drawing, published in Cyrus Thomas, Mayan Calendar Systems II (1904). Public domain on age. Wikimedia Commons. Cropped to a strip, INVERTED to light-on-dark, enlarged and re-encoded.",
+   "licence": "See the credit text: public domain by the author, public domain on age, or CC0 1.0. No candidate carrying a share-alike condition was used.",
+   "data": "https://commons.wikimedia.org/wiki/File:East_side_of_stela_C,_Quirigua.PNG",
+   "changes": "Changes were made: cropped to 251×42 of a 251×579 source, resized to 1200×200 and re-encoded as WebP, and INVERTED to light-on-dark. Drawn at 10% opacity behind the lane.",
+   "note": null
+  },
+  {
    "name": "USDA Forest Service / Royce 1899",
    "used_for": "the Southeastern land cessions",
    "source": "USDA Forest Service, Tribal Land Cessions in the United States (S_USA.TRIBALCEDEDLANDS), 2018-05-29, from Charles C. Royce, Indian Land Cessions in the United States, 18th Annual Report of the Bureau of American Ethnology, 1896-97.",

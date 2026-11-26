@@ -49,6 +49,7 @@ resolved.
 | 6 | Minoan sequence start | Part B, Aegean | open — v2 |
 | 7 | Does the Turin King List open with divine rulers? | Egyptian lane | **scoped around** |
 | 8 | Three Sovereigns dates | Chinese lane | **scoped around** |
+| 9 | A larger free scan of the Weld-Blundell Prism | Sumerian lane image | open — see below |
 
 **7 — Turin.** The Egyptian lane's divine reigns are sourced to Manetho via Eusebius, which is
 independent of the Turin question, and §4a offered "the Turin **or** Abydos list" as the
@@ -61,6 +62,21 @@ this item.
 
 ---
 
+### 9. Replace the Weld-Blundell Prism image with a larger free scan
+**Founder-ruled 2026-11-26: use the 320 px file for now. This does NOT block
+publication.**
+
+The period image behind the Sumerian lane is `File:Sumeriankinglist.jpg` on Wikimedia
+Commons — the only photograph of the prism released into the public domain outright.
+At **320 × 589** it is the smallest source on the panel: the strip behind that lane is
+enlarged from a 212 × 35 crop and is visibly softer than the other four.
+
+**What would settle it.** A larger scan of Ashmolean AN1923.444 under a licence with no
+share-alike condition. The better-resolution photographs now on Commons are CC BY-SA 4.0,
+which is why they were passed over — see `IMAGE_TERMS_Synchronoptic_Lanes.md`. The
+Ashmolean's own collections site is the obvious place to ask.
+
+---
 ## RESOLVED
 
 - ~~**Kalpa: 1,000 or 2,000 mahāyugas?**~~ **Resolved 2026-11-25, and the two figures were
