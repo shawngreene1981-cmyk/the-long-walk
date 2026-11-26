@@ -5,7 +5,7 @@ Everything here is **unresolved or needs tightening before publication**. Items 
 out, with what settled them, rather than deleted — a resolved question is worth as much as an
 open one when the next person asks why a date on the chart is the date it is.
 
-Last reviewed 2026-11-25.
+Last reviewed 2026-11-26.
 
 ---
 
@@ -14,6 +14,167 @@ Last reviewed 2026-11-25.
 **Founder-ruled 2026-11-26.** The one item that did — the Fara sourcing behind the
 Sumerian Flood anchor — was researched, the anchor was widened to a range, and the
 item was released. **Publication itself is a separate ruling and has not been given.**
+
+---
+
+## THE PUBLICATION CHECKLIST
+
+**Written 2026-11-26 on the founder’s instruction. NOTHING IN IT HAS BEEN RUN.**
+Publication is its own ruling and has not been given. The branch holds at
+`synchronoptic-lanes`; nothing is merged, pushed or deployed. **`19875a4` is the
+pre-publication tip of `main`** — the number to quote in any rollback.
+
+The live site is classic GitHub Pages off `main`’s root: there is no workflow in
+`.github/`, so pushing `main` IS the deploy. It usually rebuilds in under a minute.
+
+### A. Before the merge — pre-flight, on `synchronoptic-lanes`
+
+1. **Prove the page is reproducible and was not hand-edited.** Rebuild it from the two
+   base commits and the patch chain, then look at the tree:
+
+   ```sh
+   cd /c/Users/shawn/geowork && sh build_page.sh
+   cd /c/Users/shawn/Before-Us/tlw-repo && git --no-optional-locks status --short
+   ```
+
+   **The status must come back EMPTY.** A dirty tree after a rebuild means the committed
+   page is not the page the build produces, and the rule that the page is built and never
+   hand-edited has already been broken somewhere. *Run at `189422b` on 2026-11-26: clean,
+   `index.html` 1,300,506 bytes.*
+
+2. **Both check suites, against the rebuilt page**, from `/c/Users/shawn/geowork/lanes`
+   with the venv Python (`/c/Users/shawn/geowork/.venv/Scripts/python.exe -I`):
+
+   ```sh
+   python -I check_lanes.py     # expect: all lanes checks passed   (95 desktop)
+   python -I check_phone.py     # expect: all phone checks passed   (19 at 390 px)
+   ```
+
+   Both end with a clean-console check. Neither can test the LIVE page: each serves this
+   working copy over a local port. They prove what is about to be published, not what is.
+
+3. **Read what publication would actually put on the site**, rather than assuming:
+
+   ```sh
+   git --no-optional-locks log --oneline main..synchronoptic-lanes
+   git fetch origin && git --no-optional-locks log --oneline origin/main..main
+   ```
+
+   The second must be empty. If `main` has anything of its own, that lands on the live
+   page too, and it has not been looked at as part of this work.
+
+### B. The merge and the push — only on the founder’s publication ruling
+
+```sh
+cd /c/Users/shawn/Before-Us/tlw-repo
+git checkout main
+git merge --no-ff synchronoptic-lanes -m "Publish the synchronoptic lanes panel"
+git push origin main
+git checkout synchronoptic-lanes        # so later work cannot land on main by accident
+```
+
+**`--no-ff` is not cosmetic.** It makes ONE merge commit, and that single commit is what
+makes the rollback in §D a single revert. A fast-forward leaves no one thing to undo,
+and the only way back is rewriting published history.
+
+**Push `main` only.** Pushing `synchronoptic-lanes` itself is a separate decision and is
+not needed to publish. Do not delete the branch: §D needs it.
+
+### C. What to check on the live page afterwards
+
+Live URL: `https://shawngreene1981-cmyk.github.io/the-long-walk/`
+
+**First, that the deploy landed at all** — the one part of this a command settles:
+
+```sh
+sha256sum index.html
+curl -s https://shawngreene1981-cmyk.github.io/the-long-walk/ | sha256sum
+curl -sI https://shawngreene1981-cmyk.github.io/the-long-walk/data/lanes/lanes.json
+curl -sI https://shawngreene1981-cmyk.github.io/the-long-walk/img/lanes/adams-panorama.webp
+```
+
+The two hashes must match, and both `curl -sI` must give **200**. If the live hash is
+still the old one, Pages has not finished rebuilding — **wait and look again; do not
+re-push.** A second push does not make a build go faster and it muddies §D.
+
+**Desktop, in a real browser** (the checks only ever used headless Edge):
+
+- the panel is under the map, the six clocks open, the dynasty and state group collapsed;
+- scrub the slider end to end: the reveal follows it, the now line tracks, the tick strip
+  stays aligned to the thumb;
+- **BEAT 5** — the dashed bracket in the gutter joining the Biblical clock to the
+  Sumerian one. The chip must read **552–652 YEARS**. Hover the run: the tooltip
+  names Ussher’s **2348 BCE** and the anchor as **3000 BCE to 2900 BCE**;
+- **the Sumerian Flood anchor is a BRACKETED BAND** with an upright at each limit and the
+  ≈ mark — not a rule with a diamond. Hover it: this project’s placement,
+  Schmidt’s own mid-fourth-millennium date, the incomplete culture break, the absent
+  victims, the different-dated deposits, and the tier **contested**;
+- spans have real width. **The Roman Republic bar in the dynasty group is the one that
+  exposed the 1.3 px bug** — look at it specifically;
+- each tradition lane’s inked band carries its period image, and the Hindu lane has
+  none, as ruled;
+- the browser console is clean.
+
+**390 px phone.** Device emulation is fine, but **load AT 390 px — do not resize a
+desktop page down into it.** The page reads the breakpoint while it builds, and resizing
+afterwards is not the same thing.
+
+- the panel is a bottom sheet; its head is sticky and paints ABOVE the chart, not under
+  it; the hint is visible;
+- **the tap-to-read box**: tap a span, an anchor and a connector. Each opens the box with
+  the same text the desktop tooltip gives. The ✕ closes it, and **the hint comes back
+  when it does** — both have been bugs here;
+- no alignment label is sliced at the panel edge (“…BESIDE AUGUSTUS AND TH”
+  was the one that got through);
+- widen back past 760 px: the page unlocks, the body scrolls again, the desktop layout
+  returns and the track refits to the thumb.
+
+**The image credits**, which are the part with a licence behind it:
+
+- every inked band’s tooltip carries its own image credit — five rights holders on
+  four different bases, and a reader checking one should not have to unpick a paragraph;
+- the credits roll (presentation mode, `?present=1`) lists the lanes data entry and all
+  five image entries;
+- **the Adams entry must say third edition, 1878, and that the file was downscaled and
+  re-encoded.** Faithful reproduction is the basis on which that one is free to use at
+  all, so a credit that omits the re-encoding is the credit that matters most here.
+
+### D. How to roll back
+
+**Route 1, preferred — one commit, no rewritten history:**
+
+```sh
+cd /c/Users/shawn/Before-Us/tlw-repo
+git checkout main
+git revert -m 1 <the merge sha from §B>
+git push origin main
+```
+
+That undoes the whole merge and Pages rebuilds to the previous page. The work stays on
+`synchronoptic-lanes` untouched, so it can be fixed and re-merged.
+
+**If only the page is wrong and the merge should stand**, restore the one file the site
+actually serves:
+
+```sh
+git checkout main
+git checkout 19875a4 -- index.html
+git commit -m "Restore the pre-publication page while the panel is fixed"
+git push origin main
+```
+
+The panel lives entirely inside `index.html`. `data/lanes/lanes.json` and `img/lanes/`
+left behind are then unreferenced and harmless.
+
+**Route 2, only on an explicit ruling:** `git reset --hard 19875a4` and
+`git push --force-with-lease origin main`. It rewrites published history, and it restores
+the live page **no faster than route 1**, so there is no reason to reach for it in a
+hurry.
+
+Whichever route: **do not delete the branch**, and **do not rerun `build_page.sh` while
+the live page is broken.** A rebuild changes this working copy, never what is already
+deployed, and it costs the one clean comparison — committed against live — that
+tells you what actually went out.
 
 ---
 
