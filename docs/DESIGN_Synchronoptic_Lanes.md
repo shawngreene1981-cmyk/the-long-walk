@@ -68,6 +68,27 @@ The show's central question made visible: how much happened before the stories b
 
 Six tradition lanes; a panel under the map; the Adams look for tradition lanes only; one period image behind every tradition lane, reuse terms checked; episode outlined.
 
+## 7a. Rulings of 2026-11-26
+
+- **A change to an approved set comes back before it is used.** Recorded in §3 above,
+  with the case it came from.
+- **The Shuruppak Flood anchor is a RANGE, c. 3000–2900 BCE**, not a date: the Jemdet
+  Nasr / Early Dynastic I boundary. Drawn as a bracket across the range rather than a rule
+  at a point, tier still **contested**. Its tooltip must say four things, and a check
+  asserts each: that the range is this project’s placement, from the modern
+  radiocarbon dating of Jemdet Nasr and from Mallowan, *Iraq* 26 (1964), applied to
+  Schmidt’s section; that **Schmidt himself dated the inundation to about the middle
+  of the fourth millennium**; that his own report found the culture break across the layer
+  **incomplete** and **no victims** in it, so the layer may only coincide with the end of
+  the Jemdet Nasr settlement; and that the deposits at Ur, Kish and Shuruppak are of
+  different dates and **cannot be one event**.
+- **A pair that measures to a range prints a range.** The beat-5 gap connector reads
+  **552–652 years**, and both ends are resolved from the items by `build_lanes.py`,
+  never typed.
+- **The Fara item no longer blocks publication.** Reading Martin 1988 and the 2022/2024
+  German–Iraqi reports (*MDOG* 156/157) is follow-up that does not block.
+  **Publication is its own ruling and has not been given.**
+
 ## 8. Next steps
 
 1. Resolve the sourcing pass's eight open items (listed in RESEARCH) — note which block v1.

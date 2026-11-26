@@ -896,9 +896,18 @@ says about time it did not witness. The inked band is the reckoning proper.
 
 **Where a tradition gives a length but no date, the anchor is ours and the panel says so.**
 The Sumerian King List's antediluvian reigns run 241,200 years and the List dates none of
-them; the panel hangs the Flood on the **flood deposit at Shuruppak, c. 2900 BCE**, because
+them; the panel hangs the Flood on the **flood deposit at Shuruppak, c. 3000–2900 BCE**
+— a range, not a date — because
 Ziusudra — the List's own flood hero — is king *of* Shuruppak, which is the one place the
-two records touch. The anchor is drawn approximate, and its tooltip carries the doubt,
+two records touch. **The stratigraphy is Schmidt’s (*Museum Journal* XXII, 1931);
+the date is not.** c. 3000–2900 is this project’s figure, got by applying the
+modern radiocarbon dating of the Jemdet Nasr period to his section, and the window
+Mallowan argued for in *Iraq* 26 (1964); Schmidt himself put the inundation some six
+hundred years earlier, around the middle of the fourth millennium. The anchor is drawn
+as a bracket across the range rather than a rule at a point, and its tooltip carries
+the doubt — including that Schmidt found the culture break across the layer
+**incomplete** and **no victims** in it, that the deposits at Ur, Kish and Shuruppak are
+of different dates and cannot be one event, and
 including that several scholars read that deposit as not being the myth's flood at all.
 Manetho's divine reigns hang on **Dynasty 1, radiocarbon-dated 3111–3045 BCE** (Dee *et al.*
 2013) for the same reason, and the bar is drawn at **Eusebius's 24,900 as written**, with the
@@ -923,7 +932,8 @@ when writing and states appear, which is a reason for clocks to start there rath
 evidence that anything happened.**
 
 **Three gap connectors join two datings of one thing and state the distance between them.**
-Ussher's Flood at 2348 BCE against the King List's at our 2900 anchor, 552 years — and both
+Ussher's Flood at 2348 BCE against the King List's at our c. 3000–2900 anchor, which makes
+the gap a range of 552–652 years — and both
 dates fall inside a continuous dated record that runs unbroken through them. The Long Count's
 own zero against the earliest dates anyone carved in it, 3,078 years. The Yellow Emperor
 against the Anyang oracle bones, the earliest Chinese writing that could have named a king,
@@ -940,8 +950,8 @@ Dates are stored as years CE with negative for BCE, historical numbering with **
 zero** — the same convention `data/acts/manifest.json` already states. Three companion
 documents are tracked beside the data: the design, the sourcing pass, and
 `docs/OPEN_ITEMS_Synchronoptic_Lanes.md`, which records what is still unresolved — including
-the one item that **blocks publication**, tightening the Fara sourcing behind that 2900 BCE
-anchor.
+what remains to do, including the follow-up reading on the Fara stratigraphy that no longer
+blocks publication.
 
 **Five of the six reckonings carry a period image behind the band** — a strip of the
 Adams chart, a band of cartouches from the Abydos king list, the pitted and inscribed face

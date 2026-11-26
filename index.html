@@ -486,6 +486,22 @@
   .lanes-anchor::before{content:"";position:absolute;left:-3px;top:-3px;width:6px;
     height:6px;background:#c3c0e4;transform:rotate(45deg);}
   .lanes-anchor.approx{border-left-style:dashed;}
+  /* A RANGE ANCHOR IS A BAND, NOT A RULE (ruled 2026-11-26). A 1 px rule with a
+     diamond on it says "here", and the finding of the Fara sourcing pass is that
+     there is no "here" to point at: the deposit sits at the Jemdet Nasr / Early
+     Dynastic I boundary, which is c. 3000-2900 BCE. So the mark is a bracket
+     across the whole range, with an upright at each end, and the reader can see
+     how wide the doubt is instead of being told a date. */
+  .lanes-anchorband{position:absolute;top:-2px;bottom:-2px;cursor:help;z-index:4;
+    border-left:1px dashed #c3c0e4;border-right:1px dashed #c3c0e4;
+    border-top:1px dotted rgba(195,192,228,.75);
+    border-bottom:1px dotted rgba(195,192,228,.75);
+    background:rgba(195,192,228,.1);}
+  .lanes-anchorband::before{content:"";position:absolute;left:-3px;top:-3px;
+    width:6px;height:6px;background:#c3c0e4;transform:rotate(45deg);}
+  .lanes-anchorband::after{content:"8";position:absolute;left:-7px;
+    bottom:-13px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+    color:#c3c0e4;}
   /* The literal character, not a CSS escape. Written as "\\2248" it went through
      Python as a doubled backslash and the page printed "\\2248" on screen, twice. */
   .lanes-anchor.approx::after{content:"≈";position:absolute;left:-7px;
@@ -7267,15 +7283,28 @@ window.__lanes = (function(){
           row.appendChild(oe);
         }
 
+        // A RANGE ANCHOR IS DRAWN AS A BAND ACROSS THE RANGE; a single-date one
+        // keeps the rule and the diamond. The Shuruppak anchor became a range on
+        // 2026-11-26 and carries no scalar date at all, so that nobody can quote
+        // one from it.
+        const aFrom = (M.anchorFrom !== undefined) ? M.anchorFrom : M.anchor;
+        const aTo = (M.anchorTo !== undefined) ? M.anchorTo : M.anchor;
+        const isRange = aFrom !== aTo;
         const an = document.createElement("div");
-        an.className = "lanes-anchor" + (M.anchorApprox ? " approx" : "");
-        an.style.left = pct(ya(M.anchor));
+        an.className = isRange ? "lanes-anchorband"
+                     : ("lanes-anchor" + (M.anchorApprox ? " approx" : ""));
+        an.style.left = pct(ya(aFrom));
+        if(isRange){
+          const w = f(ya(aTo)) - f(ya(aFrom));
+          an.style.width = Math.max(0.15, w * 100).toFixed(4) + "%";
+        }
         // THE ANCHOR CARRIES ITS OWN TIER, which is not the lane's. The Kali
         // epoch is the tradition's own computed date, so it is tradition-tier;
         // Shuruppak and Dynasty 1 are OUR placements of a mythic era onto a
         // dated one, which is a contested move however sound the date under it.
         an.title = (M.anchorApprox ? "APPROXIMATE ANCHOR \u2014 " : "ANCHOR \u2014 ")
-                 + fmtYear(M.anchor)
+                 + (isRange ? fmtYear(aFrom) + " to " + fmtYear(aTo)
+                            : fmtYear(aFrom))
                  + (TIERNAME[M.anchorTier]
                     ? "  [" + TIERNAME[M.anchorTier] + "]" : "")
                  + "\n\n" + M.anchorNote;
@@ -7288,7 +7317,10 @@ window.__lanes = (function(){
       // over the mythology and merge the two claims into one bar.
       const b = document.createElement("div");
       b.className = "lanes-band-trad";
-      b.style.left = pct(M ? ya(M.anchor) : start);
+      // THE RECKONING PROPER BEGINS AT THE LATE END OF A RANGE ANCHOR, where the
+      // reckoning is certainly under way. The bracket to its left is the doubt.
+      b.style.left = pct(M ? ya(M.anchorTo !== undefined ? M.anchorTo : M.anchor)
+                           : start);
       b.style.right = "0%";
       // THE RECKONING ITSELF IS A TRADITION-TIER CLAIM, and now says so.
       // THE PERIOD IMAGE, INSIDE THE BAND, so it begins where the reckoning
@@ -7420,7 +7452,9 @@ window.__lanes = (function(){
       // passes 4004, 3114, 3111, 3102, 2900, 2698. If the Sumerian lane lit at
       // 244,100 BCE -- where its mythology now begins -- that staircase would be
       // gone and the beat with it.
-      const epoch = L.mythology ? ya(L.mythology.anchor) : ya(L.reckoningStart);
+      const M = L.mythology;
+      const epoch = M ? ya(M.anchorTo !== undefined ? M.anchorTo : M.anchor)
+                      : ya(L.reckoningStart);
       const lit = !revealing || nowYa <= epoch;
       row.classList.toggle("lanes-dark", !lit);
     });
@@ -7461,8 +7495,10 @@ window.__lanes = (function(){
       "A reckoning, against the earliest dated evidence bearing on it."};
 
   function gapTitle(P){
-    const head = [P.what.toUpperCase() + " \u2014 " + comma(P.gap)
-                  + " YEARS APART"];
+    const head = [P.what.toUpperCase() + " \u2014 "
+                  + (P.gapTo && P.gapTo !== P.gap
+                     ? comma(P.gap) + " TO " + comma(P.gapTo)
+                     : comma(P.gap)) + " YEARS APART"];
     if(GAPKIND[P.kind]) head.push(GAPKIND[P.kind]);
     // THE PAIRING CARRIES ITS OWN TIER, which is not either end's tier: whether
     // these two dates are about the same thing at all is itself a claim, and for
@@ -7471,7 +7507,8 @@ window.__lanes = (function(){
     head.push("");
     [P.a, P.b].slice().sort(function(p, q){ return p.year - q.year; })
       .forEach(function(E){
-        head.push(fmtYear(E.year)
+        head.push(fmtYear(E.yearFar !== undefined ? E.yearFar : E.year)
+          + (E.yearFar !== undefined ? " to " + fmtYear(E.year) : "")
           + (E.end !== undefined ? " to " + fmtYear(E.end) : "")
           + (E.approx ? " (approximate, and OURS)" : "")
           + "  \u2014  " + E.says
@@ -7528,14 +7565,27 @@ window.__lanes = (function(){
       // THE RUN LIVES IN THE GUTTER'S OWN MIDDLE, read off the gutter element
       // rather than guessed at from the row below it.
       const yRun = bG.top - base.top + bG.height / 2;
+      // AN END THAT IS A RANGE GETS A CAP AT EACH LIMIT, and the run reaches the
+      // far one, so the bracket contains the whole of the uncertainty rather than
+      // stopping at the near edge and quietly understating it.
       const xa = f(ya(P.a.year)), xb = f(ya(P.b.year));
+      const xbFar = (P.b.yearFar !== undefined) ? f(ya(P.b.yearFar)) : null;
+      const xaFar = (P.a.yearFar !== undefined) ? f(ya(P.a.yearFar)) : null;
       const title = gapTitle(P);
       const g = document.createElement("div");
       g.className = "lanes-gap";
       g.dataset.gap = P.id;
       g.dataset.lanes = P.a.lane + " " + P.b.lane;
-      g.dataset.years = P.a.year + " " + P.b.year;
-      [[xa, yA], [xb, yB]].forEach(function(e){
+      // EVERY LIMIT THE CONNECTOR MEASURES TO, in the order the caps are made, so
+      // a check can hold each cap against its own year. A range end contributes
+      // two.
+      g.dataset.years = [P.a.year, P.b.year]
+        .concat(P.a.yearFar !== undefined ? [P.a.yearFar] : [])
+        .concat(P.b.yearFar !== undefined ? [P.b.yearFar] : []).join(" ");
+      const ends = [[xa, yA], [xb, yB]];
+      if(xaFar !== null) ends.push([xaFar, yA]);
+      if(xbFar !== null) ends.push([xbFar, yB]);
+      ends.forEach(function(e){
         const v = document.createElement("div");
         v.className = "lanes-gapv";
         v.style.left = (e[0] * 100).toFixed(4) + "%";
@@ -7550,16 +7600,24 @@ window.__lanes = (function(){
       });
       const h = document.createElement("div");
       h.className = "lanes-gaph";
-      h.style.left = (Math.min(xa, xb) * 100).toFixed(4) + "%";
-      h.style.width = (Math.abs(xb - xa) * 100).toFixed(4) + "%";
+      const xs = ends.map(function(e){ return e[0]; });
+      const x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs);
+      h.style.left = (x0 * 100).toFixed(4) + "%";
+      h.style.width = ((x1 - x0) * 100).toFixed(4) + "%";
       h.style.top = yRun.toFixed(2) + "px";
       h.title = title;
       g.appendChild(h);
       const chip = document.createElement("div");
       chip.className = "lanes-gapchip";
-      chip.style.left = ((xa + xb) / 2 * 100).toFixed(4) + "%";
+      chip.style.left = ((x0 + x1) / 2 * 100).toFixed(4) + "%";
       chip.style.top = yRun.toFixed(2) + "px";
-      chip.textContent = comma(P.gap) + " years";
+      // A RANGE FIGURE WHERE THE PAIR MEASURES TO A RANGE. Ussher’s Flood is a
+      // point; the King List’s is an anchor spread over a century, so the
+      // distance between them is not a number. Both ends come from the data file,
+      // resolved from the items by build_lanes.py and never typed.
+      chip.textContent = (P.gapTo && P.gapTo !== P.gap
+                          ? comma(P.gap) + "\u2013" + comma(P.gapTo)
+                          : comma(P.gap)) + " years";
       chip.title = title;
       g.appendChild(chip);
       layer.appendChild(g);
