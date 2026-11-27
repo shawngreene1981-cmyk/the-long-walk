@@ -359,3 +359,28 @@ fault it was written for:
 thumbnail cannot be dimmed into balance, so the fault it guards — one lane shouting
 louder than another because of its source — becomes a rule about size instead of opacity.
 The measured opacities stay in the manifest and check 13e still reads them.
+
+---
+
+## 7. PUBLISHED — 2026-11-27
+
+Merge **`5ee117e`** (`--no-ff`), pushed to `main`. **Rollback point: `a06f755`.**
+Pre-flight run in full: a rebuild left the tree clean at `index.html` **1,343,185
+bytes**, 155 checks passed, `origin/main..main` was empty.
+
+**One change went in first, founder-ruled the same day:** the cluster step’s labels
+are the approved frame’s wording — *Long Count zero*, *Kali Yuga epoch*,
+*Egypt, Dynasty 1 — Aha* — and they are still data. Dropping the lane prefix
+got the Long Count there on its own label; the other two needed different words for a
+slide than for a lane, so items gained an optional **`short`** in `lanes.json` and the
+page reads `short || label`. Both strings are true of the same item, so both are data.
+Check **s15b** asserts the rendered labels equal the data’s own short wording.
+
+`geowork/lanes/shot_live.py` gained eight checks (L14–L22) against the published
+URL: that the story leads, that step 1 is drawn from the live page’s own anchors in
+points and not bars, that it states its two measurements with no NaN in them, that five
+artifact cards decode from the live origin and the sixth is the blank, that the floods
+read 552–652, that the cluster carries the short wording, that both handoffs work,
+and that the sequence can be swiped through at 390 px.
+
+**The branch rule returned with the push.**
