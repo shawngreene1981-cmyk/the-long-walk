@@ -9,6 +9,25 @@ Last reviewed 2026-11-26.
 
 ---
 
+## PUBLISHED AGAIN — 2026-11-27, STORY MODE
+
+**Founder-ruled.** The guided sequence leads and the panel is Explore. Live at
+https://shawngreene1981-cmyk.github.io/the-long-walk/
+
+| | |
+|---|---|
+| merge commit | **`5ee117e`** — `--no-ff`, parents `a06f755` and `75e0887` |
+| rollback point | **`a06f755`**, the tip of `main` before this merge |
+| published `index.html` | sha256 `de05cbbe3c54d7c5…`, 1,343,185 bytes |
+| checks at the gate | 155 — 96 desktop, 19 phone, 40 story |
+
+**The branch rule returned with that push.** `lanes-story` is the working branch and
+nothing is pushed without a new ruling. The checklist below was run in full again, with
+its corrected hash line, and the live checks (`geowork/lanes/shot_live.py`) now cover
+story mode as well as the panel.
+
+---
+
 ## PUBLISHED — 2026-11-26
 
 **Founder-ruled, and done.** The panel is live at https://shawngreene1981-cmyk.github.io/the-long-walk/
