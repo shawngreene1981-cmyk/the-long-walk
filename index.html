@@ -7302,6 +7302,9 @@ window.__lanes = (function(){
   // as boxes, and is already credited. So the lanes are built by putting each anchor
   // in a box. Nothing is duplicated and nothing new has to be kept in step.
   let REGIONS = null;
+  // THE EXPLICIT REGION PER ANCHOR, and the count of anchors that have none.
+  // Both are read from data/borders/anchor_regions.json; neither is inferred.
+  let ANCHOR_REGION = null, REGION_MISSING = 0;
 
   function regionOf(lat, lon){
     if(!REGIONS) return null;
@@ -7319,9 +7322,15 @@ window.__lanes = (function(){
   function regionLanes(){
     if(!REGIONS || typeof ANCHORS === "undefined") return [];
     const by = {};
+    REGION_MISSING = 0;
     ANCHORS.forEach(function(a){
-      const R = regionOf(a.lat, a.lon);
-      if(!R) return;
+      // THE REGION IS STATED, NOT DERIVED. The box walk below it is kept only as
+      // the thing the gate measures an explicit region against.
+      const want = ANCHOR_REGION ? ANCHOR_REGION[a.id] : undefined;
+      if(want === undefined){ REGION_MISSING++; return; }
+      const R = REGIONS && REGIONS.filter(function(x){
+        return x.key !== "skip" && x.name === want; })[0];
+      if(!R){ REGION_MISSING++; return; }
       (by[R.key] = by[R.key] || {name: R.name, items: []}).items.push({
         id: "an-" + a.id, kind: "point",
         start: EPOCH - a.appear,          // the anchors are years-ago; the lanes are years CE
@@ -7345,12 +7354,13 @@ window.__lanes = (function(){
         const g = by[R.key];
         return {id: "reg-" + R.key, group: "regions", compact: true,
                 label: g.name, caption: g.items.length + " dated anchors",
-                note: "Every dated anchor this map holds inside the "
-                    + g.name + " boxes that data/borders/coverage.json defines. "
-                    + "Assigned from each anchor\u2019s own latitude and longitude; "
-                    + "the anchors carry no region of their own.",
-                source: "data/borders/coverage.json, and the anchors\u2019 own "
-                      + "coordinates.",
+                note: "Every dated anchor this map places in " + g.name + ". "
+                    + "THE REGION IS STATED PER ANCHOR in data/borders/anchor_regions.json, "
+                    + "not worked out from whichever overlapping box came first: 114 of "
+                    + "the 565 sit inside two or three regions\u2019 boxes at once. Every "
+                    + "stated region is checked against the boxes, and three are overrides "
+                    + "that each say why on their own line in that file.",
+                source: "data/borders/anchor_regions.json, which states a region for every anchor, checked against the boxes in data/borders/coverage.json.",
                 items: g.items};
       });
   }
@@ -7376,10 +7386,21 @@ window.__lanes = (function(){
   }
 
   function loadRegions(){
-    return fetch("data/borders/coverage.json")
+    // BOTH FILES, IN ONE PROMISE, AND THE PANEL WAITS FOR BOTH. Fetching the
+    // regions alongside and letting it land whenever it liked meant the first
+    // build could run with no regions at all -- nine empty lanes until something
+    // else happened to rebuild the rows, and a layout jump when they appeared.
+    // The jump landed on top of story mode’s scroll and check s27 caught it
+    // at -583 px.
+    const ONE = fetch("data/borders/anchor_regions.json")
       .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(d){ REGIONS = (d && d.regions) || null; return REGIONS; })
-      .catch(function(){ REGIONS = null; return null; });   // the panel still works
+      .then(function(d){ ANCHOR_REGION = (d && d.regions) || null; })
+      .catch(function(){ ANCHOR_REGION = null; });
+    const TWO = fetch("data/borders/coverage.json")
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ REGIONS = (d && d.regions) || null; })
+      .catch(function(){ REGIONS = null; });        // the panel still works
+    return Promise.all([ONE, TWO]).then(function(){ return REGIONS; });
   }
 
   // --- step 7: collapsible groups -----------------------------------------------
@@ -8300,6 +8321,9 @@ window.__lanes = (function(){
           now: now, reveal: reveal, load: load, ya: ya, x: f, pct: pct,
           doc: function(){ return DOC; }, cluster: clusterItems,
           regions: function(){ return REGIONS; }, highlight: highlight,
+          anchorRegion: function(){ return ANCHOR_REGION; },
+          regionMissing: function(){ return REGION_MISSING; },
+          regionOf: regionOf,
           gaps: buildGaps, gapTitle: gapTitle,
           pairs: function(){ return (DOC && DOC.pairs) || []; },
           thumbW: thumbW};
