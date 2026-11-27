@@ -1,7 +1,7 @@
 {
  "about": "The region each dated anchor belongs to, stated once per anchor instead of being decided by the order of the overlapping boxes in coverage.json. Written by geowork/borders/build_anchor_regions.py; the page reads it and refuses to draw a region lane for an anchor that is missing from it.",
  "rule": "Default: the first region in coverage.json whose boxes contain the anchor’s own coordinates -- which is what the page did before this file existed, so the change is reviewable rather than wholesale. Overrides below are the places the box edges get wrong, and an override may never name a region whose boxes do not contain the point.",
- "measured": "114 of 565 anchors sit in more than one region’s boxes, which is why this file exists.",
+ "measured": "117 of 572 anchors sit in more than one region’s boxes, which is why this file exists.",
  "generated_by": "geowork/borders/build_anchor_regions.py",
  "source": "data/borders/coverage.json for the boxes; the anchors’ own latitude and longitude for the point.",
  "overrides": [
@@ -586,6 +586,13 @@
   "s08": "Inner Asia",
   "s09": "Inner Asia",
   "cn10": "East Asia",
-  "cn11": "East Asia"
+  "cn11": "East Asia",
+  "sea01": "Southeast Asia",
+  "sea02": "Southeast Asia",
+  "sea03": "Southeast Asia",
+  "ea30": "East Asia",
+  "ea31": "East Asia",
+  "am40": "the Americas",
+  "af40": "North Africa and the Near East"
  }
 }

@@ -170,3 +170,36 @@ No code on the page. The frames are **mockups rendered from a standalone prototy
 `geowork/moment/`**, with the map pane photographed from the live page. Nothing in
 `index.html`, `data/` or `img/` is touched on this branch. No sourcing has been done yet
 — §5 is the plan and the measured gaps, which is what was asked for before code.
+
+---
+
+## 8. THE APPROVED SET CHANGED: 565 → 572 ANCHORS
+
+**Founder-ruled 2026-11-27**, under the approved-set rule of 2026-11-26: the change was
+written up, it came back before it was used, and it was ruled on.
+
+Seven entries from the sourcing pass become map anchors, each a **place with coordinates
+and a dated deposit**, each carrying its stated region, its source and the tier its
+evidence earns:
+
+| id | anchor | date | tier | region |
+|---|---|---|---|---|
+| `sea01` | Cổ Loa — the rampart ditch | 30 CE | contested | Southeast Asia |
+| `sea02` | Lai Nghi — a Sa Huỳnh jar-burial cemetery | 1 CE | solid | Southeast Asia |
+| `sea03` | Óc Eo — the port the Chinese sources call Funan | 50 CE | contested | Southeast Asia |
+| `ea30` | Chengziya — the Longshan type site, late phase | 2560 BCE | solid | East Asia |
+| `ea31` | Shijiahe — a walled centre on the middle Yangtze | 2500 BCE | solid | East Asia |
+| `am40` | Cahuachi — the Nasca ceremonial centre | 30 CE | solid | the Americas |
+| `af40` | Meroë — Kush after the treaty of Samos | 20 BCE | solid | N Africa and the Near East |
+
+**The four polity statements stay panel-only** — Tiberius, Guangwu, Artabanus II, Kujula
+Kadphises. They are context, and the map's anchors are evidence.
+
+**Every gate re-run and green at 572:** 8c (each lane holds exactly its own anchors),
+8d (572 stated regions, none missing), 8e (117 of 572 sit in more than one region's
+boxes and every stated region is one of them). Check 7e counted a typed 565 and now
+counts against `ANCHORS.length`, so the next change to the set cannot require editing a
+check to pass.
+
+**The moment data points at the seven rather than repeating them.** A fact written in
+two places is a fact that can disagree with itself.

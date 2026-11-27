@@ -29,8 +29,9 @@
       "finding": "The settled record pauses here, and that is a measured result rather than a gap in our reading.",
       "detail": "West Polynesia is settled by c. 800 BCE and then nothing moves east for about eighteen hundred years. At this moment the Pacific frontier is where it was eight centuries ago.",
       "year": -800,
+      "shownDate": "the pause: c. 800 BCE to c. 1025 CE",
       "tier": "solid",
-      "source": "Wilmshurst, J.M., Hunt, T.L., Lipo, C.P. & Anderson, A.J., “High-precision radiocarbon dating shows recent and rapid initial human colonization of East Polynesia”, PNAS 108, 2011, 1815–1820 — 1,434 dates from at least 45 islands. Migration into East Polynesia begins only after a 1,800-year PAUSE following the settlement of Samoa c. 800 BC, in two phases: the Society Islands c. 1025–1120 CE, the rest c. 1190–1290 CE. Mulrooney et al., PNAS 108, 2011, E192, dispute the statistics while accepting the late chronology."
+      "source": "Wilmshurst, J.M., Hunt, T.L., Lipo, C.P. & Anderson, A.J., “High-precision radiocarbon dating shows recent and rapid initial human colonization of East Polynesia”, PNAS 108, 2011, 1815–1820 — 1,434 dates from at least 45 islands. Migration into East Polynesia begins only after a 1,800-year PAUSE following the settlement of Samoa c. 800 BC, in two phases: the Society Islands c. 1025–1120 CE, the rest c. 1190–1290 CE. Mulrooney et al., PNAS 108, 2011, E192, dispute the statistics while accepting the late chronology. MICRONESIA IS EARLIER: this map’s own Nan Madol anchor is 900 CE."
      }
     ],
     "the Americas": [
@@ -44,14 +45,13 @@
       "lon": -98.84
      },
      {
-      "from": "sourced",
-      "label": "Cahuachi, the Nasca ceremonial centre",
+      "from": "anchor",
+      "id": "am40",
+      "label": "Cahuachi",
       "year": 30,
       "tier": "solid",
       "lat": -14.82,
-      "lon": -75.12,
-      "source": "Cahuachi, the Nasca ceremonial centre: Silverman, H., Cahuachi in the Ancient Nasca World, covering c. 200 BC – AD 600, with Orefici’s excavations showing it was not a permanent domestic settlement. Conlee, C. et al. compile 770 radiocarbon dates from more than 60 south-coast sites against the ceramic phase chronology.",
-      "note": "In use through this century; a ceremonial centre rather than a city, which is itself the finding."
+      "lon": -75.12
      }
     ],
     "Europe": [
@@ -62,7 +62,7 @@
       "tier": "solid",
       "lat": 41.89,
       "lon": 12.49,
-      "source": "Tiberius, Roman emperor 14–37 CE (Encyclopædia Britannica). The reign is among the best-attested facts of the period and the panel treats it as such.",
+      "source": "Tiberius, Roman emperor 14–37 CE (Encyclopædia Britannica). The reign is among the best-attested facts of the period, and the panel treats it as such.",
       "note": "The prefect who tried the case answers to this emperor, which is the only reason the year can be argued at all."
      }
     ],
@@ -79,14 +79,13 @@
     ],
     "North Africa and the Near East": [
      {
-      "from": "sourced",
-      "label": "Kush and Rome, after the treaty of Samos",
+      "from": "anchor",
+      "id": "af40",
+      "label": "Meroë",
       "year": -20,
       "tier": "solid",
       "lat": 16.93,
-      "lon": 33.75,
-      "source": "The treaty between Kush and Rome agreed on Samos in 21/20 BCE (22 BC in some accounts), after Amanirenas’ war with Petronius; Augustus withdrew the frontier to Hiere Sycaminos and Kush paid no tribute. The bronze head of Augustus found buried beneath a temple step at Meroë (Garstang, 1910) is the physical end of that episode.",
-      "note": "Meroë is a generation past its war with Rome and paying no tribute. The buried head of Augustus is the object that dates it."
+      "lon": 33.75
      },
      {
       "from": "sourced",
@@ -112,34 +111,31 @@
     ],
     "Southeast Asia": [
      {
-      "from": "sourced",
-      "label": "Cổ Loa, the rampart ditch in use",
+      "from": "anchor",
+      "id": "sea01",
+      "label": "Cổ Loa",
       "year": 30,
       "tier": "contested",
       "lat": 21.12,
-      "lon": 105.88,
-      "source": "Kim, N.C., Lai Van Toi & Trinh Hoang Hiep, “Co Loa: an investigation of Vietnam’s ancient capital”, Antiquity 84 (326), 2010, 1011–1027. Rampart Phase 3 layers 396–170 cal BC; charcoal from the ditch 103 BC – cal AD 67.",
-      "note": "Charcoal from the ditch calibrates to 103 BC – cal AD 67, which brackets this moment. The dates bound ACTIVITY and not the first digging, which the excavators say in those words."
+      "lon": 105.88
      },
      {
-      "from": "sourced",
-      "label": "Lai Nghi, a Sa Huỳnh jar-burial cemetery",
-      "year": 0,
+      "from": "anchor",
+      "id": "sea02",
+      "label": "Lai Nghi",
+      "year": 1,
       "tier": "solid",
       "lat": 15.88,
-      "lon": 108.33,
-      "source": "Reinecke, A. & Lâm Thị Mỹ Dung on the Lai Nghi cemetery (Quảng Nam): IPPA Bulletin 29, 2009, 68–75, and Lâm Thị Mỹ Dung, “The Sa Huynh Culture in Ancient Regional Trade Networks”, Terra Australis 45, 2017. One jar 2086±50 BP (Erl-5995); the cemetery calibrates to the 3rd century BC – 1st century AD.",
-      "note": "Iron, glass and carnelian from a coastal trade network, in use across this moment."
+      "lon": 108.33
      },
      {
-      "from": "sourced",
-      "label": "Óc Eo begins",
+      "from": "anchor",
+      "id": "sea03",
+      "label": "Óc Eo",
       "year": 50,
       "tier": "contested",
       "lat": 10.25,
-      "lon": 105.15,
-      "source": "Wang, W. et al., “Earliest curry in Southeast Asia and the global spice trade 2000 years ago”, Science Advances 9, 2023, eadh5517. The radiocarbon dates place the major occupation of Óc Eo between the 1st and 8th centuries CE; one sample calibrates to 207–326 cal CE.",
-      "note": "The port the Chinese sources call Funan. The occupation runs from the 1st to the 8th century CE; WHERE INSIDE THE 1ST CENTURY IT STARTS IS NOT FIXED, and the earliest dated sample is later."
+      "lon": 105.15
      }
     ],
     "South Asia": [
@@ -227,24 +223,22 @@
    "entries": {
     "East Asia": [
      {
-      "from": "sourced",
-      "label": "Longshan, the late phase",
+      "from": "anchor",
+      "id": "ea30",
+      "label": "Chengziya",
       "year": -2560,
       "tier": "solid",
       "lat": 36.74,
-      "lon": 117.39,
-      "source": "The Longshan sequence of the middle and lower Yellow River, c. 3000–1900 BC, late phase c. 2600–2000 BC, on the Bayesian review of Chinese Neolithic radiocarbon dates held at the University of Oxford (ora.ox.ac.uk). The review states its own caveat: the dated samples do not necessarily catch the earliest and latest phases, so the boundaries are approximations.",
-      "note": "Walled towns of rammed earth across the Yellow River plain, at the type site of Chengziya. The phase boundaries are approximations and the review that gives them says so."
+      "lon": 117.39
      },
      {
-      "from": "sourced",
-      "label": "Shijiahe, on the middle Yangtze",
+      "from": "anchor",
+      "id": "ea31",
+      "label": "Shijiahe",
       "year": -2500,
       "tier": "solid",
       "lat": 30.78,
-      "lon": 113.0,
-      "source": "Shijiahe on the middle Yangtze, c. 2500–2000 BC, with Qujialing before it at c. 3400–2500 BC, from the same Oxford Bayesian review. Contemporary with Liangzhu and culturally distinct from it.",
-      "note": "A walled centre contemporary with Liangzhu and culturally distinct from it."
+      "lon": 113.0
      }
     ],
     "Oceania": [
@@ -252,9 +246,10 @@
       "from": "finding",
       "finding": "The settled record pauses here.",
       "year": -800,
+      "shownDate": "the pause: c. 800 BCE to c. 1025 CE",
       "tier": "solid",
       "detail": "Lapita has not left the Bismarck Archipelago yet; the open Pacific is a thousand years away and East Polynesia three thousand five hundred.",
-      "source": "Wilmshurst, J.M., Hunt, T.L., Lipo, C.P. & Anderson, A.J., “High-precision radiocarbon dating shows recent and rapid initial human colonization of East Polynesia”, PNAS 108, 2011, 1815–1820 — 1,434 dates from at least 45 islands. Migration into East Polynesia begins only after a 1,800-year PAUSE following the settlement of Samoa c. 800 BC, in two phases: the Society Islands c. 1025–1120 CE, the rest c. 1190–1290 CE. Mulrooney et al., PNAS 108, 2011, E192, dispute the statistics while accepting the late chronology."
+      "source": "Wilmshurst, J.M., Hunt, T.L., Lipo, C.P. & Anderson, A.J., “High-precision radiocarbon dating shows recent and rapid initial human colonization of East Polynesia”, PNAS 108, 2011, 1815–1820 — 1,434 dates from at least 45 islands. Migration into East Polynesia begins only after a 1,800-year PAUSE following the settlement of Samoa c. 800 BC, in two phases: the Society Islands c. 1025–1120 CE, the rest c. 1190–1290 CE. Mulrooney et al., PNAS 108, 2011, E192, dispute the statistics while accepting the late chronology. MICRONESIA IS EARLIER: this map’s own Nan Madol anchor is 900 CE."
      }
     ],
     "Africa south of the Sahara": [
