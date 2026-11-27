@@ -8559,12 +8559,16 @@ window.__story = (function(){
     const marks = [];
     cl.forEach(function(c){
       const it = c.lane.items[0];
-      const nm = String(c.lane.label).split(" \u2014 ")[0];
+      // THE SLIDE WORDING, from the data. An item may carry a "short" for this
+      // step; otherwise its own label stands. The lane name used to be prefixed
+      // to both, which gave "Hindu \u2014 Kali Yuga begins" where the approved
+      // frame said "Kali Yuga epoch" -- three names that already say whose clock
+      // they are, each wearing its tradition twice.
       marks.push({year: it.start, to: (it.end !== undefined && it.end !== null)
                     ? it.end : undefined,
                   tier: it.tier || "tradition", up: marks.length % 2 === 0,
                   phone: true, stem: 20 + marks.length * 22,
-                  label: nm + " \u2014 " + it.label,
+                  label: it.short || it.label,
                   date: bce(it.start) + ((it.end !== undefined && it.end !== null)
                         ? " to " + bce(it.end) : "")});
     });
