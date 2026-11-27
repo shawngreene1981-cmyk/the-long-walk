@@ -9178,7 +9178,25 @@ window.__moment = (function(){
     if(!isFinite(lat) || !isFinite(lon)) return false;
     const m = window.__tlwMap;
     if(m && m.flyTo){
-      m.flyTo([lat, lon], Math.max(m.getZoom(), 4), {duration: 1.1});
+      // A FLIGHT ON THIS PAGE HAS TO HOLD ITS TARGET, for the same reason the
+      // scroll does: the scrubber moves the map’s own layers constantly,
+      // and a flyTo issued while the map is busy can be dropped. On the live
+      // run it was dropped about one time in two -- the map never moved at all,
+      // 116 degrees from the row that was clicked -- while the same click
+      // worked every time on a quiet page. So the flight asks again until it
+      // arrives, and gives up after six seconds rather than looping.
+      const go = function(){
+        m.flyTo([lat, lon], Math.max(m.getZoom(), 4), {duration: 1.1});
+      };
+      go();
+      const t0 = Date.now();
+      (function hold(){
+        const c = m.getCenter();
+        const d = Math.abs(c.lat - lat) + Math.abs(c.lng - lon);
+        if(d < 3 || Date.now() - t0 > 6000) return;
+        if(Date.now() - t0 > 1500) go();
+        setTimeout(hold, 400);
+      })();
       const st = document.querySelector(".stage");
       if(st) st.scrollIntoView({behavior: "smooth", block: "start"});
       return true;
