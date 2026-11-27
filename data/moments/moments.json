@@ -1,0 +1,371 @@
+{
+ "about": "The featured moments of \"the world at a moment\", and what this project can say about each region at each of them. An entry either POINTS AT one of the map’s own dated anchors, or is a sourced entry from the pass of 2026-11-27, or states that nobody has looked, or states a finding about the record itself.",
+ "rules": "Part B rules: real sources, a tier on every claim, nothing typed without a source. A sourced entry here is NOT added to the map’s 565 anchors: that is an approved set and growing it is its own ruling.",
+ "generated_by": "geowork/moment/build_moments.py",
+ "regions": [
+  "Oceania",
+  "the Americas",
+  "Europe",
+  "Africa south of the Sahara",
+  "North Africa and the Near East",
+  "Inner Asia",
+  "Southeast Asia",
+  "South Asia",
+  "East Asia"
+ ],
+ "moments": [
+  {
+   "key": "30ce",
+   "title": "The crucifixion",
+   "year": 30,
+   "shown": "c. 30–33 CE",
+   "window": 150,
+   "tier": "contested",
+   "why": "An execution almost every scholar accepts happened, on a year nobody can fix: 30 and 33 CE both fit Pilate’s prefecture and the gospels’ own calendar notes. THE TIER IS ABOUT THE DATE, NOT THE EVENT.",
+   "entries": {
+    "Oceania": [
+     {
+      "from": "finding",
+      "finding": "The settled record pauses here, and that is a measured result rather than a gap in our reading.",
+      "detail": "West Polynesia is settled by c. 800 BCE and then nothing moves east for about eighteen hundred years. At this moment the Pacific frontier is where it was eight centuries ago.",
+      "year": -800,
+      "tier": "solid",
+      "source": "Wilmshurst, J.M., Hunt, T.L., Lipo, C.P. & Anderson, A.J., “High-precision radiocarbon dating shows recent and rapid initial human colonization of East Polynesia”, PNAS 108, 2011, 1815–1820 — 1,434 dates from at least 45 islands. Migration into East Polynesia begins only after a 1,800-year PAUSE following the settlement of Samoa c. 800 BC, in two phases: the Society Islands c. 1025–1120 CE, the rest c. 1190–1290 CE. Mulrooney et al., PNAS 108, 2011, E192, dispute the statistics while accepting the late chronology."
+     }
+    ],
+    "the Americas": [
+     {
+      "from": "anchor",
+      "id": "m06",
+      "label": "Teotihuacan",
+      "year": -100,
+      "tier": "solid",
+      "lat": 19.69,
+      "lon": -98.84
+     },
+     {
+      "from": "sourced",
+      "label": "Cahuachi, the Nasca ceremonial centre",
+      "year": 30,
+      "tier": "solid",
+      "lat": -14.82,
+      "lon": -75.12,
+      "source": "Cahuachi, the Nasca ceremonial centre: Silverman, H., Cahuachi in the Ancient Nasca World, covering c. 200 BC – AD 600, with Orefici’s excavations showing it was not a permanent domestic settlement. Conlee, C. et al. compile 770 radiocarbon dates from more than 60 south-coast sites against the ceramic phase chronology.",
+      "note": "In use through this century; a ceremonial centre rather than a city, which is itself the finding."
+     }
+    ],
+    "Europe": [
+     {
+      "from": "sourced",
+      "label": "Rome under Tiberius",
+      "year": 30,
+      "tier": "solid",
+      "lat": 41.89,
+      "lon": 12.49,
+      "source": "Tiberius, Roman emperor 14–37 CE (Encyclopædia Britannica). The reign is among the best-attested facts of the period and the panel treats it as such.",
+      "note": "The prefect who tried the case answers to this emperor, which is the only reason the year can be argued at all."
+     }
+    ],
+    "Africa south of the Sahara": [
+     {
+      "from": "anchor",
+      "id": "f04",
+      "label": "Aksum",
+      "year": 100,
+      "tier": "solid",
+      "lat": 14.13,
+      "lon": 38.72
+     }
+    ],
+    "North Africa and the Near East": [
+     {
+      "from": "sourced",
+      "label": "Kush and Rome, after the treaty of Samos",
+      "year": -20,
+      "tier": "solid",
+      "lat": 16.93,
+      "lon": 33.75,
+      "source": "The treaty between Kush and Rome agreed on Samos in 21/20 BCE (22 BC in some accounts), after Amanirenas’ war with Petronius; Augustus withdrew the frontier to Hiere Sycaminos and Kush paid no tribute. The bronze head of Augustus found buried beneath a temple step at Meroë (Garstang, 1910) is the physical end of that episode.",
+      "note": "Meroë is a generation past its war with Rome and paying no tribute. The buried head of Augustus is the object that dates it."
+     },
+     {
+      "from": "sourced",
+      "label": "Parthia under Artabanus II",
+      "year": 30,
+      "tier": "contested",
+      "lat": 33.09,
+      "lon": 44.58,
+      "source": "Artabanus II of Parthia, r. c. 12–38/40 CE. The regnal dates are reconstructed from coins and from Tacitus and Josephus, and scholars differ by several years at both ends, so the tier is contested.",
+      "note": "The empire between Rome and India, and the regnal dates are reconstructed rather than recorded."
+     }
+    ],
+    "Inner Asia": [
+     {
+      "from": "anchor",
+      "id": "x12",
+      "label": "Dunhuang and the Mogao caves",
+      "year": -74,
+      "tier": "solid",
+      "lat": 40.14,
+      "lon": 94.66
+     }
+    ],
+    "Southeast Asia": [
+     {
+      "from": "sourced",
+      "label": "Cổ Loa, the rampart ditch in use",
+      "year": 30,
+      "tier": "contested",
+      "lat": 21.12,
+      "lon": 105.88,
+      "source": "Kim, N.C., Lai Van Toi & Trinh Hoang Hiep, “Co Loa: an investigation of Vietnam’s ancient capital”, Antiquity 84 (326), 2010, 1011–1027. Rampart Phase 3 layers 396–170 cal BC; charcoal from the ditch 103 BC – cal AD 67.",
+      "note": "Charcoal from the ditch calibrates to 103 BC – cal AD 67, which brackets this moment. The dates bound ACTIVITY and not the first digging, which the excavators say in those words."
+     },
+     {
+      "from": "sourced",
+      "label": "Lai Nghi, a Sa Huỳnh jar-burial cemetery",
+      "year": 0,
+      "tier": "solid",
+      "lat": 15.88,
+      "lon": 108.33,
+      "source": "Reinecke, A. & Lâm Thị Mỹ Dung on the Lai Nghi cemetery (Quảng Nam): IPPA Bulletin 29, 2009, 68–75, and Lâm Thị Mỹ Dung, “The Sa Huynh Culture in Ancient Regional Trade Networks”, Terra Australis 45, 2017. One jar 2086±50 BP (Erl-5995); the cemetery calibrates to the 3rd century BC – 1st century AD.",
+      "note": "Iron, glass and carnelian from a coastal trade network, in use across this moment."
+     },
+     {
+      "from": "sourced",
+      "label": "Óc Eo begins",
+      "year": 50,
+      "tier": "contested",
+      "lat": 10.25,
+      "lon": 105.15,
+      "source": "Wang, W. et al., “Earliest curry in Southeast Asia and the global spice trade 2000 years ago”, Science Advances 9, 2023, eadh5517. The radiocarbon dates place the major occupation of Óc Eo between the 1st and 8th centuries CE; one sample calibrates to 207–326 cal CE.",
+      "note": "The port the Chinese sources call Funan. The occupation runs from the 1st to the 8th century CE; WHERE INSIDE THE 1ST CENTURY IT STARTS IS NOT FIXED, and the earliest dated sample is later."
+     }
+    ],
+    "South Asia": [
+     {
+      "from": "anchor",
+      "id": "hi09",
+      "label": "The Mora Well inscription",
+      "year": 15,
+      "tier": "solid",
+      "lat": 27.51694,
+      "lon": 77.58667
+     },
+     {
+      "from": "sourced",
+      "label": "Kujula Kadphises founds the Kushan empire",
+      "year": 30,
+      "tier": "contested",
+      "lat": 34.99,
+      "lon": 69.31,
+      "source": "Kujula Kadphises, founder of the Kushan empire, reign estimated c. 25–85 CE. THE CHRONOLOGY IS UNSETTLED: the Rabatak inscription fixes the dynasty’s genealogy but not its absolute dates, and the start of the Kanishka era is placed at 127 CE on Harry Falk’s work or at 78 CE on the older view, which is still argued (Sino-Platonic Papers 227, 2012).",
+      "note": "Begram and the Kabul valley. The dynasty is certain and its absolute chronology is argued over a fifty-year range."
+     }
+    ],
+    "East Asia": [
+     {
+      "from": "sourced",
+      "label": "The Han restored, the capital at Luoyang",
+      "year": 25,
+      "tier": "solid",
+      "lat": 34.68,
+      "lon": 112.45,
+      "source": "Guangwu, who restored the Han in 25 CE and moved the capital to Luoyang, r. 25–57 CE (Encyclopædia Britannica).",
+      "note": "Guangwu takes the throne in 25 CE and moves the capital east. The empire at the other end of Eurasia from Tiberius."
+     }
+    ]
+   }
+  },
+  {
+   "key": "yd",
+   "title": "The Younger Dryas begins",
+   "year": -10900,
+   "shown": "c. 10,900 BCE",
+   "window": 1000,
+   "tier": "solid",
+   "why": "An abrupt return to near-glacial cold, dated in the Greenland ice cores. Göbekli Tepe’s world is on the far side of it.",
+   "entries": {
+    "Oceania": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "Australia and New Guinea are both occupied by now — the map holds Karnatukul at 23,874 BCE and Kuk Swamp at 7,974 BCE — but nothing in between has been sourced for this project."
+     }
+    ],
+    "Southeast Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "The Hoabinhian technocomplex is the obvious candidate and has not been sourced. NOT TYPED HERE WITHOUT ONE."
+     }
+    ],
+    "South Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "Sarai Nahar Rai sits just outside the window at 8,974 BCE."
+     }
+    ],
+    "East Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "Xianrendong’s pottery is 17,974 BCE and the next East Asian anchor is 9,500 years later."
+     }
+    ]
+   }
+  },
+  {
+   "key": "pyramid",
+   "title": "The Great Pyramid",
+   "year": -2560,
+   "shown": "c. 2560 BCE",
+   "window": 150,
+   "tier": "solid",
+   "why": "The one date in this list most readers already own.",
+   "entries": {
+    "East Asia": [
+     {
+      "from": "sourced",
+      "label": "Longshan, the late phase",
+      "year": -2560,
+      "tier": "solid",
+      "lat": 36.74,
+      "lon": 117.39,
+      "source": "The Longshan sequence of the middle and lower Yellow River, c. 3000–1900 BC, late phase c. 2600–2000 BC, on the Bayesian review of Chinese Neolithic radiocarbon dates held at the University of Oxford (ora.ox.ac.uk). The review states its own caveat: the dated samples do not necessarily catch the earliest and latest phases, so the boundaries are approximations.",
+      "note": "Walled towns of rammed earth across the Yellow River plain, at the type site of Chengziya. The phase boundaries are approximations and the review that gives them says so."
+     },
+     {
+      "from": "sourced",
+      "label": "Shijiahe, on the middle Yangtze",
+      "year": -2500,
+      "tier": "solid",
+      "lat": 30.78,
+      "lon": 113.0,
+      "source": "Shijiahe on the middle Yangtze, c. 2500–2000 BC, with Qujialing before it at c. 3400–2500 BC, from the same Oxford Bayesian review. Contemporary with Liangzhu and culturally distinct from it.",
+      "note": "A walled centre contemporary with Liangzhu and culturally distinct from it."
+     }
+    ],
+    "Oceania": [
+     {
+      "from": "finding",
+      "finding": "The settled record pauses here.",
+      "year": -800,
+      "tier": "solid",
+      "detail": "Lapita has not left the Bismarck Archipelago yet; the open Pacific is a thousand years away and East Polynesia three thousand five hundred.",
+      "source": "Wilmshurst, J.M., Hunt, T.L., Lipo, C.P. & Anderson, A.J., “High-precision radiocarbon dating shows recent and rapid initial human colonization of East Polynesia”, PNAS 108, 2011, 1815–1820 — 1,434 dates from at least 45 islands. Migration into East Polynesia begins only after a 1,800-year PAUSE following the settlement of Samoa c. 800 BC, in two phases: the Society Islands c. 1025–1120 CE, the rest c. 1190–1290 CE. Mulrooney et al., PNAS 108, 2011, E192, dispute the statistics while accepting the late chronology."
+     }
+    ],
+    "Africa south of the Sahara": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "Lothagam North is 2,974 BCE and Kerma 2,500 — both just outside. A pass on the Sahelian Neolithic would close it."
+     }
+    ],
+    "Southeast Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "Ban Chiang is the obvious candidate and is not sourced here."
+     }
+    ]
+   }
+  },
+  {
+   "key": "collapse",
+   "title": "The Bronze Age collapse",
+   "year": -1177,
+   "shown": "c. 1177 BCE",
+   "window": 125,
+   "tier": "contested",
+   "why": "A date made famous by one book. The collapse is a process across a century and the panel says so.",
+   "entries": {
+    "Oceania": [
+     {
+      "from": "anchor",
+      "id": "a22",
+      "label": "Tonga / Samoa (West Polynesia)",
+      "year": -1000,
+      "tier": "solid",
+      "lat": -13.8,
+      "lon": -172.1
+     }
+    ],
+    "Africa south of the Sahara": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window"
+     }
+    ],
+    "Southeast Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "Mán Bạc is 1,774 BCE, six hundred years early."
+     }
+    ]
+   }
+  },
+  {
+   "key": "lczero",
+   "title": "Long Count zero and the Kali Yuga",
+   "year": -3110,
+   "shown": "3114 / 3102 BCE",
+   "window": 150,
+   "tier": "tradition",
+   "why": "Two computed starting points twelve years apart, and Egypt’s Dynasty 1 beside them. Story mode’s step 4 is this moment.",
+   "entries": {
+    "Oceania": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window"
+     }
+    ],
+    "Southeast Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window"
+     }
+    ],
+    "South Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window",
+      "lead": "The Indus sequence begins at 2,800 BCE in this map’s data, three centuries later."
+     }
+    ]
+   }
+  },
+  {
+   "key": "lapita",
+   "title": "The Lapita reach the open Pacific",
+   "year": -1000,
+   "shown": "c. 1000 BCE",
+   "window": 150,
+   "tier": "solid",
+   "why": "ADDED 2026-11-27 on the founder’s ruling, because Oceania is a blank row at every other moment on the list and it should not be.",
+   "entries": {
+    "Southeast Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window"
+     }
+    ],
+    "South Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window"
+     }
+    ],
+    "East Asia": [
+     {
+      "from": "gap",
+      "gap": "no source checked for this window"
+     }
+    ]
+   }
+  }
+ ]
+}
