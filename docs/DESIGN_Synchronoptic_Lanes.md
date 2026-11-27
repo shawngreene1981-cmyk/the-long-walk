@@ -89,6 +89,34 @@ Six tradition lanes; a panel under the map; the Adams look for tradition lanes o
   German–Iraqi reports (*MDOG* 156/157) is follow-up that does not block.
   **Publication is its own ruling and has not been given.**
 
+## 7b. Published, 2026-11-26
+
+**Founder-ruled, and the one exception to the standing rule against merging and
+pushing.** Merge commit **`a06f755`** (`--no-ff`, so the rollback is a single
+`git revert -m 1`), pushed to `main`, live at https://shawngreene1981-cmyk.github.io/the-long-walk/ about twenty seconds later.
+**Rollback point: `19875a4`.** The branch rule returned with that push: nothing is
+pushed again without a new ruling.
+
+- **The checklist in OPEN_ITEMS was run in full, not skimmed.** A rebuild from the two
+  base commits and the whole patch chain left the tree clean at `index.html` 1,300,506
+  bytes, so the published page is byte-for-byte what the build produces; 95 desktop and
+  19 phone checks passed; `origin/main..main` was empty, so nothing unreviewed rode
+  along.
+- **Running it found a fault in it.** It said to compare `sha256sum index.html` against
+  the served page. With `core.autocrlf=true` the working file is CRLF and 1,309,001
+  bytes while the blob git stores and GitHub serves is LF and 1,300,506 — the two
+  can never match, so a correct deploy would have read as a failed one. The checklist
+  now says `git show main:index.html | sha256sum`. **A procedure is not verified until
+  it has been run.**
+- **The live page is checked by measurement, not only by eye.**
+  `geowork/lanes/shot_live.py` loads the published URL in headless Edge and asserts
+  thirteen things about what came back, because every other check here serves a local
+  copy and can say nothing about the live site. All thirteen passed.
+  One of them failed on the first run against the live page and **the page was right
+  and the new check was wrong** — it measured `.lanes-head`, the title block, when
+  the sticky head is `.sheet-head`. Worth recording: a new check failing against a page
+  that 114 older checks pass is evidence about the check first.
+
 ## 8. Next steps
 
 1. Resolve the sourcing pass's eight open items (listed in RESEARCH) — note which block v1.

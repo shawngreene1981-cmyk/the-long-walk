@@ -4,12 +4,12 @@
  "source": "RESEARCH_Synchronoptic_Lanes_Sourcing.md Part A (54 sources), tracked in this repo at docs/RESEARCH_Synchronoptic_Lanes_Sourcing.md. Per-item sources are on the items.",
  "licence": "The dates are facts and claims reported from the cited scholarship and are not themselves copyrightable; the wording here is this project’s.",
  "credit": "Every lane item carries the source it came from, because a reader is entitled to know which tradition, and which scholar, a line on this chart is reporting.",
- "generated": "2026-11-26",
+ "generated": "2026-11-27",
  "generated_by": "geowork/lanes/build_lanes.py",
  "groups": [
   {
-   "key": "regions",
-   "label": "Regions — the ground",
+   "key": "traditions",
+   "label": "Reckonings — six clocks",
    "collapsed": false
   },
   {
@@ -18,9 +18,10 @@
    "collapsed": true
   },
   {
-   "key": "traditions",
-   "label": "Reckonings — six clocks",
-   "collapsed": false
+   "key": "regions",
+   "label": "Regions — the ground",
+   "collapsed": true,
+   "ribbon": true
   }
  ],
  "lanes": [
@@ -127,6 +128,7 @@
      "kind": "point",
      "start": -3102,
      "label": "Kali Yuga begins",
+     "short": "Kali Yuga epoch",
      "tier": "tradition",
      "note": "18 February 3102 BC (Old Style). Tradition ties it to the end of the Mahābhārata war; proposed dates for that war range from 3102 (tradition) to c. 1000–950, 836 (B. B. Lal) and c. 750–350 (Parpola)."
     }
@@ -259,6 +261,7 @@
      "start": -3111,
      "end": -3045,
      "label": "Aha — Dynasty 1 begins",
+     "short": "Egypt, Dynasty 1 — Aha",
      "tier": "solid",
      "note": "Radiocarbon, Dee et al. 2013. Britannica’s conventional date for Dynasty 1 is c. 2900."
     },
